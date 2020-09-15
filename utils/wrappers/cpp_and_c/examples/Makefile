@@ -34,4 +34,5 @@ clean:
 	rm -f *.o 
 	
 clean-all:
+	rm -f *.o 
 	rm -f test_cpp_and_c_wrapper	
