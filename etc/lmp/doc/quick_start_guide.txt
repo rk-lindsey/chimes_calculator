@@ -1,0 +1,100 @@
+/* R.K. Lindsey (2020) */
+
+/////////////////////////////////////////////
+LAMMPS + ChIMES Library Quick Start Guide
+/////////////////////////////////////////////
+
+# You'll need the following files, and the stable version (7 Aug 2019) version of LAMMPS (stable version as of 11/1/19):
+
+1. chimesFF.{h,cpp}     # ChIMES library files
+2. pair_chimes.{h,cpp}  # ChIMES pair_style definition files
+3. pair.{h,cpp}         # Updated LAMMPS pair files (new ev_tally definition added)
+4. Makefile.mpi_chimes  # Makefile for compiling with ChIMES support
+
+link to download LAMMPS: https://lammps.sandia.gov/download.html
+
+# Each set of file(s) should be placed in the following location (assuming "." is a LAMMPS src folder):
+
+1. ./MANYBODY
+2. ./MANYBODY
+3. ./
+4. ./MAKE
+
+
+# Compile LAMMPS from '.' with the following commands, to produce the executable "lmp_mpi_chimes":
+# NOTE: If you are using an intel compiler, either delete the "pair_list.*" files that appear in
+#       the src folder following the "make yes-manybody" command, or add "-restrict" to CCFLAGS in
+#       MAKE/Makefile.mpi_chimes 
+
+make yes-manybody
+make mpi_chimes
+
+
+# To run a simulation using ChIMES parameters, a block like the following is needed in the main LAMMPS input file (i.e. "in.lammps):
+
+pair_style	chimesFF
+pair_coeff	* *   some_standard_chimes_parameter_file.txt 
+
+# Note that the following must also be set in the main LAMMPS input file, to use ChIMES:
+
+units           real		
+newton 		on 		
+
+atom_style	atomic		
+atom_modify	sort 0 0.0	
+atom_modify	map array
+
+# Warnings:
+
+1. Implementation assumes the max 2-body cutoff is always larger than the max (n>2)-body cutoffs; this is required for compatibility with LAMMPS
+2. Dynamics are largely untested... Please let me know if you notice anything strange!
+3. Assumes user wants single-atom energies to be added to the system energy. If you don't want to, zero the energy offsets in the parameter file
+4. Read comments at the top of chimesFF.{h.cpp} and pair_chimes.{h,cpp} for additional warnings
+
+
+/////////////////////////////////////////////
+How to: LAMMPS + ChIMES Library from scratch
+/////////////////////////////////////////////
+	
+Pointer refresher:
+
+ptr = &var: pointer to address of var
+*ptr: gives access to the value located at ptr 
+
+Creating two files in src/MANYBODY (and writing functionality from scratch):
+	- pair_chimes.h
+	- pair_chimes.cpp
+
+Copying the following files into src/MANYBODY:
+	- chimesFF.h
+	- chimesFF.cpp
+
+Adding the following to pair_chimes.h:
+
+	#include "chimesFF.h"
+
+made my own make file: (from src/MAKE):
+
+	cp Makefile.mpi Makefile.mpi_chimes
+	nedit Makefile.mpi_chimes // Do stuff
+
+Added -std=c++11 to CCFLAGS and LINKFLAGS, removed any -g flags in favor of -O3
+
+Made my own ev_tally function, which will work with a chimes model of arbitrary bodiedness (something like the following):
+
+	added to pair.h: 
+		void ev_tally_mb(double, double, double, double, double, double, double);
+	added to pair.cpp: 
+
+		void Pair::ev_tally_mb(double evdwl, double sxx, double sxy, double sxz, double syy, double syz, double szz)
+		{
+			eng_vdwl += evdwl;
+	
+			virial[0] += sxx;
+			virial[1] += sxy;
+			virial[2] += sxz;
+			virial[3] += syy;
+			virial[4] += syz;
+  			virial[5] += szz;
+		}
+
