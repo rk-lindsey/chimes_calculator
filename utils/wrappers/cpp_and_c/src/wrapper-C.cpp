@@ -69,6 +69,34 @@ void chimes_read_params(char *param_file) {
   chimes_ptr->read_parameters(param_file);
 }
 
+void chimes_compute_2b_props_fromf90(double *rij, double dr[3], char *type1, char *type2, double force[2][3], double stress[9], double *epot)
+{
+	static char *atype2b_fromf90[2];
+	atype2b_fromf90[0] = type1;
+	atype2b_fromf90[1] = type2;
+	
+	chimes_compute_2b_props(*rij, dr, atype2b_fromf90, force, stress, epot);
+}
+void chimes_compute_3b_props_fromf90(double dr_3b[3], double dist_3b[3][3], char *type1, char *type2, char *type3, double f3b[3][3], double stress[9], double *epot)
+{
+	static char *atype3b_fromf90[3];
+	atype3b_fromf90[0] = type1;
+	atype3b_fromf90[1] = type2;
+	atype3b_fromf90[2] = type3;
+	
+	chimes_compute_3b_props(dr_3b, dist_3b, atype3b_fromf90, f3b, stress, epot);
+}
+void chimes_compute_4b_props_fromf90(double dr_4b[6], double dist_4b[6][3], char *type1, char *type2, char *type3, char *type4, double f4b[4][3], double stress[9], double *epot)
+{
+	static char *atype4b_fromf90[4];
+	atype4b_fromf90[0] = type1;
+	atype4b_fromf90[1] = type2;
+	atype4b_fromf90[2] = type3;
+	atype4b_fromf90[3] = type4;
+	
+	chimes_compute_4b_props(dr_4b, dist_4b, atype4b_fromf90, f4b, stress, epot);
+}
+
 void chimes_compute_2b_props(double rij, double dr[3], char *atype2b[2], double force[2][3], double stress[9], double *epot) {
   // convert all doubles, etc., from C to type vector for C++
   // declare needed vectors for chimes
