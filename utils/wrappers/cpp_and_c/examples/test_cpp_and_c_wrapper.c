@@ -1,3 +1,5 @@
+/* Code author: Nir Goldman (2020) */
+
 #include <stdlib.h>
 #include <math.h>
 #include <stdio.h>

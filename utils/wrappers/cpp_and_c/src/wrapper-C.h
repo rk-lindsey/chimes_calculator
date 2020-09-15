@@ -1,3 +1,5 @@
+/* Code author: Nir Goldman (2020) */
+
 #ifdef __cplusplus
 extern "C" {
 #endif 

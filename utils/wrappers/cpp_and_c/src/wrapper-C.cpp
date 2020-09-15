@@ -1,3 +1,5 @@
+/* Code author: Nir Goldman (2020) */
+
 #include<vector>
 #include<iostream>
 #include<iomanip>
