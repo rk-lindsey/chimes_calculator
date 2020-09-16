@@ -372,9 +372,11 @@ void serial_chimes_interface::calculate(vector<double> & x_in, vector<double> & 
             
             typ_idxs_2b[0] = sys_atmtyp_indices[i ];
             typ_idxs_2b[1] = sys_atmtyp_indices[jj];
+	    
+	    //cout << typ_idxs_2b[0] << " " << typ_idxs_2b[0] << endl;
             
-            if ((typ_idxs_2b[0] != 0)||(typ_idxs_2b[0] !=typ_idxs_2b[0]))
-                exit(0);
+            //if ((typ_idxs_2b[0] != 0)||(typ_idxs_2b[0] != typ_idxs_2b[0]))
+            //    exit(0);
             
             for (int idx=0; idx<3; idx++)
             {
