@@ -1,6 +1,6 @@
 CC=g++
 CCOMP=gcc
-CCFLAGS = -g -std=c++11 
+CCFLAGS = -O3 -std=c++11 
 COMM1 = chimesFF.o serial_chimes_interface.o test_chimes_C_api.o wrapper-C.o
 
 test_chimes_C_api : $(COMM1) 
