@@ -107,6 +107,17 @@ void chimes_compute_2b_props(double rij, double dr[3], char *atype2b[2], double 
   vector <int> type_vec(2);
   type_vec[0] = distance(chimes_ptr->atmtyps.begin(),find(chimes_ptr->atmtyps.begin(), chimes_ptr->atmtyps.end(), atype2b[0]));
   type_vec[1] = distance(chimes_ptr->atmtyps.begin(),find(chimes_ptr->atmtyps.begin(), chimes_ptr->atmtyps.end(), atype2b[1]));
+  
+  if (type_vec[0] >= chimes_ptr->atmtyps.size())
+  {
+  	cout << "ERROR: input atom type not in parameter file: " << atype2b[0] << endl;
+	exit(0);
+  }
+   if (type_vec[1] >= chimes_ptr->atmtyps.size())
+  {
+  	cout << "ERROR: input atom type not in parameter file: " << atype2b[0] << endl;
+	exit(0);
+  } 
   //type_vec[0] = chimes_ptr->atmtoidx[atype2b[0]];
   //type_vec[1] = chimes_ptr->atmtoidx[atype2b[1]];
   vector<vector<double*> >force_vec;
@@ -162,10 +173,18 @@ void chimes_compute_3b_props(double dr_3b[3], double dist_3b[3][3], char *atype3
   dist_3b_vec[2][0] = dist_3b[2][0];
   dist_3b_vec[2][1] = dist_3b[2][1];
   dist_3b_vec[2][2] = dist_3b[2][2];
-  vector <int> type_3b_vec(3);
+  vector <int> type_3b_vec(3);  
   type_3b_vec[0] = distance(chimes_ptr->atmtyps.begin(),find(chimes_ptr->atmtyps.begin(), chimes_ptr->atmtyps.end(), atype3b[0]));
   type_3b_vec[1] = distance(chimes_ptr->atmtyps.begin(),find(chimes_ptr->atmtyps.begin(), chimes_ptr->atmtyps.end(), atype3b[1]));
   type_3b_vec[2] = distance(chimes_ptr->atmtyps.begin(),find(chimes_ptr->atmtyps.begin(), chimes_ptr->atmtyps.end(), atype3b[2]));
+  for(int i=0; i<3; i++)
+  {
+	if (type_3b_vec[i] >= chimes_ptr->atmtyps.size())
+ 	{
+  		cout << "ERROR: input atom type not in parameter file: " << atype3b[i] << endl;
+		exit(0);
+	}
+  }
   //type_3b_vec[0] = chimes_ptr->atmtoidx[atype3b[0]];
   //type_3b_vec[1] = chimes_ptr->atmtoidx[atype3b[1]];
   //type_3b_vec[2] = chimes_ptr->atmtoidx[atype3b[2]];
@@ -245,6 +264,14 @@ void chimes_compute_4b_props(double dr_4b[6], double dist_4b[6][3], char *atype4
   type_4b_vec[1] = distance(chimes_ptr->atmtyps.begin(),find(chimes_ptr->atmtyps.begin(), chimes_ptr->atmtyps.end(), atype4b[1]));
   type_4b_vec[2] = distance(chimes_ptr->atmtyps.begin(),find(chimes_ptr->atmtyps.begin(), chimes_ptr->atmtyps.end(), atype4b[2]));
   type_4b_vec[3] = distance(chimes_ptr->atmtyps.begin(),find(chimes_ptr->atmtyps.begin(), chimes_ptr->atmtyps.end(), atype4b[3]));
+  for(int i=0; i<4; i++)
+  {
+	if (type_4b_vec[i] >= chimes_ptr->atmtyps.size())
+ 	{
+  		cout << "ERROR: input atom type not in parameter file: " << atype4b[i] << endl;
+		exit(0);
+	}
+  }  
   //type_4b_vec[0] = chimes_ptr->atmtoidx[atype4b[0]];
   //type_4b_vec[1] = chimes_ptr->atmtoidx[atype4b[1]];
   //type_4b_vec[2] = chimes_ptr->atmtoidx[atype4b[2]];
