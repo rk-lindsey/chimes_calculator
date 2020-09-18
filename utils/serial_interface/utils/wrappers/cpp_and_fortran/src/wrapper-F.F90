@@ -6,11 +6,10 @@
       &            cb, cc, energy, fx, fy, fz, stress)  &
       &            bind (C, name='calculate_chimes')
           use, intrinsic :: ISO_C_binding, only : C_char, C_ptr, C_int, C_double
-          type(c_ptr), DIMENSION(80) :: cptr
+          type(c_ptr) :: cptr(:)
           integer(C_int) :: natom  
           real(C_double) :: xc(natom), yc(natom), zc(natom)
           real(C_double) :: fx(natom), fy(natom), fz(natom)
-          character(C_char), dimension(80) :: c_atom(natom)
           real(C_double) :: ca(3), cb(3), cc(3) 
           real(C_double) :: energy
           real(C_double) :: stress(9)
