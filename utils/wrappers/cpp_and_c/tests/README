@@ -1,7 +1,0 @@
-To run these tests:
-
-cd ./../examples
-make clean-all
-make all
-cd -
-./../examples/test_cpp_and_c_wrapper <parameter file> <xyz file>
