@@ -1,0 +1,54 @@
+! https://doi.org/10.1021/acs.jctc.7b00867
+!
+! 2-body only liquid carbon model fit (no stress tensor in fit)
+!
+! WARNING: This force field is only intended for liquid carbon from 5000 and 2.43 gcc
+! WARNING: This force field comes with no guarantees
+!
+USECOUL: false
+FITCOUL: false
+USEPOVR: false
+FITPOVR: false
+USE3BCH: false
+
+PAIRTYP: CHEBYSHEV  12 0 -1 1
+
+ATOM TYPES: 1
+
+# TYPEIDX #	# ATM_TYP #	# ATMCHRG #	# ATMMASS #
+0		C		0		12.011
+
+ATOM PAIRS: 1
+
+!# PAIRIDX #	# ATM_TY1 #	# ATM_TY1 #	# S_MINIM #	# S_MAXIM #	# S_DELTA #	# CHBDIST #	# MORSE_LAMBDA #
+	0               C               C               1.0         3.15               0.01            MORSE           1.25                
+
+FCUT TYPE: CUBIC
+
+PAIR CHEBYSHEV PENALTY DIST: 0.01
+PAIR CHEBYSHEV PENALTY SCALING: 1E8
+
+ATOM PAIR TRIPLETS: 0
+
+PAIR CHEBYSHEV PARAMS 
+
+PAIRTYPE PARAMS: 0 C C
+
+0  285.73883308072
+1  -213.71388752372
+2  358.53331099031
+3  -172.12400486549
+4  44.775023503150
+5  -34.154784921509
+6  30.632345544482
+7  -33.336059893072
+8  11.483163813684
+9  -0.99086720791180
+10 -3.3830138904188
+11 1.2480108628453
+
+PAIRMAPS: 1
+0 CC
+
+ENDFILE
+
