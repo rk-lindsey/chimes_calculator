@@ -117,7 +117,25 @@ int main(int argc, char **argv)
 
     chimes.calculate(xcrds, ycrds, zcrds, cell_a, cell_b, cell_c, atom_types, energy, force, stress);
 
-cout << endl;
+
+    #ifdef DEBUG
+    
+    ofstream debug_out;
+    debug_out.open("debug.dat");
+    
+    debug_out << energy << endl;
+    debug_out << stress[0]*6.9479 << endl;
+    debug_out << stress[4]*6.9479 << endl;
+    debug_out << stress[8]*6.9479 << endl;
+    debug_out << stress[1]*6.9479 << endl;
+    debug_out << stress[2]*6.9479 << endl;
+    debug_out << stress[5]*6.9479 << endl;
+    for(int i=0; i<natoms; i++)
+        debug_out << force[i][0] << endl << force[i][1] << endl << force[i][2] << endl;
+    
+    #endif
+
+    cout << endl;
     cout << "Success! " << endl;
     cout << "Energy (kcal/mol):    " << endl << "\t" << energy << endl;
 
