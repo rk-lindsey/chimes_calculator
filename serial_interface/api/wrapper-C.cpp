@@ -25,15 +25,15 @@ void init_chimes (char *param_file, int *nlayer) {
   chimes_ptr->init_chimesFF(param_file, *nlayer);
 }
 
-void calculate_chimes(int natom, double *xc, double *yc, double *zc, char *atom_types[], double ca[3], double cb[3], double cc[3], double *energy, double fx[], double fy[], double fz[], double stress[9]) {
-  vector<double>    x_vec(natom);
-  vector<double>    y_vec(natom);
-  vector<double>    z_vec(natom);
+void calculate_chimes(int *natom, double *xc, double *yc, double *zc, char *atom_types[], double ca[3], double cb[3], double cc[3], double *energy, double fx[], double fy[], double fz[], double stress[9]) {
+  vector<double>    x_vec(*natom);
+  vector<double>    y_vec(*natom);
+  vector<double>    z_vec(*natom);
   vector<vector<double> > force_vec; 
-  force_vec.resize(natom, vector<double>(3,0));
+  force_vec.resize(*natom, vector<double>(3,0));
   vector<string> atom_types_vec;
-  atom_types_vec.resize(natom);
-  for (int i = 0; i < natom; i++) {
+  atom_types_vec.resize(*natom);
+  for (int i = 0; i < *natom; i++) {
     x_vec[i] = xc[i];
     y_vec[i] = yc[i];
     z_vec[i] = zc[i];
@@ -62,7 +62,7 @@ void calculate_chimes(int natom, double *xc, double *yc, double *zc, char *atom_
     stress[i] = stress_vec[i];
   }
   chimes_ptr->calculate(x_vec, y_vec, z_vec, cell_a_vec, cell_b_vec, cell_c_vec, atom_types_vec, *energy, force_vec, stress_vec);
-  for (int i = 0; i < natom; i++) {
+  for (int i = 0; i < *natom; i++) {
     fx[i] = force_vec[i][0];
     fy[i] = force_vec[i][1];
     fz[i] = force_vec[i][2];

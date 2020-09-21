@@ -15,9 +15,10 @@
       real(C_double) :: energy
       real(C_double) :: ca(3), cb(3), cc(3)
       real(C_double), allocatable :: xc(:), yc(:), zc(:), fx(:), fy(:), fz(:)
-      character(C_char), dimension(80), allocatable, target :: atom_type(:) 
-      character(len=80) :: atom
-      TYPE(C_PTR), allocatable :: stringPtr(:)
+      character(len=10), allocatable, target :: atom_type(:), c_atom(:)
+      character(len=2) :: atom
+      TYPE(C_PTR), allocatable, dimension(10) :: stringPtr(:)
+      integer lenstr
 
       io_num = IARGC()
       if (io_num .lt. 2) then
@@ -37,13 +38,16 @@
       allocate(fy(natom))
       allocate(fz(natom))
       allocate(atom_type(natom))
+      allocate(c_atom(natom))
       allocate(xc(natom))
       allocate(yc(natom))
       allocate(zc(natom))
       allocate(stringPtr(natom))
       do i = 1, natom
-        read(10,*)atom,xc(i),yc(i),zc(i)
-        atom_type(i) = atom//C_NULL_CHAR
+        read(10,*)atom_type(i),xc(i),yc(i),zc(i)
+        ! trim to remove whitespace
+        ! add null char at end to make C-readable
+        c_atom(i) = trim(atom_type(i))//char(0)
       enddo
       close(10)
       ! initialize force arrays
@@ -53,12 +57,12 @@
       ! initialize system energy
       energy = 0d0
       call f_set_chimes()
-      nlayer = 1 
+      nlayer = 4
       c_file = string2Cstring(param_file)
       call f_init_chimes(c_file, nlayer)
       stress(:) = 0d0
       do ns = 1, natom
-        stringPtr(ns) = c_loc(atom_type(ns))
+        stringPtr(ns) = c_loc(c_atom(ns))
       enddo
       call f_calculate_chimes (natom, xc, yc, zc, stringPtr, ca,  &
       &      cb, cc, energy, fx, fy, fz, stress)
@@ -66,7 +70,7 @@
       open (unit = 20, status = 'replace', file='output_libf_serial.xyz')
       write(20,*)natom
       stress(:) = GPa*stress(:)
-      write(20,*)lx, ly, lz, stress(1:9), energy
+      write(20,*)ca(:),cb(:),cc(:), stress(1:9), energy
       do i = 1, natom
         write(20,*)atom_type(i),xc(i),yc(i),zc(i),fx(i), fy(i), fz(i)
       enddo
