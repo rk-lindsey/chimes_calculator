@@ -22,6 +22,7 @@ Compile with:
 ---------------------------------------------------------------------- */
 
 #include<iostream>
+#include<iomanip>
 #include<fstream>
 #include<vector>
 #include<string>
@@ -122,17 +123,19 @@ int main(int argc, char **argv)
     
     ofstream debug_out;
     debug_out.open("debug.dat");
-    
-    debug_out << energy << endl;
-    debug_out << stress[0]*6.9479 << endl;
-    debug_out << stress[4]*6.9479 << endl;
-    debug_out << stress[8]*6.9479 << endl;
-    debug_out << stress[1]*6.9479 << endl;
-    debug_out << stress[2]*6.9479 << endl;
-    debug_out << stress[5]*6.9479 << endl;
+   
+    debug_out << fixed << setprecision(6) << energy << endl;
+    debug_out << fixed << setprecision(6) << stress[0]*6.9479 << endl;
+    debug_out << fixed << setprecision(6) << stress[4]*6.9479 << endl;
+    debug_out << fixed << setprecision(6) << stress[8]*6.9479 << endl;
+    debug_out << fixed << setprecision(6) << stress[1]*6.9479 << endl;
+    debug_out << fixed << setprecision(6) << stress[2]*6.9479 << endl;
+    debug_out << fixed << setprecision(6) << stress[5]*6.9479 << endl;
+
     for(int i=0; i<natoms; i++)
-        debug_out << force[i][0] << endl << force[i][1] << endl << force[i][2] << endl;
-    
+        debug_out << scientific << setprecision(6) << force[i][0] << endl 
+	          << scientific << setprecision(6) << force[i][1] << endl 
+		  << scientific << setprecision(6) << force[i][2] << endl;
     #endif
 
     cout << endl;

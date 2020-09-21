@@ -303,32 +303,59 @@ void serial_chimes_interface::reorient_system(vector<double> & x_in, vector<doub
 	double cell_gamma = angle_ab({hmat[0], hmat[3], hmat[6]}, {hmat[1], hmat[4], hmat[7]});
 
 	double cell_lx = latcon_a;
+	
+	
 	double xy = latcon_b * cos(cell_gamma);
 	if(xy < 1E-12)
 	    xy = 0.0;
 
 	double xz = latcon_c * cos(cell_beta );
-	if(xz < 1E-12)
+
+	if(abs(xz) < 1E-12)
 	    xz = 0.0;
 
 	double cell_ly = sqrt(latcon_b *latcon_b - xy*xy);
 
 	double yz = (latcon_b*latcon_c * cos(cell_alpha) -xy*xz)/cell_ly;
-	if(yz < 1E-12)
+	if(abs(yz) < 1E-12)
 	    yz = 0.0;
 
 	double cell_lz = sqrt( latcon_c*latcon_c - xz*xz -yz*yz);
 
-	double tmp = xy;
-
-	if(xz > tmp)
-	    tmp = xz;
-	if((xy+xz) > tmp)
-	    tmp = xy+xz;
-
-	extent_x = cell_lx + tmp; 
-	extent_y = cell_ly + yz;
-	extent_z = cell_lz;        
+	double tmp;
+	    
+	double xlo = 0.0;
+	if (xy < xlo)
+		xlo = xy;
+	if (xz < xlo)
+		xlo = xz;
+	if(xy+xz < xlo)
+		xlo = xy+xz;
+		
+	double ylo = 0.0;
+	if (yz< ylo)
+		ylo = yz;
+	double zlo = 0.0;
+	
+	double xhi = hmat[0];
+	tmp = 0.0;
+	if (xy > tmp)
+		tmp = xy;
+	if (xz > tmp)
+		tmp = xz;
+	if (xy+xz> tmp)
+		tmp = xy+xz;
+	xhi += tmp;
+	
+	double yhi = hmat[4];
+	if(yz > 0.0)
+		yhi += yz;
+		
+	double zhi = hmat[8];
+	
+	extent_x = xhi - xlo;
+	extent_y = yhi - ylo;
+	extent_z = zhi - zlo; 
 
 	vol  = 1;
 	vol += 2*cos(cell_alpha)*cos(cell_beta )*cos(cell_gamma);
@@ -462,6 +489,7 @@ void serial_chimes_interface::calculate(vector<double> & x_in, vector<double> & 
 }
 void serial_chimes_interface::build_layered_system( vector<string> & atmtyps)
 {
+
     // Verify that an appropriate number of layers have been requested
     
     max_2b_cut = max_cutoff_2B(true); // true: do not write any info to stdout
@@ -569,7 +597,7 @@ void serial_chimes_interface::build_neigh_lists()
         search_dist = max_3b_cut;
     if (max_4b_cut > search_dist)
         search_dist = max_4b_cut;    
-    
+
     // Prepare bins
     
     int nbins_x = ceil((2 * n_layers+1) * extent_x/search_dist) + 2;
@@ -586,13 +614,13 @@ void serial_chimes_interface::build_neigh_lists()
     int bin_x_idx, bin_y_idx, bin_z_idx, ibin;
 
     // Populate bins    
-
+	
     for(int i=0; i<n_ghost; i++)
     {
         bin_x_idx = floor( (sys_x[i] + extent_x * n_layers) / search_dist ) + 1;
         bin_y_idx = floor( (sys_y[i] + extent_y * n_layers) / search_dist ) + 1;
         bin_z_idx = floor( (sys_z[i] + extent_z * n_layers) / search_dist ) + 1;
-        
+		
         if ( bin_x_idx < 0 || bin_y_idx < 0 || bin_z_idx < 0 ) 
         {
             cout << "ERROR: Negative bin computed" << endl; // Check .xyz box lengths  and atom coords
@@ -616,11 +644,19 @@ void serial_chimes_interface::build_neigh_lists()
 
     // Generate neighbor lists on basis of bins
     
-    for(int ai=0; ai<n_ghost; ai++)
+    for(int ai=0; ai<n_atoms; ai++)
     {
         bin_x_idx = floor( (sys_x[ai] + extent_x * n_layers) / search_dist ) + 1;
         bin_y_idx = floor( (sys_y[ai] + extent_y * n_layers) / search_dist ) + 1;
         bin_z_idx = floor( (sys_z[ai] + extent_z * n_layers) / search_dist ) + 1;
+	
+	if ( bin_x_idx < 1 || bin_y_idx < 1 || bin_z_idx < 1 ) 
+	{
+	    cout << "ERROR: Bad bin computed" << endl; // Check .xyz box lengths  and atom coords
+	    cout << bin_x_idx << " " << bin_y_idx << " " << bin_z_idx << endl;
+	    cout << sys_x[ai] << " " << sys_y[ai] << " " << sys_z[ai] << endl;
+	    exit(0);
+	}
 
         // Loop over relevant bins only, not all atoms.
         
@@ -633,6 +669,13 @@ void serial_chimes_interface::build_neigh_lists()
                 for (int k=bin_z_idx-1; k<=bin_z_idx+1; k++ ) // BIN_IDX_a1.Z
                 {
                     ibin = i + j * nbins_x + k * nbins_x * nbins_y;
+		    
+		    if (ibin >= total_bins) 
+		    {
+		    	    cout << "Error: binning BIN_IDX out of range\n";
+		    	    cout << "BIN_IDX.X = " << i << "BIN_IDX.Y = " << j << "BIN_IDX.Z = " << k << endl;
+		    	    exit(1);
+		    }
 
                     ajend = bin[ibin].size();
                     
@@ -645,7 +688,7 @@ void serial_chimes_interface::build_neigh_lists()
 
                         if ( ai <= sys_parent[ajj]) 
                             if (get_dist(ai,ajj) < search_dist )
-                                neighlist_2b[ai].push_back(ajj);        
+                                neighlist_2b[ai].push_back(ajj); 
                     }
                 }
             }
@@ -729,7 +772,7 @@ void serial_chimes_interface::build_neigh_lists()
                 
                 if (valid_3mer)
                     neighlist_3b.push_back(tmp_3mer);
-                
+
                 // Continue on to 4-body list
                 
                 if (poly_orders[2] == 0)
@@ -773,7 +816,7 @@ void serial_chimes_interface::build_neigh_lists()
                 
                     if (valid_4mer)
                         neighlist_4b.push_back(tmp_4mer);        
-                }                                                                        
+                }                                                                
             }
         }
     }
@@ -786,10 +829,34 @@ void serial_chimes_interface::build_neigh_lists()
 }
 double serial_chimes_interface::get_dist(int i,int j, vector<double> & rij)
 {
+    /* Orthorhombic way
     rij[0] = sys_x[j] - sys_x[i];
     rij[1] = sys_y[j] - sys_y[i];
     rij[2] = sys_z[j] - sys_z[i];
+    */
     
+    // Transform atoms to scaled space
+	
+    double inv_ix = invr_hmat[0]*sys_x[i] + invr_hmat[1]*sys_y[i] + invr_hmat[2]*sys_z[i];
+    double inv_iy = invr_hmat[3]*sys_x[i] + invr_hmat[4]*sys_y[i] + invr_hmat[5]*sys_z[i];
+    double inv_iz = invr_hmat[6]*sys_x[i] + invr_hmat[7]*sys_y[i] + invr_hmat[8]*sys_z[i];
+	
+    double inv_jx = invr_hmat[0]*sys_x[j] + invr_hmat[1]*sys_y[j] + invr_hmat[2]*sys_z[j];
+    double inv_jy = invr_hmat[3]*sys_x[j] + invr_hmat[4]*sys_y[j] + invr_hmat[5]*sys_z[j];
+    double inv_jz = invr_hmat[6]*sys_x[j] + invr_hmat[7]*sys_y[j] + invr_hmat[8]*sys_z[j];	
+	
+    // Get the distance
+
+    double dx = inv_jx - inv_ix;
+    double dy = inv_jy - inv_iy;
+    double dz = inv_jz - inv_iz;
+
+    // Convert back to standard units
+
+    rij[0] = hmat[0]*dx + hmat[1]*dy + hmat[2]*dz;
+    rij[1] = hmat[3]*dx + hmat[4]*dy + hmat[5]*dz;
+    rij[2] = hmat[6]*dx + hmat[7]*dy + hmat[8]*dz;
+
     return sqrt(rij[0]*rij[0] + rij[1]*rij[1] + rij[2]*rij[2]);
 }
 double serial_chimes_interface::get_dist(int i,int j)
