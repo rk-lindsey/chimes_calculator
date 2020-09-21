@@ -4,23 +4,14 @@
 #TESTS=$2
 #PYTH3=$3
 
-
-
-
-# To do:
-#
-# 1. Add water cfgs
-# 2. Add TiO2 cfgs/ff
-
 FFS[0]="published_params.liqC.2b.cubic.txt"                                  ; CFGS[0]="liqC.2.5gcc_6000K.OUTCAR_#000.xyz"
 FFS[1]="published_params.liqC.2+3b.cubic.txt"                                ; CFGS[1]="liqC.2.5gcc_6000K.OUTCAR_#000.xyz"
 FFS[2]="published_params.liqCO.2+3b.cubic.txt"                               ; CFGS[2]="CO.2.5gcc_6500K.OUTCAR_#000.xyz"
 FFS[3]="validated_params.CO2400K.2+3+4b.Tersoff.special.offsets.relabel.txt" ; CFGS[3]="CO.2.5gcc_6500K.OUTCAR_#000.relabel.xyz"
-FFS[4]="validated_params.CO2400K.2+3+4b.Tersoff.special.offsets.txt"         ; CFGS[4]="CO.2.5gcc_6500K.OUTCAR_#000.scramble.xyz"
-FFS[5]="validated_params.CO2400K.2+3+4b.Tersoff.special.offsets.txt"         ; CFGS[5]="CO.2.5gcc_6500K.OUTCAR_#000.translate.xyz"
+FFS[4]="published_params.CO2400K.2+3+4b.Tersoff.special.offsets.txt"         ; CFGS[4]="CO.2.5gcc_6500K.OUTCAR_#000.scramble.xyz"
+FFS[5]="published_params.CO2400K.2+3+4b.Tersoff.special.offsets.txt"         ; CFGS[5]="CO.2.5gcc_6500K.OUTCAR_#000.translate.xyz"
 FFS[6]="published_params.HN3.2+3+4b.Tersoff.special.offsets.txt"             ; CFGS[6]="HN3.2gcc_3000K.OUTCAR_#000.xyz"
-FFS[7]="validated_params.TiO2.2+3b.Tersoff.txt "                             ; CFGS[7]="TiO2.unitcell_arbrot_#000.xyz"
-#FFS[8]="published_params.ambH2O.2+3b.cubic.txt"                              ; CFGS[8]="
+FFS[7]="validated_params.TiO2.2+3b.Tersoff.txt"                              ; CFGS[7]="TiO2.unitcell_arbrot_#000.xyz" # DOES NOT MATCH CHIMES_MD!
 
 NO_TESTS=${#FFS[@]}
 
@@ -46,7 +37,7 @@ do
 	do
 		echo "Working on Test $idx of $NO_TESTS for API ${API[$i]}"
 		
-		for ((k=0; k<10; k++))
+		for k in 0 # ((k=0; k<10; k++))
 		do
 			CFG=${CFGS[$j]}
 			CFG_PREFIX="${CFG%%_#*}_#"
@@ -63,18 +54,22 @@ do
 			# Run the test
 		
 			../examples/${API[$i]}/${EXE[$i]} force_fields/${FFS[$j]} configurations/$CFG ${XTRA[$i]} > /dev/null
-		
-			# Compare results against expected
+
+			# Compare results against expected results (expected_output/${FFS[$j]}.$CFG.dat)
+			
+			paste debug.dat expected_output/${FFS[$j]}.$CFG.dat > san.dat
 		
 			# Print findings
+			
+			python3.7 compare.py san.dat 
+
 		done
 		
-		let idx=idx+1
-		
-		echo "	Test $j of $NO_TESTS for API ${API[$i]} complete"
+		echo "	Test $idx of $NO_TESTS for API ${API[$i]} complete"
 
+		let idx=idx+1
 	done
 
 done
 
-
+rm -f debug.dat san.dat 
