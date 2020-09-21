@@ -1,0 +1,20 @@
+This code demonstrates how chimesFF{h,cpp} can be used to obtain the
+stress tensor, energy, and per-atom forces for a given system using C++.
+See main.cpp for a usage example.
+
+Notes: This script takes as input a standard ChIMES parameter file,
+a .xyz file with a, b, and c cell vectors  in the comment line, and
+an integer defining how many layers of ghost atoms should be used
+(n_layers). Note that nlayers should be large enough to prevent
+self-interaction across the periodic boundary. 
+
+Compile with:
+        make test-CPP
+
+To test the executable:
+
+./test-CPP <parameter file> <xyz file> <nlayers>
+
+e.g. ./test-CPP ../../../serial_interface/tests/force_fields/published_params.liqC.2b.cubic.txt ../../../serial_interface/tests/configurations/liqC.2.5gcc_6000K.OUTCAR_#000.xyz 2
+
+Note: xyz file must be orthorhombic and must provide lattice vectors in the comment line, e.g. lx 0.0 0.0 0.0 ly 0.0 0.0 0.0 lz

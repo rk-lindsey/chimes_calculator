@@ -1,6 +1,0 @@
-Compile with:
-	make all
-Clean up object files with:
-	make clean
-Clean up object files and the executable with:
-	make clean-all
