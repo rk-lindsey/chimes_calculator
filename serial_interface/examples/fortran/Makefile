@@ -2,7 +2,7 @@ FCC = gfortran
 CC=g++
 CCFLAGS = -fPIC -O3 -std=c++11 
 FFLAGS = -O3 -fPIC
-COMM1 = wrapper-F.o test_chimes_F_api.o 
+COMM1 = wrapper-F.o main.o 
 
 all:	lib test_F 
 
@@ -15,8 +15,8 @@ chimesFF.o : chimesFF.cpp
 serial_chimes_interface.o : serial_chimes_interface.cpp
 	$(CC) $(CCFLAGS) -c serial_chimes_interface.cpp
 
-test_chimes_F_api.o : test_chimes_F_api.F90
-	$(FCC) $(FFLAGS) -c test_chimes_F_api.F90
+main.o : main.F90
+	$(FCC) $(FFLAGS) -c main.F90
 
 wrapper-C.o : wrapper-C.cpp
 	$(CC) $(CCFLAGS) -c wrapper-C.cpp

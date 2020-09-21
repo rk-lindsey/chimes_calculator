@@ -12,8 +12,6 @@ int main (int argc, char **argv)
     printf("Exiting code.\n");
     exit(0);
   }
-  // stress tensor calculation in chimesFF computes r.F, but leaves out volume term
-  // include 1/V at the end of the calculation
   const double GPa = 6.9479; // convert kcal/mol.A^3 to GPa
   FILE *fconf;
   int natom, i, j, k, l;
@@ -43,7 +41,7 @@ int main (int argc, char **argv)
   }
   fclose(fconf);
   set_chimes();
-  nlayer = 1;
+  nlayer = 4;
   init_chimes(argv[1], &nlayer);
   calculate_chimes(natom, xc, yc, zc, atom, ca, cb, cc, &energy, fx, fy, fz, stress);
   printf("ener: %lf\n",energy);
