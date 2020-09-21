@@ -22,8 +22,8 @@ ATOM PAIRS: 3
 
 # PAIRIDX #	# ATM_TY1 #	# ATM_TY2 #	# S_MINIM #	# S_MAXIM #	# S_DELTA #	# CHBDIST #	# MORSE_LAMBDA #
 	0               X               X               1.002           8               0.01            MORSE           1.35            
-	1               O               O               0.986           8               0.01            MORSE           2.55            
-	2               X               O               0.919           8               0.01            MORSE           1.15            
+	1               Y               Y               0.986           8               0.01            MORSE           2.55            
+	2               X               Y               0.919           8               0.01            MORSE           1.15            
 
 FCUT TYPE: TERSOFF 0.5
 
