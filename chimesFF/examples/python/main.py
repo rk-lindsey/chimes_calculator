@@ -101,7 +101,7 @@ for i in range(natoms):
 	forces.append([0.0,0.0,0.0])
 
 
-# Do the calculatons using PBC, without neighbor lists
+# Do the calculations using PBC, without neighbor lists
 
 maxcut_2b = wrapper_py.get_chimes_max_2b_cutoff()
 maxcut_3b = wrapper_py.get_chimes_max_3b_cutoff()

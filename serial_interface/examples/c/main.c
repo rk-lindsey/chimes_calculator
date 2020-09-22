@@ -7,11 +7,12 @@
 
 int main (int argc, char **argv) 
 {
-  if (argc < 3) {
-    printf("To run: ./test.x <parameter file> <xyz config. file>\n");
+  if (argc < 4) {
+    printf("To run: ./test.x <parameter file> <xyz config. file> <nlayers>\n");
     printf("Exiting code.\n");
     exit(0);
   }
+  
   const double GPa = 6.9479; // convert kcal/mol.A^3 to GPa
   FILE *fconf;
   int natom, i, j, k, l;
@@ -29,31 +30,63 @@ int main (int argc, char **argv)
   double xc[natom], yc[natom], zc[natom];
   double fx[natom], fy[natom], fz[natom];
   char atom_types[natom][50], *atom[natom];
-  char *atype2b[2], *atype3b[3], *atype4b[4]; 
-  for (i = 0; i < natom; i++) {
+  char *atype2b[2], *atype3b[3], *atype4b[4];
+   
+  for (i = 0; i < natom; i++) 
+  {
     fx[i] = 0.0;
     fy[i] = 0.0;
     fz[i] = 0.0;
   }
-  for (i = 0; i < natom; i++) { // note: all atoms are C
+  for (i = 0; i < natom; i++) 
+  {
     fscanf(fconf,"%s %lf %lf %lf\n",atom_types[i],&xc[i],&yc[i],&zc[i]);
     atom[i] = atom_types[i];
   }
   fclose(fconf);
   set_chimes();
-  nlayer = 4;
+  nlayer = atoi(argv[3]); // 4;
+  
+  printf("%s %s %s %d\n", "Read args:", argv[1], argv[2], nlayer);
+  
+  
   init_chimes(argv[1], &nlayer);
   calculate_chimes(natom, xc, yc, zc, atom, ca, cb, cc, &energy, fx, fy, fz, stress);
-  printf("ener: %lf\n",energy);
   for (i = 0; i < 9; i++) {
     stress[i] *= GPa;
   }
-  printf("Printing final forces in output_lib.xyzf\n");
+  
+  printf("\n%s\n", "Success!");
+  printf("%s\t%f\n","Energy (kcal/mol):", energy); 
+  printf("%s\n",   "Stress tensors (GPa)");
+  printf("%s %f\n","\ts_xx: ",stress[0]);
+  printf("%s %f\n","\ts_yy: ",stress[4]);
+  printf("%s %f\n","\ts_zz: ",stress[8]);
+  printf("%s %f\n","\ts_xy: ",stress[1]);
+  printf("%s %f\n","\ts_xz: ",stress[2]);
+  printf("%s %f\n","\ts_yz: ",stress[5]);
+  printf("%s\n",   "Forces (kcal/mol/A)");
+  for (i = 0; i <natom; i++)
+  	printf("\t%f\t%f\t%f\n", fx[i], fy[i], fz[i]);
+  printf("\n");
+  
+  #if DEBUG==1
+  
   FILE *fout;
-  fout = fopen("output_lib_simple.xyzf","w");
-  fprintf(fout,"%d\n",natom);
-  fprintf(fout,"%lf %lf %lf %lf %lf %lf %lf %lf %lf %lf %lf %lf %lf\n",ca[0],cb[1],cc[2],stress[0],stress[1],stress[2],stress[3],stress[4],stress[5],stress[6],stress[7],stress[8],energy);
-  for (i = 0; i < natom; i++) {
-    fprintf(fout,"%s %lf %lf %lf %lf %lf %lf\n",atom_types[i],xc[i],yc[i],zc[i],fx[i],fy[i],fz[i]);
-  }
+  fout = fopen("debug.dat","w");
+  fprintf(fout,"%0.6f\n", energy);
+  fprintf(fout,"%0.6f\n", stress[0]);
+  fprintf(fout,"%0.6f\n", stress[4]);
+  fprintf(fout,"%0.6f\n", stress[8]);
+  fprintf(fout,"%0.6f\n", stress[1]);
+  fprintf(fout,"%0.6f\n", stress[2]);
+  fprintf(fout,"%0.6f\n", stress[5]);
+  
+  for (i = 0; i <natom; i++)
+  	fprintf(fout,"%0.6e\n%0.6e\n%0.6e\n", fx[i], fy[i],fz[i]);
+  fclose(fout);
+  
+  
+  #endif
+
 }

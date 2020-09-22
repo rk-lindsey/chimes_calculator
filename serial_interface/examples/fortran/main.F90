@@ -2,7 +2,7 @@
       use wrapper
       use, intrinsic :: ISO_C_binding
       implicit none
-      integer io_num
+      integer io_num, stat
       double precision, parameter :: GPa = 6.9479 ! convert kcal/mol.A^3 to GPa
       character(C_char), dimension(80) :: c_file
       character(C_char), dimension(80) :: dummy_var
@@ -20,16 +20,21 @@
       TYPE(C_PTR), allocatable, dimension(10) :: stringPtr(:)
       integer lenstr
 
-      io_num = IARGC()
-      if (io_num .lt. 2) then
-        print*,"To run: ./test_F.x <parameter file> <xyz config. file>"
+      io_num = command_argument_count()
+      if (io_num .lt. 3) then
+        print*,"To run: ./test_F.x <parameter file> <xyz config. file> <nlayers>"
         print*,"Exiting code.\n"
         STOP
       endif
-      call getarg(1, wq_char)
-      read(wq_char,*)param_file
-      call getarg(2, wq_char)
-      read(wq_char,*)coord_file
+      
+      call GET_COMMAND_ARGUMENT(1, wq_char)
+      param_file = trim(wq_char)
+      call GET_COMMAND_ARGUMENT(2, wq_char)
+      coord_file = trim(wq_char)  
+      call GET_COMMAND_ARGUMENT(3, wq_char) 
+      wq_char  = trim(wq_char) 
+      read(wq_char,*,iostat=stat) nlayer   
+      
       open (unit=10, status='old', file=coord_file)
       read(10,*)natom
       read(10,*)ca(1),ca(2),ca(3),cb(1),cb(2),cb(3),cc(1),cc(2),cc(3)
@@ -57,22 +62,49 @@
       ! initialize system energy
       energy = 0d0
       call f_set_chimes()
-      nlayer = 4
+      !nlayer = 4
       c_file = string2Cstring(param_file)
       call f_init_chimes(c_file, nlayer)
       stress(:) = 0d0
       do ns = 1, natom
         stringPtr(ns) = c_loc(c_atom(ns))
       enddo
+
       call f_calculate_chimes (natom, xc, yc, zc, stringPtr, ca,  &
       &      cb, cc, energy, fx, fy, fz, stress)
-      print*,'Total energy= ',energy
-      open (unit = 20, status = 'replace', file='output_libf_serial.xyz')
-      write(20,*)natom
-      stress(:) = GPa*stress(:)
-      write(20,*)ca(:),cb(:),cc(:), stress(1:9), energy
+
+      print *, "Success!"
+      print '(A,1X, F0.6)', "Energy (kcal/mol)",energy
+      print *, "Stress tensors (GPa)"
+      print '(A,1X, F15.6)', "s_xx: ",stress(1)*GPa
+      print '(A,1X, F15.6)', "s_yy: ",stress(5)*GPa
+      print '(A,1X, F15.6)', "s_zz: ",stress(9)*GPa
+      print '(A,1X, F15.6)', "s_xy: ",stress(2)*GPa
+      print '(A,1X, F15.6)', "s_xz: ",stress(3)*GPa
+      print '(A,1X, F15.6)', "s_yz: ",stress(6)*GPa
+      print *, "Forces (kcal/mol)"
       do i = 1, natom
-        write(20,*)atom_type(i),xc(i),yc(i),zc(i),fx(i), fy(i), fz(i)
+         print '(F15.6)',fx(i)
+         print '(F15.6)',fy(i)
+         print '(F15.6)',fz(i)
+      enddo
+      
+#if DEBUG==1
+      
+      open (unit = 20, status = 'replace', file='debug.dat')
+      write(20,'(F15.6)') energy
+      write(20,'(F15.6)') stress(1)*GPa
+      write(20,'(F15.6)') stress(5)*GPa
+      write(20,'(F15.6)') stress(9)*GPa
+      write(20,'(F15.6)') stress(2)*GPa
+      write(20,'(F15.6)') stress(3)*GPa
+      write(20,'(F15.6)') stress(6)*GPa
+      do i = 1, natom
+         write(20,'(E15.6)') fx(i)
+         write(20,'(E15.6)') fy(i)
+         write(20,'(E15.6)') fz(i)
       enddo
       close(20)
+#endif 
+
       end program

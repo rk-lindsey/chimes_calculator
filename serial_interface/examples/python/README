@@ -1,0 +1,23 @@
+This code demonstrates how the serial_chimes_interface can be used to obtain 
+stress tensor, energy, and per-atom forces for a given system using python. 
+See main.py for a usage example.
+
+Note: This script takes as input a standard ChIMES parameter file,
+and a .xyz file with a, b, and c cell vectors  in the comment line.
+This implementation uses ghost atoms/layering thus a number of  layers
+for the system must be specified such that the effective box lengths
+aregreater than two times the largest outer cutoff, or results will not be 
+correct.
+
+Note: This code requires libwrapper-C.so in the same directory, which can be 
+generated via "make all"
+
+Note: Expects to be run with python version 3.X
+
+Compile with:
+	make all
+To test the executable:
+
+python3 main.py <parameter file> <coordinate file> <nlayers>
+
+e.g. python3 main.py  ../../tests/force_fields/published_params.liqC.2b.cubic.txt ../../tests/configurations/liqC.2.5gcc_6000K.OUTCAR_#000.xyzf 2

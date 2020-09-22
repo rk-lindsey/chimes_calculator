@@ -119,7 +119,7 @@ int main(int argc, char **argv)
     chimes.calculate(xcrds, ycrds, zcrds, cell_a, cell_b, cell_c, atom_types, energy, force, stress);
 
 
-    #ifdef DEBUG
+    #if DEBUG==1
     
     ofstream debug_out;
     debug_out.open("debug.dat");

@@ -19,7 +19,7 @@ wrapper-C.so:
 
 	
 clean:
-	rm -f *.o *.so
+	rm -f *.o
 
 clean-all:
 

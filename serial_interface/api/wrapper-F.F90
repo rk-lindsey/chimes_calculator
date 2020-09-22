@@ -1,10 +1,12 @@
+! Code author: Nir Goldman (2020) 
+
       module wrapper
       use, intrinsic :: ISO_C_binding
       implicit none
       interface 
         subroutine f_calculate_chimes (natom, xc, yc, zc, cptr, ca,  &
       &            cb, cc, energy, fx, fy, fz, stress)  &
-      &            bind (C, name='calculate_chimes')
+      &            bind (C, name='calculate_chimes_fromF90')
           use, intrinsic :: ISO_C_binding, only : C_char, C_ptr, C_int, C_double
           type(c_ptr), dimension(*)  :: cptr(natom)
           integer(C_int) :: natom  
