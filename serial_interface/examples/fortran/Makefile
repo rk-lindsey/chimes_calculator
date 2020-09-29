@@ -1,5 +1,5 @@
-CXX     = g++ -O3 -std=c++11 -fPIC
-FCC     = gfortran -O3 -fPIC -std=f2003 -cpp # last flag allows processing of C-style pre-processor directives
+CXX     = g++ -g -std=c++11 -fPIC
+FCC     = gfortran -g -fPIC -std=f2003 -cpp # last flag allows processing of C-style pre-processor directives
 
 DEBUG   = 0
 
@@ -56,7 +56,8 @@ endif
 
 test-F: $(LINKS)
 	$(FCC) $(LINKS) -o test-F
-
+lib : chimesFF.o serial_chimes_interface.o wrapper-C.o
+	ar rcs libchimes.a chimesFF.o serial_chimes_interface.o wrapper-C.o 
 
 clean: 
 	rm -f *.o *.mod
@@ -72,7 +73,7 @@ all:
 	make wrapper-F.o chimes.mod
 	make main.o
 	make test-F
-	make clean
+	make lib
 
 
 
