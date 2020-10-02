@@ -64,7 +64,7 @@
       call f_set_chimes()
       !nlayer = 4
       c_file = string2Cstring(param_file)
-      call f_init_chimes(c_file, nlayer)
+      call f_init_chimes(c_file, nlayer, 0) ! last '0' is the rank of the process
       stress(:) = 0d0
       do ns = 1, natom
         stringPtr(ns) = c_loc(c_atom(ns))

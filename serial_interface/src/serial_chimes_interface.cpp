@@ -112,13 +112,13 @@ serial_chimes_interface::serial_chimes_interface()
 }
 serial_chimes_interface::~serial_chimes_interface()
 {}
-void serial_chimes_interface::init_chimesFF(string chimesFF_paramfile, int layers)
+void serial_chimes_interface::init_chimesFF(string chimesFF_paramfile, int layers, int rank)
 {
     n_layers = layers;
     
     // Initialize the chimesFF object, read parameters
     
-    init(0);
+    init(rank);
     read_parameters(chimesFF_paramfile);
     set_atomtypes(type_list);
 }

@@ -30,7 +30,7 @@ class serial_chimes_interface : public chimesFF
         serial_chimes_interface();
         ~serial_chimes_interface();
             
-        void    init_chimesFF(string chimesFF_paramfile, int layers);
+        void    init_chimesFF(string chimesFF_paramfile, int layers, int rank);
         void    calculate(vector<double> & x_in, vector<double> & y_in, vector<double> & z_in, vector<double> & cella_in, vector<double> & cellb_in, vector<double> & cellc_in, vector<string> & atmtyps, double & energy, vector<vector<double> > & force, vector<double> & stress);
 
     private:
