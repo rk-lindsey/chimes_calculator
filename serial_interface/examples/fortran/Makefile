@@ -65,6 +65,7 @@ clean:
 clean-all:
 	make clean
 	rm -f test-F
+	rm -f libchimes.a
 	
 all:
 	make chimesFF.o
