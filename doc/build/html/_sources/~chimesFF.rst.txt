@@ -1,0 +1,126 @@
+The ChIMES Calculator
+=====================
+
+ChIMES is a reactive explicitly many-bodied machine learned interatomic potential (ML-IAP) for which interactions are 
+computed on the basis of atom clusters. For example, the total ChIMES energy is given as:
+
+.. math::
+   :nowrap:
+
+   \begin{eqnarray}
+      E_{n_B} = \sum_{i_1}^{n_a} E^{1B}_{i_1} + \sum_{i_1>i_2}^{n_a} E^{2B}_{i_1i_2} 
+      + \sum_{i_1>i_2>i_3}^{n_a} E^{3B}_{i_1i_2i_3} + \dots
+      + \sum_{i_1>i_2\dots >i_{nB-1}>i_{nB}}^{n_a} E^{nB}_{i_1i_2\dots i_n}
+   
+   \end{eqnarray}
+   
+where EnB is the total ChIMES system energy, nB is the maximum bodiedness, nEi1i2::: in is the n-body ChIMES energy for 
+a given set of n atoms with indices i = {i1, i2, ..., in}, and na is the total number of atoms in the system. In the 
+ChIMES framework, single-body energies are constant values and n-body energies are constructed from the product of
+polynomials of transformed atom pair distances. Thus, a 2-body interaction would involve a single pair, ij, while a 
+three-body interaction would involve three pairs, ij, ik, and jk, a 4-body interaction would involve 4-choose-2 pairs, 
+and so on.
+
+Currently, the ChIMES calculator supports up to 4-body interactions.
+
+
+For further details of the ChIMES ML-IAP, the reader is referred to <REFS>.
+
+The ChIMES comprises a class providing users with the following functions:
+
+
+=========== =================  =================
+Return Type Name               Arguments and Description
+=========== =================  =================
+void        init               ======	===	    
+			       Type	Description
+			       ======	===
+			       int      MPI rank
+			       ======   ===
+			       Set the MPI rank. With the exception of error messages, 
+			       the ChIMES calculator will only print output for rank 0.
+			       
+void        read_parameters    ======   ===
+                               Type     Description
+			       ======   ===
+                               string   Parameter file
+			       ======   ===
+			       Read the chimes parameter file.
+
+void        set_atomtypes      ==============  ===
+			       Type            Description
+			       ==============  ===
+			       vector<string>  List of atom types defined by parameter file (updated by function)
+			       ==============  ===
+			       Update the input vector with atom types in the parameter file.
+
+double      max_cutoff_2B      ======	===
+			       Type	Description
+			       ======	===
+			       bool	Flag: If true, prints largest 2-body cutoff
+			       ======	===
+			       Returns the maximum 2-body outer cutoff distance.
+			       
+double      max_cutoff_3B      ======	===
+			       Type	Description
+			       ======	===
+			       bool	Flag: If true, prints largest 3-body cutoff
+			       ======	===
+			       Returns the maximum 3-body outer cutoff distance.
+			       
+double      max_cutoff_4B      ======	===
+			       Type	Description
+			       ======	===
+			       bool	Flag: If true, prints largest 4-body cutoff
+			       ======	===
+			       Returns the maximum 4-body outer cutoff distance.
+			       
+void        compute_1B         ======	===
+			       Type	Description
+			       ======	===
+			       int	Atom type index
+			       double   Energy
+			       ======	===
+			       Update energy with the single at
+			       
+void        compute_2B         ==========================   ===
+			       Type	Description
+			       ==========================   ===
+			       double                       Distance between two atoms, i and j
+			       vector<double>               Distance vector components for each atom
+			       vector<int>                  Type indices for atoms i and j 
+			       vector<vector<double* > >    Force pointer
+			       vector<double*>              Stress tensor pointer
+			       double                       Energy
+			       ==========================   ===
+			       
+void        compute_3B         ==========================   ===
+			       Type	Description
+			       ==========================   ===
+			       vector<double>               Distance between three atoms, i, j, and k
+			       vector<vector<double> >      Distance vector components for each atom
+			       vector<int>                  Type indices for atoms i, j and k
+			       vector<vector<double* > >    Force pointer
+			       vector<double*>              Stress tensor pointer
+			       double                       Energy
+			       ==========================   ===
+			       
+			       
+void        compute_4B         ==========================   ===
+			       Type	Description
+			       ==========================   ===
+			       vector<double>		    Distance between four atoms, i, j, k and l
+			       vector<vector<double> >      Distance vector components for each atom
+			       vector<int>		    Type indices for atoms i, j, k  and l
+			       vector<vector<double* > >    Force pointer
+			       vector<double*>  	    Stress tensor pointer
+			       double			    Energy
+			       ==========================   ===
+			       
+=========== =================  =================
+
+
+
+
+
+.... something about c interface, fortran interface, python interface

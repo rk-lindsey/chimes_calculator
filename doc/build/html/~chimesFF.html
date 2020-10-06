@@ -1,0 +1,495 @@
+
+
+<!DOCTYPE html>
+<html class="writer-html4" lang="en" >
+<head>
+  <meta charset="utf-8">
+  
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  
+  <title>The ChIMES Calculator &mdash; chimes_calculator 0.0.1 documentation</title>
+  
+
+  
+  <link rel="stylesheet" href="_static/css/theme.css" type="text/css" />
+  <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
+
+  
+  
+  
+  
+
+  
+  <!--[if lt IE 9]>
+    <script src="_static/js/html5shiv.min.js"></script>
+  <![endif]-->
+  
+    
+      <script type="text/javascript" id="documentation_options" data-url_root="./" src="_static/documentation_options.js"></script>
+        <script type="text/javascript" src="_static/jquery.js"></script>
+        <script type="text/javascript" src="_static/underscore.js"></script>
+        <script type="text/javascript" src="_static/doctools.js"></script>
+        <script type="text/javascript" src="_static/language_data.js"></script>
+        <script async="async" type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/latest.js?config=TeX-AMS-MML_HTMLorMML"></script>
+    
+    <script type="text/javascript" src="_static/js/theme.js"></script>
+
+    
+    <link rel="index" title="Index" href="genindex.html" />
+    <link rel="search" title="Search" href="search.html" /> 
+</head>
+
+<body class="wy-body-for-nav">
+
+   
+  <div class="wy-grid-for-nav">
+    
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+          
+
+          
+            <a href="index.html" class="icon icon-home" alt="Documentation Home"> chimes_calculator
+          
+
+          
+          </a>
+
+          
+            
+            
+          
+
+          
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+
+          
+        </div>
+
+        
+        <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
+          
+            
+            
+              
+            
+            
+              <ul>
+<li class="toctree-l1"><a class="reference internal" href="chimesFF.html">The ChIMES Calculator</a></li>
+<li class="toctree-l1"><a class="reference internal" href="serial_interface.html">The ChIMES Calculator Serial Interface</a></li>
+<li class="toctree-l1"><a class="reference internal" href="etc.html">Support for Linking with External Codes</a></li>
+<li class="toctree-l1"><a class="reference internal" href="force_fields.html">ChIMES Parameter Files</a></li>
+<li class="toctree-l1"><a class="reference internal" href="citing.html">Citing ChIMES</a></li>
+</ul>
+
+            
+          
+        </div>
+        
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+
+      
+      <nav class="wy-nav-top" aria-label="top navigation">
+        
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="index.html">chimes_calculator</a>
+        
+      </nav>
+
+
+      <div class="wy-nav-content">
+        
+        <div class="rst-content">
+        
+          
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<div role="navigation" aria-label="breadcrumbs navigation">
+
+  <ul class="wy-breadcrumbs">
+    
+      <li><a href="index.html" class="icon icon-home"></a> &raquo;</li>
+        
+      <li>The ChIMES Calculator</li>
+    
+    
+      <li class="wy-breadcrumbs-aside">
+        
+            
+            <a href="_sources/~chimesFF.rst.txt" rel="nofollow"> View page source</a>
+          
+        
+      </li>
+    
+  </ul>
+
+  
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+            
+  <div class="section" id="the-chimes-calculator">
+<h1>The ChIMES Calculator<a class="headerlink" href="#the-chimes-calculator" title="Permalink to this headline">¶</a></h1>
+<p>ChIMES is a reactive explicitly many-bodied machine learned interatomic potential (ML-IAP) for which interactions are
+computed on the basis of atom clusters. For example, the total ChIMES energy is given as:</p>
+<div class="math notranslate nohighlight">
+\begin{eqnarray}
+   E_{n_B} = \sum_{i_1}^{n_a} E^{1B}_{i_1} + \sum_{i_1&gt;i_2}^{n_a} E^{2B}_{i_1i_2}
+   + \sum_{i_1&gt;i_2&gt;i_3}^{n_a} E^{3B}_{i_1i_2i_3} + \dots
+   + \sum_{i_1&gt;i_2\dots &gt;i_{nB-1}&gt;i_{nB}}^{n_a} E^{nB}_{i_1i_2\dots i_n}
+
+\end{eqnarray}</div><p>where EnB is the total ChIMES system energy, nB is the maximum bodiedness, nEi1i2::: in is the n-body ChIMES energy for
+a given set of n atoms with indices i = {i1, i2, …, in}, and na is the total number of atoms in the system. In the
+ChIMES framework, single-body energies are constant values and n-body energies are constructed from the product of
+polynomials of transformed atom pair distances. Thus, a 2-body interaction would involve a single pair, ij, while a
+three-body interaction would involve three pairs, ij, ik, and jk, a 4-body interaction would involve 4-choose-2 pairs,
+and so on.</p>
+<p>Currently, the ChIMES calculator supports up to 4-body interactions.</p>
+<p>For further details of the ChIMES ML-IAP, the reader is referred to &lt;REFS&gt;.</p>
+<p>The ChIMES comprises a class providing users with the following functions:</p>
+<table border="1" class="docutils">
+<colgroup>
+<col width="10%" />
+<col width="15%" />
+<col width="75%" />
+</colgroup>
+<thead valign="bottom">
+<tr class="row-odd"><th class="head">Return Type</th>
+<th class="head">Name</th>
+<th class="head">Arguments and Description</th>
+</tr>
+</thead>
+<tbody valign="top">
+<tr class="row-even"><td>void</td>
+<td>init</td>
+<td><table border="1" class="first docutils">
+<colgroup>
+<col width="35%" />
+<col width="65%" />
+</colgroup>
+<thead valign="bottom">
+<tr class="row-odd"><th class="head">Type</th>
+<th class="head">Description</th>
+</tr>
+</thead>
+<tbody valign="top">
+<tr class="row-even"><td>int</td>
+<td>MPI rank</td>
+</tr>
+</tbody>
+</table>
+<p class="last">Set the MPI rank. With the exception of error messages,
+the ChIMES calculator will only print output for rank 0.</p>
+</td>
+</tr>
+<tr class="row-odd"><td>void</td>
+<td>read_parameters</td>
+<td><table border="1" class="first docutils">
+<colgroup>
+<col width="30%" />
+<col width="70%" />
+</colgroup>
+<thead valign="bottom">
+<tr class="row-odd"><th class="head">Type</th>
+<th class="head">Description</th>
+</tr>
+</thead>
+<tbody valign="top">
+<tr class="row-even"><td>string</td>
+<td>Parameter file</td>
+</tr>
+</tbody>
+</table>
+<p class="last">Read the chimes parameter file.</p>
+</td>
+</tr>
+<tr class="row-odd"><td>void</td>
+<td>set_atomtypes</td>
+<td><table border="1" class="first docutils">
+<colgroup>
+<col width="18%" />
+<col width="83%" />
+</colgroup>
+<thead valign="bottom">
+<tr class="row-odd"><th class="head">Type</th>
+<th class="head">Description</th>
+</tr>
+</thead>
+<tbody valign="top">
+<tr class="row-even"><td>vector&lt;string&gt;</td>
+<td>List of atom types defined by parameter file (updated by function)</td>
+</tr>
+</tbody>
+</table>
+<p class="last">Update the input vector with atom types in the parameter file.</p>
+</td>
+</tr>
+<tr class="row-odd"><td>double</td>
+<td>max_cutoff_2B</td>
+<td><table border="1" class="first docutils">
+<colgroup>
+<col width="12%" />
+<col width="88%" />
+</colgroup>
+<thead valign="bottom">
+<tr class="row-odd"><th class="head">Type</th>
+<th class="head">Description</th>
+</tr>
+</thead>
+<tbody valign="top">
+<tr class="row-even"><td>bool</td>
+<td>Flag: If true, prints largest 2-body cutoff</td>
+</tr>
+</tbody>
+</table>
+<p class="last">Returns the maximum 2-body outer cutoff distance.</p>
+</td>
+</tr>
+<tr class="row-odd"><td>double</td>
+<td>max_cutoff_3B</td>
+<td><table border="1" class="first docutils">
+<colgroup>
+<col width="12%" />
+<col width="88%" />
+</colgroup>
+<thead valign="bottom">
+<tr class="row-odd"><th class="head">Type</th>
+<th class="head">Description</th>
+</tr>
+</thead>
+<tbody valign="top">
+<tr class="row-even"><td>bool</td>
+<td>Flag: If true, prints largest 3-body cutoff</td>
+</tr>
+</tbody>
+</table>
+<p class="last">Returns the maximum 3-body outer cutoff distance.</p>
+</td>
+</tr>
+<tr class="row-odd"><td>double</td>
+<td>max_cutoff_4B</td>
+<td><table border="1" class="first docutils">
+<colgroup>
+<col width="12%" />
+<col width="88%" />
+</colgroup>
+<thead valign="bottom">
+<tr class="row-odd"><th class="head">Type</th>
+<th class="head">Description</th>
+</tr>
+</thead>
+<tbody valign="top">
+<tr class="row-even"><td>bool</td>
+<td>Flag: If true, prints largest 4-body cutoff</td>
+</tr>
+</tbody>
+</table>
+<p class="last">Returns the maximum 4-body outer cutoff distance.</p>
+</td>
+</tr>
+<tr class="row-odd"><td>void</td>
+<td>compute_1B</td>
+<td><table border="1" class="first docutils">
+<colgroup>
+<col width="29%" />
+<col width="71%" />
+</colgroup>
+<thead valign="bottom">
+<tr class="row-odd"><th class="head">Type</th>
+<th class="head">Description</th>
+</tr>
+</thead>
+<tbody valign="top">
+<tr class="row-even"><td>int</td>
+<td>Atom type index</td>
+</tr>
+<tr class="row-odd"><td>double</td>
+<td>Energy</td>
+</tr>
+</tbody>
+</table>
+<p class="last">Update energy with the single at</p>
+</td>
+</tr>
+<tr class="row-even"><td>void</td>
+<td>compute_2B</td>
+<td><table border="1" class="first last docutils">
+<colgroup>
+<col width="39%" />
+<col width="61%" />
+</colgroup>
+<thead valign="bottom">
+<tr class="row-odd"><th class="head">Type     Description</th>
+<th class="head">&#160;</th>
+</tr>
+</thead>
+<tbody valign="top">
+<tr class="row-even"><td>double</td>
+<td>Distance between two atoms, i and j</td>
+</tr>
+<tr class="row-odd"><td>vector&lt;double&gt;</td>
+<td>Distance vector components for each atom</td>
+</tr>
+<tr class="row-even"><td>vector&lt;int&gt;</td>
+<td>Type indices for atoms i and j</td>
+</tr>
+<tr class="row-odd"><td>vector&lt;vector&lt;double* &gt; &gt;</td>
+<td>Force pointer</td>
+</tr>
+<tr class="row-even"><td>vector&lt;double*&gt;</td>
+<td>Stress tensor pointer</td>
+</tr>
+<tr class="row-odd"><td>double</td>
+<td>Energy</td>
+</tr>
+</tbody>
+</table>
+</td>
+</tr>
+<tr class="row-even"><td>void</td>
+<td>compute_3B</td>
+<td><table border="1" class="first last docutils">
+<colgroup>
+<col width="39%" />
+<col width="61%" />
+</colgroup>
+<thead valign="bottom">
+<tr class="row-odd"><th class="head">Type     Description</th>
+<th class="head">&#160;</th>
+</tr>
+</thead>
+<tbody valign="top">
+<tr class="row-even"><td>vector&lt;double&gt;</td>
+<td>Distance between three atoms, i, j, and k</td>
+</tr>
+<tr class="row-odd"><td>vector&lt;vector&lt;double&gt; &gt;</td>
+<td>Distance vector components for each atom</td>
+</tr>
+<tr class="row-even"><td>vector&lt;int&gt;</td>
+<td>Type indices for atoms i, j and k</td>
+</tr>
+<tr class="row-odd"><td>vector&lt;vector&lt;double* &gt; &gt;</td>
+<td>Force pointer</td>
+</tr>
+<tr class="row-even"><td>vector&lt;double*&gt;</td>
+<td>Stress tensor pointer</td>
+</tr>
+<tr class="row-odd"><td>double</td>
+<td>Energy</td>
+</tr>
+</tbody>
+</table>
+</td>
+</tr>
+<tr class="row-even"><td>void</td>
+<td>compute_4B</td>
+<td><table border="1" class="first last docutils">
+<colgroup>
+<col width="38%" />
+<col width="62%" />
+</colgroup>
+<thead valign="bottom">
+<tr class="row-odd"><th class="head">Type     Description</th>
+<th class="head">&#160;</th>
+</tr>
+</thead>
+<tbody valign="top">
+<tr class="row-even"><td>vector&lt;double&gt;</td>
+<td>Distance between four atoms, i, j, k and l</td>
+</tr>
+<tr class="row-odd"><td>vector&lt;vector&lt;double&gt; &gt;</td>
+<td>Distance vector components for each atom</td>
+</tr>
+<tr class="row-even"><td>vector&lt;int&gt;</td>
+<td>Type indices for atoms i, j, k  and l</td>
+</tr>
+<tr class="row-odd"><td>vector&lt;vector&lt;double* &gt; &gt;</td>
+<td>Force pointer</td>
+</tr>
+<tr class="row-even"><td>vector&lt;double*&gt;</td>
+<td>Stress tensor pointer</td>
+</tr>
+<tr class="row-odd"><td>double</td>
+<td>Energy</td>
+</tr>
+</tbody>
+</table>
+</td>
+</tr>
+</tbody>
+</table>
+<p>…. something about c interface, fortran interface, python interface</p>
+</div>
+
+
+           </div>
+           
+          </div>
+          <footer>
+  
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>
+        
+        &copy; Copyright 2020, Rebecca K. Lindsey, Nir Goldman, &amp; Laurence E. Fried
+
+    </p>
+  </div>
+    
+    
+    
+    Built with <a href="http://sphinx-doc.org/">Sphinx</a> using a
+    
+    <a href="https://github.com/rtfd/sphinx_rtd_theme">theme</a>
+    
+    provided by <a href="https://readthedocs.org">Read the Docs</a>. 
+
+</footer>
+
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+  
+
+  <script type="text/javascript">
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script>
+
+  
+  
+    
+   
+
+</body>
+</html>
