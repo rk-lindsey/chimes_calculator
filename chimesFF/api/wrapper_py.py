@@ -83,7 +83,7 @@ def chimes_compute_2b_props(rij, dr, atype2b, force, stress, epot):
 	force:   Force compnents for i and j (list of lists w/ lengths [2][3])
 	         (Updated by function call)
 	stress:  Stress tensor components for system 
-	         ([s_xx, s_xy, s_xz, s_yx, s_yy, s_yz, s_zx, s_zy, s_zz) 
+	         ([s_xx, s_xy, s_xz, s_yx, s_yy, s_yz, s_zx, s_zy, s_zz]) 
 	         (Updated by function call)
 	epot:    System potential energy (a scalar; updated by function call)
 	
@@ -122,7 +122,7 @@ def chimes_compute_3b_props(dr_3b, dist_3b, atype3b, force, stress, epot):
 	force:   Force compnents for i,j, and k (list of lists w/ lengths [3][3], i.e. [atom][x/y/z component])
 	         (Updated by function call)
 	stress:  Stress tensor components for system 
-	         ([s_xx, s_xy, s_xz, s_yx, s_yy, s_yz, s_zx, s_zy, s_zz) 
+	         ([s_xx, s_xy, s_xz, s_yx, s_yy, s_yz, s_zx, s_zy, s_zz]) 
 	         (Updated by function call)
 	epot:    System potential energy (a scalar; updated by function call)
 	
@@ -164,7 +164,7 @@ def chimes_compute_4b_props(dr_4b, dist_4b, atype4b, force, stress, epot):
 	force:   Force compnents for i,j, k, and l (list of lists w/ lengths [4][3], i.e. [atom][x/y/z component])
 	         (Updated by function call)
 	stress:  Stress tensor components for sys3tem 
-	         ([s_xx, s_xy, s_xz, s_yx, s_yy, s_yz, s_zx, s_zy, s_zz) 
+	         ([s_xx, s_xy, s_xz, s_yx, s_yy, s_yz, s_zx, s_zy, s_zz]) 
 	         (Updated by function call)
 	epot:    System potential energy (a scalar; updated by function call)
 	
