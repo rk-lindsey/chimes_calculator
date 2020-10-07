@@ -42,18 +42,6 @@
           character(C_char), dimension(80), intent(in) :: type2
         end subroutine f_chimes_compute_2b_props_fromf90
 	
-        subroutine f_get_chimes_epot(sys_ener) & 
-      &   bind (C, name='get_chimes_epot')
-          import C_double
-          real(C_double) :: sys_ener
-        end subroutine f_get_chimes_epot
-	
-        subroutine f_set_chimes_epot(sys_ener) & 
-      &   bind (C, name='set_chimes_epot')
-          import C_double
-          real(C_double) :: sys_ener
-        end subroutine f_set_chimes_epot
-	
         subroutine f_set_chimes() bind (C, name='set_chimes')
         end subroutine f_set_chimes
 	
