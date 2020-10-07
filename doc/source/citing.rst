@@ -42,7 +42,7 @@ ChIMES+MSST                    #. HN-1
 .. _sec-params:
 
 ---------------------------------
-Reference Key for Parameter Sets:
+Reference Key for Parameter Sets
 ---------------------------------
 
 Parameter set and key name are interchangeable. Key definitions are given :ref:`below <sec-defs>`.
@@ -70,7 +70,7 @@ TiH-DFTB       Ti/H                                  ???          ???           
 .. _sec-defs:
 
 ---------------------------------
-Reference Key Definitions:
+Reference Key Definitions
 ---------------------------------
 
 Corresponding authors are indicated with an asterisk (*).

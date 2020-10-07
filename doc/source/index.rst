@@ -15,22 +15,18 @@ The ChIMES calculator comprises a flexible toolset for running evaluating ChIMES
 The ChIMES Calculator is developed at Lawrence Livermore National Laboratory with funding from the US Department of Energy (DOE), and is open source, distributed freely under the terms of the GNU Public License (GPL).
 
 .. toctree::
-   :maxdepth: 4
+   :maxdepth: 2
    
    chimesFF
    serial_interface
    etc
    force_fields
-   citing
    units
-   
-   :caption: Contents:
+   citing
 
-
-
-Indices and tables
-==================
-
-* :ref:`genindex`
-* :ref:`modindex`
-* :ref:`search`
+.. Indices and tables
+.. ==================
+.. 
+.. * :ref:`genindex`
+.. * :ref:`modindex`
+.. * :ref:`search`
