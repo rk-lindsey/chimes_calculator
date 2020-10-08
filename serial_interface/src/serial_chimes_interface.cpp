@@ -243,7 +243,6 @@ void serial_chimes_interface::reorient_system(vector<double> & x_in, vector<doub
     tmp_cellc[0] = a_dot_b(cellc_in,tmp_unit);
     tmp_cellc[1] = (a_dot_b(cellb_in,cellc_in) - tmp_cellb[0]*tmp_cellc[0]) / tmp_cellb[1];
     tmp_cellc[2] = sqrt( mag_a(cellc_in)*mag_a(cellc_in) -  tmp_cellc[0]*tmp_cellc[0] - tmp_cellc[1]*tmp_cellc[1]);
-    
             
     // Determine the new cell h-matrix and its inverse
 
@@ -587,7 +586,7 @@ void serial_chimes_interface::build_neigh_lists()
     
     neighlist_2b.resize(n_ghost);
     for (int i = 0; i < n_ghost; i++) 
-      neighlist_2b[i].resize(0,0);
+		neighlist_2b[i].resize(0,0);
     neighlist_3b.resize(0);
     neighlist_4b.resize(0);
 
@@ -646,19 +645,19 @@ void serial_chimes_interface::build_neigh_lists()
 
     // Generate neighbor lists on basis of bins
     
-    for(int ai=0; ai<n_ghost; ai++)
+    for(int ai=0; ai<n_atoms; ai++)
     {
         bin_x_idx = floor( (sys_x[ai] + extent_x * n_layers) / search_dist ) + 1;
         bin_y_idx = floor( (sys_y[ai] + extent_y * n_layers) / search_dist ) + 1;
         bin_z_idx = floor( (sys_z[ai] + extent_z * n_layers) / search_dist ) + 1;
 
- 	if ( bin_x_idx < 1 || bin_y_idx < 1 || bin_z_idx < 1 ) 
- 	{
- 	    cout << "ERROR: Bad bin computed" << endl; // Check .xyz box lengths  and atom coords
- 	    cout << bin_x_idx << " " << bin_y_idx << " " << bin_z_idx << endl;
- 	    cout << sys_x[ai] << " " << sys_y[ai] << " " << sys_z[ai] << endl;
- 	    exit(0);
- 	}
+		if ( bin_x_idx < 1 || bin_y_idx < 1 || bin_z_idx < 1 ) 
+		{
+			cout << "ERROR: Bad bin computed" << endl; // Check .xyz box lengths  and atom coords
+			cout << bin_x_idx << " " << bin_y_idx << " " << bin_z_idx << endl;
+			cout << sys_x[ai] << " " << sys_y[ai] << " " << sys_z[ai] << endl;
+			exit(0);
+		}
 
         // Loop over relevant bins only, not all atoms.
         
@@ -672,12 +671,12 @@ void serial_chimes_interface::build_neigh_lists()
                 {
                     ibin = i + j * nbins_x + k * nbins_x * nbins_y;
 
- 		    if (ibin >= total_bins) 
- 		    {
- 		    	    cout << "Error: binning BIN_IDX out of range\n";
- 		    	    cout << "BIN_IDX.X = " << i << "BIN_IDX.Y = " << j << "BIN_IDX.Z = " << k << endl;
- 		    	    exit(1);
- 		    }
+ 		    		if (ibin >= total_bins) 
+					{
+						cout << "Error: binning BIN_IDX out of range\n";
+						cout << "BIN_IDX.X = " << i << "BIN_IDX.Y = " << j << "BIN_IDX.Z = " << k << endl;
+						exit(1);
+					}
 
                     ajend = bin[ibin].size();
                     
