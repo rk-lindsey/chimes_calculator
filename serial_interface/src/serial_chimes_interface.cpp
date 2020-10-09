@@ -91,7 +91,7 @@ serial_chimes_interface::serial_chimes_interface()
     invr_hmat.resize(9);
 
     dist_3b.resize(3);
-    dist_4b.resize(4);
+    dist_4b.resize(6);
     
     dr   .resize(3);
     dr_3b.resize(3,std::vector<double>(3));  

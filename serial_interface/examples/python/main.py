@@ -45,7 +45,9 @@ if (len(sys.argv) != 4) and (len(sys.argv) != 6):
 param_file = sys.argv[1] # parameter file
 coord_file = sys.argv[2] # coordinate file
 
-wrapper_py.init_chimes(sys.argv[1], int(sys.argv[3]))
+rank = 0
+
+wrapper_py.init_chimes(sys.argv[1], int(sys.argv[3]), rank)
 
 # Read the coordinates, set up the force, stress, and energy vars
 

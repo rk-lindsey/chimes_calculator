@@ -78,6 +78,10 @@ do
 
 		let idx=idx+1
 	done
+	
+	cd ../examples/${API[$i]}
+	make clean
+	cd ../../tests
 
 done
 

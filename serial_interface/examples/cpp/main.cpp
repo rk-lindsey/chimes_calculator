@@ -114,7 +114,7 @@ int main(int argc, char **argv)
     
     serial_chimes_interface chimes;        // Create an instance of the serial interface
     
-    chimes.init_chimesFF(params, nlayer);    // Initialize
+    chimes.init_chimesFF(params, nlayer,0);    // Initialize
 
     chimes.calculate(xcrds, ycrds, zcrds, cell_a, cell_b, cell_c, atom_types, energy, force, stress);
 

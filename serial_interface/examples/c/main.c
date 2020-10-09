@@ -48,9 +48,10 @@ int main (int argc, char **argv)
   nlayer = atoi(argv[3]); // 4;
   
   printf("%s %s %s %d\n", "Read args:", argv[1], argv[2], nlayer);
+    
+  int rank = 0;
+  init_chimes(argv[1], &nlayer,&rank);
   
-  
-  init_chimes(argv[1], &nlayer);
   calculate_chimes(natom, xc, yc, zc, atom, ca, cb, cc, &energy, fx, fy, fz, stress);
   for (i = 0; i < 9; i++) {
     stress[i] *= GPa;

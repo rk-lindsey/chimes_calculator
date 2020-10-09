@@ -1,5 +1,5 @@
 CXX     = g++ -O3 -std=c++11 
-CCOMP   = gcc
+CCOMP   = gcc -O3
 DEBUG   = 0
 
 C_LOC = $(realpath .)

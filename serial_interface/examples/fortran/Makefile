@@ -1,14 +1,11 @@
-CXX     = g++ -g -std=c++11 -fPIC
-FCC     = gfortran -g -fPIC -std=f2003 -cpp # last flag allows processing of C-style pre-processor directives
+CXX     = g++ -O3 -std=c++11 -fPIC
+FCC     = gfortran -O3 -fPIC -std=f2003 -cpp # last flag allows processing of C-style pre-processor directives
 
 DEBUG   = 0
 
 #CCFLAGS = -fPIC -O3 -std=c++11 
 #FFLAGS  = -O3 -fPIC
 #COMM1   = wrapper-F.o main.o 
-
-
-
 
 F_LOC = $(realpath .)
 

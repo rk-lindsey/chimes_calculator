@@ -31,14 +31,15 @@ def set_chimes():
 	return
 
 
-def init_chimes(param_file, nlayer):
+def init_chimes(param_file, nlayer, rank):
 	""" 
 	Initializes the chimesFF object (sets MPI rank)
 	Optionally takes an  MPI rank as input
 	"""
 	in_paramfile = ctypes.c_char_p(param_file.encode())
 	in_nlayer    = ctypes.c_int(nlayer)
-	chimes_wrapper.init_chimes(in_paramfile, ctypes.byref(in_nlayer))
+	in_rank      = ctypes.c_int(rank)
+	chimes_wrapper.init_chimes(in_paramfile, ctypes.byref(in_nlayer), ctypes.byref(in_rank))
 	return
 
 def calculate_chimes(natoms,xcrd,ycrd,zcrd,atmtyps,cell_a,cell_b,cell_c,energy,fx,fy,fz,stress):

@@ -28,7 +28,8 @@ void calculate_chimes_fromF90(int *natom, double *xc, double *yc, double *zc, ch
 {
     calculate_chimes(*natom, xc, yc, zc, atom_types, ca, cb, cc, energy, fx, fy, fz, stress);
 }
-void calculate_chimes(int natom, double *xc, double *yc, double *zc, char *atom_types[], double ca[3], double cb[3], double cc[3], double *energy, double fx[], double fy[], double fz[], double stress[9]) {
+void calculate_chimes(int natom, double *xc, double *yc, double *zc, char *atom_types[], double ca[3], double cb[3], double cc[3], double *energy, double fx[], double fy[], double fz[], double stress[9])
+{
   vector<double>    x_vec(natom);
   vector<double>    y_vec(natom);
   vector<double>    z_vec(natom);
