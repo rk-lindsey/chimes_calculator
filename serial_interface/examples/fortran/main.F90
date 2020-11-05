@@ -9,7 +9,6 @@
       character(80) :: coord_file, param_file
       CHARACTER ( len = 100 ) :: wq_char
       integer :: i, j, k, l, natom, ns
-      integer(C_int) :: nlayer
       real(C_double) ::   lx, ly, lz
       real(C_double) :: stress(9)
       real(C_double) :: energy
@@ -22,7 +21,7 @@
 
       io_num = command_argument_count()
       if (io_num .lt. 3) then
-        print*,"To run: ./test_F.x <parameter file> <xyz config. file> <nlayers>"
+        print*,"To run: ./test_F.x <parameter file> <xyz config. file>"
         print*,"Exiting code.\n"
         STOP
       endif
@@ -31,9 +30,6 @@
       param_file = trim(wq_char)
       call GET_COMMAND_ARGUMENT(2, wq_char)
       coord_file = trim(wq_char)  
-      call GET_COMMAND_ARGUMENT(3, wq_char) 
-      wq_char  = trim(wq_char) 
-      read(wq_char,*,iostat=stat) nlayer   
       
       open (unit=10, status='old', file=coord_file)
       read(10,*)natom
@@ -62,9 +58,8 @@
       ! initialize system energy
       energy = 0d0
       call f_set_chimes()
-      !nlayer = 4
       c_file = string2Cstring(param_file)
-      call f_init_chimes(c_file, nlayer, 0) ! last '0' is the rank of the process
+      call f_init_chimes(c_file,  0) ! last '0' is the rank of the process
       stress(:) = 0d0
       do ns = 1, natom
         stringPtr(ns) = c_loc(c_atom(ns))

@@ -19,10 +19,10 @@
         end subroutine f_calculate_chimes
         subroutine f_set_chimes() bind (C, name='set_chimes')
         end subroutine f_set_chimes
-        subroutine f_init_chimes(param_file, nlayer, rank) & 
+        subroutine f_init_chimes(param_file, rank) & 
       &            bind (C, name='init_chimes') 
           import C_int, C_char
-          integer(C_int), intent(in) :: nlayer, rank
+          integer(C_int), intent(in) :: rank
           character (kind=C_char), dimension(*) :: param_file
         end subroutine f_init_chimes
       end interface

@@ -4,7 +4,7 @@
 #include<vector>
 #include<string>
 #include<cmath>
-
+#include<algorithm>
 
 #include<fstream>
 
@@ -80,54 +80,42 @@ void   a_cross_b(const vector<double> & a, const vector<double> & b, vector<doub
     return;
 }    
     
-// serial_chimes_interface member functions
+	
+// simulation_system member functions
 
-serial_chimes_interface::serial_chimes_interface()
+simulation_system::simulation_system()
 {
-    // Initialize Pointers, etc for chimes calculator interfacing (2-body only for now)
-    // To set up for many body calculations, see the LAMMPS implementation
-
     hmat     .resize(9);
     invr_hmat.resize(9);
-
-    dist_3b.resize(3);
-    dist_4b.resize(6);
-    
-    dr   .resize(3);
-    dr_3b.resize(3,std::vector<double>(3));  
-    dr_4b.resize(6,std::vector<double>(3));
-    
-    force_ptr_2b.resize(2,std::vector<double*>(3));
-    force_ptr_3b.resize(3,std::vector<double*>(3));
-    force_ptr_4b.resize(4,std::vector<double*>(3));
-    
-    typ_idxs_2b.resize(2);
-    typ_idxs_3b.resize(3);
-    typ_idxs_4b.resize(4);
-    
-    max_2b_cut = 0.0;
-    max_3b_cut = 0.0;
-    max_4b_cut = 0.0;
-    
 }
-serial_chimes_interface::~serial_chimes_interface()
+simulation_system::~simulation_system()
 {}
-void serial_chimes_interface::init_chimesFF(string chimesFF_paramfile, int layers, int rank)
+void simulation_system::set_atomtyp_indices(vector<string> & type_list)
 {
-    n_layers = layers;
-    
-    // Initialize the chimesFF object, read parameters
-    
-    init(rank);
-    read_parameters(chimesFF_paramfile);
-    set_atomtypes(type_list);
+    sys_atmtyp_indices.resize(n_ghost);
+
+    for(int i=0; i<n_ghost; i++)
+    {
+        sys_atmtyp_indices[i] = -1;
+        
+        for (int j=0; j<type_list.size(); j++)
+        {
+            if ( sys_atmtyps[i] == type_list[j])
+            {
+                sys_atmtyp_indices[i] = j;
+                break;
+            }
+        }
+        
+        if (sys_atmtyp_indices[i] == -1)
+        {
+            cout << "ERROR: Couldn't assign an atom type index for (index/type) " << sys_parent[i] << " " << sys_atmtyps[i] << endl;
+            exit(0);
+        }
+    }
 }
-void serial_chimes_interface::reorient_system(vector<double> & x_in, vector<double> & y_in, vector<double> & z_in, vector<double> & cella_in, vector<double> & cellb_in, vector<double> & cellc_in, vector<string> & atmtyps)
+void simulation_system::init(vector<string> & atmtyps, vector<double> & x_in, vector<double> & y_in, vector<double> & z_in, vector<double> & cella_in, vector<double> & cellb_in, vector<double> & cellc_in)
 {
-    // Note: This function assumes the system is always arbitrarily oriented and triclinic, and atoms are not wrapped. 
-    //       The result is slow but general and readable.
-    
-    
     //////////////////////////////////////////
     // STEP 1: Copy the system
     //////////////////////////////////////////
@@ -151,10 +139,12 @@ void serial_chimes_interface::reorient_system(vector<double> & x_in, vector<doub
     
     n_ghost = n_atoms;
     
-    sys_atmtyps.resize(0);
+    sys_atmtyp_indices.resize(0);
+	
     sys_x.resize(0);
     sys_y.resize(0);
     sys_z.resize(0);
+	
     for (int a=0; a<n_atoms; a++)
     {
         sys_atmtyps.push_back(atmtyps[a]);    
@@ -204,21 +194,70 @@ void serial_chimes_interface::reorient_system(vector<double> & x_in, vector<doub
 
     for(int i=0; i<n_atoms; i++)
     {
+		// Convert to fractional coordinates
+		
         tmp_ax = invr_hmat[0]*sys_x[i] + invr_hmat[1]*sys_y[i] + invr_hmat[2]*sys_z[i];
         tmp_ay = invr_hmat[3]*sys_x[i] + invr_hmat[4]*sys_y[i] + invr_hmat[5]*sys_z[i];
         tmp_az = invr_hmat[6]*sys_x[i] + invr_hmat[7]*sys_y[i] + invr_hmat[8]*sys_z[i];
 
-        sys_x[i] = tmp_ax - floor(tmp_ax);
-        sys_y[i] = tmp_ay - floor(tmp_ay);
-        sys_z[i] = tmp_az - floor(tmp_az);
-    }
+		// Wrap
 
+        tmp_ax -= floor(tmp_ax);
+        tmp_ay -= floor(tmp_ay);
+        tmp_az -= floor(tmp_az);
+		
+		// Revert to absolute coordinates
+		
+        sys_x[i] = hmat[0]*tmp_ax + hmat[1]*tmp_ay + hmat[2]*tmp_az;	
+        sys_y[i] = hmat[3]*tmp_ax + hmat[4]*tmp_ay + hmat[5]*tmp_az;
+        sys_z[i] = hmat[6]*tmp_ax + hmat[7]*tmp_ay + hmat[8]*tmp_az;		
+    }
+	
+	//////////////////////////////////////////
+	// STEP 3: Determine cell volume 
+	//////////////////////////////////////////    
+	
+	latcon_a = mag_a({hmat[0], hmat[3], hmat[6]});
+	latcon_b = mag_a({hmat[1], hmat[4], hmat[7]});
+	latcon_c = mag_a({hmat[2], hmat[5], hmat[8]});
+
+	cell_alpha = angle_ab({hmat[1], hmat[4], hmat[7]}, {hmat[2], hmat[5], hmat[8]});
+	cell_beta  = angle_ab({hmat[2], hmat[5], hmat[8]}, {hmat[0], hmat[3], hmat[6]});
+	cell_gamma = angle_ab({hmat[0], hmat[3], hmat[6]}, {hmat[1], hmat[4], hmat[7]});
+	
+	vol  = 1;
+	vol += 2*cos(cell_alpha)*cos(cell_beta )*cos(cell_gamma);
+	vol -=   cos(cell_alpha)*cos(cell_alpha);
+	vol -=   cos(cell_beta )*cos(cell_beta );
+	vol -=   cos(cell_gamma)*cos(cell_gamma);
+
+	vol = latcon_a * latcon_b * latcon_c * sqrt(vol);   
+}
+void simulation_system::reorient()
+{
     //////////////////////////////////////////
-    // STEP 3: Manipulate atoms and cell to conform with LAMMPS convention
+    //  Manipulate atoms and cell to conform with LAMMPS convention
     //////////////////////////////////////////
+	// Assumes the cell has already been wrapped
     // This will make linear-scaling neighbor list construction easier down the line
     // See: https://lammps.sandia.gov/doc/Howto_triclinic.html
-    
+	
+	// Convert to fractional coordinates from the original basis
+	
+	double tmp_ax, tmp_ay, tmp_az;
+	
+    for(int i=0; i<n_atoms; i++)
+    {
+        tmp_ax = invr_hmat[0]*sys_x[i] + invr_hmat[1]*sys_y[i] + invr_hmat[2]*sys_z[i];
+        tmp_ay = invr_hmat[3]*sys_x[i] + invr_hmat[4]*sys_y[i] + invr_hmat[5]*sys_z[i];
+        tmp_az = invr_hmat[6]*sys_x[i] + invr_hmat[7]*sys_y[i] + invr_hmat[8]*sys_z[i];
+		
+		sys_x[i] = tmp_ax;
+		sys_y[i] = tmp_ay;
+		sys_z[i] = tmp_az;
+    }  
+	
+	
     // Rotate the cell
     
     vector<double> tmp_cella(3);
@@ -226,6 +265,11 @@ void serial_chimes_interface::reorient_system(vector<double> & x_in, vector<doub
     vector<double> tmp_cellc(3);
     vector<double> tmp_unit (3);
     vector<double> tmp_cross(3);
+	
+	vector<double> cella_in = {hmat[0], hmat[3], hmat[6]};
+	vector<double> cellb_in = {hmat[1], hmat[4], hmat[7]};
+	vector<double> cellc_in = {hmat[2], hmat[5], hmat[8]};
+	
     
     unit_a   (cella_in, tmp_unit);
     a_cross_b(tmp_unit, cellb_in, tmp_cross);
@@ -250,9 +294,11 @@ void serial_chimes_interface::reorient_system(vector<double> & x_in, vector<doub
     hmat[1] = tmp_cellb[0];  hmat[4] = tmp_cellb[1]; hmat[7] = tmp_cellb[2];
     hmat[2] = tmp_cellc[0];  hmat[5] = tmp_cellc[1]; hmat[8] = tmp_cellc[2];
 
-    hmat_det = hmat[0] * (hmat[4]*hmat[8] - hmat[5]*hmat[7])
-             - hmat[1] * (hmat[3]*hmat[8] - hmat[5]*hmat[6])
-             + hmat[2] * (hmat[3]*hmat[7] - hmat[4]*hmat[6]);
+    double hmat_det = hmat[0] * (hmat[4]*hmat[8] - hmat[5]*hmat[7])
+                    - hmat[1] * (hmat[3]*hmat[8] - hmat[5]*hmat[6])
+                    + hmat[2] * (hmat[3]*hmat[7] - hmat[4]*hmat[6]);
+	
+	vector<double> tmp_vec(9);
 
     tmp_vec[0] =      (hmat[4]*hmat[8] - hmat[5]*hmat[7]); tmp_vec[3] = -1 * (hmat[1]*hmat[8] - hmat[2]*hmat[7]); tmp_vec[6] =      (hmat[1]*hmat[5] - hmat[2]*hmat[4]);
     tmp_vec[1] = -1 * (hmat[3]*hmat[8] - hmat[5]*hmat[6]); tmp_vec[4] =      (hmat[0]*hmat[8] - hmat[2]*hmat[6]); tmp_vec[7] = -1 * (hmat[0]*hmat[5] - hmat[2]*hmat[3]);
@@ -266,44 +312,28 @@ void serial_chimes_interface::reorient_system(vector<double> & x_in, vector<doub
     invr_hmat[1] /= hmat_det; invr_hmat[4] /= hmat_det; invr_hmat[7] /= hmat_det;
     invr_hmat[2] /= hmat_det; invr_hmat[5] /= hmat_det; invr_hmat[8] /= hmat_det;      
     
-
     // Transform to the new nominally rotated cell  
 
     for(int i=0; i<n_atoms; i++)
-    {   
-        tmp_ax = sys_x[i];
-        tmp_ay = sys_y[i];
-        tmp_az = sys_z[i];
-            
+    {
+		tmp_ax = sys_x[i];
+		tmp_ay = sys_y[i];
+		tmp_az = sys_z[i];
+		
         sys_x[i] = hmat[0]*tmp_ax + hmat[1]*tmp_ay + hmat[2]*tmp_az;	
         sys_y[i] = hmat[3]*tmp_ax + hmat[4]*tmp_ay + hmat[5]*tmp_az;
         sys_z[i] = hmat[6]*tmp_ax + hmat[7]*tmp_ay + hmat[8]*tmp_az;
-	
-        tmp_ax = invr_hmat[0]*sys_x[i] + invr_hmat[1]*sys_y[i] + invr_hmat[2]*sys_z[i];
-        tmp_ay = invr_hmat[3]*sys_x[i] + invr_hmat[4]*sys_y[i] + invr_hmat[5]*sys_z[i];
-        tmp_az = invr_hmat[6]*sys_x[i] + invr_hmat[7]*sys_y[i] + invr_hmat[8]*sys_z[i];
-	
-
-        tmp_ax -= floor(tmp_ax);
-        tmp_ay -= floor(tmp_ay);
-        tmp_az -= floor(tmp_az);	
-        sys_x[i] = hmat[0]*tmp_ax + hmat[1]*tmp_ay + hmat[2]*tmp_az;	
-        sys_y[i] = hmat[3]*tmp_ax + hmat[4]*tmp_ay + hmat[5]*tmp_az;
-        sys_z[i] = hmat[6]*tmp_ax + hmat[7]*tmp_ay + hmat[8]*tmp_az;
-
     }   
 
-	//////////////////////////////////////////
-	// STEP 3: Determine cell extents and volume for neighbor list constructions
-	//////////////////////////////////////////    
+	// Determine cell extents and volume for neighbor list constructions
+	 
+	latcon_a = mag_a({hmat[0], hmat[3], hmat[6]});
+	latcon_b = mag_a({hmat[1], hmat[4], hmat[7]});
+	latcon_c = mag_a({hmat[2], hmat[5], hmat[8]});
 
-	double latcon_a = mag_a({hmat[0], hmat[3], hmat[6]});
-	double latcon_b = mag_a({hmat[1], hmat[4], hmat[7]});
-	double latcon_c = mag_a({hmat[2], hmat[5], hmat[8]});
-
-	double cell_alpha = angle_ab({hmat[1], hmat[4], hmat[7]}, {hmat[2], hmat[5], hmat[8]});
-	double cell_beta  = angle_ab({hmat[2], hmat[5], hmat[8]}, {hmat[0], hmat[3], hmat[6]});
-	double cell_gamma = angle_ab({hmat[0], hmat[3], hmat[6]}, {hmat[1], hmat[4], hmat[7]});
+	cell_alpha = angle_ab({hmat[1], hmat[4], hmat[7]}, {hmat[2], hmat[5], hmat[8]});
+	cell_beta  = angle_ab({hmat[2], hmat[5], hmat[8]}, {hmat[0], hmat[3], hmat[6]});
+	cell_gamma = angle_ab({hmat[0], hmat[3], hmat[6]}, {hmat[1], hmat[4], hmat[7]});
 
 	double cell_lx = latcon_a;
 	double xy = latcon_b * cos(cell_gamma);
@@ -355,147 +385,21 @@ void serial_chimes_interface::reorient_system(vector<double> & x_in, vector<doub
  	extent_x = xhi - xlo;
  	extent_y = yhi - ylo;
  	extent_z = zhi - zlo; 
-
-	vol  = 1;
-	vol += 2*cos(cell_alpha)*cos(cell_beta )*cos(cell_gamma);
-	vol -=   cos(cell_alpha)*cos(cell_alpha);
-	vol -=   cos(cell_beta )*cos(cell_beta );
-	vol -=   cos(cell_gamma)*cos(cell_gamma);
-
-	vol = latcon_a * latcon_b * latcon_c * sqrt(vol);        
-
+	
+	
 }
-void serial_chimes_interface::calculate(vector<double> & x_in, vector<double> & y_in, vector<double> & z_in, vector<double> & cella_in, vector<double> & cellb_in, vector<double> & cellc_in, vector<string> & atmtyps, double & energy, vector<vector<double> > & force, vector<double> & stress)
+void simulation_system::build_layered_system(vector<string> & atmtyps, vector<int> & poly_orders, double max_2b_cut, double max_3b_cut, double max_4b_cut)
 {
-    reorient_system(x_in, y_in, z_in, cella_in, cellb_in, cellc_in, atmtyps);
-    build_layered_system(atmtyps);
-    build_neigh_lists();
-    set_atomtyp_indices();
     
-    // Setup vars
-    
-    int ii, jj, kk, ll;
-    
-    vector<double*> stensor(9);
-
-    for (int idx=0; idx<9; idx++)
-        stensor[idx]  = &stress[idx];
-    
-    
-    ////////////////////////
-    // interate over 1- and 2b's 
-    ////////////////////////
-
-    for(int i=0; i<n_atoms; i++)
-    {
-        compute_1B(sys_atmtyp_indices[i], energy);
-
-        for(int j=0; j<neighlist_2b[i].size(); j++) // Neighbors of i
-        {
-            jj = neighlist_2b[i][j];
-            
-            dist = get_dist(i,jj,dr); // Populates dr, which is passed by ref (overloaded)
-            
-            typ_idxs_2b[0] = sys_atmtyp_indices[i ];
-            typ_idxs_2b[1] = sys_atmtyp_indices[jj];
-            for (int idx=0; idx<3; idx++)
-            {
-                force_ptr_2b[0][idx] = &force[i             ][idx];
-                force_ptr_2b[1][idx] = &force[sys_parent[jj]][idx];    
-            }
-
-            compute_2B(dist, dr, typ_idxs_2b, force_ptr_2b, stensor, energy);
-        }
-    }
-    
-    ////////////////////////
-    // interate over 3b's 
-    ////////////////////////
-    
-    if (poly_orders[1] > 0 )
-    {
-        for(int i=0; i<neighlist_3b.size(); i++)
-        {
-            ii = neighlist_3b[i][0];
-            jj = neighlist_3b[i][1];
-            kk = neighlist_3b[i][2];
-        
-            dist_3b[0] = get_dist(ii,jj,dr_3b[0]); 
-            dist_3b[1] = get_dist(ii,kk,dr_3b[1]); 
-            dist_3b[2] = get_dist(jj,kk,dr_3b[2]); 
-        
-            typ_idxs_3b[0] = sys_atmtyp_indices[ii];
-            typ_idxs_3b[1] = sys_atmtyp_indices[jj];
-            typ_idxs_3b[2] = sys_atmtyp_indices[kk];
-        
-            for (int idx=0; idx<3; idx++)
-            {
-                force_ptr_3b[0][idx] = &force[sys_parent[ii]][idx];
-                force_ptr_3b[1][idx] = &force[sys_parent[jj]][idx];    
-                force_ptr_3b[2][idx] = &force[sys_parent[kk]][idx];
-            }    
-        
-            compute_3B(dist_3b, dr_3b, typ_idxs_3b, force_ptr_3b, stensor, energy);
-
-        }
-    }
-    
-    ////////////////////////
-    // interate over 4b's 
-    ////////////////////////
-
-    if (poly_orders[2] > 0 )
-    {
-        for(int i=0; i<neighlist_4b.size(); i++)
-        {
-            ii = neighlist_4b[i][0];
-            jj = neighlist_4b[i][1];
-            kk = neighlist_4b[i][2];
-            ll = neighlist_4b[i][3];
-        
-            dist_4b[0] = get_dist(ii,jj,dr_4b[0]); 
-            dist_4b[1] = get_dist(ii,kk,dr_4b[1]); 
-            dist_4b[2] = get_dist(ii,ll,dr_4b[2]); 
-            dist_4b[3] = get_dist(jj,kk,dr_4b[3]); 
-            dist_4b[4] = get_dist(jj,ll,dr_4b[4]); 
-            dist_4b[5] = get_dist(kk,ll,dr_4b[5]);         
-
-            typ_idxs_4b[0] = sys_atmtyp_indices[ii];
-            typ_idxs_4b[1] = sys_atmtyp_indices[jj];
-            typ_idxs_4b[2] = sys_atmtyp_indices[kk];
-            typ_idxs_4b[3] = sys_atmtyp_indices[ll];        
-        
-            for (int idx=0; idx<3; idx++)
-            {
-                force_ptr_4b[0][idx] = &force[sys_parent[ii]][idx];
-                force_ptr_4b[1][idx] = &force[sys_parent[jj]][idx];    
-                force_ptr_4b[2][idx] = &force[sys_parent[kk]][idx];
-                force_ptr_4b[3][idx] = &force[sys_parent[ll]][idx];
-            }    
-        
-            compute_4B(dist_4b, dr_4b, typ_idxs_4b, force_ptr_4b, stensor, energy);
-        }    
-    }
-    
-    ////////////////////////
-    // Finish pressure calculation
-    ////////////////////////
-    
-    for (int idx=0; idx<9; idx++)
-        *stensor[idx] /= vol;    
-    
-}
-void serial_chimes_interface::build_layered_system( vector<string> & atmtyps)
-{
-    // Verify that an appropriate number of layers have been requested
-    
-    max_2b_cut = max_cutoff_2B(true); // true: do not write any info to stdout
-    max_3b_cut = max_cutoff_3B(true);
-    max_4b_cut = max_cutoff_4B(true);    
-    
-    double eff_lx = mag_a({hmat[0], hmat[1], hmat[2]}) * (2*n_layers + 1);
-    double eff_ly = mag_a({hmat[3], hmat[4], hmat[5]}) * (2*n_layers + 1);
-    double eff_lz = mag_a({hmat[6], hmat[7], hmat[8]}) * (2*n_layers + 1);
+    // use smallest lattice length to determine number of ghost atom layers (n_layers)
+    vector<double> latdist = {latcon_a,latcon_b,latcon_c};
+    double lat_min = *min_element(latdist.begin(),latdist.end());
+    double eff_length = max_2b_cut*2.0;
+    // n_layers is set to ensure that max 2b rcut is less than half smallest box length
+    n_layers = ceil(eff_length/lat_min);
+    double eff_lx = latcon_a * (2*n_layers + 1);
+    double eff_ly = latcon_b * (2*n_layers + 1);
+    double eff_lz = latcon_c * (2*n_layers + 1);
     
     if ((max_2b_cut>0.5*eff_lx)||(max_2b_cut>0.5*eff_ly)||(max_2b_cut>0.5*eff_lz))
     {
@@ -580,13 +484,15 @@ void serial_chimes_interface::build_layered_system( vector<string> & atmtyps)
         }
     }
 }
-void serial_chimes_interface::build_neigh_lists()
+void simulation_system::build_neigh_lists(vector<int> & poly_orders, vector<vector<int> > & neighlist_2b, vector<vector<int> > & neighlist_3b, vector<vector<int> > & neighlist_4b, double max_2b_cut, double max_3b_cut, double max_4b_cut)
 {
     // Make the 2b neighbor lists
     
     neighlist_2b.resize(n_ghost);
+	
     for (int i = 0; i < n_ghost; i++) 
 		neighlist_2b[i].resize(0,0);
+	
     neighlist_3b.resize(0);
     neighlist_4b.resize(0);
 
@@ -828,7 +734,7 @@ void serial_chimes_interface::build_neigh_lists()
     */
 
 }
-double serial_chimes_interface::get_dist(int i,int j, vector<double> & rij)
+double simulation_system::get_dist(int i,int j, vector<double> & rij)
 {
     /* Orthorhombic way
     rij[0] = sys_x[j] - sys_x[i];
@@ -861,36 +767,183 @@ double serial_chimes_interface::get_dist(int i,int j, vector<double> & rij)
     return sqrt(rij[0]*rij[0] + rij[1]*rij[1] + rij[2]*rij[2]);
 
 }
-double serial_chimes_interface::get_dist(int i,int j)
+double simulation_system::get_dist(int i,int j)
 {
     vector<double> rij(3);
     
     return get_dist(i,j,rij);
 }
-void serial_chimes_interface::set_atomtyp_indices()
-{
-    sys_atmtyp_indices.resize(n_ghost);
+	
+// serial_chimes_interface member functions
 
-    for(int i=0; i<n_ghost; i++)
+serial_chimes_interface::serial_chimes_interface()
+{
+    // Initialize Pointers, etc for chimes calculator interfacing (2-body only for now)
+    // To set up for many body calculations, see the LAMMPS implementation
+
+    dist_3b.resize(3);
+    dist_4b.resize(6);
+    
+    dr   .resize(3);
+    dr_3b.resize(3,std::vector<double>(3));  
+    dr_4b.resize(6,std::vector<double>(3));
+    
+    force_ptr_2b.resize(2,std::vector<double*>(3));
+    force_ptr_3b.resize(3,std::vector<double*>(3));
+    force_ptr_4b.resize(4,std::vector<double*>(3));
+    
+    typ_idxs_2b.resize(2);
+    typ_idxs_3b.resize(3);
+    typ_idxs_4b.resize(4);
+    
+    max_2b_cut = 0.0;
+    max_3b_cut = 0.0;
+    max_4b_cut = 0.0;
+    
+}
+serial_chimes_interface::~serial_chimes_interface()
+{}
+void serial_chimes_interface::init_chimesFF(string chimesFF_paramfile, int rank)
+{
+    // Initialize the chimesFF object, read parameters
+    
+    init(rank);
+    read_parameters(chimesFF_paramfile);
+    set_atomtypes(type_list);
+}
+void serial_chimes_interface::build_neigh_lists(vector<string> & atmtyps, vector<double> & x_in, vector<double> & y_in, vector<double> & z_in, vector<double> & cella_in, vector<double> & cellb_in, vector<double> & cellc_in)
+{
+	neigh.init(atmtyps, x_in, y_in, z_in, cella_in, cellb_in, cellc_in);
+	neigh.reorient();
+	neigh.build_layered_system(atmtyps, poly_orders, max_cutoff_2B(true), max_cutoff_3B(true), max_cutoff_4B(true));
+	neigh.set_atomtyp_indices(type_list);
+	neigh.build_neigh_lists(poly_orders, neighlist_2b, neighlist_3b, neighlist_4b, max_cutoff_2B(true), max_cutoff_3B(true), max_cutoff_4B(true));
+}
+void serial_chimes_interface::calculate(vector<double> & x_in, vector<double> & y_in, vector<double> & z_in, vector<double> & cella_in, vector<double> & cellb_in, vector<double> & cellc_in, vector<string> & atmtyps, double & energy, vector<vector<double> > & force, vector<double> & stress)
+{
+	// Set up the calculation system
+
+	sys.init(atmtyps, x_in, y_in, z_in, cella_in, cellb_in, cellc_in);
+	sys.build_layered_system(atmtyps,poly_orders, max_cutoff_2B(true), max_cutoff_3B(true), max_cutoff_4B(true));
+	sys.set_atomtyp_indices(type_list);
+	
+	build_neigh_lists(atmtyps, x_in, y_in, z_in, cella_in, cellb_in, cellc_in);
+	
+    // Setup vars
+    
+    int ii, jj, kk, ll;
+    
+    vector<double*> stensor(9);
+
+    for (int idx=0; idx<9; idx++)
+        stensor[idx]  = &stress[idx];
+    
+    
+    ////////////////////////
+    // interate over 1- and 2b's 
+    ////////////////////////
+
+    for(int i=0; i<sys.n_atoms; i++)
     {
-        sys_atmtyp_indices[i] = -1;
-        
-        for (int j=0; j<type_list.size(); j++)
+        compute_1B(sys.sys_atmtyp_indices[i], energy);
+
+        for(int j=0; j<neighlist_2b[i].size(); j++) // Neighbors of i
         {
-            if ( sys_atmtyps[i] == type_list[j])
+            jj = neighlist_2b[i][j];
+            
+            dist = sys.get_dist(i,jj,dr); // Populates dr, which is passed by ref (overloaded)
+            
+            typ_idxs_2b[0] = sys.sys_atmtyp_indices[i ];
+            typ_idxs_2b[1] = sys.sys_atmtyp_indices[jj];
+            for (int idx=0; idx<3; idx++)
             {
-                sys_atmtyp_indices[i] = j;
-                break;
+                force_ptr_2b[0][idx] = &force[i                 ][idx];
+                force_ptr_2b[1][idx] = &force[sys.sys_parent[jj]][idx];    
             }
-        }
-        
-        if (sys_atmtyp_indices[i] == -1)
-        {
-            cout << "ERROR: Couldn't assign an atom type index for (index/type) " << sys_parent[i] << " " << sys_atmtyps[i] << endl;
-            exit(0);
+
+            compute_2B(dist, dr, typ_idxs_2b, force_ptr_2b, stensor, energy);
         }
     }
+    
+    ////////////////////////
+    // interate over 3b's 
+    ////////////////////////
+    
+    if (poly_orders[1] > 0 )
+    {
+        for(int i=0; i<neighlist_3b.size(); i++)
+        {
+            ii = neighlist_3b[i][0];
+            jj = neighlist_3b[i][1];
+            kk = neighlist_3b[i][2];
+        
+            dist_3b[0] = sys.get_dist(ii,jj,dr_3b[0]); 
+            dist_3b[1] = sys.get_dist(ii,kk,dr_3b[1]); 
+            dist_3b[2] = sys.get_dist(jj,kk,dr_3b[2]); 
+        
+            typ_idxs_3b[0] = sys.sys_atmtyp_indices[ii];
+            typ_idxs_3b[1] = sys.sys_atmtyp_indices[jj];
+            typ_idxs_3b[2] = sys.sys_atmtyp_indices[kk];
+        
+            for (int idx=0; idx<3; idx++)
+            {
+                force_ptr_3b[0][idx] = &force[sys.sys_parent[ii]][idx];
+                force_ptr_3b[1][idx] = &force[sys.sys_parent[jj]][idx];    
+                force_ptr_3b[2][idx] = &force[sys.sys_parent[kk]][idx];
+            }    
+        
+            compute_3B(dist_3b, dr_3b, typ_idxs_3b, force_ptr_3b, stensor, energy);
+
+        }
+    }
+    
+    ////////////////////////
+    // interate over 4b's 
+    ////////////////////////
+
+    if (poly_orders[2] > 0 )
+    {
+        for(int i=0; i<neighlist_4b.size(); i++)
+        {
+            ii = neighlist_4b[i][0];
+            jj = neighlist_4b[i][1];
+            kk = neighlist_4b[i][2];
+            ll = neighlist_4b[i][3];
+        
+            dist_4b[0] = sys.get_dist(ii,jj,dr_4b[0]); 
+            dist_4b[1] = sys.get_dist(ii,kk,dr_4b[1]); 
+            dist_4b[2] = sys.get_dist(ii,ll,dr_4b[2]); 
+            dist_4b[3] = sys.get_dist(jj,kk,dr_4b[3]); 
+            dist_4b[4] = sys.get_dist(jj,ll,dr_4b[4]); 
+            dist_4b[5] = sys.get_dist(kk,ll,dr_4b[5]);         
+
+            typ_idxs_4b[0] = sys.sys_atmtyp_indices[ii];
+            typ_idxs_4b[1] = sys.sys_atmtyp_indices[jj];
+            typ_idxs_4b[2] = sys.sys_atmtyp_indices[kk];
+            typ_idxs_4b[3] = sys.sys_atmtyp_indices[ll];        
+        
+            for (int idx=0; idx<3; idx++)
+            {
+                force_ptr_4b[0][idx] = &force[sys.sys_parent[ii]][idx];
+                force_ptr_4b[1][idx] = &force[sys.sys_parent[jj]][idx];    
+                force_ptr_4b[2][idx] = &force[sys.sys_parent[kk]][idx];
+                force_ptr_4b[3][idx] = &force[sys.sys_parent[ll]][idx];
+            }    
+        
+            compute_4B(dist_4b, dr_4b, typ_idxs_4b, force_ptr_4b, stensor, energy);
+        }    
+    }
+    
+    ////////////////////////
+    // Finish pressure calculation
+    ////////////////////////
+    
+    for (int idx=0; idx<9; idx++)
+        *stensor[idx] /= sys.vol;    
+    
 }
+
+
 
 
 

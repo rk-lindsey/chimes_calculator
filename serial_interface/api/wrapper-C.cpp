@@ -21,8 +21,8 @@ void set_chimes () {
   chimes_ptr = &chimes;
 }
 
-void init_chimes (char *param_file, int *nlayer, int *rank) {
-  chimes_ptr->init_chimesFF(param_file, *nlayer, *rank);
+void init_chimes (char *param_file, int *rank) {
+  chimes_ptr->init_chimesFF(param_file, *rank);
 }
 void calculate_chimes_fromF90(int *natom, double *xc, double *yc, double *zc, char *atom_types[], double ca[3], double cb[3], double cc[3], double *energy, double fx[], double fy[], double fz[], double stress[9])
 {
