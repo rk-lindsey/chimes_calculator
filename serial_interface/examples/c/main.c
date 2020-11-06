@@ -8,7 +8,7 @@
 int main (int argc, char **argv) 
 {
   if (argc < 4) {
-    printf("To run: ./test.x <parameter file> <xyz config. file> <nlayers>\n");
+    printf("To run: ./test.x <parameter file> <xyz config. file>\n");
     printf("Exiting code.\n");
     exit(0);
   }
@@ -16,7 +16,6 @@ int main (int argc, char **argv)
   const double GPa = 6.9479; // convert kcal/mol.A^3 to GPa
   FILE *fconf;
   int natom, i, j, k, l;
-  int nlayer;
   char junk;
   double lx, ly, lz;
   double ca[3], cb[3], cc[3];
@@ -45,12 +44,10 @@ int main (int argc, char **argv)
   }
   fclose(fconf);
   set_chimes();
-  nlayer = atoi(argv[3]); // 4;
-  
-  printf("%s %s %s %d\n", "Read args:", argv[1], argv[2], nlayer);
+  printf("%s %s %s %d\n", "Read args:", argv[1], argv[2]);
     
   int rank = 0;
-  init_chimes(argv[1], &nlayer,&rank);
+  init_chimes(argv[1],&rank);
   
   calculate_chimes(natom, xc, yc, zc, atom, ca, cb, cc, &energy, fx, fy, fz, stress);
   for (i = 0; i < 9; i++) {

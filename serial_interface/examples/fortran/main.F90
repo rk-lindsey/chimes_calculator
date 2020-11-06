@@ -20,7 +20,7 @@
       integer lenstr
 
       io_num = command_argument_count()
-      if (io_num .lt. 3) then
+      if (io_num .lt. 2) then
         print*,"To run: ./test_F.x <parameter file> <xyz config. file>"
         print*,"Exiting code.\n"
         STOP
