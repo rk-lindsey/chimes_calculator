@@ -396,7 +396,7 @@ void simulation_system::build_layered_system(vector<string> & atmtyps, vector<in
     double lat_min = *min_element(latdist.begin(),latdist.end());
     double eff_length = max_2b_cut*2.0;
     // n_layers is set to ensure that max 2b rcut is less than half smallest box length
-    n_layers = ceil(eff_length/lat_min);
+    n_layers = ceil(eff_length/lat_min+1);
     double eff_lx = latcon_a * (2*n_layers + 1);
     double eff_ly = latcon_b * (2*n_layers + 1);
     double eff_lz = latcon_c * (2*n_layers + 1);
