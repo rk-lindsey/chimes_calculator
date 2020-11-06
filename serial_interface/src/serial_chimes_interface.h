@@ -52,7 +52,7 @@ class simulation_system
 		vector<double> sys_z;    	// System (i.e. ghost+real) z-coordinates
 		vector<int>    sys_parent;  // Index of atom i's (real) parent
        
-        double            vol;         // System volume	
+        double         vol;         // System volume	
 		
 	private: 
 		
@@ -71,17 +71,9 @@ class simulation_system
 		
 		// only used by neigh coordinates
 		
-       	double extent_x;    // Length of projection of the rotated cell a onto the x axis
-       	double extent_y;    // Length of projection of the rotated cell b onto the y axis
-       	double extent_z;    // Length of projection of the rotated cell c onto the z axis
-        	
-		
-		
-
-
-		
-
-	
+       		double extent_x;    // Length of projection of the rotated cell a onto the x axis
+       		double extent_y;    // Length of projection of the rotated cell b onto the y axis
+       		double extent_z;    // Length of projection of the rotated cell c onto the z axis	
 };
 
 
@@ -98,8 +90,8 @@ class serial_chimes_interface : public chimesFF
     private:
         
 		
-		simulation_system sys;		// Input system
-		simulation_system neigh;	// Re-oriented ss
+	simulation_system sys;		// Input system
+	simulation_system neigh;	// Re-oriented ss
 		
         vector<string>    type_list;   // A list of possible unique atom types and thier corresponding numerical index, per the parameter file
         
@@ -131,7 +123,7 @@ class serial_chimes_interface : public chimesFF
         vector<int>                typ_idxs_4b;
 
 	
-		void build_neigh_lists(vector<string> & atmtyps, vector<double> & x_in, vector<double> & y_in, vector<double> & z_in, vector<double> & cella_in, vector<double> & cellb_in, vector<double> & cellc_in);
+	void build_neigh_lists(vector<string> & atmtyps, vector<double> & x_in, vector<double> & y_in, vector<double> & z_in, vector<double> & cella_in, vector<double> & cellb_in, vector<double> & cellc_in);
 };
 
 #endif
