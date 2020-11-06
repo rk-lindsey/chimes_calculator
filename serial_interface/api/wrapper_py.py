@@ -11,7 +11,7 @@
 		wrapper_py.chimes_wrapper = wrapper_py.init_chimes_wrapper("/path/to/libwrapper-C.so")
 		wrapper_py.set_chimes()
 		wrapper_py.init_chimes()
-		wrapper_py.read_params("some_parameter_file.txt", <nlayers>)
+		wrapper_py.read_params("some_parameter_file.txt")
 
 	Code Author: Rebecca K. Lindsey (2020)
 
@@ -31,15 +31,14 @@ def set_chimes():
 	return
 
 
-def init_chimes(param_file, nlayer, rank):
+def init_chimes(param_file, rank):
 	""" 
 	Initializes the chimesFF object (sets MPI rank)
 	Optionally takes an  MPI rank as input
 	"""
 	in_paramfile = ctypes.c_char_p(param_file.encode())
-	in_nlayer    = ctypes.c_int(nlayer)
 	in_rank      = ctypes.c_int(rank)
-	chimes_wrapper.init_chimes(in_paramfile, ctypes.byref(in_nlayer), ctypes.byref(in_rank))
+	chimes_wrapper.init_chimes(in_paramfile, ctypes.byref(in_rank))
 	return
 
 def calculate_chimes(natoms,xcrd,ycrd,zcrd,atmtyps,cell_a,cell_b,cell_c,energy,fx,fy,fz,stress):

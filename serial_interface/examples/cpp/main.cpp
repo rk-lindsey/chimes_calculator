@@ -7,17 +7,13 @@ stress tensor, energy, and per-atom forces for a given system. See
 main.cpp for a usage example.
 
 Notes: This script takes as input a standard ChIMES parameter file,
-a .xyz file with a, b, and c cell vectors  in the comment line, and
-an integer defining how many layers of ghost atoms should be used 
-(n_layers). Note that nlayers should be large enough to prevent 
-self-interaction across the periodic boundary. Currently only supports 
-2- and 3-body interactions.
-
+a .xyz file with a, b, and c cell vectors  in the comment line. 
 Compile with: 
+
     g++ -O3 -std=c++11 -o example main.cpp \serial_chimes_interface.cpp \
     chimesFF.cpp
  Run with: 
-    ./example <parameter file> <xyz file> <nlayers>
+    ./example <parameter file> <xyz file> 
 
 ---------------------------------------------------------------------- */
 
@@ -43,9 +39,8 @@ int main(int argc, char **argv)
     
     string params = argv[1];
     string in_xyz = argv[2];
-    int    nlayer = stoi(argv[3]);
     
-    cout << "Read args:" << " " << params << " " << in_xyz << " " << nlayer << endl;
+    cout << "Read args:" << " " << params << " " << in_xyz << " " << endl;
     
     // Read the .xyz file    
     
@@ -114,7 +109,7 @@ int main(int argc, char **argv)
     
     serial_chimes_interface chimes;        // Create an instance of the serial interface
     
-    chimes.init_chimesFF(params, nlayer,0);    // Initialize
+    chimes.init_chimesFF(params, 0);    // Initialize
 
     chimes.calculate(xcrds, ycrds, zcrds, cell_a, cell_b, cell_c, atom_types, energy, force, stress);
 

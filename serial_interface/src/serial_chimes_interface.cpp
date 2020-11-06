@@ -4,7 +4,7 @@
 #include<vector>
 #include<string>
 #include<cmath>
-
+#include<algorithm>
 
 #include<fstream>
 
@@ -391,6 +391,12 @@ void simulation_system::reorient()
 void simulation_system::build_layered_system(vector<string> & atmtyps, vector<int> & poly_orders, double max_2b_cut, double max_3b_cut, double max_4b_cut)
 {
     
+    // use smallest lattice length to determine number of ghost atom layers (n_layers)
+    vector<double> latdist = {latcon_a,latcon_b,latcon_c};
+    double lat_min = *min_element(latdist.begin(),latdist.end());
+    double eff_length = max_2b_cut*2.0;
+    // n_layers is set to ensure that max 2b rcut is less than half smallest box length
+    n_layers = ceil(eff_length/lat_min+1);
     double eff_lx = latcon_a * (2*n_layers + 1);
     double eff_ly = latcon_b * (2*n_layers + 1);
     double eff_lz = latcon_c * (2*n_layers + 1);
@@ -797,11 +803,8 @@ serial_chimes_interface::serial_chimes_interface()
 }
 serial_chimes_interface::~serial_chimes_interface()
 {}
-void serial_chimes_interface::init_chimesFF(string chimesFF_paramfile, int layers, int rank)
+void serial_chimes_interface::init_chimesFF(string chimesFF_paramfile, int rank)
 {
-    sys  .n_layers = layers;
-	neigh.n_layers = layers;
-    
     // Initialize the chimesFF object, read parameters
     
     init(rank);
