@@ -1,3 +1,5 @@
+! Code author: Nir Goldman (2020)
+
       program test_F_api
       use wrapper
       use, intrinsic :: ISO_C_binding
