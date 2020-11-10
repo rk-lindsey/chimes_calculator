@@ -180,8 +180,8 @@ The C API
 ^^^^^^^^^
 
 The C API (``wrapper-C*``) is located in ``chimesFF/api``. This wrapper provides C style name mangling and creates a 
-set of C-style wrapper functions. The latter are needed because ``chimesFF`` natively uses vectors, which are not 
-supported in most other languages. Any C code attempting to use the ChIMES Calculator should ``#include "wrapper-C.h"`` 
+set of C-style wrapper functions. The latter are needed for compatibility with std::vector which is heavily used in ``chimesFF``,
+which is not supported in most other languages. Any C code attempting to use the ChIMES Calculator should ``#include "wrapper-C.h"`` 
 and at least include the following operations, in order:
 
     .. code-block:: cpp
@@ -242,7 +242,7 @@ void        chimes_compute_2b_props           ============  ===
 void        chimes_compute_3b_props           ============  ===
                                               Type          Description
                                               ============  ===
-                                              double        Distances between three atoms, ij, ik, and jk
+                                              double array  Distances between three atoms, ij, ik, and jk
                                               double array  Distance vector components for each atom
                                               char*  array  Atom types for atoms i, j and k 
                                               double array  Forces for atoms i, j, and k ([atom index (out of 3)][component index (i.e. fx=0, fy=1, fz=3)]) (contents updated by function)
@@ -255,7 +255,7 @@ void        chimes_compute_3b_props           ============  ===
 void        chimes_compute_4b_props           ============  ===
                                               Type          Description
                                               ============  ===
-                                              double        Distances between four atoms, ij, ik, il, jk, jl, and kl
+                                              double array  Distances between four atoms, ij, ik, il, jk, jl, and kl
                                               double array  Distance vector components for each atom
                                               char*  array  Atom types for atoms i, j, k  and l
                                               double array  Forces for atoms i, j, k, and l ([atom index (out of 4)][component index (i.e. fx=0, fy=1, fz=3)]) (contents updated by function)
@@ -463,7 +463,7 @@ Note that the ChIMES calculator ``wrapper_py`` API provides users with the follo
 =========== ==================================  =================
 Return Type Name                                Arguments and Description
 =========== ==================================  =================
-none        init_chimes_wrapper                 ==============   ===
+ctypes      init_chimes_wrapper                 ==============   ===
                                                 Type             Description
                                                 ==============   ===
                                                 str              C-wrapper library name (i.e. "libwrapper-C.so")
@@ -474,7 +474,7 @@ none        set_chimes                          No arguments. Instantiates a poi
 none        init_chimes                         ==============   ===
                                                 Type             Description
                                                 ==============   ===
-                                                int              MPI rank
+                                                int              MPI rank (optional parameter)
                                                 ==============   ===
                                                 
                                                 Set the MPI rank. With the exception of error messages, 
@@ -546,11 +546,10 @@ Implementation Examples
 
 The following codes demonstrates how ``chimesFF{h,cpp}`` can be used to obtain the
 stress tensor, energy, and per-atom forces for a given system configuration using C, C++ 
-Fortran, and python. See the ``main.*`` files in each corresponding subdirectory of ``chimesFF/examples``
+Fortran, and Python. See the ``main.*`` files in each corresponding subdirectory of ``chimesFF/examples``
 for further implementation details. Note that sample system configurations (i.e. ``*xyz`` files) and 
-parameter files can be found in ``serial_interface/test/configurations`` and ``serial_interface/test/force_fields``, respectively. For user
-generated tests, note that ``*.xyz`` files must be fore orthorhombic systems, with lattice vectors provided in the comment line,
-e.g. lx 0.0 0.0 0.0 ly 0.0 0.0 0.0 lz.
+parameter files can be found in ``serial_interface/test/configurations`` and ``serial_interface/test/force_fields``, respectively. 
+For user generated tests, note that ``*.xyz`` files must provide lattice vectors in the comment line, e.g. lx 0.0 0.0 0.0 ly 0.0 0.0 0.0 lz.
 
 Disclaimer: These codes are for demonstrative purposes only and come with no guarantees.
 
@@ -566,14 +565,11 @@ Disclaimer: These codes are for demonstrative purposes only and come with no gua
       * This implementation does NOT use ghost atoms/layering thus the input system MUST have box lengths greater than two times the largest outer cutoff, or results will not be correct.
       
 * **C++ Example:** The ``main`` function of this example creates an instance of ``serial_chimes_interface`` (i.e. a class inheriting ``chimesFF``, 
-  which computes energy, per-atom forces, and stress tensor for an overall system). For additional details, see [**REFERENCE THE SERIAL CHIMES INTERFACE**] 
+  which computes energy, per-atom forces, and stress tensor for an overall system). For additional details, see :ref:`The ChIMES Calculator Serial Interface <serial_interface>` 
    
    * Compile with: ``make test-CPP``
-   * Test with: ``./test-CPP <parameter file> <xyz file> <nlayers>``
-   * Additional notes: 
-   
-       * ``<nlayers>`` is an integer definiting how many layers of ghost atoms should be used. Note that ``<nlayers>`` should be large enough to prevent self-interaction across the periodic boundary.
-    
+   * Test with: ``./test-CPP <parameter file> <xyz file> ``
+
 * **Fortran Example:** Similar to the C example, this ``main`` function establishes a pointer to a ``chimesFF`` object via ``f_set_chimes()``. 
   The ``f_set_chimes()`` function call is defined in ``wrapper-F.F90,`` a wrapper for the C API ``wrapper-C.cpp`` (i.e which facilitates C-style access to 
   ``chimesFF`` member functions, etc). Actual linking is achieved at compilation. See the ``Makefile`` for details. 
@@ -590,7 +586,7 @@ Disclaimer: These codes are for demonstrative purposes only and come with no gua
   can be used to access ``chimesFF`` member functions. 
 
    * Compile libwrapper-C.so with: ``make all``
-   * Test with: python3 main.py <parameter file> <coordinate file>
+   * Test with: python main.py <parameter file> <coordinate file>
    * Additional notes: 
    
       * Requires ``libwrapper-C.so`` in the same directory, which is generated via ``make all``

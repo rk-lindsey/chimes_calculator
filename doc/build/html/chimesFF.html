@@ -499,8 +499,8 @@ the ChIMES calculator will only print output for rank 0.</p>
 <div class="section" id="the-c-api">
 <span id="sec-c-api"></span><h3>The C API<a class="headerlink" href="#the-c-api" title="Permalink to this headline">¶</a></h3>
 <p>The C API (<code class="docutils literal notranslate"><span class="pre">wrapper-C*</span></code>) is located in <code class="docutils literal notranslate"><span class="pre">chimesFF/api</span></code>. This wrapper provides C style name mangling and creates a
-set of C-style wrapper functions. The latter are needed because <code class="docutils literal notranslate"><span class="pre">chimesFF</span></code> natively uses vectors, which are not
-supported in most other languages. Any C code attempting to use the ChIMES Calculator should <code class="docutils literal notranslate"><span class="pre">#include</span> <span class="pre">&quot;wrapper-C.h&quot;</span></code>
+set of C-style wrapper functions. The latter are needed for compatibility with std::vector which is heavily used in <code class="docutils literal notranslate"><span class="pre">chimesFF</span></code>,
+which is not supported in most other languages. Any C code attempting to use the ChIMES Calculator should <code class="docutils literal notranslate"><span class="pre">#include</span> <span class="pre">&quot;wrapper-C.h&quot;</span></code>
 and at least include the following operations, in order:</p>
 <blockquote>
 <div><div class="highlight-cpp notranslate"><div class="highlight"><pre><span></span><span class="kt">int</span> <span class="n">my_rank</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span>
@@ -645,7 +645,7 @@ the ChIMES calculator will only print output for rank 0.</p>
 </tr>
 </thead>
 <tbody valign="top">
-<tr class="row-even"><td>double</td>
+<tr class="row-even"><td>double array</td>
 <td>Distances between three atoms, ij, ik, and jk</td>
 </tr>
 <tr class="row-odd"><td>double array</td>
@@ -681,7 +681,7 @@ the ChIMES calculator will only print output for rank 0.</p>
 </tr>
 </thead>
 <tbody valign="top">
-<tr class="row-even"><td>double</td>
+<tr class="row-even"><td>double array</td>
 <td>Distances between four atoms, ij, ik, il, jk, jl, and kl</td>
 </tr>
 <tr class="row-odd"><td>double array</td>
@@ -1114,7 +1114,7 @@ operations, in order:</p>
 </tr>
 </thead>
 <tbody valign="top">
-<tr class="row-even"><td>none</td>
+<tr class="row-even"><td>ctypes</td>
 <td>init_chimes_wrapper</td>
 <td><table border="1" class="first last docutils">
 <colgroup>
@@ -1142,8 +1142,8 @@ operations, in order:</p>
 <td>init_chimes</td>
 <td><table border="1" class="first docutils">
 <colgroup>
-<col width="56%" />
-<col width="44%" />
+<col width="33%" />
+<col width="67%" />
 </colgroup>
 <thead valign="bottom">
 <tr class="row-odd"><th class="head">Type</th>
@@ -1152,7 +1152,7 @@ operations, in order:</p>
 </thead>
 <tbody valign="top">
 <tr class="row-even"><td>int</td>
-<td>MPI rank</td>
+<td>MPI rank (optional parameter)</td>
 </tr>
 </tbody>
 </table>
@@ -1322,11 +1322,10 @@ the ChIMES calculator will only print output for rank 0.</p>
 <span id="sec-use-examples-api"></span><h3>Implementation Examples<a class="headerlink" href="#implementation-examples" title="Permalink to this headline">¶</a></h3>
 <p>The following codes demonstrates how <code class="docutils literal notranslate"><span class="pre">chimesFF{h,cpp}</span></code> can be used to obtain the
 stress tensor, energy, and per-atom forces for a given system configuration using C, C++
-Fortran, and python. See the <code class="docutils literal notranslate"><span class="pre">main.*</span></code> files in each corresponding subdirectory of <code class="docutils literal notranslate"><span class="pre">chimesFF/examples</span></code>
+Fortran, and Python. See the <code class="docutils literal notranslate"><span class="pre">main.*</span></code> files in each corresponding subdirectory of <code class="docutils literal notranslate"><span class="pre">chimesFF/examples</span></code>
 for further implementation details. Note that sample system configurations (i.e. <code class="docutils literal notranslate"><span class="pre">*xyz</span></code> files) and
-parameter files can be found in <code class="docutils literal notranslate"><span class="pre">serial_interface/test/configurations</span></code> and <code class="docutils literal notranslate"><span class="pre">serial_interface/test/force_fields</span></code>, respectively. For user
-generated tests, note that <code class="docutils literal notranslate"><span class="pre">*.xyz</span></code> files must be fore orthorhombic systems, with lattice vectors provided in the comment line,
-e.g. lx 0.0 0.0 0.0 ly 0.0 0.0 0.0 lz.</p>
+parameter files can be found in <code class="docutils literal notranslate"><span class="pre">serial_interface/test/configurations</span></code> and <code class="docutils literal notranslate"><span class="pre">serial_interface/test/force_fields</span></code>, respectively.
+For user generated tests, note that <code class="docutils literal notranslate"><span class="pre">*.xyz</span></code> files must provide lattice vectors in the comment line, e.g. lx 0.0 0.0 0.0 ly 0.0 0.0 0.0 lz.</p>
 <p>Disclaimer: These codes are for demonstrative purposes only and come with no guarantees.</p>
 <ul>
 <li><p class="first"><strong>C Example:</strong> The <code class="docutils literal notranslate"><span class="pre">main</span></code> function of this example includes the C API, <code class="docutils literal notranslate"><span class="pre">wrapper-C.{h,cpp}</span></code>, which creates a global static pointer to a <code class="docutils literal notranslate"><span class="pre">chimesFF</span></code> object.
@@ -1349,20 +1348,11 @@ The <code class="docutils literal notranslate"><span class="pre">chimesFF</span>
 </div></blockquote>
 </li>
 <li><p class="first"><strong>C++ Example:</strong> The <code class="docutils literal notranslate"><span class="pre">main</span></code> function of this example creates an instance of <code class="docutils literal notranslate"><span class="pre">serial_chimes_interface</span></code> (i.e. a class inheriting <code class="docutils literal notranslate"><span class="pre">chimesFF</span></code>,
-which computes energy, per-atom forces, and stress tensor for an overall system). For additional details, see [<strong>REFERENCE THE SERIAL CHIMES INTERFACE</strong>]</p>
-<blockquote>
-<div><ul>
-<li><p class="first">Compile with: <code class="docutils literal notranslate"><span class="pre">make</span> <span class="pre">test-CPP</span></code></p>
-</li>
-<li><p class="first">Test with: <code class="docutils literal notranslate"><span class="pre">./test-CPP</span> <span class="pre">&lt;parameter</span> <span class="pre">file&gt;</span> <span class="pre">&lt;xyz</span> <span class="pre">file&gt;</span> <span class="pre">&lt;nlayers&gt;</span></code></p>
-</li>
-<li><p class="first">Additional notes:</p>
+which computes energy, per-atom forces, and stress tensor for an overall system). For additional details, see <a class="reference internal" href="serial_interface.html#serial-interface"><span class="std std-ref">The ChIMES Calculator Serial Interface</span></a></p>
 <blockquote>
 <div><ul class="simple">
-<li><code class="docutils literal notranslate"><span class="pre">&lt;nlayers&gt;</span></code> is an integer definiting how many layers of ghost atoms should be used. Note that <code class="docutils literal notranslate"><span class="pre">&lt;nlayers&gt;</span></code> should be large enough to prevent self-interaction across the periodic boundary.</li>
-</ul>
-</div></blockquote>
-</li>
+<li>Compile with: <code class="docutils literal notranslate"><span class="pre">make</span> <span class="pre">test-CPP</span></code></li>
+<li>Test with: <a href="#id5"><span class="problematic" id="id6">``</span></a>./test-CPP &lt;parameter file&gt; &lt;xyz file&gt; ``</li>
 </ul>
 </div></blockquote>
 </li>
@@ -1393,7 +1383,7 @@ can be used to access <code class="docutils literal notranslate"><span class="pr
 <div><ul>
 <li><p class="first">Compile libwrapper-C.so with: <code class="docutils literal notranslate"><span class="pre">make</span> <span class="pre">all</span></code></p>
 </li>
-<li><p class="first">Test with: python3 main.py &lt;parameter file&gt; &lt;coordinate file&gt;</p>
+<li><p class="first">Test with: python main.py &lt;parameter file&gt; &lt;coordinate file&gt;</p>
 </li>
 <li><p class="first">Additional notes:</p>
 <blockquote>

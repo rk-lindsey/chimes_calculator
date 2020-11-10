@@ -52,7 +52,7 @@ class simulation_system
 		vector<double> sys_z;    	// System (i.e. ghost+real) z-coordinates
 		vector<int>    sys_parent;  // Index of atom i's (real) parent
        
-        double            vol;         // System volume	
+        double         vol;         // System volume	
 		
 	private: 
 		
@@ -71,17 +71,9 @@ class simulation_system
 		
 		// only used by neigh coordinates
 		
-       	double extent_x;    // Length of projection of the rotated cell a onto the x axis
-       	double extent_y;    // Length of projection of the rotated cell b onto the y axis
-       	double extent_z;    // Length of projection of the rotated cell c onto the z axis
-        	
-		
-		
-
-
-		
-
-	
+       		double extent_x;    // Length of projection of the rotated cell a onto the x axis
+       		double extent_y;    // Length of projection of the rotated cell b onto the y axis
+       		double extent_z;    // Length of projection of the rotated cell c onto the z axis	
 };
 
 

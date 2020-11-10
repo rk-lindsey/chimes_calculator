@@ -243,7 +243,7 @@ void simulation_system::reorient()
     // See: https://lammps.sandia.gov/doc/Howto_triclinic.html
 	
 	// Convert to fractional coordinates from the original basis
-	
+
 	double tmp_ax, tmp_ay, tmp_az;
 	
     for(int i=0; i<n_atoms; i++)
@@ -385,8 +385,8 @@ void simulation_system::reorient()
  	extent_x = xhi - xlo;
  	extent_y = yhi - ylo;
  	extent_z = zhi - zlo; 
-	
-	
+
+
 }
 void simulation_system::build_layered_system(vector<string> & atmtyps, vector<int> & poly_orders, double max_2b_cut, double max_3b_cut, double max_4b_cut)
 {
@@ -813,21 +813,21 @@ void serial_chimes_interface::init_chimesFF(string chimesFF_paramfile, int rank)
 }
 void serial_chimes_interface::build_neigh_lists(vector<string> & atmtyps, vector<double> & x_in, vector<double> & y_in, vector<double> & z_in, vector<double> & cella_in, vector<double> & cellb_in, vector<double> & cellc_in)
 {
-	neigh.init(atmtyps, x_in, y_in, z_in, cella_in, cellb_in, cellc_in);
-	neigh.reorient();
-	neigh.build_layered_system(atmtyps, poly_orders, max_cutoff_2B(true), max_cutoff_3B(true), max_cutoff_4B(true));
-	neigh.set_atomtyp_indices(type_list);
-	neigh.build_neigh_lists(poly_orders, neighlist_2b, neighlist_3b, neighlist_4b, max_cutoff_2B(true), max_cutoff_3B(true), max_cutoff_4B(true));
+    neigh.init(atmtyps, x_in, y_in, z_in, cella_in, cellb_in, cellc_in);
+    neigh.reorient();
+    neigh.build_layered_system(atmtyps, poly_orders, max_cutoff_2B(true), max_cutoff_3B(true), max_cutoff_4B(true));
+    neigh.set_atomtyp_indices(type_list);
+    neigh.build_neigh_lists(poly_orders, neighlist_2b, neighlist_3b, neighlist_4b, max_cutoff_2B(true), max_cutoff_3B(true), max_cutoff_4B(true));
 }
 void serial_chimes_interface::calculate(vector<double> & x_in, vector<double> & y_in, vector<double> & z_in, vector<double> & cella_in, vector<double> & cellb_in, vector<double> & cellc_in, vector<string> & atmtyps, double & energy, vector<vector<double> > & force, vector<double> & stress)
 {
-	// Set up the calculation system
+    // Set up the calculation system
 
-	sys.init(atmtyps, x_in, y_in, z_in, cella_in, cellb_in, cellc_in);
-	sys.build_layered_system(atmtyps,poly_orders, max_cutoff_2B(true), max_cutoff_3B(true), max_cutoff_4B(true));
-	sys.set_atomtyp_indices(type_list);
-	
-	build_neigh_lists(atmtyps, x_in, y_in, z_in, cella_in, cellb_in, cellc_in);
+    sys.init(atmtyps, x_in, y_in, z_in, cella_in, cellb_in, cellc_in);
+    sys.build_layered_system(atmtyps,poly_orders, max_cutoff_2B(true), max_cutoff_3B(true), max_cutoff_4B(true));
+    sys.set_atomtyp_indices(type_list);
+    
+    build_neigh_lists(atmtyps, x_in, y_in, z_in, cella_in, cellb_in, cellc_in);
 	
     // Setup vars
     

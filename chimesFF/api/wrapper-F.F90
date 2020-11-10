@@ -1,3 +1,5 @@
+! Code author: Nir Goldman (2020)
+
       module wrapper
       use, intrinsic :: ISO_C_binding
       implicit none

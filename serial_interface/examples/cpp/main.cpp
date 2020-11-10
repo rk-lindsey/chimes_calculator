@@ -3,8 +3,8 @@
 /* ----------------------------------------------------------------------
 
 This code demonstrates how chimesFF{h,cpp} can be used to obtain the 
-stress tensor, energy, and per-atom forces for a given system. See 
-main.cpp for a usage example.
+stress tensor, energy, and per-atom forces for a given system, through the
+serial_chimes_interface.
 
 Notes: This script takes as input a standard ChIMES parameter file,
 a .xyz file with a, b, and c cell vectors  in the comment line. 
@@ -99,8 +99,8 @@ int main(int argc, char **argv)
     // Setup objects to hold the energy, stress tensor, and forces
     
     double                     energy = 0.0;
-    vector<double>             stress(9,0.0);        //[xx xy xz yx yy yz zx zy zz]
-    vector<vector<double> >    force(natoms);    // [natoms][x, y, or z-component]
+    vector<double>             stress(9,0.0);   // [xx xy xz yx yy yz zx zy zz]
+    vector<vector<double> >    force(natoms);   // [natoms][x, y, or z-component]
     
     for(int i=0; i<natoms; i++)
         force[i].resize(3,0.0);
@@ -129,8 +129,8 @@ int main(int argc, char **argv)
 
     for(int i=0; i<natoms; i++)
         debug_out << scientific << setprecision(6) << force[i][0] << endl 
-	          << scientific << setprecision(6) << force[i][1] << endl 
-		  << scientific << setprecision(6) << force[i][2] << endl;
+	              << scientific << setprecision(6) << force[i][1] << endl 
+		          << scientific << setprecision(6) << force[i][2] << endl;
     #endif
 
     cout << endl;
