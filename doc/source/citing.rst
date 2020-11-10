@@ -55,13 +55,13 @@ Carbon-1       Molten Carbon                         2            5000/2.43     
 Carbon-1       Molten Carbon                         2+3          5000/2.43                                      N/A      
 Carbon-1       Molten Carbon                         2+3          6000/2.25-3.00                                 N/A      
 Water-1        Water                                 2+3          298/1.00                                       N/A
-PuH-DFTB       Pu/H                                  2+3          ???                                            DFTB :math:`E_{\mathrm{rep}}` **... safe for dynamics?**
+PuH-DFTB       Pu/H                                  2+3          0-300/?                                        DFTB :math:`E_{\mathrm{rep}}` 
 CO-1           Carbon Monoxide (1:1)                 2+3          6500-9350/2.5                                  N/A
 CO-2           Carbon Monoxide (1:1)                 2+3+4        2400/1.79                                      N/A
 HN-1           Hydrazoic Acid H/N                    2+3+4        300-4500/1-2                                   N/A
 DNTF-DFTB      3,4-bis(4-nitrofurazan-3-yl)furoxan   2+3          300-?/?-?                                      DFTB :math:`E_{\mathrm{rep}}`
 DNTF-1 DNTF    3,4-bis(4-nitrofurazan-3-yl)furoxan   2+3+4        300-?/?-?                                      N/A 
-TiH-DFTB       Ti/H                                  ???          ???                                            DFTB :math:`E_{\mathrm{rep}}` **... safe for dynamics?**
+TiH-DFTB       Ti/H                                  2+3          ?/5.5                                      	 DFTB :math:`E_{\mathrm{rep}}` 
 =============  ====================================  ==========   ============================================   =========
 
 
