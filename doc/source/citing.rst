@@ -59,7 +59,7 @@ PuH-DFTB       Pu/H                                  2+3          0-300/?       
 CO-1           Carbon Monoxide (1:1)                 2+3          6500-9350/2.5                                  N/A
 CO-2           Carbon Monoxide (1:1)                 2+3+4        2400/1.79                                      N/A
 HN-1           Hydrazoic Acid H/N                    2+3+4        300-4500/1-2                                   N/A
-DNTF-DFTB      3,4-bis(4-nitrofurazan-3-yl)furoxan   2+3          300-?/?-?                                      DFTB :math:`E_{\mathrm{rep}}`
+DNTF-DFTB      3,4-bis(4-nitrofurazan-3-yl)furoxan   2+3          300-9000/1.86-3.4                              DFTB :math:`E_{\mathrm{rep}}`
 TiH-DFTB       Ti/H                                  2+3          ?/5.5                                      	 DFTB :math:`E_{\mathrm{rep}}` 
 =============  ====================================  ==========   ============================================   =========
 

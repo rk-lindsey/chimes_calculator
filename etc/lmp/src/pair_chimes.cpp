@@ -187,7 +187,6 @@ void PairCHIMES::init_style()
 	neighbor->requests[irequest]->ghost = 1;
 }
 
-
 double PairCHIMES::init_one(int i, int j)
 {
 	// Sets the cutoff for each pair interaction.
@@ -471,7 +470,7 @@ void PairCHIMES::compute(int eflag, int vflag)
 	// Access to (2-body) neighbor list vars
 	////////////////////////////////////////
 
-	inum       = list -> inum; 		// length of the list
+	inum       = list -> inum; 			// length of the list
 	ilist      = list -> ilist; 		// list of i atoms for which neighbor list exists
 	numneigh   = list -> numneigh;		// length of each of the ilist neighbor lists
 	firstneigh = list -> firstneigh;	// point to the list of neighbors of i
@@ -513,13 +512,13 @@ void PairCHIMES::compute(int eflag, int vflag)
 	}
 
 
-	for (ii = 0; ii < inum; ii++)				// Loop over the atoms owned by the current process
+	for (ii = 0; ii < inum; ii++)		// Loop over the atoms owned by the current process
 	{
 		i     = ilist[ii];				// Index of the current atom
 		itag  = tag[i];					// Get i's global atom index (sort of like its "parent")
 
-		jlist = firstneigh[i];				// Neighborlist for atom i
-		jnum  = numneigh[i];				// Number of neighbors of atom i
+		jlist = firstneigh[i];			// Neighborlist for atom i
+		jnum  = numneigh[i];			// Number of neighbors of atom i
 		
 		// First, get the single-atom energy contribution
 		
