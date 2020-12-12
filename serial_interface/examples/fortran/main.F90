@@ -1,4 +1,6 @@
-! Code author: Nir Goldman (2020)
+! ChIMES Calculator
+! Copyright (C) 2020 Rebecca K. Lindsey, Nir Goldman, and Laurence E. Fried
+! Contributing Author:  Nir Goldman (2020) 
 
       program test_F_api
       use wrapper

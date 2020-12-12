@@ -10,7 +10,9 @@
 
 	Run with: "python3 <this file> <parameter file> <coordinate file>
 
-	Code Author: Rebecca K. Lindsey (2020)
+    ChIMES Calculator
+    Copyright (C) 2020 Rebecca K. Lindsey, Nir Goldman, and Laurence E. Fried
+	Contributing Author: Rebecca K. Lindsey (2020)
 
 """
 # import standard python modules

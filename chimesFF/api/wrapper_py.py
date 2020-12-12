@@ -13,7 +13,9 @@
 		wrapper_py.init_chimes()
 		wrapper_py.read_params("some_parameter_file.txt")
 
-	Code Author: Rebecca K. Lindsey (2020)
+    ChIMES Calculator
+    Copyright (C) 2020 Rebecca K. Lindsey, Nir Goldman, and Laurence E. Fried
+	Contributing Author: Rebecca K. Lindsey (2020)
 
 """
 

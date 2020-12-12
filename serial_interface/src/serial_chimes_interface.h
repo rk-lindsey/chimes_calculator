@@ -1,4 +1,8 @@
-/* Code author: Rebecca K. Lindsey (2020) */
+/* 
+    ChIMES Calculator
+    Copyright (C) 2020 Rebecca K. Lindsey, Nir Goldman, and Laurence E. Fried
+	Contributing Author:  Rebecca K. Lindsey (2020) 
+*/
 
 /* ----------------------------------------------------------------------
 
@@ -71,9 +75,9 @@ class simulation_system
 		
 		// only used by neigh coordinates
 		
-       		double extent_x;    // Length of projection of the rotated cell a onto the x axis
-       		double extent_y;    // Length of projection of the rotated cell b onto the y axis
-       		double extent_z;    // Length of projection of the rotated cell c onto the z axis	
+       	double extent_x;    // Length of projection of the rotated cell a onto the x axis
+       	double extent_y;    // Length of projection of the rotated cell b onto the y axis
+       	double extent_z;    // Length of projection of the rotated cell c onto the z axis	
 };
 
 

@@ -1,4 +1,8 @@
-/* Code author: Rebecca K. Lindsey (2020) */
+/* 
+    ChIMES Calculator
+    Copyright (C) 2020 Rebecca K. Lindsey, Nir Goldman, and Laurence E. Fried
+	Contributing Author:  Rebecca K. Lindsey (2020) 
+*/
 
 #include<vector>
 #include<iostream>
@@ -117,7 +121,7 @@ void chimesFF::print_pretty_stuff()
         cout << "chimesFF: " << "                                                                    __/ |                        " << endl;
         cout << "chimesFF: " << "                                                                   |___/                         " << endl;  
         cout << "chimesFF: " << endl;
-        cout << "chimesFF: " << "                      R.K. Lindsey, L.E. Fried, N. Goldman (2017)                                " << endl;    
+        cout << "chimesFF: " << "                     Copyright (C) 2020 R.K. Lindsey, L.E. Fried, N. Goldman                     " << endl;    
         cout << "chimesFF: " << endl;
         cout << "chimesFF: " << "01000011011010001001001010011010100010101010011 0100010101101110110011101101001011011101100101   " << endl;
         cout << "chimesFF: " << endl;
@@ -196,10 +200,10 @@ void chimesFF::read_parameters(string paramfile)
     // Declare parsing variables
     
     
-    bool            found_end = false;
-    string            line;
-    string            tmp_str;
-    vector<string>        tmp_str_items;
+    bool           found_end = false;
+    string         line;
+    string         tmp_str;
+    vector<string> tmp_str_items;
     int            tmp_no_items;
     int            tmp_int;
     int            no_pairs;
