@@ -30,7 +30,7 @@ three-body interaction would involve three pairs, :math:`ij, ik,` and :math:`jk`
 and so on. Currently, the ChIMES calculator supports up to 4-body interactions.
 
 
-For further details of the ChIMES ML-IAP, the reader is referred to the following. For a complete set of ChIMES references, see :ref:`Citing ChIMES <page-citing>`.
+For further details of the ChIMES ML-IAP equations, the reader is referred to the following. For a complete set of ChIMES references, see :ref:`Citing ChIMES <page-citing>`.
 
 #. R.K. Lindsey*, L.E. Fried, N. Goldman,            `J. Chem. Theory Comput.`, **13**  6222   (2017). (`link <https://doi.org/10.1021/acs.jctc.7b00867>`_)
 #. R.K. Lindsey*, L.E. Fried, N. Goldman,            `J. Chem. Theory Comput.`  **15**  436    (2019). (`link <https://doi.org/10.1021/acs.jctc.8b00831>`_)
