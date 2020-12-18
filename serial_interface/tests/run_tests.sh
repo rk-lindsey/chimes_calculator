@@ -12,6 +12,7 @@ FFS[4]="published_params.CO2400K.2+3+4b.Tersoff.special.offsets.txt"         ; C
 FFS[5]="published_params.CO2400K.2+3+4b.Tersoff.special.offsets.txt"         ; CFGS[5]="CO.2.5gcc_6500K.OUTCAR_#000.translate.xyz"
 FFS[6]="published_params.HN3.2+3+4b.Tersoff.special.offsets.txt"             ; CFGS[6]="HN3.2gcc_3000K.OUTCAR_#000.xyz"
 FFS[7]="validated_params.TiO2.2+3b.Tersoff.txt"                              ; CFGS[7]="TiO2.unitcell_arbrot_#000.xyz"
+FFS[8]="test_params.CHON.txt"                                                ; CFGS[8]="CHON.testfile.000.xyz"
 
 NO_TESTS=${#FFS[@]}
 LOC=`pwd`
