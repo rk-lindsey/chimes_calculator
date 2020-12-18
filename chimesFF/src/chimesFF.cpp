@@ -1439,7 +1439,7 @@ inline void chimesFF::build_atom_and_pair_mappers(const int natoms, const int np
         
     vector<string> runtime_pair_typs(npairs);    
         
-    while ( next_permutation(tmp_typ_idxs.begin(),tmp_typ_idxs.begin()+nelements) )
+    while ( true )
     {
         // Check if the permutation leads to pair types that match the order specified by the force field type
     
@@ -1483,6 +1483,9 @@ inline void chimesFF::build_atom_and_pair_mappers(const int natoms, const int np
         
             break;
         }
+		
+		if(!next_permutation(tmp_typ_idxs.begin(),tmp_typ_idxs.begin()+nelements))
+			break;
     }
     
     // Once we've found a re-ordering of atoms that properly maps to the force field pair types, need to figure out how to convert that to a map between *pairs*
@@ -2110,4 +2113,3 @@ void chimesFF::set_atomtypes(vector<string> & type_list)
     for(int i=0;i<natmtyps;i++)
         type_list[i] = atmtyps[i];
 }
-
