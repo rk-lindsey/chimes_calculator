@@ -50,7 +50,7 @@ int main (int argc, char **argv)
   }
   fclose(fconf);
   set_chimes();
-  printf("%s %s %s %d\n", "Read args:", argv[1], argv[2]);
+  printf("%s %s %s \n", "Read args:", argv[1], argv[2]);
     
   int rank = 0;
   init_chimes(argv[1],&rank);
