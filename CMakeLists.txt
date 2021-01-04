@@ -139,7 +139,7 @@ target_compile_features   (test_wrapper-F-serial_wrapper PRIVATE cxx_std_11)
 target_compile_options    (test_wrapper-F-serial_wrapper PRIVATE -O3)
 target_compile_options    (test_wrapper-F-serial_wrapper PRIVATE -fPIC)
 target_compile_options    (test_wrapper-F-serial_wrapper PRIVATE -std=f2003)
-target_compile_options    (test_wrapper-F-serial_wrapper PRIVATE -cpp)
+target_compile_options    (test_wrapper-F-serial_wrapper PRIVATE -cpp)U
 
 
 if(${CMAKE_SYSTEM_NAME} MATCHES "Darwin")
@@ -147,92 +147,3 @@ if(${CMAKE_SYSTEM_NAME} MATCHES "Darwin")
 else()
     target_compile_options(test_wrapper-F-serial_wrapper PRIVATE -stdc++)    
 endif()
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-#add_library(chimesFF-obj OBJECT ${SOURCES})
-
-
-#add_executable(chimesFF $<TARGET_OBJECTS:chimesFF-obj>)
-
-#target_compile_features   (chimesFF-obj PRIVATE cxx_std_11)
-
-
-
-
-
-
-
-
-#cmake_minimum_required(VERSION 3.11)
-
-#project(foo C)
-
-#set(SOURCES foo.c)
-
-#add_library(foo_obj OBJECT ${SOURCES})
-
-#add_executable(foo $<TARGET_OBJECTS:foo_obj>)
-
-#set(OBJS $<TARGET_OBJECTS:foo_obj>)
-#message(STATUS "these are my objects: ${OBJS}") # generator expression printed here, not evaluated yet
-
-#add_custom_target(print_foo_objs
-#  COMMAND ${CMAKE_COMMAND} -E echo $<TARGET_OBJECTS:foo_obj>)
-
-#set(OBJ_ROOT_DIR $<TARGET_PROPERTY:foo,BINARY_DIR>) 
-
-#add_custom_target(copy_foo_objs
-#  COMMAND ${CMAKE_COMMAND} -E make_directory ${OBJ_ROOT_DIR}/myobjects/
-#  COMMAND ${CMAKE_COMMAND} -E copy_if_different $<TARGET_OBJECTS:foo_obj> ${OBJ_ROOT_DIR}/myobjects/)
