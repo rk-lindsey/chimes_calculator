@@ -52,7 +52,7 @@ else
 endif
 
 test-F: $(LINKS)
-	$(FCC) $(LINKS) -o test-F
+	$(FCC) $(LINKS) -o fortran_wrapper-serial_interface
 lib : chimesFF.o serial_chimes_interface.o wrapper-C.o
 	ar rcs libchimes.a chimesFF.o serial_chimes_interface.o wrapper-C.o 
 
@@ -61,7 +61,7 @@ clean:
 	
 clean-all:
 	make clean
-	rm -f test-F
+	rm -f fortran_wrapper-serial_interface
 	rm -f libchimes.a
 	
 all:
@@ -72,6 +72,7 @@ all:
 	make main.o
 	make test-F
 	make lib
+	make clean
 
 
 

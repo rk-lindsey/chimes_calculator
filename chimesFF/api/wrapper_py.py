@@ -8,7 +8,7 @@
 	The following must be included in any python script calling this wrapper:
 
 		import wrapper_py
-		wrapper_py.chimes_wrapper = wrapper_py.init_chimes_wrapper("/path/to/libwrapper-C.so")
+		wrapper_py.chimes_wrapper = wrapper_py.init_chimes_wrapper("/path/to/lib-C_wrapper-serial_inteface.so")
 		wrapper_py.set_chimes()
 		wrapper_py.init_chimes()
 		wrapper_py.read_params("some_parameter_file.txt")
