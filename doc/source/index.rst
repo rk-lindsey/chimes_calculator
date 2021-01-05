@@ -27,8 +27,7 @@ The ChIMES Calculator is developed at Lawrence Livermore National Laboratory wit
    units
    citing
    contributing
-
-.. legal
+   legal
 
 .. Indices and tables
 .. ==================
