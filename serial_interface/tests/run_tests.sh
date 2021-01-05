@@ -38,6 +38,7 @@ echo "Running $STYLE tests"
 
 for compile in CMAKE MAKEFILE
 do
+	echo "Testing compilation type: $compile"
 
 	# Do the compilation
 
@@ -55,7 +56,7 @@ do
 				make all DEBUG=1
 			else
 				make all
-				cp lib-C_wrapper-serial_inteface.so ../../tests
+				cp lib-C_wrapper-serial_interface.so ../../tests
 			fi
 			
 			cd ../../tests
@@ -66,8 +67,8 @@ do
 		
 		cd ../../
 		./install.sh 1 # Set the debug flag true
-		cp serial_interface/examples/python/lib-C_wrapper-serial_inteface.so  serial_interface/tests		
-		cd -
+		cp serial_interface/examples/python/lib-C_wrapper-serial_interface.so  serial_interface/tests		
+		cd -  
 
 	else
 		echo "Error: Unknown compilation method $compile"
@@ -141,6 +142,7 @@ for i in {0..3} # Cycle through APIs
 do
 	cd ../examples/${API[$i]}
 	make clean
+	rm -f *.so
 	cd ../../tests
 done
 

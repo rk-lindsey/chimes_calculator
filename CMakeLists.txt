@@ -102,22 +102,22 @@ install(TARGETS C_wrapper-serial_interface DESTINATION ${CMAKE_CURRENT_SOURCE_DI
 # Static: .a
 # Module: .so
 
-ADD_LIBRARY(lib-C_wrapper-direct_inteface MODULE
+ADD_LIBRARY(lib-C_wrapper-direct_interface MODULE
     ${CMAKE_CURRENT_SOURCE_DIR}/chimesFF/api/wrapper-C.cpp
     ${CMAKE_CURRENT_SOURCE_DIR}/chimesFF/src/chimesFF.cpp
 )
 
-set_target_properties(lib-C_wrapper-direct_inteface PROPERTIES PREFIX "") # Prevent CMake from prepending "lib" to libwrapper-C.so
+set_target_properties(lib-C_wrapper-direct_interface PROPERTIES PREFIX "") # Prevent CMake from prepending "lib" to libwrapper-C.so
 
 # Define properties for the executable target
 
-target_include_directories(lib-C_wrapper-direct_inteface PUBLIC ${CMAKE_CURRENT_SOURCE_DIR}/chimesFF/src/)
-target_include_directories(lib-C_wrapper-direct_inteface PUBLIC ${CMAKE_CURRENT_SOURCE_DIR}/chimesFF/api/)
-target_compile_features   (lib-C_wrapper-direct_inteface PUBLIC cxx_std_11)
-target_compile_options    (lib-C_wrapper-direct_inteface PUBLIC -O3)
-target_compile_options    (lib-C_wrapper-direct_inteface PUBLIC -fPIC)
+target_include_directories(lib-C_wrapper-direct_interface PUBLIC ${CMAKE_CURRENT_SOURCE_DIR}/chimesFF/src/)
+target_include_directories(lib-C_wrapper-direct_interface PUBLIC ${CMAKE_CURRENT_SOURCE_DIR}/chimesFF/api/)
+target_compile_features   (lib-C_wrapper-direct_interface PUBLIC cxx_std_11)
+target_compile_options    (lib-C_wrapper-direct_interface PUBLIC -O3)
+target_compile_options    (lib-C_wrapper-direct_interface PUBLIC -fPIC)
 
-install(TARGETS lib-C_wrapper-direct_inteface DESTINATION ${CMAKE_CURRENT_SOURCE_DIR}/chimesFF/examples/python/)
+install(TARGETS lib-C_wrapper-direct_interface DESTINATION ${CMAKE_CURRENT_SOURCE_DIR}/chimesFF/examples/python/)
 
 
 
@@ -125,25 +125,25 @@ install(TARGETS lib-C_wrapper-direct_inteface DESTINATION ${CMAKE_CURRENT_SOURCE
 # Executables/libraries for Python via the serial wrapper
 ############################################################
 
-ADD_LIBRARY(lib-C_wrapper-serial_inteface MODULE
+ADD_LIBRARY(lib-C_wrapper-serial_interface MODULE
     ${CMAKE_CURRENT_SOURCE_DIR}/serial_interface/api/wrapper-C.cpp
     ${CMAKE_CURRENT_SOURCE_DIR}/serial_interface/src/serial_chimes_interface.cpp
     ${CMAKE_CURRENT_SOURCE_DIR}/chimesFF/src/chimesFF.cpp    
 )
 
-set_target_properties(lib-C_wrapper-serial_inteface PROPERTIES PREFIX "") # Prevent CMake from prepending "lib" to libwrapper-C.so
+set_target_properties(lib-C_wrapper-serial_interface PROPERTIES PREFIX "") # Prevent CMake from prepending "lib" to libwrapper-C.so
 
 # Define properties for the executable target
 
-target_include_directories(lib-C_wrapper-serial_inteface PRIVATE ${CMAKE_CURRENT_SOURCE_DIR}/serial_interface/api/)
-target_include_directories(lib-C_wrapper-serial_inteface PRIVATE ${CMAKE_CURRENT_SOURCE_DIR}/serial_interface/src/)
-target_include_directories(lib-C_wrapper-serial_inteface PRIVATE ${CMAKE_CURRENT_SOURCE_DIR}/chimesFF/src/)
-#target_compile_definitions(lib-C_wrapper-serial_inteface PRIVATE DEBUG=0)
-target_compile_features   (lib-C_wrapper-serial_inteface PUBLIC cxx_std_11)
-target_compile_options    (lib-C_wrapper-serial_inteface PUBLIC -O3)
-target_compile_options    (lib-C_wrapper-serial_inteface PUBLIC -fPIC)
+target_include_directories(lib-C_wrapper-serial_interface PRIVATE ${CMAKE_CURRENT_SOURCE_DIR}/serial_interface/api/)
+target_include_directories(lib-C_wrapper-serial_interface PRIVATE ${CMAKE_CURRENT_SOURCE_DIR}/serial_interface/src/)
+target_include_directories(lib-C_wrapper-serial_interface PRIVATE ${CMAKE_CURRENT_SOURCE_DIR}/chimesFF/src/)
+#target_compile_definitions(lib-C_wrapper-serial_interface PRIVATE DEBUG=0)
+target_compile_features   (lib-C_wrapper-serial_interface PUBLIC cxx_std_11)
+target_compile_options    (lib-C_wrapper-serial_interface PUBLIC -O3)
+target_compile_options    (lib-C_wrapper-serial_interface PUBLIC -fPIC)
 
-install(TARGETS lib-C_wrapper-serial_inteface DESTINATION ${CMAKE_CURRENT_SOURCE_DIR}/chimesFF/examples/python/)
+install(TARGETS lib-C_wrapper-serial_interface DESTINATION ${CMAKE_CURRENT_SOURCE_DIR}/serial_interface/examples/python/)
 
 
 ############################################################

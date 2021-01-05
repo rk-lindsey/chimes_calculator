@@ -25,7 +25,7 @@ wrapper-C.o : $(WRAPPER_SRC)
 	
 	
 wrapper-C.so: 	
-	$(CXX) -shared -o lib-C_wrapper-serial_inteface.so wrapper-C.o serial_chimes_interface.o chimesFF.o	
+	$(CXX) -shared -o lib-C_wrapper-serial_interface.so wrapper-C.o serial_chimes_interface.o chimesFF.o	
 	
 clean:
 	rm -f *.o

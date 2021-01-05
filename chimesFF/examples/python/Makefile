@@ -15,7 +15,7 @@ wrapper-C.o : $(CC_WRAPPER_SRC) $(CC_WRAPPER_HDR) $(CHIMESFF_SRC)  $(CHIMESFF_HD
 	$(CXX) -c $(CC_WRAPPER_SRC) $(CHIMESFF_SRC) -I $(CC_LOC)/../../api/ -I $(CC_LOC)/../../src/  
 	
 wrapper-C.so: 	
-	$(CXX) -shared -o lib-C_wrapper-direct_inteface.so wrapper-C.o chimesFF.o
+	$(CXX) -shared -o lib-C_wrapper-direct_interface.so wrapper-C.o chimesFF.o
 
 	
 clean:
