@@ -34,6 +34,7 @@ Active Learning                #. CO-2
 ChIMES+MSST                    #. HN-1
                                #. DNTF-DFTB
 =============================  =================
+
 ..                                #. DNTF-1
 
 
@@ -85,7 +86,8 @@ CO-1             (`link <https://doi.org/10.1063/5.0012840>`_)                R.
 CO-2             (`link <https://doi.org/10.1063/5.0021965>`_)                R.K. Lindsey*, L.E. Fried, N. Goldman, S. Bastea, `J. Chem. Phys.` **153** 134117 (2020).
 COND-1           (`link <https://doi.org/10.1038/s41467-019-14034-z>`_)       M.R. Armstrong*, R.K. Lindsey*, N. Goldman, M.H. Nielsen, E. Stavrou, L.E. Fried, J.M. Zaug, S. Bastea*, `Nat, Commun.` **11** 353 (2020).
 HN-1             (`link <https://doi.org/10.1063/5.0029011>`_)                H. Pham*, R.K. Lindsey, L.E. Fried, N. Goldman, `J. Chem. Phys.` **153** 224102 (2020).
-DNTF-DFTB        (`link <https://doi.org/?????????????????>`_)                R.K. Lindsey*, S. Bastea*, N. Goldman, L. Fried, In Prep.
-TiH-DFTB         (`link <https://doi.org/?????????????????>`_)                N. Goldman*, K. Kweon, R. K. Lindsey, L. E. Fried, T. W. Heo, B, Sadigh, P. Soderlind, A. Landa, A. Perron, J. Jeffries, In Prep.
+DNTF-DFTB        N/A                                                          R.K. Lindsey*, S. Bastea*, N. Goldman, L. Fried, In Prep.
+TiH-DFTB         N/A                                                          N. Goldman*, K. Kweon, R. K. Lindsey, L. E. Fried, T. W. Heo, B, Sadigh, P. Soderlind, A. Landa, A. Perron, J. Jeffries, In Prep.
 ==============   ==========================================================   ==============
-.. DNTF-1 DNTF      (`link <https://doi.org/?????????????????>`_)                R.K. Lindsey*, S. Bastea*, N. Goldman, L. Fried, ???.
+
+.. .. DNTF-1 DNTF      (`link <https://doi.org/?????????????????>`_)                R.K. Lindsey*, S. Bastea*, N. Goldman, L. Fried, ???.
