@@ -142,7 +142,7 @@ for i in {0..3} # Cycle through APIs
 do
 	cd ../examples/${API[$i]}
 	make clean
-	rm -f *.so
+	rm -f *.so *.a
 	cd ../../tests
 done
 
