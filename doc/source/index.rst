@@ -17,13 +17,14 @@ The ChIMES Calculator is developed at Lawrence Livermore National Laboratory wit
 `Note: This documentation is under still construction.`
 
 .. toctree::
-   :maxdepth: 2
+   :maxdepth: 1
    
    chimesFF
    serial_interface
    etc
    force_fields
    units
+   utils
    citing
    legal
 
