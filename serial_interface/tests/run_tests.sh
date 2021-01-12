@@ -1,5 +1,17 @@
 #!/bin/bash
 
+# ChIMES Calculator test suite
+#
+# For (relatively) quick and dirty testing, run with:
+# ./run_tests.sh SHORT
+# Otherwise, run with:
+# ./run_tests.sh
+
+
+##################
+
+STYLE=${1-"LONG"} # By default,run "LONG" test, but if user runs with "./run_tests SHORT, runs short tests
+
 #APIS=$1
 #TESTS=$2
 PYTH3=python3.7 # $3
@@ -17,73 +29,126 @@ FFS[8]="test_params.CHON.txt"                                                ; C
 NO_TESTS=${#FFS[@]}
 LOC=`pwd`
 
-API[0]="cpp"    ; EXE[0]="test-CPP"; XTRA[0]="2"
-API[1]="c"      ; EXE[1]="test-C"  ; XTRA[1]="2"
-API[2]="fortran"; EXE[2]="test-F"  ; XTRA[2]="2"
-API[3]="python" ; EXE[3]="main.py" ; XTRA[3]="2 1"
+API[0]="cpp"    ; EXE[0]="CPP-interface"                    ; XTRA[0]="2"
+API[1]="c"      ; EXE[1]="C_wrapper-serial_interface"       ; XTRA[1]="2"
+API[2]="fortran"; EXE[2]="fortran_wrapper-serial_interface" ; XTRA[2]="2"
+API[3]="python" ; EXE[3]="main.py"                          ; XTRA[3]="2 1"
 
-for i in {0..3}
+echo "Running $STYLE tests"
+
+for compile in CMAKE MAKEFILE
 do
-	cd ../examples/${API[$i]}
+	echo "Testing compilation type: $compile"
+
+	# Do the compilation
+
+	if [[ $compile == "MAKEFILE" ]]; then
 	
-	if [[ "${API[$i]}" != "python" ]] ; then
+		for i in {0..3} # Cycle through APIs
+		do
+			cd ../examples/${API[$i]}	
 	
-		make all DEBUG=1
+			echo "Compiling for API ${API[$i]}"
+			echo ""
+
+			if [[ "${API[$i]}" != "python" ]] ; then
+	
+				make all DEBUG=1
+			else
+				make all
+				cp lib-C_wrapper-serial_interface.so ../../tests
+			fi
+			
+			cd ../../tests
+			
+		done		
+	
+	elif [[ $compile == "CMAKE" ]] ; then
+		
+		cd ../../
+		./install.sh 1 # Set the debug flag true
+		cp serial_interface/examples/python/lib-C_wrapper-serial_interface.so  serial_interface/tests		
+		cd -  
+
 	else
-		make all
-		cp libwrapper-C.so ../../tests
+		echo "Error: Unknown compilation method $compile"
+		echo "Acceptable values are MAKEFILE and CMAKE"
+		echo "Check logic in run_test.sh"
+		exit 0
 	fi
 	
-	cd ../../tests
-	
-	idx=1
-
-	for ((j=0;j<NO_TESTS;j++))
-	do
-		echo "Working on Test $idx of $NO_TESTS for API ${API[$i]}"
+	# Run the tasks
 		
-		for ((k=0; k<10; k++))
+	for i in {0..3} # Cycle through APIs
+	do	
+		
+		idx=1
+
+		for ((j=0;j<NO_TESTS;j++))
 		do
-			CFG=${CFGS[$j]}
-			CFG_PREFIX="${CFG%%_#*}_#"
-			CFG_SUFFIX=${CFG##*000}
+			echo "Working on Test $idx of $NO_TESTS for API ${API[$i]}"
 			
-			CFG=${CFG_PREFIX}00${k}${CFG_SUFFIX}
+			for ((k=0; k<10; k++))
+			do
+				CFG=${CFGS[$j]}
+				CFG_PREFIX="${CFG%%_#*}_#"
+				CFG_SUFFIX=${CFG##*000}
+				
+				CFG=${CFG_PREFIX}00${k}${CFG_SUFFIX}
+				
+				if [ ! -f configurations/$CFG ] ; then
+					continue
+				fi
+				
+				echo "		...Running $CFG"
+				
+				# Run the test
+				
+				if [[ "${API[$i]}" != "python" ]] ; then
 			
-			if [ ! -f configurations/$CFG ] ; then
-				continue
-			fi
-			
-			echo "		...Running $CFG"
-			
-			# Run the test
-			
-			if [[ "${API[$i]}" != "python" ]] ; then
-		
-				../examples/${API[$i]}/${EXE[$i]} force_fields/${FFS[$j]} configurations/$CFG ${XTRA[$i]} > /dev/null
-			else
-				${PYTH3} ../examples/${API[$i]}/${EXE[$i]} force_fields/${FFS[$j]} configurations/$CFG ${XTRA[$i]} ${LOC}/../api > /dev/null
-			fi
-			
-			# Compare results against expected results (expected_output/${FFS[$j]}.$CFG.dat)
-			
-			paste debug.dat expected_output/${FFS[$j]}.$CFG.dat > san.dat
+					../examples/${API[$i]}/${EXE[$i]} force_fields/${FFS[$j]} configurations/$CFG ${XTRA[$i]} > /dev/null
+				else
+					${PYTH3} ../examples/${API[$i]}/${EXE[$i]} force_fields/${FFS[$j]} configurations/$CFG ${XTRA[$i]} ${LOC}/../api > /dev/null
+				fi
+				
+				# Compare results against expected results (expected_output/${FFS[$j]}.$CFG.dat)
+				
+				paste debug.dat expected_output/${FFS[$j]}.$CFG.dat > san.dat
 
-			# Print findings
+				# Print findings
+				
+				${PYTH3} compare.py san.dat 
+				
+				if [[ $STYLE == "SHORT" ]] ; then
+					break
+				fi
+				
+			done
 			
-			${PYTH3} compare.py san.dat 
+			echo "	Test $idx of $NO_TESTS for API ${API[$i]} complete"
+
+			let idx=idx+1
 			
 		done
-		
-		echo "	Test $idx of $NO_TESTS for API ${API[$i]} complete"
 
-		let idx=idx+1
 	done
-	
-	cd ../examples/${API[$i]}
-	make clean
-	cd ../../tests
 
 done
 
-rm -f debug.dat san.dat libwrapper-C.so
+
+# Clean up
+
+for i in {0..3} # Cycle through APIs
+do
+	cd ../examples/${API[$i]}
+	make clean
+	rm -f *.so *.a
+	cd ../../tests
+done
+
+rm -f debug.dat san.dat *.so
+
+cd ../../
+./uninstall.sh
+
+

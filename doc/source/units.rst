@@ -1,6 +1,8 @@
+.. _page-units:
+
 ChIMES Units
 =====================
-=====================
+
 
 ChIMES uses the following base units:
 
