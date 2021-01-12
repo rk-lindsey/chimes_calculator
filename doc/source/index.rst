@@ -25,6 +25,7 @@ The ChIMES Calculator is developed at Lawrence Livermore National Laboratory wit
    etc
    force_fields
    units
+   utils
    citing
    contributing
    legal
