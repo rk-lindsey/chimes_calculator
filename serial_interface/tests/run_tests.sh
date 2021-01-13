@@ -35,6 +35,7 @@ API[2]="fortran"; EXE[2]="fortran_wrapper-serial_interface" ; XTRA[2]="2"
 API[3]="python" ; EXE[3]="main.py"                          ; XTRA[3]="2 1"
 
 echo "Running $STYLE tests"
+date
 
 for compile in CMAKE MAKEFILE
 do
