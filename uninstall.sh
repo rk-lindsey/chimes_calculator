@@ -11,6 +11,8 @@ do
 	rm -f $i
 done
 
+rm -rf chimesFF/api/__pycache__/ chimesFF/api/wrapper_py.pyc
+
 echo "Removing directory build"
 
 rm -rf build
