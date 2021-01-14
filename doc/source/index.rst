@@ -20,6 +20,7 @@ The ChIMES Calculator is developed at Lawrence Livermore National Laboratory wit
    :maxdepth: 1
    
    getting_started
+   releases
    chimesFF
    serial_interface
    etc
