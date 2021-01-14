@@ -546,9 +546,19 @@ Implementation Examples
 
 The following codes demonstrates how ``chimesFF.{h,cpp}`` can be used to obtain the overall stress tensor, energy, and per-atom forces for a given system configuration using C, C++ Fortran, and Python. See the ``main.*`` files in each corresponding subdirectory of ``chimesFF/examples`` for further implementation details. Note that sample system configurations (i.e. ``*xyz`` files) and parameter files can be found in ``serial_interface/test/configurations`` and ``serial_interface/test/force_fields``, respectively. For user generated tests, note that ``*.xyz`` files must provide lattice vectors in the comment line, e.g. lx 0.0 0.0 0.0 ly 0.0 0.0 0.0 lz. Click :ref:`here <page-units>` for an overview of ChIMES units.
 
-Disclaimer: These codes are for demonstrative purposes only and come with no guarantees.
+.. Note::
 
-Note: All example executables can be compiled at once via ``./install.sh`` from the ``chimes_calculator`` base directory, and similarly uninstalled via ``./uninstall.sh``. However, the examples below compile via the user-generated Makefiles located in each ``examples`` subdirectory, for demonstrative purposes.
+    All implementation examples are intended to be run on Unix-based systems (e.g. Linux, OSX).
+
+
+.. Warning::
+
+    These codes are for demonstrative purposes only and come with no guarantees.
+
+
+.. Note::
+
+    All example executables can be compiled at once via ``./install.sh`` from the ``chimes_calculator`` base directory, and similarly uninstalled via ``./uninstall.sh``. However, the examples below compile via the user-generated Makefiles located in each ``examples`` subdirectory, for demonstrative purposes.
 
 
 * **C Example:** The ``main`` function of this example includes the C API, ``wrapper-C.{h,cpp}``, which creates a global static pointer to a ``chimesFF`` object. 
