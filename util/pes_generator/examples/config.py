@@ -21,7 +21,11 @@ TRIPSTART  = [1.0,  1.0 ] # Smallest distance for scan
 TRIPSTOP   = [4.0,  4.0 ] # Largest distance for scan
 TRIPSTEP   = [0.10, 0.10] # Step size for scan
 
-QUADTYPES  = [7   ] # Triplet type index for scans, i.e. number after "TRIPLETTYPE PARAMS:" in parameter file
-QUADSTART  = [1.0 ] # Smallest distance for scan
-QUADSTOP   = [4.0 ] # Largest distance for scan
-QUADSTEP   = [0.10] # Step size for scan
+# The example parameter file doesn't contain four body interactions, so the following is not needed.
+# If four body scans are desired, keep in mind a small step size will take a long time to run
+# Start with something very large to get a handle on run time, and modify from there
+#
+#QUADTYPES  = [7   ] # Triplet type index for scans, i.e. number after "TRIPLETTYPE PARAMS:" in parameter file
+#QUADSTART  = [1.0 ] # Smallest distance for scan
+#QUADSTOP   = [4.0 ] # Largest distance for scan
+#QUADSTEP   = [1.00] # Step size for scan
