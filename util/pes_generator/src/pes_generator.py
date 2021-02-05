@@ -101,6 +101,12 @@ dummy_force  = [[0.0, 0.0, 0.0], [0.0, 0.0, 0.0]]
 dummy_stress = [0.0]*9
 
 for i in range(len(config.PAIRTYPES)): # Iterate over 2-body types
+        
+    if len(pair_types)-1 < config.PAIRTYPES[i]:
+        print("ERROR: Read",len(pair_types), "2-body types from the parameter file")
+        print("       A PES scan was requested for type", int(config.PAIRTYPES[i]))
+        print("       Check the config and parameter files")
+        exit()        
 
     print("Writing scanfile for pair type",str(i))
 
@@ -130,11 +136,11 @@ dummy_rij    = [[0.0, 0.0, 0.0], [0.0, 0.0, 0.0], [0.0, 0.0, 0.0]]
 dummy_force  = [[0.0, 0.0, 0.0], [0.0, 0.0, 0.0], [0.0, 0.0, 0.0]]
 dummy_stress = [0.0]*9
 
-for i in range(len(config.QUADTYPES)): # Iterate over 3-body types
+for i in range(len(config.TRIPTYPES)): # Iterate over 3-body types
 
-    if len(trip_types) < config.TRIPSTOP[i]:
+    if len(trip_types)-1 < config.TRIPTYPES[i]:
         print("ERROR: Read",len(trip_types), "3-body types from the parameter file")
-        print("       A PES scan was requested for type", int(config.TRIPSTOP[i]))
+        print("       A PES scan was requested for type", int(config.TRIPTYPES[i]))
         print("       Check the config and parameter files")
         exit()
 
@@ -144,32 +150,32 @@ for i in range(len(config.QUADTYPES)): # Iterate over 3-body types
     scanfile_1 = open("chimes_scan_3b.type_"   + str(i) + ".dat",'w')
     scanfile_2 = open("chimes_scan_2+3b.type_" + str(i) + ".dat",'w')
     
-    scanfile_1.write("# " + str(config.QUADSTART[i]) + " " + str(config.QUADSTOP[i]) + " " + str(config.QUADSTEP[i]) + "\n")
-    scanfile_2.write("# " + str(config.QUADSTART[i]) + " " + str(config.QUADSTOP[i]) + " " + str(config.QUADSTEP[i]) + "\n")
+    scanfile_1.write("# " + str(config.TRIPSTART[i]) + " " + str(config.TRIPSTOP[i]) + " " + str(config.TRIPSTEP[i]) + "\n")
+    scanfile_2.write("# " + str(config.TRIPSTART[i]) + " " + str(config.TRIPSTOP[i]) + " " + str(config.TRIPSTEP[i]) + "\n")
     
     
-    steps = np.arange(config.QUADSTART[i], config.QUADSTOP[i], config.QUADSTEP[i], dtype=float)
+    steps = np.arange(config.TRIPSTART[i], config.TRIPSTOP[i], config.TRIPSTEP[i], dtype=float)
     
     for j in range(steps.size):  # r_ij distance
         
         for k in range(steps.size): # r_ik distance
         
-            for l in range(steps.size): # r_jk distancd
+            for l in range(steps.size): # r_jk distance
             
                 energy       = 0.0
                 dummy_force  = [[0.0, 0.0, 0.0], [0.0, 0.0, 0.0], [0.0, 0.0, 0.0]] # Need to re-declare because compute_2b changes its dimension
                 
                 # Get/write the 3-body only energy
                 
-                dummy_force, dummy_stress, energy = wrapper_py.chimes_compute_3b_props([steps[j], steps[k], steps[l]], dummy_rij, trip_types[config.QUADTYPES[i]], dummy_force, dummy_stress, energy)
+                dummy_force, dummy_stress, energy = wrapper_py.chimes_compute_3b_props([steps[j], steps[k], steps[l]], dummy_rij, trip_types[config.TRIPTYPES[i]], dummy_force, dummy_stress, energy)
         
                 scanfile_1.write(str(steps[j]) + " " + str(steps[k]) + " " + str(steps[l]) + " " + str(energy) + '\n')
                 
                 # Add/write the 2-body contributions
         
-                dummy_force, dummy_stress, energy = wrapper_py.chimes_compute_2b_props(steps[j], [0.0, 0.0,steps[j]], [trip_types[config.QUADTYPES[i]][0], trip_types[config.QUADTYPES[i]][1]], dummy_force, dummy_stress, energy)
-                dummy_force, dummy_stress, energy = wrapper_py.chimes_compute_2b_props(steps[j], [0.0, 0.0,steps[k]], [trip_types[config.QUADTYPES[i]][0], trip_types[config.QUADTYPES[i]][2]], dummy_force, dummy_stress, energy)
-                dummy_force, dummy_stress, energy = wrapper_py.chimes_compute_2b_props(steps[j], [0.0, 0.0,steps[l]], [trip_types[config.QUADTYPES[i]][1], trip_types[config.QUADTYPES[i]][2]], dummy_force, dummy_stress, energy)
+                dummy_force, dummy_stress, energy = wrapper_py.chimes_compute_2b_props(steps[j], [0.0, 0.0,steps[j]], [trip_types[config.TRIPTYPES[i]][0], trip_types[config.TRIPTYPES[i]][1]], dummy_force, dummy_stress, energy)
+                dummy_force, dummy_stress, energy = wrapper_py.chimes_compute_2b_props(steps[j], [0.0, 0.0,steps[k]], [trip_types[config.TRIPTYPES[i]][0], trip_types[config.TRIPTYPES[i]][2]], dummy_force, dummy_stress, energy)
+                dummy_force, dummy_stress, energy = wrapper_py.chimes_compute_2b_props(steps[j], [0.0, 0.0,steps[l]], [trip_types[config.TRIPTYPES[i]][1], trip_types[config.TRIPTYPES[i]][2]], dummy_force, dummy_stress, energy)
         
                 scanfile_2.write(str(steps[j]) + " " + str(steps[k]) + " " + str(steps[l]) + " " + str(energy) + '\n')
     
@@ -185,9 +191,9 @@ dummy_stress = [0.0]*9
 
 for i in range(len(config.QUADTYPES)): # Iterate over 3-body types
 
-    if len(quad_types) < config.QUADSTOP[i]:
+    if len(quad_types)-1 < config.QUADTYPES[i]:
         print("ERROR: Read",len(quad_types), "4-body types from the parameter file")
-        print("       A PES scan was requested for type", int(config.QUADSTOP[i]))
+        print("       A PES scan was requested for type", int(config.QUADTYPES[i]))
         print("       Check the config and parameter files")
         exit()
 
@@ -210,7 +216,7 @@ for i in range(len(config.QUADTYPES)): # Iterate over 3-body types
             
                 for m in range(steps.size): # r_jk distance
                     
-                    for n in range(steps.size): # r_jk distance
+                    for n in range(steps.size): # r_jl distance
                         
                         for o in range(steps.size): # r_kl distance
             
@@ -224,14 +230,21 @@ for i in range(len(config.QUADTYPES)): # Iterate over 3-body types
         
                             scanfile_1.write(str(steps[j]) + " " + str(steps[k]) + " " + str(steps[l]) + " " + str(steps[m]) + " " + str(steps[n]) + " " + str(steps[o]) + " " + str(energy) +'\n')
                             
+                            # Add/write the 3-body contributions
+
+                            dummy_force, dummy_stress, energy = wrapper_py.chimes_compute_3b_props([steps[j], steps[k], steps[m]], dummy_rij[0:3], [quad_types[config.QUADTYPES[i]][0],quad_types[config.QUADTYPES[i]][1],quad_types[config.QUADTYPES[i]][2]], dummy_force, dummy_stress, energy)
+                            dummy_force, dummy_stress, energy = wrapper_py.chimes_compute_3b_props([steps[j], steps[l], steps[n]], dummy_rij[0:3], [quad_types[config.QUADTYPES[i]][0],quad_types[config.QUADTYPES[i]][1],quad_types[config.QUADTYPES[i]][3]], dummy_force, dummy_stress, energy)
+                            dummy_force, dummy_stress, energy = wrapper_py.chimes_compute_3b_props([steps[k], steps[l], steps[n]], dummy_rij[0:3], [quad_types[config.QUADTYPES[i]][0],quad_types[config.QUADTYPES[i]][2],quad_types[config.QUADTYPES[i]][3]], dummy_force, dummy_stress, energy)
+                            dummy_force, dummy_stress, energy = wrapper_py.chimes_compute_3b_props([steps[m], steps[o], steps[n]], dummy_rij[0:3], [quad_types[config.QUADTYPES[i]][1],quad_types[config.QUADTYPES[i]][2],quad_types[config.QUADTYPES[i]][3]], dummy_force, dummy_stress, energy)
+
                             # Add/write the 2-body contributions
         
-                            dummy_force, dummy_stress, energy = wrapper_py.chimes_compute_2b_props(steps[j], [0.0, 0.0,steps[j]], [trip_types[config.QUADTYPES[i]][0], trip_types[config.QUADTYPES[i]][1]], dummy_force, dummy_stress, energy)
-                            dummy_force, dummy_stress, energy = wrapper_py.chimes_compute_2b_props(steps[j], [0.0, 0.0,steps[k]], [trip_types[config.QUADTYPES[i]][0], trip_types[config.QUADTYPES[i]][2]], dummy_force, dummy_stress, energy)
-                            dummy_force, dummy_stress, energy = wrapper_py.chimes_compute_2b_props(steps[j], [0.0, 0.0,steps[l]], [trip_types[config.QUADTYPES[i]][0], trip_types[config.QUADTYPES[i]][3]], dummy_force, dummy_stress, energy)
-                            dummy_force, dummy_stress, energy = wrapper_py.chimes_compute_2b_props(steps[j], [0.0, 0.0,steps[j]], [trip_types[config.QUADTYPES[i]][1], trip_types[config.QUADTYPES[i]][2]], dummy_force, dummy_stress, energy)
-                            dummy_force, dummy_stress, energy = wrapper_py.chimes_compute_2b_props(steps[j], [0.0, 0.0,steps[k]], [trip_types[config.QUADTYPES[i]][1], trip_types[config.QUADTYPES[i]][3]], dummy_force, dummy_stress, energy)
-                            dummy_force, dummy_stress, energy = wrapper_py.chimes_compute_2b_props(steps[j], [0.0, 0.0,steps[l]], [trip_types[config.QUADTYPES[i]][2], trip_types[config.QUADTYPES[i]][3]], dummy_force, dummy_stress, energy)
+                            dummy_force, dummy_stress, energy = wrapper_py.chimes_compute_2b_props(steps[j], [0.0, 0.0,steps[j]], [quad_types[config.QUADTYPES[i]][0], quad_types[config.QUADTYPES[i]][1]], dummy_force, dummy_stress, energy)
+                            dummy_force, dummy_stress, energy = wrapper_py.chimes_compute_2b_props(steps[j], [0.0, 0.0,steps[k]], [quad_types[config.QUADTYPES[i]][0], quad_types[config.QUADTYPES[i]][2]], dummy_force, dummy_stress, energy)
+                            dummy_force, dummy_stress, energy = wrapper_py.chimes_compute_2b_props(steps[j], [0.0, 0.0,steps[l]], [quad_types[config.QUADTYPES[i]][0], quad_types[config.QUADTYPES[i]][3]], dummy_force, dummy_stress, energy)
+                            dummy_force, dummy_stress, energy = wrapper_py.chimes_compute_2b_props(steps[j], [0.0, 0.0,steps[j]], [quad_types[config.QUADTYPES[i]][1], quad_types[config.QUADTYPES[i]][2]], dummy_force, dummy_stress, energy)
+                            dummy_force, dummy_stress, energy = wrapper_py.chimes_compute_2b_props(steps[j], [0.0, 0.0,steps[k]], [quad_types[config.QUADTYPES[i]][1], quad_types[config.QUADTYPES[i]][3]], dummy_force, dummy_stress, energy)
+                            dummy_force, dummy_stress, energy = wrapper_py.chimes_compute_2b_props(steps[j], [0.0, 0.0,steps[l]], [quad_types[config.QUADTYPES[i]][2], quad_types[config.QUADTYPES[i]][3]], dummy_force, dummy_stress, energy)
                     
                             scanfile_2.write(str(steps[j]) + " " + str(steps[k]) + " " + str(steps[l]) + " " + str(steps[m]) + " " + str(steps[n]) + " " + str(steps[o]) + " " + str(energy) +'\n')
     

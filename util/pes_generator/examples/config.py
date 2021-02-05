@@ -9,7 +9,7 @@
 
 CHMS_REPO  = "/Users/lindsey11/My_codes/Forks/chimes_calculator-fork/"
 
-PARAM_FILE = "params.txt"
+PARAM_FILE = "/Users/lindsey11/My_codes/Forks/chimes_calculator-fork/serial_interface/tests/force_fields/test_params.CHON.txt"
 
 PAIRTYPES  = [0,    3,    5   ] # Pair type index for scans, i.e. number after "PAIRTYPE PARAMS:" in parameter file
 PAIRSTART  = [1.0,  1.0,  1.0 ] # Smallest distance for scan
