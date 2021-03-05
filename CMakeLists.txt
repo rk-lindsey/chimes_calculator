@@ -8,7 +8,8 @@ project(ChIMES_Calculator
 	VERSION 1.0
 	DESCRIPTION "Utilities to compute ChIMES interactions"
 	LANGUAGES CXX C Fortran)
-    
+
+set(DEBUG 0 CACHE STRING "Debug level")
 
 set(CMAKE_SKIP_INSTALL_ALL_DEPENDENCY true)
 
@@ -27,7 +28,7 @@ add_executable(CPP-interface
     ${CMAKE_CURRENT_SOURCE_DIR}/chimesFF/src/chimesFF.cpp
 )
 
-# install(TARGETS myapp DESTINATION bin)    
+# install(TARGETS myapp DESTINATION bin)
 
 
 # Define properties for the executable target
@@ -128,7 +129,7 @@ install(TARGETS lib-C_wrapper-direct_interface DESTINATION ${CMAKE_CURRENT_SOURC
 ADD_LIBRARY(lib-C_wrapper-serial_interface MODULE
     ${CMAKE_CURRENT_SOURCE_DIR}/serial_interface/api/wrapper-C.cpp
     ${CMAKE_CURRENT_SOURCE_DIR}/serial_interface/src/serial_chimes_interface.cpp
-    ${CMAKE_CURRENT_SOURCE_DIR}/chimesFF/src/chimesFF.cpp    
+    ${CMAKE_CURRENT_SOURCE_DIR}/chimesFF/src/chimesFF.cpp
 )
 
 set_target_properties(lib-C_wrapper-serial_interface PROPERTIES PREFIX "") # Prevent CMake from prepending "lib" to libwrapper-C.so
@@ -201,10 +202,7 @@ target_compile_options    (fortran_wrapper-serial_interface PRIVATE -std=f2003)
 #if(${CMAKE_SYSTEM_NAME} MATCHES "Darwin")
 #    target_compile_options(fortran_wrapper-serial_interface PRIVATE -lc++)
 #else()
-#    target_compile_options(fortran_wrapper-serial_interface PRIVATE -stdc++)    
+#    target_compile_options(fortran_wrapper-serial_interface PRIVATE -stdc++)
 #endif()
 
 install(TARGETS fortran_wrapper-serial_interface DESTINATION ${CMAKE_CURRENT_SOURCE_DIR}/serial_interface/examples/fortran/ OPTIONAL)
-
-
-
