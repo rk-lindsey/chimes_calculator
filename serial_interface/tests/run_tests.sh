@@ -6,12 +6,14 @@
 # ./run_tests.sh SHORT
 # Otherwise, run with:
 # ./run_tests.sh
+# To specify an install prefix for the cmake tests, run with:
+# ./run_tests.sh <SHORT or LONG> <install prefix full path>
 
 
 ##################
 
 STYLE=${1-"LONG"} # By default,run "LONG" test, but if user runs with "./run_tests SHORT, runs short tests
-
+PREFX=${2-""}     # By default, don't set any special install prefix
 #APIS=$1
 #TESTS=$2
 PYTH3=python3.7 # $3
@@ -67,8 +69,8 @@ do
 	elif [[ $compile == "CMAKE" ]] ; then
 		
 		cd ../../
-		./install.sh 1 # Set the debug flag true
-		cp serial_interface/examples/python/lib-C_wrapper-serial_interface.so  serial_interface/tests		
+		./install.sh 1 $PREFX # Set the debug flag true
+		cp build/lib-C_wrapper-serial_interface.so  serial_interface/tests		
 		cd -  
 
 	else
@@ -80,7 +82,7 @@ do
 	
 	# Run the tasks
 		
-	for i in {0..3} # Cycle through APIs
+	for i in 3 {0..3} # Cycle through APIs
 	do	
 		
 		idx=1
@@ -106,11 +108,22 @@ do
 				# Run the test
 				
 				if [[ "${API[$i]}" != "python" ]] ; then
-			
-					../examples/${API[$i]}/${EXE[$i]} force_fields/${FFS[$j]} configurations/$CFG ${XTRA[$i]} > /dev/null
-				else
-					${PYTH3} ../examples/${API[$i]}/${EXE[$i]} force_fields/${FFS[$j]} configurations/$CFG ${XTRA[$i]} ${LOC}/../api > /dev/null
+				
+					if [[ $compile == "CMAKE" ]] ; then
+						../../build/${EXE[$i]} force_fields/${FFS[$j]} configurations/$CFG ${XTRA[$i]} > /dev/null
+					else
+						../examples/${API[$i]}/${EXE[$i]} force_fields/${FFS[$j]} configurations/$CFG ${XTRA[$i]} > /dev/null
+					fi
+					
+				else				
+					#if [[ $compile == "CMAKE" ]] ; then
+					#	../../build/${EXE[$i]} force_fields/${FFS[$j]} configurations/$CFG ${XTRA[$i]} ${LOC}/../api > /dev/null
+					#else
+						${PYTH3} ../examples/${API[$i]}/${EXE[$i]} force_fields/${FFS[$j]} configurations/$CFG ${XTRA[$i]} ${LOC}/../api > /dev/null
+					#fi					
 				fi
+				
+
 				
 				# Compare results against expected results (expected_output/${FFS[$j]}.$CFG.dat)
 				
@@ -150,6 +163,6 @@ done
 rm -f debug.dat san.dat *.so
 
 cd ../../
-./uninstall.sh
+./uninstall.sh $PREFX
 
 
