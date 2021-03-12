@@ -1386,8 +1386,8 @@ inline void chimesFF::get_penalty(const double dx, const int & pair_idx, double 
         
     if ( r_penalty > 0.0 ) 
     {        
-        E_penalty    = r_penalty * r_penalty * r_penalty * penalty_params[0];
-        force_scalar = 3.0 * r_penalty * r_penalty * penalty_params[0];
+        E_penalty    = r_penalty * r_penalty * r_penalty * penalty_params[1];
+        force_scalar = 3.0 * r_penalty * r_penalty * penalty_params[1];
         
         if (rank == 0)
         {
