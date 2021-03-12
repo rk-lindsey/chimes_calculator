@@ -12,7 +12,7 @@ The **Ch**\ ebyshev **I**\ nteraction **M**\ odel for **E**\ fficient **S**\ imu
 
 The ChIMES calculator comprises a flexible tool set for evaluating ChIMES interactions (e.g. in simulations, single point calculations, etc). Users have the option of directly embedding the ChIMES calculator within their codes (e.g. see ''The ChIMES Calculator,'' for advanced users), or evaluating interactions through the beginner-friendly serial interface, each of which have Python, C++, C, and Fortran API's. Files necessary for linking to popular simulation codes are being continually added with ancillary support. For more information see the links below.
 
-The ChIMES Calculator is developed at Lawrence Livermore National Laboratory with funding from the US Department of Energy (DOE), and is open source, distributed freely under the terms of the GPL-2.0 License.
+The ChIMES Calculator is developed at Lawrence Livermore National Laboratory with funding from the US Department of Energy (DOE), and is open source, distributed under the terms of the LGPL v3.0 License.
 
 `Note: This documentation is under still construction.`
 
