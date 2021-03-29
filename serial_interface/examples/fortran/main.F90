@@ -1,19 +1,17 @@
 ! ChIMES Calculator
 ! Copyright (C) 2020 Rebecca K. Lindsey, Nir Goldman, and Laurence E. Fried
-! Contributing Author:  Nir Goldman (2020) 
+! Contributing Author:  Nir Goldman (2020)
 
       program test_F_api
-      use wrapper
+      use chimes_serial
       use, intrinsic :: ISO_C_binding
       implicit none
-      integer io_num, stat
+      integer io_num
       double precision, parameter :: GPa = 6.9479 ! convert kcal/mol.A^3 to GPa
-      character(C_char), dimension(80) :: c_file
-      character(C_char), dimension(80) :: dummy_var
-      character(80) :: coord_file, param_file
-      CHARACTER ( len = 100 ) :: wq_char
-      integer :: i, j, k, l, natom, ns
-      real(C_double) ::   lx, ly, lz
+      character(kind=c_char, len=1024) :: c_file
+      character(1024) :: coord_file, param_file
+      CHARACTER (1024) :: wq_char
+      integer :: i, natom, ns
       real(C_double) :: stress(9)
       real(C_double) :: energy
       real(C_double) :: ca(3), cb(3), cc(3)
@@ -21,7 +19,6 @@
       character(len=10), allocatable, target :: atom_type(:), c_atom(:)
       character(len=2) :: atom
       TYPE(C_PTR), allocatable, dimension(10) :: stringPtr(:)
-      integer lenstr
 
       io_num = command_argument_count()
       if (io_num .lt. 2) then
@@ -29,12 +26,12 @@
         print*,"Exiting code.\n"
         STOP
       endif
-      
+
       call GET_COMMAND_ARGUMENT(1, wq_char)
       param_file = trim(wq_char)
       call GET_COMMAND_ARGUMENT(2, wq_char)
-      coord_file = trim(wq_char)  
-      
+      coord_file = trim(wq_char)
+
       open (unit=10, status='old', file=coord_file)
       read(10,*)natom
       read(10,*)ca(1),ca(2),ca(3),cb(1),cb(2),cb(3),cc(1),cc(2),cc(3)
@@ -62,7 +59,7 @@
       ! initialize system energy
       energy = 0d0
       call f_set_chimes()
-      c_file = string2Cstring(param_file)
+      c_file = string_to_cstring(param_file)
       call f_init_chimes(c_file,  0) ! last '0' is the rank of the process
       stress(:) = 0d0
       do ns = 1, natom
@@ -87,9 +84,9 @@
          print '(F15.6)',fy(i)
          print '(F15.6)',fz(i)
       enddo
-      
+
 #if DEBUG==1
-      
+
       open (unit = 20, status = 'replace', file='debug.dat')
       write(20,'(F15.6)') energy
       write(20,'(F15.6)') stress(1)*GPa
@@ -104,6 +101,6 @@
          write(20,'(E15.6)') fz(i)
       enddo
       close(20)
-#endif 
+#endif
 
       end program
