@@ -42,10 +42,10 @@ if not os.path.exists(config.CHMS_REPO + "/chimesFF/api/wrapper_py.py"):
     print("       Check CHMS_REPO path provided in config.py. Full paths must be used.")
     exit(0)    
     
-if not os.path.exists(config.CHMS_REPO + "/chimesFF/examples/python/lib-C_wrapper-direct_interface.so"):
+if not os.path.exists(config.CHMS_REPO + "/build/lib-C_wrapper-direct_interface.so"):
     
     print("Error: Cannot find chimes_calculator C-wrapper library file")
-    print("       Searched for: " + config.CHMS_REPO + "/chimesFF/examples/python/lib-C_wrapper-direct_interface.so")
+    print("       Searched for: " + config.CHMS_REPO + "/build/lib-C_wrapper-direct_interface.so")
     print("       Check CHMS_REPO path provided in config.py. Full paths must be used.") 
     print("       Ensure the wrapper file has been compiled (e.g. via ./install from " + config.CHMS_REPO + ")")
     exit(0)
@@ -58,7 +58,7 @@ sys.path.append(config.CHMS_REPO + "/chimesFF/api")
 
 import wrapper_py
 
-wrapper_py.chimes_wrapper = wrapper_py.init_chimes_wrapper(config.CHMS_REPO + "/chimesFF/examples/python/lib-C_wrapper-direct_interface.so")
+wrapper_py.chimes_wrapper = wrapper_py.init_chimes_wrapper(config.CHMS_REPO + "/build/lib-C_wrapper-direct_interface.so")
 wrapper_py.set_chimes()
 wrapper_py.init_chimes()
 wrapper_py.read_params(config.PARAM_FILE)
