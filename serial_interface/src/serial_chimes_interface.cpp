@@ -776,6 +776,47 @@ double simulation_system::get_dist(int i,int j)
     
     return get_dist(i,j,rij);
 }
+
+void simulation_system::run_checks(const vector<double>& max_cuts, vector<int>&poly_orders)
+{
+	// Sanity check 1: Are the cell vectors long enough?
+	
+	for(int i=0;i<max_cuts.size(); i++)
+	{
+		if ( 
+			(max_cuts[i] > 2*latcon_a * (2*n_layers + 1)) || 
+			(max_cuts[i] > 2*latcon_b * (2*n_layers + 1)) ||
+			(max_cuts[i] > 2*latcon_c * (2*n_layers + 1))
+			)
+		{
+			cout << "ERROR: Layered system is smaller than 2x the model " << i+2 <<"-body maximum outer cutoff." << endl;
+			cout << "Please report this error to the developers." << endl;
+			cout << "Model maximum cutoff: " << max_cuts[i] << endl;
+			cout << "Layered system lattice cosntant (a): " << latcon_a * (2*n_layers + 1) << endl;
+			cout << "Layered system lattice cosntant (b): " << latcon_b * (2*n_layers + 1) << endl;
+			cout << "Layered system lattice cosntant (c): " << latcon_c * (2*n_layers + 1) << endl;
+			exit(0);
+			
+		}
+	}
+
+	
+	// Sanity check 2: Does the system have enough atoms?
+	
+	int bodiedness = 2;
+	if (poly_orders[1] > 0)
+		bodiedness++;
+	if (poly_orders[2] > 0)
+		bodiedness++;
+	
+	if (bodiedness > sys_x.size())
+	{
+		cout << "ERROR: Layered system contains too few atoms." << endl;
+		cout << "	Model bodiedness:            " << bodiedness << endl;
+		cout << "	No. atoms in layered system: " << sys_x.size() << endl;
+		exit(0);
+	}
+}
 	
 // serial_chimes_interface member functions
 
@@ -824,11 +865,12 @@ void serial_chimes_interface::build_neigh_lists(vector<string> & atmtyps, vector
 }
 void serial_chimes_interface::calculate(vector<double> & x_in, vector<double> & y_in, vector<double> & z_in, vector<double> & cella_in, vector<double> & cellb_in, vector<double> & cellc_in, vector<string> & atmtyps, double & energy, vector<vector<double> > & force, vector<double> & stress)
 {
-    // Set up the calculation system
+    // Set up the calculation system and run sanity checks
 
-    sys.init(atmtyps, x_in, y_in, z_in, cella_in, cellb_in, cellc_in);
+    sys.init(atmtyps, x_in, y_in, z_in, cella_in, cellb_in, cellc_in);	
     sys.build_layered_system(atmtyps,poly_orders, max_cutoff_2B(true), max_cutoff_3B(true), max_cutoff_4B(true));
     sys.set_atomtyp_indices(type_list);
+	sys.run_checks({max_2b_cut,max_3b_cut,max_4b_cut},poly_orders);
     
     build_neigh_lists(atmtyps, x_in, y_in, z_in, cella_in, cellb_in, cellc_in);
 	
@@ -840,7 +882,6 @@ void serial_chimes_interface::calculate(vector<double> & x_in, vector<double> & 
 
     for (int idx=0; idx<9; idx++)
         stensor[idx]  = &stress[idx];
-    
     
     ////////////////////////
     // interate over 1- and 2b's 

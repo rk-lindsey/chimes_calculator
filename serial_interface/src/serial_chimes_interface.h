@@ -42,7 +42,7 @@ class simulation_system
 		void reorient();
 		void build_layered_system(vector<string> & atmtyps, vector<int> & poly_orders, double max_2b_cut, double max_3b_cut, double max_4b_cut);
 		void build_neigh_lists(vector<int> & poly_orders, vector<vector<int> > & neighlist_2b, vector<vector<int> > & neighlist_3b, vector<vector<int> > & neighlist_4b, double max_2b_cut, double max_3b_cut, double max_4b_cut);
-
+		void run_checks(const vector<double>& max_cuts, vector<int>&poly_orders);
 
 		int n_layers;   // number of replicate layers to make
 		int n_atoms;    // number of real atoms
