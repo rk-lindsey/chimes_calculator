@@ -94,8 +94,8 @@ chimesFF::chimesFF()
     
     fcut_type = "CUBIC";
     
-    penalty_params[0] = 1.0E4;
-    penalty_params[1] = 0.01;
+    penalty_params[0] = 0.01;
+    penalty_params[1] = 1.0E4;
 }
 chimesFF::~chimesFF(){}
 
@@ -1380,7 +1380,7 @@ inline void chimesFF::get_penalty(const double dx, const int & pair_idx, double 
     E_penalty    = 0.0;
     force_scalar = 1.0;
     
-    if (dx - penalty_params[1] < chimes_2b_cutoff[pair_idx][0])
+    if (dx - penalty_params[0] < chimes_2b_cutoff[pair_idx][0])
         
         r_penalty = chimes_2b_cutoff[pair_idx][0] + penalty_params[0] - dx;
         
