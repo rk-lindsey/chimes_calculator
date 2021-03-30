@@ -82,7 +82,7 @@ do
 	
 	# Run the tasks
 		
-	for i in 3 {0..3} # Cycle through APIs
+	for i in {0..3} # Cycle through APIs
 	do	
 		
 		idx=1
@@ -116,11 +116,7 @@ do
 					fi
 					
 				else				
-					#if [[ $compile == "CMAKE" ]] ; then
-					#	../../build/${EXE[$i]} force_fields/${FFS[$j]} configurations/$CFG ${XTRA[$i]} ${LOC}/../api > /dev/null
-					#else
-						${PYTH3} ../examples/${API[$i]}/${EXE[$i]} force_fields/${FFS[$j]} configurations/$CFG ${XTRA[$i]} ${LOC}/../api > /dev/null
-					#fi					
+					${PYTH3} ../examples/${API[$i]}/${EXE[$i]} force_fields/${FFS[$j]} configurations/$CFG ${XTRA[$i]} ${LOC}/../api > /dev/null					
 				fi
 				
 
