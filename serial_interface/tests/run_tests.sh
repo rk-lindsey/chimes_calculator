@@ -18,15 +18,19 @@ PREFX=${2-""}     # By default, don't set any special install prefix
 #TESTS=$2
 PYTH3=python3.7 # $3
 
-FFS[0]="published_params.liqC.2b.cubic.txt"                                  ; CFGS[0]="liqC.2.5gcc_6000K.OUTCAR_#000.xyz"
-FFS[1]="published_params.liqC.2+3b.cubic.txt"                                ; CFGS[1]="liqC.2.5gcc_6000K.OUTCAR_#000.xyz"
-FFS[2]="published_params.liqCO.2+3b.cubic.txt"                               ; CFGS[2]="CO.2.5gcc_6500K.OUTCAR_#000.xyz"
-FFS[3]="validated_params.CO2400K.2+3+4b.Tersoff.special.offsets.relabel.txt" ; CFGS[3]="CO.2.5gcc_6500K.OUTCAR_#000.relabel.xyz"
-FFS[4]="published_params.CO2400K.2+3+4b.Tersoff.special.offsets.txt"         ; CFGS[4]="CO.2.5gcc_6500K.OUTCAR_#000.scramble.xyz"
-FFS[5]="published_params.CO2400K.2+3+4b.Tersoff.special.offsets.txt"         ; CFGS[5]="CO.2.5gcc_6500K.OUTCAR_#000.translate.xyz"
-FFS[6]="published_params.HN3.2+3+4b.Tersoff.special.offsets.txt"             ; CFGS[6]="HN3.2gcc_3000K.OUTCAR_#000.xyz"
-FFS[7]="validated_params.TiO2.2+3b.Tersoff.txt"                              ; CFGS[7]="TiO2.unitcell_arbrot_#000.xyz"
-FFS[8]="test_params.CHON.txt"                                                ; CFGS[8]="CHON.testfile.000.xyz"
+FFS[0 ]="published_params.liqC.2b.cubic.txt"                                  ; CFGS[0 ]="liqC.2.5gcc_6000K.OUTCAR_#000.xyz"
+FFS[1 ]="published_params.liqC.2+3b.cubic.txt"                                ; CFGS[1 ]="liqC.2.5gcc_6000K.OUTCAR_#000.xyz"
+FFS[2 ]="published_params.liqCO.2+3b.cubic.txt"                               ; CFGS[2 ]="CO.2.5gcc_6500K.OUTCAR_#000.xyz"
+FFS[3 ]="validated_params.CO2400K.2+3+4b.Tersoff.special.offsets.relabel.txt" ; CFGS[3 ]="CO.2.5gcc_6500K.OUTCAR_#000.relabel.xyz"
+FFS[4 ]="published_params.CO2400K.2+3+4b.Tersoff.special.offsets.txt"         ; CFGS[4 ]="CO.2.5gcc_6500K.OUTCAR_#000.scramble.xyz"
+FFS[5 ]="published_params.CO2400K.2+3+4b.Tersoff.special.offsets.txt"         ; CFGS[5 ]="CO.2.5gcc_6500K.OUTCAR_#000.translate.xyz"
+FFS[6 ]="published_params.HN3.2+3+4b.Tersoff.special.offsets.txt"             ; CFGS[6 ]="HN3.2gcc_3000K.OUTCAR_#000.xyz"
+FFS[7 ]="validated_params.TiO2.2+3b.Tersoff.txt"                              ; CFGS[7 ]="TiO2.unitcell_arbrot_#000.xyz"
+FFS[8 ]="test_params.CHON.txt"                                                ; CFGS[8 ]="CHON.testfile.000.xyz"
+FFS[9 ]="published_params.liqCO.2+3b.cubic.txt"                               ; CFGS[9 ]="diam.64_#000.xyz"
+FFS[10]="published_params.liqCO.2+3b.cubic.txt"                               ; CFGS[10]="diam.16_#000.xyz"
+FFS[11]="published_params.liqCO.2+3b.cubic.txt"                               ; CFGS[11]="diam.8_#000.xyz"
+FFS[12]="published_params.liqCO.2+3b.cubic.txt"                               ; CFGS[12]="diam.2_#000.xyz"
 
 NO_TESTS=${#FFS[@]}
 LOC=`pwd`
@@ -98,7 +102,7 @@ do
 				CFG_SUFFIX=${CFG##*000}
 				
 				CFG=${CFG_PREFIX}00${k}${CFG_SUFFIX}
-				
+
 				if [ ! -f configurations/$CFG ] ; then
 					continue
 				fi
@@ -128,7 +132,7 @@ do
 				# Print findings
 				
 				${PYTH3} compare.py san.dat 
-				
+
 				if [[ $STYLE == "SHORT" ]] ; then
 					break
 				fi

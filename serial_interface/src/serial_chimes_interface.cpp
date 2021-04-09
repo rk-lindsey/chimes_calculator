@@ -206,6 +206,8 @@ void simulation_system::init(vector<string> & atmtyps, vector<double> & x_in, ve
 		min_latcon = latcon_c;
 	
 	n_replicates = ceil(max_cut/min_latcon)-1;
+	
+	cout << "Replicating the system " << n_replicates << " times prior to generating ghost atoms" << endl;
 
 	set_hmat(cella_in, cellb_in, cellc_in, hmat, invr_hmat, 0);
 	
@@ -229,7 +231,7 @@ void simulation_system::init(vector<string> & atmtyps, vector<double> & x_in, ve
 					n_repl++;    
                 	
 					atmtyps.push_back(atmtyps[a]);
-                	sys_atmtyps.push_back(atmtyps[a]);    
+					sys_atmtyps.push_back(atmtyps[a]);    
                 	
                 	sys_x.push_back(0.0); // Holder    
                 	sys_y.push_back(0.0);
