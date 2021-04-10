@@ -43,8 +43,17 @@ int main(int argc, char **argv)
     
     string params = argv[1];
     string in_xyz = argv[2];
-    
-    cout << "Read args:" << " " << params << " " << in_xyz << " " << endl;
+	
+	bool   is_small = false;
+	
+	cout << "Read args:" << " " << params << " " << in_xyz << " ";
+	
+	if(argc == 4)
+	{
+		is_small = bool(argv[3]);
+		cout << is_small;
+	}    
+    cout << endl;
     
     // Read the .xyz file    
     
@@ -111,7 +120,7 @@ int main(int argc, char **argv)
     
     // Compute ChIMES energy, force, and stress
     
-    serial_chimes_interface chimes;        // Create an instance of the serial interface
+    serial_chimes_interface chimes(is_small);        // Create an instance of the serial interface
     
     chimes.init_chimesFF(params, 0);    // Initialize
 

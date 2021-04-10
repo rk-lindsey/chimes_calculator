@@ -36,13 +36,16 @@ class simulation_system
 		double get_dist(int i,int j, vector<double> & rij);
 		double get_dist(int i,int j);
 		
-		void init(vector<string> & atmtyps, vector<double> & x_in, vector<double> & y_in, vector<double> & z_in, vector<double> & cella_in, vector<double> & cellb_in, vector<double> & cellc_in, double max_2b_cut);
+		void init(vector<string> & atmtyps, vector<double> & x_in, vector<double> & y_in, vector<double> & z_in, vector<double> & cella_in, vector<double> & cellb_in, vector<double> & cellc_in, double max_2b_cut, bool small = false);
 		void set_atomtyp_indices(vector<string> & type_list);
 		void copy(simulation_system & to);
 		void reorient();
 		void build_layered_system(vector<string> & atmtyps, vector<int> & poly_orders, double max_2b_cut, double max_3b_cut, double max_4b_cut);
 		void build_neigh_lists(vector<int> & poly_orders, vector<vector<int> > & neighlist_2b, vector<vector<int> > & neighlist_3b, vector<vector<int> > & neighlist_4b, double max_2b_cut, double max_3b_cut, double max_4b_cut);
 		void run_checks(const vector<double>& max_cuts, vector<int>&poly_orders);
+		
+		
+		bool allow_replication;	// If true, replicates coordinates prior to calculation
 
 		int n_replicates; // number of "real" replicate layers to make
 		int n_layers;     // number of ghost layers to make
@@ -90,14 +93,16 @@ class serial_chimes_interface : public chimesFF
 {
     public:
             
-        serial_chimes_interface();
+        serial_chimes_interface(bool small = false);
         ~serial_chimes_interface();
-            
-        void    init_chimesFF(string chimesFF_paramfile, int rank);
+           
+		void    init_chimesFF(string chimesFF_paramfile, int rank);
         void    calculate(vector<double> & x_in, vector<double> & y_in, vector<double> & z_in, vector<double> & cella_in, vector<double> & cellb_in, vector<double> & cellc_in, vector<string> & atmtyps, double & energy, vector<vector<double> > & force, vector<double> & stress);
 
     private:
         
+		
+		bool allow_replication;	// If true, replicates coordinates prior to calculation
 		
 		simulation_system sys;		// Input system
 		simulation_system neigh;	// Re-oriented ss

@@ -146,8 +146,9 @@ void simulation_system::set_atomtyp_indices(vector<string> & type_list)
         }
     }
 }
-void simulation_system::init(vector<string> & atmtyps, vector<double> & x_in, vector<double> & y_in, vector<double> & z_in, vector<double> & cella_in, vector<double> & cellb_in, vector<double> & cellc_in, double max_2b_cut)
+void simulation_system::init(vector<string> & atmtyps, vector<double> & x_in, vector<double> & y_in, vector<double> & z_in, vector<double> & cella_in, vector<double> & cellb_in, vector<double> & cellc_in, double max_2b_cut, bool small)
 {
+	allow_replication = small;
 	max_cut = max_2b_cut;
 	
     //////////////////////////////////////////
@@ -205,7 +206,10 @@ void simulation_system::init(vector<string> & atmtyps, vector<double> & x_in, ve
 	if (latcon_c < min_latcon)
 		min_latcon = latcon_c;
 	
-	n_replicates = ceil(max_cut/min_latcon)-1;
+	n_replicates = 0;
+	
+	if (allow_replication)
+		n_replicates = ceil(max_cut/min_latcon)-1;
 	
 	cout << "Replicating the system " << n_replicates << " times prior to generating ghost atoms" << endl;
 
@@ -885,8 +889,13 @@ void simulation_system::run_checks(const vector<double>& max_cuts, vector<int>&p
 	
 // serial_chimes_interface member functions
 
-serial_chimes_interface::serial_chimes_interface()
+serial_chimes_interface::serial_chimes_interface(bool small)
 {
+	// For small systems, allow explicit replication prior to ghost atom construction
+	// This should ONLY be done for perfectly crystalline systems
+	
+	allow_replication = small;
+	
     // Initialize Pointers, etc for chimes calculator interfacing (2-body only for now)
     // To set up for many body calculations, see the LAMMPS implementation
 
@@ -922,7 +931,7 @@ void serial_chimes_interface::init_chimesFF(string chimesFF_paramfile, int rank)
 }
 void serial_chimes_interface::build_neigh_lists(vector<string> & atmtyps, vector<double> & x_in, vector<double> & y_in, vector<double> & z_in, vector<double> & cella_in, vector<double> & cellb_in, vector<double> & cellc_in)
 {
-    neigh.init(atmtyps, x_in, y_in, z_in, cella_in, cellb_in, cellc_in, max_cutoff_2B(true));
+    neigh.init(atmtyps, x_in, y_in, z_in, cella_in, cellb_in, cellc_in, max_cutoff_2B(true), allow_replication);
     neigh.reorient();
     neigh.build_layered_system(atmtyps, poly_orders, max_cutoff_2B(true), max_cutoff_3B(true), max_cutoff_4B(true));
     neigh.set_atomtyp_indices(type_list);
@@ -934,7 +943,7 @@ void serial_chimes_interface::calculate(vector<double> & x_in, vector<double> & 
 
 	// Determine the max outer cutoff (MUST be 2-body, based on ChIMES logic)
 	
-    sys.init(atmtyps, x_in, y_in, z_in, cella_in, cellb_in, cellc_in, max_cutoff_2B(true));	
+    sys.init(atmtyps, x_in, y_in, z_in, cella_in, cellb_in, cellc_in, max_cutoff_2B(true), allow_replication);	
 	
     sys.build_layered_system(atmtyps,poly_orders, max_cutoff_2B(true), max_cutoff_3B(true), max_cutoff_4B(true));
 
