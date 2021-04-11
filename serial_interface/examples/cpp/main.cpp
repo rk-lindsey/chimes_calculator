@@ -50,8 +50,9 @@ int main(int argc, char **argv)
 	
 	if(argc == 4)
 	{
-		is_small = bool(argv[3]);
-		cout << is_small;
+		if((strncmp(argv[3],"true",4) == 0) || (strncmp(argv[3],"True",4) == 0) || (strncmp(argv[3],"TRUE",4) == 0) || (strncmp(argv[3],"1"   ,1) == 0))
+			is_small = true;
+		cout << is_small << "(" << argv[3] << ")" ;
 	}    
     cout << endl;
     

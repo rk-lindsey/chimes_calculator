@@ -14,31 +14,29 @@
 
 STYLE=${1-"LONG"} # By default,run "LONG" test, but if user runs with "./run_tests SHORT, runs short tests
 PREFX=${2-""}     # By default, don't set any special install prefix
-#APIS=$1
-#TESTS=$2
-PYTH3=python3.7 # $3
+PYTH3=python3.7
 
-FFS[0 ]="published_params.liqC.2b.cubic.txt"                                  ; CFGS[0 ]="liqC.2.5gcc_6000K.OUTCAR_#000.xyz"
-FFS[1 ]="published_params.liqC.2+3b.cubic.txt"                                ; CFGS[1 ]="liqC.2.5gcc_6000K.OUTCAR_#000.xyz"
-FFS[2 ]="published_params.liqCO.2+3b.cubic.txt"                               ; CFGS[2 ]="CO.2.5gcc_6500K.OUTCAR_#000.xyz"
-FFS[3 ]="validated_params.CO2400K.2+3+4b.Tersoff.special.offsets.relabel.txt" ; CFGS[3 ]="CO.2.5gcc_6500K.OUTCAR_#000.relabel.xyz"
-FFS[4 ]="published_params.CO2400K.2+3+4b.Tersoff.special.offsets.txt"         ; CFGS[4 ]="CO.2.5gcc_6500K.OUTCAR_#000.scramble.xyz"
-FFS[5 ]="published_params.CO2400K.2+3+4b.Tersoff.special.offsets.txt"         ; CFGS[5 ]="CO.2.5gcc_6500K.OUTCAR_#000.translate.xyz"
-FFS[6 ]="published_params.HN3.2+3+4b.Tersoff.special.offsets.txt"             ; CFGS[6 ]="HN3.2gcc_3000K.OUTCAR_#000.xyz"
-FFS[7 ]="validated_params.TiO2.2+3b.Tersoff.txt"                              ; CFGS[7 ]="TiO2.unitcell_arbrot_#000.xyz"
-FFS[8 ]="test_params.CHON.txt"                                                ; CFGS[8 ]="CHON.testfile.000.xyz"
-FFS[9 ]="published_params.liqCO.2+3b.cubic.txt"                               ; CFGS[9 ]="diam.64_#000.xyz"
-FFS[10]="published_params.liqCO.2+3b.cubic.txt"                               ; CFGS[10]="diam.16_#000.xyz"
-FFS[11]="published_params.liqCO.2+3b.cubic.txt"                               ; CFGS[11]="diam.8_#000.xyz"
-FFS[12]="published_params.liqCO.2+3b.cubic.txt"                               ; CFGS[12]="diam.2_#000.xyz"
+FFS[0 ]="published_params.liqC.2b.cubic.txt"                                  ; CFGS[0 ]="liqC.2.5gcc_6000K.OUTCAR_#000.xyz"            ; OPTIONS[0 ]="0"
+FFS[1 ]="published_params.liqC.2+3b.cubic.txt"                                ; CFGS[1 ]="liqC.2.5gcc_6000K.OUTCAR_#000.xyz"            ; OPTIONS[1 ]="0"
+FFS[2 ]="published_params.liqCO.2+3b.cubic.txt"                               ; CFGS[2 ]="CO.2.5gcc_6500K.OUTCAR_#000.xyz"              ; OPTIONS[2 ]="0"
+FFS[3 ]="validated_params.CO2400K.2+3+4b.Tersoff.special.offsets.relabel.txt" ; CFGS[3 ]="CO.2.5gcc_6500K.OUTCAR_#000.relabel.xyz"      ; OPTIONS[3 ]="0"
+FFS[4 ]="published_params.CO2400K.2+3+4b.Tersoff.special.offsets.txt"         ; CFGS[4 ]="CO.2.5gcc_6500K.OUTCAR_#000.scramble.xyz"     ; OPTIONS[4 ]="0"
+FFS[5 ]="published_params.CO2400K.2+3+4b.Tersoff.special.offsets.txt"         ; CFGS[5 ]="CO.2.5gcc_6500K.OUTCAR_#000.translate.xyz"    ; OPTIONS[5 ]="0"
+FFS[6 ]="published_params.HN3.2+3+4b.Tersoff.special.offsets.txt"             ; CFGS[6 ]="HN3.2gcc_3000K.OUTCAR_#000.xyz"               ; OPTIONS[6 ]="0"
+FFS[7 ]="validated_params.TiO2.2+3b.Tersoff.txt"                              ; CFGS[7 ]="TiO2.unitcell_arbrot_#000.xyz"                ; OPTIONS[7 ]="0"
+FFS[8 ]="test_params.CHON.txt"                                                ; CFGS[8 ]="CHON.testfile.000.xyz"                        ; OPTIONS[8 ]="0"
+FFS[9 ]="published_params.liqCO.2+3b.cubic.txt"                               ; CFGS[9 ]="diam.64_#000.xyz"                             ; OPTIONS[9 ]="1"
+FFS[10]="published_params.liqCO.2+3b.cubic.txt"                               ; CFGS[10]="diam.16_#000.xyz"                             ; OPTIONS[10]="1"
+FFS[11]="published_params.liqCO.2+3b.cubic.txt"                               ; CFGS[11]="diam.8_#000.xyz"                              ; OPTIONS[11]="1"
+FFS[12]="published_params.liqCO.2+3b.cubic.txt"                               ; CFGS[12]="diam.2_#000.xyz"                              ; OPTIONS[12]="1"
 
 NO_TESTS=${#FFS[@]}
 LOC=`pwd`
 
-API[0]="cpp"    ; EXE[0]="CPP-interface"                    ; XTRA[0]="2"
-API[1]="c"      ; EXE[1]="C_wrapper-serial_interface"       ; XTRA[1]="2"
-API[2]="fortran"; EXE[2]="fortran_wrapper-serial_interface" ; XTRA[2]="2"
-API[3]="python" ; EXE[3]="main.py"                          ; XTRA[3]="2 1"
+API[0]="cpp"    ; EXE[0]="CPP-interface"                    ; XTRA[0]="" #"2"
+API[1]="c"      ; EXE[1]="C_wrapper-serial_interface"       ; XTRA[1]="" #"2"
+API[2]="fortran"; EXE[2]="fortran_wrapper-serial_interface" ; XTRA[2]="" #"2"
+API[3]="python" ; EXE[3]="main.py"                          ; XTRA[3]="" #"2 1"
 
 echo "Running $STYLE tests"
 date
@@ -114,16 +112,14 @@ do
 				if [[ "${API[$i]}" != "python" ]] ; then
 				
 					if [[ $compile == "CMAKE" ]] ; then
-						../../build/${EXE[$i]} force_fields/${FFS[$j]} configurations/$CFG ${XTRA[$i]} > /dev/null
+						../../build/${EXE[$i]} force_fields/${FFS[$j]} configurations/$CFG ${OPTIONS[$j]} > /dev/null
 					else
-						../examples/${API[$i]}/${EXE[$i]} force_fields/${FFS[$j]} configurations/$CFG ${XTRA[$i]} > /dev/null
+						../examples/${API[$i]}/${EXE[$i]} force_fields/${FFS[$j]} configurations/$CFG ${OPTIONS[$j]}  > /dev/null
 					fi
 					
 				else				
-					${PYTH3} ../examples/${API[$i]}/${EXE[$i]} force_fields/${FFS[$j]} configurations/$CFG ${XTRA[$i]} ${LOC}/../api > /dev/null					
+					${PYTH3} ../examples/${API[$i]}/${EXE[$i]} force_fields/${FFS[$j]} configurations/$CFG ${OPTIONS[$j]} ${LOC}/../api 1 > /dev/null					
 				fi
-				
-
 				
 				# Compare results against expected results (expected_output/${FFS[$j]}.$CFG.dat)
 				

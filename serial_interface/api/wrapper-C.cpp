@@ -21,11 +21,27 @@ using namespace std;
 #include "wrapper-C.h"
 static  serial_chimes_interface chimes, *chimes_ptr;
 
-void set_chimes () {
-  chimes_ptr = &chimes;
+
+void set_chimes_fromF90 (int *small)
+{	
+	set_chimes(*small);
+}
+void set_chimes (int small)
+{	
+	cout << "HEADS UP, RECEIVED: " << small << endl;
+	
+	if ((small!=0)&&(small!=1))
+	{
+		cout << "ERROR: Small must be set to 0 (false) or 1 (true)" << endl;
+		cout << "Received: " << small << endl;
+		exit(0);
+	}
+	chimes_ptr = &chimes;
+	chimes_ptr->allow_replication = small;
 }
 
-void init_chimes (char *param_file, int *rank) {
+void init_chimes (char *param_file, int *rank) 
+{
   chimes_ptr->init_chimesFF(param_file, *rank);
 }
 void calculate_chimes_fromF90(int *natom, double *xc, double *yc, double *zc, char *atom_types[], double ca[3], double cb[3], double cc[3], double *energy, double fx[], double fy[], double fz[], double stress[9])
