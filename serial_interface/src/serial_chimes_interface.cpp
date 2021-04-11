@@ -150,6 +150,7 @@ void simulation_system::init(vector<string> & atmtyps, vector<double> & x_in, ve
 {
 	allow_replication = small;
 	max_cut = max_2b_cut;
+	static bool called_before = false;
 	
     //////////////////////////////////////////
     // STEP 1: Copy the system
@@ -211,7 +212,20 @@ void simulation_system::init(vector<string> & atmtyps, vector<double> & x_in, ve
 	if (allow_replication)
 		n_replicates = ceil(max_cut/min_latcon)-1;
 	
-	cout << "Replicating the system " << n_replicates << " times prior to generating ghost atoms" << endl;
+	cout << "SerialchimesFF: " << "Replicating the system " << n_replicates << " times prior to generating ghost atoms" << endl;
+
+	if (n_replicates > 0)
+	{
+		if (!called_before)
+		{
+			called_before = true;
+	
+			cout << "SerialchimesFF: " << "\t" << "Warning: At least one cell length is smaller than the ChIMES outer cutoff." << endl;
+			cout << "SerialchimesFF: " << "\t" << "System will be replicated prior to ghost atom generation." << endl;
+			cout << "SerialchimesFF: " << "\t" << "Results will only be correct for perfectly crystalline cells." << endl;
+			cout << "SerialchimesFF: " << "\t" << "For any other case, system size should be increased." << endl;
+		}
+	}
 
 	set_hmat(cella_in, cellb_in, cellc_in, hmat, invr_hmat, 0);
 	

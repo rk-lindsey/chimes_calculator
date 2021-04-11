@@ -95,15 +95,14 @@ class serial_chimes_interface : public chimesFF
             
         serial_chimes_interface(bool small = false);
         ~serial_chimes_interface();
+		
+		bool allow_replication;	// If true, replicates coordinates prior to calculation
            
 		void    init_chimesFF(string chimesFF_paramfile, int rank);
         void    calculate(vector<double> & x_in, vector<double> & y_in, vector<double> & z_in, vector<double> & cella_in, vector<double> & cellb_in, vector<double> & cellc_in, vector<string> & atmtyps, double & energy, vector<vector<double> > & force, vector<double> & stress);
 
     private:
-        
-		
-		bool allow_replication;	// If true, replicates coordinates prior to calculation
-		
+
 		simulation_system sys;		// Input system
 		simulation_system neigh;	// Re-oriented ss
 		

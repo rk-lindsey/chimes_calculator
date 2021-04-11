@@ -13,12 +13,19 @@
 
 int main (int argc, char **argv) 
 {
-  if (argc < 4) {
+	int small = 0;	// 0 = false, 1 = true
+	
+  if ((argc != 4)&&(argc !=3))
+  {
     printf("To run: ./test.x <parameter file> <xyz config. file>\n");
+	printf("or\n");
+	printf("./test.x <parameter file> <xyz config. file> <allow_replicates(0/1)>\n");
     printf("Exiting code.\n");
     exit(0);
   }
-  
+  if(argc==4)
+	  small = atoi(argv[3]);
+
   const double GPa = 6.9479; // convert kcal/mol.A^3 to GPa
   FILE *fconf;
   int natom, i, j, k, l;
@@ -49,9 +56,12 @@ int main (int argc, char **argv)
     atom[i] = atom_types[i];
   }
   fclose(fconf);
-  set_chimes();
-  printf("%s %s %s \n", "Read args:", argv[1], argv[2]);
-    
+  set_chimes(small);
+  
+  printf("Read args:\n");
+  for (int i=1; i<argc; i++)
+	  printf("%i %s\n",i, argv[i]);
+
   int rank = 0;
   init_chimes(argv[1],&rank);
   
