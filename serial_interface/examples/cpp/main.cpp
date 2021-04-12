@@ -17,7 +17,7 @@ Compile with:
     g++ -O3 -std=c++11 -o example main.cpp \serial_chimes_interface.cpp \
     chimesFF.cpp
  Run with: 
-    ./example <parameter file> <xyz file> 
+    ./example <parameter file> <xyz file> <allow replictes (0/1 or true/false)>
 
 ---------------------------------------------------------------------- */
 
@@ -43,9 +43,19 @@ int main(int argc, char **argv)
     
     string params = argv[1];
     string in_xyz = argv[2];
-    
-    cout << "Read args:" << " " << params << " " << in_xyz << " " << endl;
-    
+	
+	bool   is_small = false;
+	
+	cout << "Read args:" << endl;
+	
+	for (int i=1; i<argc; i++)
+		cout << i << " " << argv[i] << endl;
+	
+	if(argc == 4)
+		if((strncmp(argv[3],"true",4) == 0) || (strncmp(argv[3],"True",4) == 0) || (strncmp(argv[3],"TRUE",4) == 0) || (strncmp(argv[3],"1"   ,1) == 0))
+			is_small = true;
+	
+	
     // Read the .xyz file    
     
     string            tmp_line;
@@ -111,7 +121,7 @@ int main(int argc, char **argv)
     
     // Compute ChIMES energy, force, and stress
     
-    serial_chimes_interface chimes;        // Create an instance of the serial interface
+    serial_chimes_interface chimes(is_small);        // Create an instance of the serial interface
     
     chimes.init_chimesFF(params, 0);    // Initialize
 
