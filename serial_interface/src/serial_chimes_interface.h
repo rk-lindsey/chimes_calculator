@@ -93,7 +93,7 @@ class serial_chimes_interface : public chimesFF
 {
     public:
             
-        serial_chimes_interface(bool small = false);
+        serial_chimes_interface(bool small = true);
         ~serial_chimes_interface();
 		
 		bool allow_replication;	// If true, replicates coordinates prior to calculation
