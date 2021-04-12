@@ -36,25 +36,33 @@ class simulation_system
 		double get_dist(int i,int j, vector<double> & rij);
 		double get_dist(int i,int j);
 		
-		void init(vector<string> & atmtyps, vector<double> & x_in, vector<double> & y_in, vector<double> & z_in, vector<double> & cella_in, vector<double> & cellb_in, vector<double> & cellc_in);
+		void init(vector<string> & atmtyps, vector<double> & x_in, vector<double> & y_in, vector<double> & z_in, vector<double> & cella_in, vector<double> & cellb_in, vector<double> & cellc_in, double max_2b_cut, bool small = false);
 		void set_atomtyp_indices(vector<string> & type_list);
 		void copy(simulation_system & to);
 		void reorient();
 		void build_layered_system(vector<string> & atmtyps, vector<int> & poly_orders, double max_2b_cut, double max_3b_cut, double max_4b_cut);
 		void build_neigh_lists(vector<int> & poly_orders, vector<vector<int> > & neighlist_2b, vector<vector<int> > & neighlist_3b, vector<vector<int> > & neighlist_4b, double max_2b_cut, double max_3b_cut, double max_4b_cut);
 		void run_checks(const vector<double>& max_cuts, vector<int>&poly_orders);
+		
+		
+		bool allow_replication;	// If true, replicates coordinates prior to calculation
 
-		int n_layers;   // number of replicate layers to make
-		int n_atoms;    // number of real atoms
-		int n_ghost;    // number of real+ghost atoms
+		int n_replicates; // number of "real" replicate layers to make
+		int n_layers;     // number of ghost layers to make
+		int n_atoms;      // number of real atoms
+		int n_ghost;      // number of real+ghost atoms
+		int n_repl;		  // "real" replicate atoms - handling of itty-bitty crystalline systems
 
-        vector<int>       sys_atmtyp_indices; // Atom type indices for all (real+ghost) atoms        
-        vector<string>    sys_atmtyps;         // Chemical symbols for all (real+ghost) atoms		
+double max_cut;
+
+        vector<int>       sys_atmtyp_indices; 	// Atom type indices for all (real+ghost) atoms        
+        vector<string>    sys_atmtyps;         	// Chemical symbols for all (real+ghost) atoms		
 	
-		vector<double> sys_x;    	// System (i.e. ghost+real) x-coordinates
-		vector<double> sys_y;    	// System (i.e. ghost+real) y-coordinates
-		vector<double> sys_z;    	// System (i.e. ghost+real) z-coordinates
-		vector<int>    sys_parent;  // Index of atom i's (real) parent
+		vector<double> sys_x;    	   // System (i.e. ghost+real) x-coordinates
+		vector<double> sys_y;    	   // System (i.e. ghost+real) y-coordinates
+		vector<double> sys_z;    	   // System (i.e. ghost+real) z-coordinates
+		vector<int>    sys_parent;     // Index of atom i's (replicant) parent
+		vector<int>    sys_rep_parent; // Replicant's parent atom
        
         double         vol;         // System volume	
 		
@@ -85,15 +93,16 @@ class serial_chimes_interface : public chimesFF
 {
     public:
             
-        serial_chimes_interface();
+        serial_chimes_interface(bool small = false);
         ~serial_chimes_interface();
-            
-        void    init_chimesFF(string chimesFF_paramfile, int rank);
+		
+		bool allow_replication;	// If true, replicates coordinates prior to calculation
+           
+		void    init_chimesFF(string chimesFF_paramfile, int rank);
         void    calculate(vector<double> & x_in, vector<double> & y_in, vector<double> & z_in, vector<double> & cella_in, vector<double> & cellb_in, vector<double> & cellc_in, vector<string> & atmtyps, double & energy, vector<vector<double> > & force, vector<double> & stress);
 
     private:
-        
-		
+
 		simulation_system sys;		// Input system
 		simulation_system neigh;	// Re-oriented ss
 		
