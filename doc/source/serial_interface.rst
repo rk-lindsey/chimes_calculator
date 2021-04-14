@@ -21,7 +21,19 @@ The ChIMES calculator serial interface source files are located in ``serial_inte
        serial_chimes_interface chimes;
        // Specify the parameter files and set  the MPI rank (replace with zero if used in serial code)
        chimes.init_chimesFF("my_parameter_file", my_rank);
-       
+
+.. Warning::
+	
+	When instantiated via ``serial_chimes_interface chimes``, the code will automatically replicate systems for
+    which the smallest cell length is greater than the ChIMES outer cutoff. 
+    
+    This will produce incorrect results unless:
+    
+    1. Configuration cell lengths are greater than teh ChIMES outer cutoff
+    2. The material is perfectly crystalling
+    
+    Developer note: To recover behavior of the reserach code, instantiate with: ``serial_chimes_interface chimes(false)``
+
 Note that the ChIMES calculator serial interface ``serial_chimes_interface`` class provides users with the following functions:   
 
 =========== =================  =================
@@ -69,7 +81,7 @@ and at least include the following operations, in order:
     .. code-block:: cpp
     
        int my_rank = 0;
-       set_chimes();         // Instantiate
+       set_chimes();         // Instantiate; as for the C++ API (see warning message), can pass 0/1 for false/true
        init_chimes("my_parameter_file", my_rank); // Set MPI rank (replace with zero if used in serial code)
 
 For additional information on compiling, see :ref:`Implementation Examples <sec-ser-use-examples-api>`.
@@ -80,6 +92,12 @@ Note that the ChIMES calculator serial interface ``wrapper-C`` API provides user
 Return Type Name                        Arguments and Description
 =========== ========================    =================
 void        set_chimes                  Creates a pointer to a ``serial_chimes_interface`` object.
+
+                                        =======================   =====
+					Type                      Description
+					=======================   =====
+					int                       Boolean: Allow replication? (0/1 for false/true); default = true
+					=======================   =====
 
 
 void        init_chimes                 =======================   =====
@@ -149,7 +167,7 @@ operations, in order:
     .. code-block:: fortran
     
        integer(C_int) :: my_rank
-       ! Instantiate
+       ! Instantiate; as for the C++ API (see warning message), can pass 0/1 for false/true
        call f_set_chimes()     
        ! Specify the parameter files and set  the MPI rank (replace with zero if used in serial code)    
        call f_init_chimes(string2Cstring("my_parameter_file"), my_rank) 
@@ -163,7 +181,13 @@ Note that the ChIMES calculator serial interface ``wrapper-F`` API provides user
 =========== ========================    =================
 Return Type Name                        Arguments and Description
 =========== ========================    =================
-none        f_set_chimes                Creates a pointer to a ``serial_chimes_interface`` object.
+none        f_set_chimes_from_f90       Creates a pointer to a ``serial_chimes_interface`` object.
+
+                                        =======================   =====
+					Type                      Description
+					=======================   =====
+					C_int                     Boolean: Allow replication? (0/1 for false/true); default = true
+                                        =======================   =====
 
 none        f_init_chimes               =======================   =====
                                         Type                      Description
@@ -176,7 +200,7 @@ none        f_init_chimes               =======================   =====
                                         With the exception of error messages, the ChIMES calculator will only print output for rank 0.    
 
 
-void        calculate_chimes            =======================   =====
+void        f_calculate_chimes          =======================   =====
                                         Type                      Description
                                         =======================   =====
                                         C_int                       number of atoms in system
@@ -220,7 +244,7 @@ operations, in order:
     
        # Associate the wrapper with a compiled C API library file
        wrapper_py.chimes_wrapper = wrapper_py.init_chimes_wrapper("lib-C_wrapper-serial_interface.so") 
-       # Instantiate
+       # Instantiate; as for the C++ API (see warning message), can pass 0/1 for false/true
        wrapper_py.set_chimes()  
        # Read the parameter file, set MPI rank to 0 (i.e. no MPI used)
        wrapper_py.init_chimes("my_parameter_file", 0) 
@@ -244,6 +268,12 @@ See description init_chimes_wrapper         =======================   =====
 
 
 void            set_chimes                  Creates a pointer to a ``serial_chimes_interface`` object.
+
+                                            =======================   =====
+                                            Type                      Description
+                                            =======================   =====
+                                            bool                      Allow replication? ; default = true
+                                            =======================   =====
 
 
 void            init_chimes                 =======================   =====
