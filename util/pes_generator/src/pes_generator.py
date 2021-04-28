@@ -66,7 +66,7 @@ sys.path.append(config.CHMS_REPO + "/chimesFF/api")
 
 import wrapper_py
  
-wrapper_py.chimes_wrapper = wrapper_py.init_chimes_wrapper(config.CHMS_REPO + "/build/lib-C_wrapper-direct_interface.so") #"/chimesFF/examples/python/lib-C_wrapper-direct_interface.so")
+wrapper_py.chimes_wrapper = wrapper_py.init_chimes_wrapper(config.CHMS_REPO + "/build/lib-C_wrapper-direct_interface.so")
 wrapper_py.set_chimes()
 wrapper_py.init_chimes()
 wrapper_py.read_params(config.PARAM_FILE)

@@ -10,7 +10,8 @@
 
 	Expects to be run with python version 3.X
 
-	Run with: "python3 <this file> <parameter file> <coordinate file> <nlayers>
+	Run with: "python3 <this file> <parameter file> <coordinate file>"  or 
+               python3 <this file> <parameter file> <coordinate file> <allow replicates> <(optional) module path> <debug flag>
 
     ChIMES Calculator
     Copyright (C) 2020 Rebecca K. Lindsey, Nir Goldman, and Laurence E. Fried
@@ -22,36 +23,49 @@ import os
 import sys
 import math
 
+# A small helper function
+
+def str2bool(v):
+  return v.lower() in ("yes", "true", "t", "1")
+
 # Import ChIMES modules
 
 chimes_module_path = os.path.abspath( os.getcwd() + "/../../api/")
 if len(sys.argv) == 6:
-	chimes_module_path = os.path.abspath(sys.argv[5])
+	chimes_module_path = os.path.abspath(sys.argv[4])
 sys.path.append(chimes_module_path)
 
 import wrapper_py
 
-# Initialize the ChIMES calculator
-
-wrapper_py.chimes_wrapper = wrapper_py.init_chimes_wrapper("lib-C_wrapper-serial_interface.so")
-wrapper_py.set_chimes()
-
 # Read in the parameter and coordinate filename 
+
+small = False
 
 if (len(sys.argv) != 4) and (len(sys.argv) != 6):
 	
 	print( "ERROR: Wrong number of commandline args")
-	print( "       Run with: python <this file> <parameter file> <xyz file> <nlayers>")
-	print( "       Run with: python <this file> <parameter file> <xyz file> <nlayers>")
+	print( "       Run with: python <this file> <parameter file> <xyz file> ")
+	print( "       or")	
+	print( "       Run with: python <this file> <parameter file> <xyz file> <allow_replicates(0/1)> <debug flag (0/1)")
 	exit()
 
-param_file = sys.argv[1] # parameter file
-coord_file = sys.argv[2] # coordinate file
+param_file =          sys.argv[1]  # parameter file
+coord_file =          sys.argv[2]  # coordinate file
+small      = str2bool(sys.argv[3]) # allow replicates?
+	
+print("Read args:")
+
+for i in range(len(sys.argv)-1):
+	print (i+1,sys.argv[i+1])
+	
+# Initialize the ChIMES calculator
+
+wrapper_py.chimes_wrapper = wrapper_py.init_chimes_wrapper("lib-C_wrapper-serial_interface.so")
+wrapper_py.set_chimes(small)
 
 rank = 0
 
-#wrapper_py.init_chimes(sys.argv[1], int(sys.argv[3]), rank)
-wrapper_py.init_chimes(sys.argv[1], rank)
+wrapper_py.init_chimes(param_file, rank)
 
 # Read the coordinates, set up the force, stress, and energy vars
 
@@ -125,9 +139,10 @@ for i in range(natoms):
 
 debug = 0
 
+
 if len(sys.argv) == 6:
-	debug = int(sys.argv[4])
-	
+	debug = int(sys.argv[-1])
+
 if debug == 1:
 
 	ofstream = open("debug.dat",'w')

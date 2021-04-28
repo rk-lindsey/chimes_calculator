@@ -82,6 +82,35 @@ void   a_cross_b(const vector<double> & a, const vector<double> & b, vector<doub
     cross[2] =    (a[0]*b[1] - a[1]*b[0]);
     return;
 }    
+void set_hmat(const vector<double> & cell_a,const vector<double> & cell_b, const vector<double> & cell_c, vector<double> & hmat, vector<double> & invr_hmat, int replicates)
+{
+	// Define the h-matrix (stores the cell vectors locally)
+
+	hmat[0] = cell_a[0]*(replicates+1);  hmat[3] = cell_a[1]*(replicates+1); hmat[6] = cell_a[2]*(replicates+1);
+	hmat[1] = cell_b[0]*(replicates+1);  hmat[4] = cell_b[1]*(replicates+1); hmat[7] = cell_b[2]*(replicates+1);
+	hmat[2] = cell_c[0]*(replicates+1);  hmat[5] = cell_c[1]*(replicates+1); hmat[8] = cell_c[2]*(replicates+1);
+
+	// Determine the h-matrix inverse
+    
+	double hmat_det = hmat[0] * (hmat[4]*hmat[8] - hmat[5]*hmat[7])
+	                - hmat[1] * (hmat[3]*hmat[8] - hmat[5]*hmat[6])
+	                + hmat[2] * (hmat[3]*hmat[7] - hmat[4]*hmat[6]);
+
+	vector<double> tmp_vec(9);
+    
+	tmp_vec[0] =      (hmat[4]*hmat[8] - hmat[5]*hmat[7]); tmp_vec[3] = -1 * (hmat[1]*hmat[8] - hmat[2]*hmat[7]); tmp_vec[6] =      (hmat[1]*hmat[5] - hmat[2]*hmat[4]);
+	tmp_vec[1] = -1 * (hmat[3]*hmat[8] - hmat[5]*hmat[6]); tmp_vec[4] =      (hmat[0]*hmat[8] - hmat[2]*hmat[6]); tmp_vec[7] = -1 * (hmat[0]*hmat[5] - hmat[2]*hmat[3]);
+	tmp_vec[2] =      (hmat[3]*hmat[7] - hmat[4]*hmat[6]); tmp_vec[5] = -1 * (hmat[0]*hmat[7] - hmat[1]*hmat[6]); tmp_vec[8] =      (hmat[0]*hmat[4] - hmat[1]*hmat[3]);
+    
+	invr_hmat[0] = tmp_vec[0]; invr_hmat[3] = tmp_vec[1]; invr_hmat[6] = tmp_vec[2];
+	invr_hmat[1] = tmp_vec[3]; invr_hmat[4] = tmp_vec[4]; invr_hmat[7] = tmp_vec[5];
+	invr_hmat[2] = tmp_vec[6]; invr_hmat[5] = tmp_vec[7]; invr_hmat[8] = tmp_vec[8];
+
+	invr_hmat[0] /= hmat_det; invr_hmat[3] /= hmat_det; invr_hmat[6] /= hmat_det;
+	invr_hmat[1] /= hmat_det; invr_hmat[4] /= hmat_det; invr_hmat[7] /= hmat_det;
+	invr_hmat[2] /= hmat_det; invr_hmat[5] /= hmat_det; invr_hmat[8] /= hmat_det;
+	
+}
     
 	
 // simulation_system member functions
@@ -117,8 +146,12 @@ void simulation_system::set_atomtyp_indices(vector<string> & type_list)
         }
     }
 }
-void simulation_system::init(vector<string> & atmtyps, vector<double> & x_in, vector<double> & y_in, vector<double> & z_in, vector<double> & cella_in, vector<double> & cellb_in, vector<double> & cellc_in)
+void simulation_system::init(vector<string> & atmtyps, vector<double> & x_in, vector<double> & y_in, vector<double> & z_in, vector<double> & cella_in, vector<double> & cellb_in, vector<double> & cellc_in, double max_2b_cut, bool small)
 {
+	allow_replication = small;
+	max_cut = max_2b_cut;
+	static bool called_before = false;
+	
     //////////////////////////////////////////
     // STEP 1: Copy the system
     //////////////////////////////////////////
@@ -141,6 +174,7 @@ void simulation_system::init(vector<string> & atmtyps, vector<double> & x_in, ve
     // Copy over the system
     
     n_ghost = n_atoms;
+	n_repl  = n_atoms;
     
     sys_atmtyp_indices.resize(0);
 	
@@ -156,35 +190,98 @@ void simulation_system::init(vector<string> & atmtyps, vector<double> & x_in, ve
         sys_y.push_back( y_in[a] );
         sys_z.push_back( z_in[a] );
         
-        sys_parent.push_back(a);
-    }    
+        sys_parent.push_back(a); // for ghost
+		sys_rep_parent.push_back(a);	// for replicates
+    }  
+	
+	// Determine if system is large enough 	
 
-    // Define the h-matrix (stores the cell vectors locally)
+	latcon_a = mag_a({cella_in[0], cella_in[1], cella_in[2]});
+	latcon_b = mag_a({cellb_in[0], cellb_in[1], cellb_in[2]});
+	latcon_c = mag_a({cellc_in[0], cellc_in[1], cellc_in[2]});
 
-    hmat[0] = cella_in[0];  hmat[3] = cella_in[1]; hmat[6] = cella_in[2];
-    hmat[1] = cellb_in[0];  hmat[4] = cellb_in[1]; hmat[7] = cellb_in[2];
-    hmat[2] = cellc_in[0];  hmat[5] = cellc_in[1]; hmat[8] = cellc_in[2];
+	double min_latcon = latcon_a;
 
-    // Determine the h-matrix inverse
-        
-    double hmat_det = hmat[0] * (hmat[4]*hmat[8] - hmat[5]*hmat[7])
-                    - hmat[1] * (hmat[3]*hmat[8] - hmat[5]*hmat[6])
-                    + hmat[2] * (hmat[3]*hmat[7] - hmat[4]*hmat[6]);
-    
-    vector<double> tmp_vec(9);
-        
-    tmp_vec[0] =      (hmat[4]*hmat[8] - hmat[5]*hmat[7]); tmp_vec[3] = -1 * (hmat[1]*hmat[8] - hmat[2]*hmat[7]); tmp_vec[6] =      (hmat[1]*hmat[5] - hmat[2]*hmat[4]);
-    tmp_vec[1] = -1 * (hmat[3]*hmat[8] - hmat[5]*hmat[6]); tmp_vec[4] =      (hmat[0]*hmat[8] - hmat[2]*hmat[6]); tmp_vec[7] = -1 * (hmat[0]*hmat[5] - hmat[2]*hmat[3]);
-    tmp_vec[2] =      (hmat[3]*hmat[7] - hmat[4]*hmat[6]); tmp_vec[5] = -1 * (hmat[0]*hmat[7] - hmat[1]*hmat[6]); tmp_vec[8] =      (hmat[0]*hmat[4] - hmat[1]*hmat[3]);
-        
-    invr_hmat[0] = tmp_vec[0]; invr_hmat[3] = tmp_vec[1]; invr_hmat[6] = tmp_vec[2];
-    invr_hmat[1] = tmp_vec[3]; invr_hmat[4] = tmp_vec[4]; invr_hmat[7] = tmp_vec[5];
-    invr_hmat[2] = tmp_vec[6]; invr_hmat[5] = tmp_vec[7]; invr_hmat[8] = tmp_vec[8];
+	if (latcon_b < min_latcon)
+		min_latcon = latcon_b;
+	if (latcon_c < min_latcon)
+		min_latcon = latcon_c;
+	
+	n_replicates = 0;
+	
+	if (allow_replication)
+		n_replicates = ceil(max_cut/min_latcon)-1;
+	
+	cout << "SerialchimesFF: " << "Replicating the system " << n_replicates << " times prior to generating ghost atoms" << endl;
 
-    invr_hmat[0] /= hmat_det; invr_hmat[3] /= hmat_det; invr_hmat[6] /= hmat_det;
-    invr_hmat[1] /= hmat_det; invr_hmat[4] /= hmat_det; invr_hmat[7] /= hmat_det;
-    invr_hmat[2] /= hmat_det; invr_hmat[5] /= hmat_det; invr_hmat[8] /= hmat_det;
+	if (n_replicates > 0)
+	{
+		if (!called_before)
+		{
+			called_before = true;
+	
+			cout << "SerialchimesFF: " << "\t" << "Warning: At least one cell length is smaller than the ChIMES outer cutoff." << endl;
+			cout << "SerialchimesFF: " << "\t" << "System will be replicated prior to ghost atom generation." << endl;
+			cout << "SerialchimesFF: " << "\t" << "Results will only be correct for perfectly crystalline cells." << endl;
+			cout << "SerialchimesFF: " << "\t" << "For any other case, system size should be increased." << endl;
+		}
+	}
 
+	set_hmat(cella_in, cellb_in, cellc_in, hmat, invr_hmat, 0);
+	
+	// Build the replicates
+
+	double tmp_x, tmp_y, tmp_z;
+
+
+	for (int i=0; i<=n_replicates; i++) // x
+	{
+		for (int j=0; j<=n_replicates; j++) // y
+		{
+        	for (int k=0; k<=n_replicates; k++) // z
+        	{                
+            	if ((i==0)&&(j==0)&&(k==0))
+             	   continue;
+                
+            	for (int a=0; a<n_atoms; a++)
+            	{
+                	n_ghost++;
+					n_repl++;    
+                	
+					atmtyps.push_back(atmtyps[a]);
+					sys_atmtyps.push_back(atmtyps[a]);    
+                	
+                	sys_x.push_back(0.0); // Holder    
+                	sys_y.push_back(0.0);
+                	sys_z.push_back(0.0);
+                	
+                	// Transform into inverse space 
+                	
+                	tmp_x = invr_hmat[0]*sys_x[a] + invr_hmat[1]*sys_y[a] + invr_hmat[2]*sys_z[a];
+                	tmp_y = invr_hmat[3]*sys_x[a] + invr_hmat[4]*sys_y[a] + invr_hmat[5]*sys_z[a];
+                	tmp_z = invr_hmat[6]*sys_x[a] + invr_hmat[7]*sys_y[a] + invr_hmat[8]*sys_z[a];
+                	
+                	tmp_x += i;
+                	tmp_y += j;    
+                	tmp_z += k;
+                	
+                	sys_x[n_ghost-1] = hmat[0]*tmp_x + hmat[1]*tmp_y + hmat[2]*tmp_z;
+                	sys_y[n_ghost-1] = hmat[3]*tmp_x + hmat[4]*tmp_y + hmat[5]*tmp_z;
+                	sys_z[n_ghost-1] = hmat[6]*tmp_x + hmat[7]*tmp_y + hmat[8]*tmp_z;    
+                	
+					sys_parent.push_back(n_repl-1); // As far as ghosts are concerned, these are real atoms
+					sys_rep_parent.push_back(a);	// replicates know they have a parent
+            	}
+        	}
+    	}
+	}
+
+	// Note on replicates: We're essentially tricking the code into thinking the system is bigger than it is, 
+	// before any ghost atoms are built 
+
+	n_atoms = n_repl;
+
+	set_hmat(cella_in, cellb_in, cellc_in, hmat, invr_hmat, n_replicates);
 
     //////////////////////////////////////////
     // STEP 2: Wrap atoms
@@ -293,28 +390,8 @@ void simulation_system::reorient()
             
     // Determine the new cell h-matrix and its inverse
 
-    hmat[0] = tmp_cella[0];  hmat[3] = tmp_cella[1]; hmat[6] = tmp_cella[2];
-    hmat[1] = tmp_cellb[0];  hmat[4] = tmp_cellb[1]; hmat[7] = tmp_cellb[2];
-    hmat[2] = tmp_cellc[0];  hmat[5] = tmp_cellc[1]; hmat[8] = tmp_cellc[2];
+	set_hmat({tmp_cella[0], tmp_cella[1], tmp_cella[2]}, {tmp_cellb[0], tmp_cellb[1], tmp_cellb[2]}, {tmp_cellc[0], tmp_cellc[1], tmp_cellc[2]}, hmat, invr_hmat, 0);
 
-    double hmat_det = hmat[0] * (hmat[4]*hmat[8] - hmat[5]*hmat[7])
-                    - hmat[1] * (hmat[3]*hmat[8] - hmat[5]*hmat[6])
-                    + hmat[2] * (hmat[3]*hmat[7] - hmat[4]*hmat[6]);
-	
-	vector<double> tmp_vec(9);
-
-    tmp_vec[0] =      (hmat[4]*hmat[8] - hmat[5]*hmat[7]); tmp_vec[3] = -1 * (hmat[1]*hmat[8] - hmat[2]*hmat[7]); tmp_vec[6] =      (hmat[1]*hmat[5] - hmat[2]*hmat[4]);
-    tmp_vec[1] = -1 * (hmat[3]*hmat[8] - hmat[5]*hmat[6]); tmp_vec[4] =      (hmat[0]*hmat[8] - hmat[2]*hmat[6]); tmp_vec[7] = -1 * (hmat[0]*hmat[5] - hmat[2]*hmat[3]);
-    tmp_vec[2] =      (hmat[3]*hmat[7] - hmat[4]*hmat[6]); tmp_vec[5] = -1 * (hmat[0]*hmat[7] - hmat[1]*hmat[6]); tmp_vec[8] =      (hmat[0]*hmat[4] - hmat[1]*hmat[3]);
-        
-    invr_hmat[0] = tmp_vec[0]; invr_hmat[3] = tmp_vec[1]; invr_hmat[6] = tmp_vec[2];
-    invr_hmat[1] = tmp_vec[3]; invr_hmat[4] = tmp_vec[4]; invr_hmat[7] = tmp_vec[5];
-    invr_hmat[2] = tmp_vec[6]; invr_hmat[5] = tmp_vec[7]; invr_hmat[8] = tmp_vec[8];
-
-    invr_hmat[0] /= hmat_det; invr_hmat[3] /= hmat_det; invr_hmat[6] /= hmat_det;
-    invr_hmat[1] /= hmat_det; invr_hmat[4] /= hmat_det; invr_hmat[7] /= hmat_det;
-    invr_hmat[2] /= hmat_det; invr_hmat[5] /= hmat_det; invr_hmat[8] /= hmat_det;      
-    
     // Transform to the new nominally rotated cell  
 
     for(int i=0; i<n_atoms; i++)
@@ -395,12 +472,18 @@ void simulation_system::build_layered_system(vector<string> & atmtyps, vector<in
 {
     
     // use smallest lattice length to determine number of ghost atom layers (n_layers)
+     
     vector<double> latdist = {latcon_a,latcon_b,latcon_c};
-    double lat_min = *min_element(latdist.begin(),latdist.end());
-    double eff_length = max_2b_cut*2.0;
+    
+	double lat_min = *min_element(latdist.begin(),latdist.end());
+    
+	double eff_length = max_2b_cut*2.0;
+	
     // n_layers is set to ensure that max 2b rcut is less than half smallest box length
+     
     n_layers = ceil(eff_length/lat_min+1);
-    double eff_lx = latcon_a * (2*n_layers + 1);
+    
+	double eff_lx = latcon_a * (2*n_layers + 1);
     double eff_ly = latcon_b * (2*n_layers + 1);
     double eff_lz = latcon_c * (2*n_layers + 1);
     
@@ -460,7 +543,7 @@ void simulation_system::build_layered_system(vector<string> & atmtyps, vector<in
                 for (int a=0; a<n_atoms; a++)
                 {
                     n_ghost++;    
-                
+					
                     sys_atmtyps.push_back(atmtyps[a]);    
                     
                     sys_x.push_back(0.0); // Holder    
@@ -480,7 +563,7 @@ void simulation_system::build_layered_system(vector<string> & atmtyps, vector<in
                     sys_x[n_ghost-1] = hmat[0]*tmp_x + hmat[1]*tmp_y + hmat[2]*tmp_z;
                     sys_y[n_ghost-1] = hmat[3]*tmp_x + hmat[4]*tmp_y + hmat[5]*tmp_z;
                     sys_z[n_ghost-1] = hmat[6]*tmp_x + hmat[7]*tmp_y + hmat[8]*tmp_z;    
-                    
+
                     sys_parent.push_back(a);
                 }
             }
@@ -776,11 +859,57 @@ double simulation_system::get_dist(int i,int j)
     
     return get_dist(i,j,rij);
 }
+
+void simulation_system::run_checks(const vector<double>& max_cuts, vector<int>&poly_orders)
+{
+	// Sanity check 1: Are the cell vectors long enough?
+	
+	for(int i=0;i<max_cuts.size(); i++)
+	{
+		if ( 
+			(max_cuts[i] > 2*latcon_a * (2*n_layers + 1)) || 
+			(max_cuts[i] > 2*latcon_b * (2*n_layers + 1)) ||
+			(max_cuts[i] > 2*latcon_c * (2*n_layers + 1))
+			)
+		{
+			cout << "ERROR: Layered system is smaller than 2x the model " << i+2 <<"-body maximum outer cutoff." << endl;
+			cout << "Please report this error to the developers." << endl;
+			cout << "Model maximum cutoff: " << max_cuts[i] << endl;
+			cout << "Layered system lattice cosntant (a): " << latcon_a * (2*n_layers + 1) << endl;
+			cout << "Layered system lattice cosntant (b): " << latcon_b * (2*n_layers + 1) << endl;
+			cout << "Layered system lattice cosntant (c): " << latcon_c * (2*n_layers + 1) << endl;
+			exit(0);
+			
+		}
+	}
+
+	
+	// Sanity check 2: Does the system have enough atoms?
+	
+	int bodiedness = 2;
+	if (poly_orders[1] > 0)
+		bodiedness++;
+	if (poly_orders[2] > 0)
+		bodiedness++;
+	
+	if (bodiedness > sys_x.size())
+	{
+		cout << "ERROR: Layered system contains too few atoms." << endl;
+		cout << "	Model bodiedness:            " << bodiedness << endl;
+		cout << "	No. atoms in layered system: " << sys_x.size() << endl;
+		exit(0);
+	}
+}
 	
 // serial_chimes_interface member functions
 
-serial_chimes_interface::serial_chimes_interface()
+serial_chimes_interface::serial_chimes_interface(bool small)
 {
+	// For small systems, allow explicit replication prior to ghost atom construction
+	// This should ONLY be done for perfectly crystalline systems
+	
+	allow_replication = small;
+	
     // Initialize Pointers, etc for chimes calculator interfacing (2-body only for now)
     // To set up for many body calculations, see the LAMMPS implementation
 
@@ -816,21 +945,28 @@ void serial_chimes_interface::init_chimesFF(string chimesFF_paramfile, int rank)
 }
 void serial_chimes_interface::build_neigh_lists(vector<string> & atmtyps, vector<double> & x_in, vector<double> & y_in, vector<double> & z_in, vector<double> & cella_in, vector<double> & cellb_in, vector<double> & cellc_in)
 {
-    neigh.init(atmtyps, x_in, y_in, z_in, cella_in, cellb_in, cellc_in);
+    neigh.init(atmtyps, x_in, y_in, z_in, cella_in, cellb_in, cellc_in, max_cutoff_2B(true), allow_replication);
     neigh.reorient();
     neigh.build_layered_system(atmtyps, poly_orders, max_cutoff_2B(true), max_cutoff_3B(true), max_cutoff_4B(true));
     neigh.set_atomtyp_indices(type_list);
     neigh.build_neigh_lists(poly_orders, neighlist_2b, neighlist_3b, neighlist_4b, max_cutoff_2B(true), max_cutoff_3B(true), max_cutoff_4B(true));
 }
 void serial_chimes_interface::calculate(vector<double> & x_in, vector<double> & y_in, vector<double> & z_in, vector<double> & cella_in, vector<double> & cellb_in, vector<double> & cellc_in, vector<string> & atmtyps, double & energy, vector<vector<double> > & force, vector<double> & stress)
-{
-    // Set up the calculation system
+{	
+	// Read system, set up lattice constants/hmats
 
-    sys.init(atmtyps, x_in, y_in, z_in, cella_in, cellb_in, cellc_in);
+	// Determine the max outer cutoff (MUST be 2-body, based on ChIMES logic)
+	
+    sys.init(atmtyps, x_in, y_in, z_in, cella_in, cellb_in, cellc_in, max_cutoff_2B(true), allow_replication);	
+	
     sys.build_layered_system(atmtyps,poly_orders, max_cutoff_2B(true), max_cutoff_3B(true), max_cutoff_4B(true));
+
     sys.set_atomtyp_indices(type_list);
-    
+	
+	sys.run_checks({max_2b_cut,max_3b_cut,max_4b_cut},poly_orders);
+
     build_neigh_lists(atmtyps, x_in, y_in, z_in, cella_in, cellb_in, cellc_in);
+
 	
     // Setup vars
     
@@ -840,7 +976,6 @@ void serial_chimes_interface::calculate(vector<double> & x_in, vector<double> & 
 
     for (int idx=0; idx<9; idx++)
         stensor[idx]  = &stress[idx];
-    
     
     ////////////////////////
     // interate over 1- and 2b's 
@@ -853,21 +988,24 @@ void serial_chimes_interface::calculate(vector<double> & x_in, vector<double> & 
         for(int j=0; j<neighlist_2b[i].size(); j++) // Neighbors of i
         {
             jj = neighlist_2b[i][j];
-            
+
             dist = sys.get_dist(i,jj,dr); // Populates dr, which is passed by ref (overloaded)
             
             typ_idxs_2b[0] = sys.sys_atmtyp_indices[i ];
             typ_idxs_2b[1] = sys.sys_atmtyp_indices[jj];
+			
             for (int idx=0; idx<3; idx++)
             {
-                force_ptr_2b[0][idx] = &force[i                 ][idx];
-                force_ptr_2b[1][idx] = &force[sys.sys_parent[jj]][idx];    
+                force_ptr_2b[0][idx] = &force[sys.sys_rep_parent[i]                 ][idx];
+				force_ptr_2b[1][idx] = &force[sys.sys_rep_parent[sys.sys_parent[jj]]][idx];     
             }
 
-            compute_2B(dist, dr, typ_idxs_2b, force_ptr_2b, stensor, energy);
+			compute_2B(dist, dr, typ_idxs_2b, force_ptr_2b, stensor, energy);
+
+			
         }
     }
-    
+	
     ////////////////////////
     // interate over 3b's 
     ////////////////////////
@@ -890,16 +1028,16 @@ void serial_chimes_interface::calculate(vector<double> & x_in, vector<double> & 
         
             for (int idx=0; idx<3; idx++)
             {
-                force_ptr_3b[0][idx] = &force[sys.sys_parent[ii]][idx];
-                force_ptr_3b[1][idx] = &force[sys.sys_parent[jj]][idx];    
-                force_ptr_3b[2][idx] = &force[sys.sys_parent[kk]][idx];
+                force_ptr_3b[0][idx] = &force[sys.sys_rep_parent[sys.sys_parent[ii]]][idx];
+                force_ptr_3b[1][idx] = &force[sys.sys_rep_parent[sys.sys_parent[jj]]][idx];    
+                force_ptr_3b[2][idx] = &force[sys.sys_rep_parent[sys.sys_parent[kk]]][idx];
             }    
         
             compute_3B(dist_3b, dr_3b, typ_idxs_3b, force_ptr_3b, stensor, energy);
 
         }
     }
-    
+
     ////////////////////////
     // interate over 4b's 
     ////////////////////////
@@ -927,22 +1065,26 @@ void serial_chimes_interface::calculate(vector<double> & x_in, vector<double> & 
         
             for (int idx=0; idx<3; idx++)
             {
-                force_ptr_4b[0][idx] = &force[sys.sys_parent[ii]][idx];
-                force_ptr_4b[1][idx] = &force[sys.sys_parent[jj]][idx];    
-                force_ptr_4b[2][idx] = &force[sys.sys_parent[kk]][idx];
-                force_ptr_4b[3][idx] = &force[sys.sys_parent[ll]][idx];
+                force_ptr_4b[0][idx] = &force[sys.sys_rep_parent[sys.sys_parent[ii]]][idx];
+                force_ptr_4b[1][idx] = &force[sys.sys_rep_parent[sys.sys_parent[jj]]][idx];    
+                force_ptr_4b[2][idx] = &force[sys.sys_rep_parent[sys.sys_parent[kk]]][idx];
+                force_ptr_4b[3][idx] = &force[sys.sys_rep_parent[sys.sys_parent[ll]]][idx];
             }    
         
             compute_4B(dist_4b, dr_4b, typ_idxs_4b, force_ptr_4b, stensor, energy);
         }    
     }
+	
+	// Correct for use of replicates, if applicable
+	
+	energy /= pow(sys.n_replicates+1.0,3.0);
     
     ////////////////////////
     // Finish pressure calculation
     ////////////////////////
     
     for (int idx=0; idx<9; idx++)
-        *stensor[idx] /= sys.vol;    
+        *stensor[idx] /= sys.vol;  
     
 }
 
