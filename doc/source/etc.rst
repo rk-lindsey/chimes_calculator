@@ -4,11 +4,16 @@ Support for Linking with External Codes
 Using the ChIMES Calculator with LAMMPS
 ******************************************
 
-We are currently working to get toward ChIMES calculator implementation in `LAMMPS <https://lammps.sandia.gov>`_ as a USER package. In the interim, the following provides a guide to implementing the ChIMES calculator as a LAMMPS pairstyle.
+We are currently working toward ChIMES calculator implementation in `LAMMPS <https://lammps.sandia.gov>`_ as a USER package. In the interim, the following provides a guide to implementing the ChIMES calculator as a LAMMPS pairstyle.
 
 .. Note::
 
-    This example assumes users have downloaded the 7 Aug 2019 version of LAMMPS (stable version as of 11/1/19), which can be downloaded `here <https://lammps.sandia.gov/download.html>`_. 
+    This example assumes users have downloaded the 29 Oct 2020 release of LAMMPS (stable version as of 10/29/20), which can be downloaded `here <https://lammps.sandia.gov/download.html>`_. 
+
+Quick start
+^^^^^^^^^^^^^^^^
+
+Provided a system with a C++11-compatible compiler and an MPI compatible compiler are available, LAMMPS can be downloaded, installed, linked to ChIMES, and compiled all at once by navigating to ``etc/lmp`` and executing ``./install.sh``. Once complete, the installation can be tested by navigating to ``etc/lmp/tests`` and running the example via ``../exe/lmp_mpi_chimes -i in.lammps``.
 
 Compiling
 ^^^^^^^^^^^^^^^^
@@ -36,7 +41,7 @@ Note that a successful compilation should produce an executable named ``lmp_mpi_
 
 .. Tip::
 
-        If you are using an intel compiler, either delete the ``pair_list.*`` files that appear in the src folder following the ``make yes-manybody`` command, or add ``-restrict`` to ``CCFLAGS`` in ``MAKE/Makefile.mpi_chimes``. 
+        If you are using an intel compiler, either delete the ``pair_list.*`` files that appear in the src folder following the ``make yes-manybody`` command, or add ``-restrict`` to ``CCFLAGS`` in ``MAKE/Makefile.mpi_chimes``. Note that the presently provided ``Makefile.mpi_chimes`` utilizes the latter approach.
 
 
 Running
@@ -55,14 +60,12 @@ Note that the following must also be set in the main LAMMPS input file, to use C
 
     units       real		
     newton      on 		
-
     atom_style  atomic		
     atom_modify sort 0 0.0	
-    atom_modify map array
+
 
 .. Warning::
 
-    1. Implementation assumes the max 2-body cutoff is always larger than the max (n>2)-body cutoffs; this is required for compatibility with LAMMPS
+    1. Implementation assumes outer cutoffs for (n+1)-body interactions are always :math:`\le` those for n-body interactions
     2. This capability is still under testing - please `let us know <https://groups.google.com/g/chimes_software>`_ if you observe strange behavior
     3. Assumes user wants single-atom energies to be added to the system energy. If you don't want to, zero the energy offsets in the parameter file
-    4. See comments at the top of chimesFF.{h.cpp} and pair_chimes.{h,cpp} for additional warnings
