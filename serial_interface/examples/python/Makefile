@@ -1,6 +1,12 @@
 C_LOC = $(realpath .)
 
-CXX     = g++ -O3 -std=c++11  # -fPIC
+CXX     = g++ -O3 -std=c++11
+
+# Rudimentary OS detection
+UNAME := $(shell uname)
+ifeq (${UNAME},Linux)
+	CXX += -fPIC
+endif
 
 CHIMESFF_LOC=$(C_LOC)/../../../chimesFF/src
 CHIMESFF_SRC=$(CHIMESFF_LOC)/chimesFF.cpp

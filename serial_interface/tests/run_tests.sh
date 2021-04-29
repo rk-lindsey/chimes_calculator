@@ -30,18 +30,20 @@ FFS[10]="published_params.liqCO.2+3b.cubic.txt"                               ; 
 FFS[11]="published_params.liqCO.2+3b.cubic.txt"                               ; CFGS[11]="diam.8_#000.xyz"                              ; OPTIONS[11]="1"
 FFS[12]="published_params.liqCO.2+3b.cubic.txt"                               ; CFGS[12]="diam.2_#000.xyz"                              ; OPTIONS[12]="1"
 
-NO_TESTS=${#FFS[@]}
-LOC=`pwd`
-
 API[0]="cpp"    ; EXE[0]="CPP-interface"                    ; XTRA[0]="" #"2"
 API[1]="c"      ; EXE[1]="C_wrapper-serial_interface"       ; XTRA[1]="" #"2"
 API[2]="fortran"; EXE[2]="fortran_wrapper-serial_interface" ; XTRA[2]="" #"2"
 API[3]="python" ; EXE[3]="main.py"                          ; XTRA[3]="" #"2 1"
 
+COMPILE_LIST="CMAKE MAKEFILE"
+API_LIST="0 1 2 3"
+NO_TESTS=${#FFS[@]}
+LOC=`pwd`
+
 echo "Running $STYLE tests"
 date
 
-for compile in CMAKE MAKEFILE
+for compile in $COMPILE_LIST
 do
 	echo "Testing compilation type: $compile"
 
@@ -49,7 +51,7 @@ do
 
 	if [[ $compile == "MAKEFILE" ]]; then
 	
-		for i in {0..3} # Cycle through APIs
+		for i in $API_LIST # Cycle through APIs
 		do
 			cd ../examples/${API[$i]}	
 	
@@ -61,7 +63,6 @@ do
 				make all DEBUG=1
 			else
 				make all
-				cp lib-C_wrapper-serial_interface.so ../../tests
 			fi
 			
 			cd ../../tests
@@ -72,7 +73,7 @@ do
 		
 		cd ../../
 		./install.sh 1 $PREFX # Set the debug flag true
-		cp build/lib-C_wrapper-serial_interface.so  serial_interface/tests		
+		cp build/lib-C_wrapper-serial_interface.so  serial_interface/examples/python		
 		cd -  
 
 	else
@@ -84,7 +85,7 @@ do
 	
 	# Run the tasks
 		
-	for i in {0..3} # Cycle through APIs
+	for i in $API_LIST # Cycle through APIs
 	do	
 		
 		idx=1
@@ -145,10 +146,9 @@ do
 
 done
 
-
 # Clean up
 
-for i in {0..3} # Cycle through APIs
+for i in $API_LIST # Cycle through APIs
 do
 	cd ../examples/${API[$i]}
 	make clean

@@ -30,7 +30,9 @@ def str2bool(v):
 
 # Import ChIMES modules
 
-chimes_module_path = os.path.abspath( os.getcwd() + "/../../api/")
+curr_path = os.getcwd()
+
+chimes_module_path = os.path.abspath( curr_path + "/../../api/")
 if len(sys.argv) == 6:
 	chimes_module_path = os.path.abspath(sys.argv[4])
 sys.path.append(chimes_module_path)
@@ -44,9 +46,9 @@ small = False
 if (len(sys.argv) != 4) and (len(sys.argv) != 6):
 	
 	print( "ERROR: Wrong number of commandline args")
-	print( "       Run with: python <this file> <parameter file> <xyz file> ")
+	print( "       Run with: python <this file> <parameter file> <xyz file> <allow_replicates(0/1)>")
 	print( "       or")	
-	print( "       Run with: python <this file> <parameter file> <xyz file> <allow_replicates(0/1)> <debug flag (0/1)")
+	print( "       Run with: python <this file> <parameter file> <xyz file> <allow_replicates(0/1)> <debug flag (0/1)> <path to wrapper_py.py>")
 	exit()
 
 param_file =          sys.argv[1]  # parameter file
@@ -58,9 +60,9 @@ print("Read args:")
 for i in range(len(sys.argv)-1):
 	print (i+1,sys.argv[i+1])
 	
-# Initialize the ChIMES calculator
+# Initialize the ChIMES calculator curr_path should be /.../usr/WS2/rlindsey/chimes_calculator-fork/serial_interface/tests/
 
-wrapper_py.chimes_wrapper = wrapper_py.init_chimes_wrapper("lib-C_wrapper-serial_interface.so")
+wrapper_py.chimes_wrapper = wrapper_py.init_chimes_wrapper(curr_path + "/../examples/python/lib-C_wrapper-serial_interface.so")
 wrapper_py.set_chimes(small)
 
 rank = 0
