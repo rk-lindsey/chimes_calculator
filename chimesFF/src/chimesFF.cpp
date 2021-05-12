@@ -2051,6 +2051,22 @@ void chimesFF::compute_4B(const vector<double> & dx, const vector<vector<double>
     return;
 }
 
+void chimesFF::get_cutoff_2B(vector<vector<double> >  & cutoff_2b)
+{
+	int dim = chimes_2b_cutoff.size();
+	
+	cutoff_2b.resize(dim);
+	
+	for (int i=0; i<dim; i++)
+	{
+		cutoff_2b[i].resize(0);
+		
+		for (int j=0; j<chimes_2b_cutoff[i].size(); j++)
+		
+			cutoff_2b[i].push_back(chimes_2b_cutoff[i][j]);
+	}
+}
+
 double chimesFF::max_cutoff(int ntypes, vector<vector<vector<double> > > & cutoff_list)
 {
     double max = cutoff_list[0][1][0]; 
@@ -2112,4 +2128,9 @@ void chimesFF::set_atomtypes(vector<string> & type_list)
     
     for(int i=0;i<natmtyps;i++)
         type_list[i] = atmtyps[i];
+}
+
+int chimesFF::get_atom_pair_index(int pair_id)
+{
+	return atom_idx_pair_map[pair_id];
 }
