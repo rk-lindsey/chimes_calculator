@@ -2,7 +2,7 @@
 ! Copyright (C) 2020 Rebecca K. Lindsey, Nir Goldman, and Laurence E. Fried
 ! Contributing Author:  Nir Goldman (2020) 
 
-      module wrapper
+      module chimes_serial 
       use, intrinsic :: ISO_C_binding
       implicit none
       
@@ -22,18 +22,10 @@
           real(C_double) :: stress(9)
         end subroutine f_calculate_chimes
         
-        subroutine f_set_chimes_fromF90 (small) bind & 
-      &            (C, name='set_chimes_fromF90')
-          use, intrinsic :: ISO_C_binding, only : C_ptr, C_int
-          integer(C_int) :: small 
-          type(c_ptr), dimension(*)  :: cptr(small)
-        end subroutine f_set_chimes_fromF90
-       
         subroutine f_set_chimes(small) bind & 
       &            (C, name='set_chimes')
           use, intrinsic :: ISO_C_binding, only : C_ptr, C_int
           integer(C_int), value :: small 
-          !type(c_ptr), dimension(*)  :: cptr(small)
         end subroutine f_set_chimes
         
         subroutine f_init_chimes(param_file, rank) & 
