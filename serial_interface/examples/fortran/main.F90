@@ -3,10 +3,10 @@
 ! Contributing Author:  Nir Goldman (2020) 
 
       program test_F_api
-      use wrapper
+      use chimes_serial
       use, intrinsic :: ISO_C_binding
       implicit none
-      integer io_num, stat
+      integer io_num, stat, small
       double precision, parameter :: GPa = 6.9479 ! convert kcal/mol.A^3 to GPa
       character(C_char), dimension(80) :: c_file
       character(C_char), dimension(80) :: dummy_var
@@ -22,18 +22,33 @@
       character(len=2) :: atom
       TYPE(C_PTR), allocatable, dimension(10) :: stringPtr(:)
       integer lenstr
+      
+      small = 1
 
       io_num = command_argument_count()
-      if (io_num .lt. 2) then
+      if ((io_num .ne. 2) .and. (io_num .ne. 3)) then
         print*,"To run: ./test_F.x <parameter file> <xyz config. file>"
+        print*,"or"
+        print*,"/test.x <parameter file> <xyz config. file> <allow_replicates(0/1)>"
         print*,"Exiting code.\n"
         STOP
+      endif
+      
+      if (io_num .eq. 3) then
+          call GET_COMMAND_ARGUMENT(3, wq_char)
+          read(wq_char,*,iostat=stat)  small
       endif
       
       call GET_COMMAND_ARGUMENT(1, wq_char)
       param_file = trim(wq_char)
       call GET_COMMAND_ARGUMENT(2, wq_char)
       coord_file = trim(wq_char)  
+      
+      print*,"Read args:"      
+      do i = 1, io_num
+          call GET_COMMAND_ARGUMENT(i, wq_char)
+          print*,i,trim(wq_char)
+      enddo
       
       open (unit=10, status='old', file=coord_file)
       read(10,*)natom
@@ -61,7 +76,7 @@
       fz(:) = 0d0
       ! initialize system energy
       energy = 0d0
-      call f_set_chimes()
+      call f_set_chimes(1)
       c_file = string2Cstring(param_file)
       call f_init_chimes(c_file,  0) ! last '0' is the rank of the process
       stress(:) = 0d0
@@ -99,9 +114,9 @@
       write(20,'(F15.6)') stress(3)*GPa
       write(20,'(F15.6)') stress(6)*GPa
       do i = 1, natom
-         write(20,'(E15.6)') fx(i)
-         write(20,'(E15.6)') fy(i)
-         write(20,'(E15.6)') fz(i)
+         write(20,'(F15.6)') fx(i)
+         write(20,'(F15.6)') fy(i)
+         write(20,'(F15.6)') fz(i)
       enddo
       close(20)
 #endif 

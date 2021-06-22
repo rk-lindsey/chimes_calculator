@@ -15,7 +15,6 @@ set(CMAKE_SKIP_INSTALL_ALL_DEPENDENCY true)
 
 add_definitions(-DDEBUG=${DEBUG})
 
-
 ############################################################
 # Executables/libraries for C++ via the serial wrapper
 ############################################################
@@ -28,20 +27,17 @@ add_executable(CPP-interface
     ${CMAKE_CURRENT_SOURCE_DIR}/chimesFF/src/chimesFF.cpp
 )
 
-# install(TARGETS myapp DESTINATION bin)
-
-
 # Define properties for the executable target
 
 target_include_directories(CPP-interface PRIVATE ${CMAKE_CURRENT_SOURCE_DIR}/serial_interface/examples/cpp)
 target_include_directories(CPP-interface PRIVATE ${CMAKE_CURRENT_SOURCE_DIR}/serial_interface/src/)
 target_include_directories(CPP-interface PRIVATE ${CMAKE_CURRENT_SOURCE_DIR}/chimesFF/src/)
-#target_compile_definitions(CPP-interface PRIVATE DEBUG=0)
 target_compile_features   (CPP-interface PRIVATE cxx_std_11)
 target_compile_options    (CPP-interface PRIVATE -O3)
 
-install(TARGETS CPP-interface DESTINATION ${CMAKE_CURRENT_SOURCE_DIR}/serial_interface/examples/cpp/ OPTIONAL)
-
+IF (NOT CMAKE_INSTALL_PREFIX_INITIALIZED_TO_DEFAULT) 
+	install(TARGETS CPP-interface DESTINATION ${CMAKE_INSTALL_PREFIX}/serial_interface/examples/cpp/ OPTIONAL)
+ENDIF (NOT CMAKE_INSTALL_PREFIX_INITIALIZED_TO_DEFAULT) 
 
 
 ############################################################
@@ -64,8 +60,9 @@ target_include_directories(C_wrapper-direct_interface PRIVATE ${CMAKE_CURRENT_SO
 target_compile_features   (C_wrapper-direct_interface PRIVATE cxx_std_11)
 target_compile_options    (C_wrapper-direct_interface PRIVATE -O3)
 
-install(TARGETS C_wrapper-direct_interface DESTINATION ${CMAKE_CURRENT_SOURCE_DIR}/chimesFF/examples/c/ OPTIONAL)
-
+IF (NOT CMAKE_INSTALL_PREFIX_INITIALIZED_TO_DEFAULT) 
+	install(TARGETS C_wrapper-direct_interface DESTINATION ${CMAKE_INSTALL_PREFIX}/chimesFF/examples/c/ OPTIONAL)
+ENDIF (NOT CMAKE_INSTALL_PREFIX_INITIALIZED_TO_DEFAULT) 
 
 
 ############################################################
@@ -87,12 +84,12 @@ target_include_directories(C_wrapper-serial_interface PRIVATE ${CMAKE_CURRENT_SO
 target_include_directories(C_wrapper-serial_interface PRIVATE ${CMAKE_CURRENT_SOURCE_DIR}/serial_interface/api/)
 target_include_directories(C_wrapper-serial_interface PRIVATE ${CMAKE_CURRENT_SOURCE_DIR}/chimesFF/src/)
 target_include_directories(C_wrapper-serial_interface PRIVATE ${CMAKE_CURRENT_SOURCE_DIR}/serial_interface/src/)
-#target_compile_definitions(C_wrapper-serial_interface PRIVATE DEBUG=0)
 target_compile_features   (C_wrapper-serial_interface PRIVATE cxx_std_11)
 target_compile_options    (C_wrapper-serial_interface PRIVATE -O3)
 
-install(TARGETS C_wrapper-serial_interface DESTINATION ${CMAKE_CURRENT_SOURCE_DIR}/serial_interface/examples/c/ OPTIONAL)
-
+IF (NOT CMAKE_INSTALL_PREFIX_INITIALIZED_TO_DEFAULT) 
+	install(TARGETS C_wrapper-serial_interface DESTINATION ${CMAKE_INSTALL_PREFIX}/serial_interface/examples/c/ OPTIONAL)
+ENDIF (NOT CMAKE_INSTALL_PREFIX_INITIALIZED_TO_DEFAULT)
 
 
 ############################################################
@@ -118,7 +115,9 @@ target_compile_features   (lib-C_wrapper-direct_interface PUBLIC cxx_std_11)
 target_compile_options    (lib-C_wrapper-direct_interface PUBLIC -O3)
 target_compile_options    (lib-C_wrapper-direct_interface PUBLIC -fPIC)
 
-install(TARGETS lib-C_wrapper-direct_interface DESTINATION ${CMAKE_CURRENT_SOURCE_DIR}/chimesFF/examples/python/)
+IF (NOT CMAKE_INSTALL_PREFIX_INITIALIZED_TO_DEFAULT) 
+	install(TARGETS lib-C_wrapper-direct_interface DESTINATION ${CMAKE_INSTALL_PREFIX}/chimesFF/examples/python/ OPTIONAL)
+ENDIF (NOT CMAKE_INSTALL_PREFIX_INITIALIZED_TO_DEFAULT)
 
 
 
@@ -139,12 +138,14 @@ set_target_properties(lib-C_wrapper-serial_interface PROPERTIES PREFIX "") # Pre
 target_include_directories(lib-C_wrapper-serial_interface PRIVATE ${CMAKE_CURRENT_SOURCE_DIR}/serial_interface/api/)
 target_include_directories(lib-C_wrapper-serial_interface PRIVATE ${CMAKE_CURRENT_SOURCE_DIR}/serial_interface/src/)
 target_include_directories(lib-C_wrapper-serial_interface PRIVATE ${CMAKE_CURRENT_SOURCE_DIR}/chimesFF/src/)
-#target_compile_definitions(lib-C_wrapper-serial_interface PRIVATE DEBUG=0)
 target_compile_features   (lib-C_wrapper-serial_interface PUBLIC cxx_std_11)
 target_compile_options    (lib-C_wrapper-serial_interface PUBLIC -O3)
 target_compile_options    (lib-C_wrapper-serial_interface PUBLIC -fPIC)
 
-install(TARGETS lib-C_wrapper-serial_interface DESTINATION ${CMAKE_CURRENT_SOURCE_DIR}/serial_interface/examples/python/)
+#install(TARGETS lib-C_wrapper-serial_interface DESTINATION ${CMAKE_CURRENT_SOURCE_DIR}/serial_interface/examples/python/)
+IF (NOT CMAKE_INSTALL_PREFIX_INITIALIZED_TO_DEFAULT) 
+	install(TARGETS lib-C_wrapper-serial_interface DESTINATION ${CMAKE_INSTALL_PREFIX}/serial_interface/examples/python/ OPTIONAL)
+ENDIF (NOT CMAKE_INSTALL_PREFIX_INITIALIZED_TO_DEFAULT)
 
 
 ############################################################
@@ -170,7 +171,9 @@ target_compile_options    (fortran_wrapper-direct_interface PRIVATE -O3)
 target_compile_options    (fortran_wrapper-direct_interface PRIVATE -fPIC)
 target_compile_options    (fortran_wrapper-direct_interface PRIVATE -std=f2003)
 
-install(TARGETS fortran_wrapper-direct_interface DESTINATION ${CMAKE_CURRENT_SOURCE_DIR}/chimesFF/examples/fortran/ OPTIONAL)
+IF (NOT CMAKE_INSTALL_PREFIX_INITIALIZED_TO_DEFAULT) 
+	install(TARGETS fortran_wrapper-direct_interface DESTINATION ${CMAKE_INSTALL_PREFIX}/chimesFF/examples/fortran/ OPTIONAL)
+ENDIF (NOT CMAKE_INSTALL_PREFIX_INITIALIZED_TO_DEFAULT)
 
 ############################################################
 # Executables/libraries for Fortran via the serial wrapper
@@ -192,17 +195,11 @@ target_include_directories(fortran_wrapper-serial_interface PRIVATE ${CMAKE_CURR
 target_include_directories(fortran_wrapper-serial_interface PRIVATE ${CMAKE_CURRENT_SOURCE_DIR}/serial_interface/api/)
 target_include_directories(fortran_wrapper-serial_interface PRIVATE ${CMAKE_CURRENT_SOURCE_DIR}/serial_interface/src/)
 target_include_directories(fortran_wrapper-serial_interface PRIVATE ${CMAKE_CURRENT_SOURCE_DIR}/chimesFF/src/)
-#target_compile_definitions(fortran_wrapper-serial_interface PRIVATE DEBUG=0)
 target_compile_features   (fortran_wrapper-serial_interface PRIVATE cxx_std_11)
 target_compile_options    (fortran_wrapper-serial_interface PRIVATE -O3)
 target_compile_options    (fortran_wrapper-serial_interface PRIVATE -fPIC)
 target_compile_options    (fortran_wrapper-serial_interface PRIVATE -std=f2003)
 
-#target_compile_options    (fortran_wrapper-serial_interface PRIVATE -cpp)
-#if(${CMAKE_SYSTEM_NAME} MATCHES "Darwin")
-#    target_compile_options(fortran_wrapper-serial_interface PRIVATE -lc++)
-#else()
-#    target_compile_options(fortran_wrapper-serial_interface PRIVATE -stdc++)
-#endif()
-
-install(TARGETS fortran_wrapper-serial_interface DESTINATION ${CMAKE_CURRENT_SOURCE_DIR}/serial_interface/examples/fortran/ OPTIONAL)
+IF (NOT CMAKE_INSTALL_PREFIX_INITIALIZED_TO_DEFAULT) 
+	install(TARGETS fortran_wrapper-serial_interface DESTINATION ${CMAKE_INSTALL_PREFIX}/serial_interface/examples/fortran/ OPTIONAL)
+ENDIF (NOT CMAKE_INSTALL_PREFIX_INITIALIZED_TO_DEFAULT)
