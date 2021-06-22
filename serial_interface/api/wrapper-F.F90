@@ -25,9 +25,16 @@
         subroutine f_set_chimes_fromF90 (small) bind & 
       &            (C, name='set_chimes_fromF90')
           use, intrinsic :: ISO_C_binding, only : C_ptr, C_int
-          integer(C_int) :: small   
+          integer(C_int) :: small 
           type(c_ptr), dimension(*)  :: cptr(small)
         end subroutine f_set_chimes_fromF90
+       
+        subroutine f_set_chimes(small) bind & 
+      &            (C, name='set_chimes')
+          use, intrinsic :: ISO_C_binding, only : C_ptr, C_int
+          integer(C_int), value :: small 
+          !type(c_ptr), dimension(*)  :: cptr(small)
+        end subroutine f_set_chimes
         
         subroutine f_init_chimes(param_file, rank) & 
       &            bind (C, name='init_chimes') 

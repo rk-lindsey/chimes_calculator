@@ -23,7 +23,7 @@
       TYPE(C_PTR), allocatable, dimension(10) :: stringPtr(:)
       integer lenstr
       
-      small = 0
+      small = 1
 
       io_num = command_argument_count()
       if ((io_num .ne. 2) .and. (io_num .ne. 3)) then
@@ -76,7 +76,12 @@
       fz(:) = 0d0
       ! initialize system energy
       energy = 0d0
-      call f_set_chimes_fromF90(small)
+      !if (io_num .eq. 3) then
+      !  call f_set_chimes_fromF90(small)
+      !else
+      !  call f_set_chimes_fromF90(1)
+      !endif
+      call f_set_chimes(1)
       c_file = string2Cstring(param_file)
       call f_init_chimes(c_file,  0) ! last '0' is the rank of the process
       stress(:) = 0d0
@@ -114,9 +119,9 @@
       write(20,'(F15.6)') stress(3)*GPa
       write(20,'(F15.6)') stress(6)*GPa
       do i = 1, natom
-         write(20,'(E15.6)') fx(i)
-         write(20,'(E15.6)') fy(i)
-         write(20,'(E15.6)') fz(i)
+         write(20,'(F15.6)') fx(i)
+         write(20,'(F15.6)') fy(i)
+         write(20,'(F15.6)') fz(i)
       enddo
       close(20)
 #endif 

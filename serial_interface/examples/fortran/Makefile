@@ -1,7 +1,7 @@
 CXX     = g++ -O3 -std=c++11 -fPIC
 FCC     = gfortran -O3 -fPIC -std=f2003 -cpp # last flag allows processing of C-style pre-processor directives
 
-DEBUG   = 0
+DEBUG   = 1
 
 #CCFLAGS = -fPIC -O3 -std=c++11 
 #FFLAGS  = -O3 -fPIC
