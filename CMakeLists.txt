@@ -8,7 +8,8 @@ project(ChIMES_Calculator
 	VERSION 1.0
 	DESCRIPTION "Utilities to compute ChIMES interactions"
 	LANGUAGES CXX C Fortran)
-    
+
+set(DEBUG 0 CACHE STRING "Debug level")
 
 set(CMAKE_SKIP_INSTALL_ALL_DEPENDENCY true)
 
@@ -127,7 +128,7 @@ ENDIF (NOT CMAKE_INSTALL_PREFIX_INITIALIZED_TO_DEFAULT)
 ADD_LIBRARY(lib-C_wrapper-serial_interface MODULE
     ${CMAKE_CURRENT_SOURCE_DIR}/serial_interface/api/wrapper-C.cpp
     ${CMAKE_CURRENT_SOURCE_DIR}/serial_interface/src/serial_chimes_interface.cpp
-    ${CMAKE_CURRENT_SOURCE_DIR}/chimesFF/src/chimesFF.cpp    
+    ${CMAKE_CURRENT_SOURCE_DIR}/chimesFF/src/chimesFF.cpp
 )
 
 set_target_properties(lib-C_wrapper-serial_interface PROPERTIES PREFIX "") # Prevent CMake from prepending "lib" to libwrapper-C.so
@@ -202,5 +203,3 @@ target_compile_options    (fortran_wrapper-serial_interface PRIVATE -std=f2003)
 IF (NOT CMAKE_INSTALL_PREFIX_INITIALIZED_TO_DEFAULT) 
 	install(TARGETS fortran_wrapper-serial_interface DESTINATION ${CMAKE_INSTALL_PREFIX}/serial_interface/examples/fortran/ OPTIONAL)
 ENDIF (NOT CMAKE_INSTALL_PREFIX_INITIALIZED_TO_DEFAULT)
-
-
