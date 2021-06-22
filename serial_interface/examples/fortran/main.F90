@@ -3,7 +3,7 @@
 ! Contributing Author:  Nir Goldman (2020) 
 
       program test_F_api
-      use wrapper
+      use chimes_serial
       use, intrinsic :: ISO_C_binding
       implicit none
       integer io_num, stat, small
@@ -76,11 +76,6 @@
       fz(:) = 0d0
       ! initialize system energy
       energy = 0d0
-      !if (io_num .eq. 3) then
-      !  call f_set_chimes_fromF90(small)
-      !else
-      !  call f_set_chimes_fromF90(1)
-      !endif
       call f_set_chimes(1)
       c_file = string2Cstring(param_file)
       call f_init_chimes(c_file,  0) ! last '0' is the rank of the process
