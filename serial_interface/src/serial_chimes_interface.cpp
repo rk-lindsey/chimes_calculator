@@ -146,6 +146,7 @@ void simulation_system::set_atomtyp_indices(vector<string> & type_list)
         }
     }
 }
+
 void simulation_system::init(vector<string> & atmtyps, vector<double> & x_in, vector<double> & y_in, vector<double> & z_in, vector<double> & cella_in, vector<double> & cellb_in, vector<double> & cellc_in, double max_2b_cut, bool small)
 {
 	allow_replication = small;
@@ -211,20 +212,21 @@ void simulation_system::init(vector<string> & atmtyps, vector<double> & x_in, ve
 	
 	if (allow_replication)
 		n_replicates = ceil(max_cut/min_latcon)-1;
-	
-	cout << "SerialchimesFF: " << "Replicating the system " << n_replicates << " times prior to generating ghost atoms" << endl;
 
 	if (n_replicates > 0)
 	{
-		if (!called_before)
-		{
-			called_before = true;
+            if (!called_before)
+            {
+                called_before = true;
+
+                // Avoid printing the number of replicates on each MD step (LEF).
+                cout << "SerialchimesFF: " << "Replicating the system " << n_replicates << " times prior to generating ghost atoms" << endl;    
 	
-			cout << "SerialchimesFF: " << "\t" << "Warning: At least one cell length is smaller than the ChIMES outer cutoff." << endl;
-			cout << "SerialchimesFF: " << "\t" << "System will be replicated prior to ghost atom generation." << endl;
-			cout << "SerialchimesFF: " << "\t" << "Results will only be correct for perfectly crystalline cells." << endl;
-			cout << "SerialchimesFF: " << "\t" << "For any other case, system size should be increased." << endl;
-		}
+                cout << "SerialchimesFF: " << "\t" << "Warning: At least one cell length is smaller than the ChIMES outer cutoff." << endl;
+                cout << "SerialchimesFF: " << "\t" << "System will be replicated prior to ghost atom generation." << endl;
+                cout << "SerialchimesFF: " << "\t" << "Results will only be correct for perfectly crystalline cells." << endl;
+                cout << "SerialchimesFF: " << "\t" << "For any other case, system size should be increased." << endl;
+            }
 	}
 
 	set_hmat(cella_in, cellb_in, cellc_in, hmat, invr_hmat, 0);
@@ -943,6 +945,7 @@ void serial_chimes_interface::init_chimesFF(string chimesFF_paramfile, int rank)
     read_parameters(chimesFF_paramfile);
     set_atomtypes(type_list);
 }
+
 void serial_chimes_interface::build_neigh_lists(vector<string> & atmtyps, vector<double> & x_in, vector<double> & y_in, vector<double> & z_in, vector<double> & cella_in, vector<double> & cellb_in, vector<double> & cellc_in)
 {
     neigh.init(atmtyps, x_in, y_in, z_in, cella_in, cellb_in, cellc_in, max_cutoff_2B(true), allow_replication);
@@ -951,19 +954,25 @@ void serial_chimes_interface::build_neigh_lists(vector<string> & atmtyps, vector
     neigh.set_atomtyp_indices(type_list);
     neigh.build_neigh_lists(poly_orders, neighlist_2b, neighlist_3b, neighlist_4b, max_cutoff_2B(true), max_cutoff_3B(true), max_cutoff_4B(true));
 }
+
 void serial_chimes_interface::calculate(vector<double> & x_in, vector<double> & y_in, vector<double> & z_in, vector<double> & cella_in, vector<double> & cellb_in, vector<double> & cellc_in, vector<string> & atmtyps, double & energy, vector<vector<double> > & force, vector<double> & stress)
 {	
-	// Read system, set up lattice constants/hmats
+    // Read system, set up lattice constants/hmats
 
-	// Determine the max outer cutoff (MUST be 2-body, based on ChIMES logic)
+    // Determine the max outer cutoff (MUST be 2-body, based on ChIMES logic)
+
+    // Initialize private members (LEF)
+    max_2b_cut = max_cutoff_2B(true) ;
+    max_3b_cut = max_cutoff_3B(true) ;
+    max_4b_cut = max_cutoff_4B(true) ;
 	
-    sys.init(atmtyps, x_in, y_in, z_in, cella_in, cellb_in, cellc_in, max_cutoff_2B(true), allow_replication);	
+    sys.init(atmtyps, x_in, y_in, z_in, cella_in, cellb_in, cellc_in, max_2b_cut, allow_replication);	
 	
-    sys.build_layered_system(atmtyps,poly_orders, max_cutoff_2B(true), max_cutoff_3B(true), max_cutoff_4B(true));
+    sys.build_layered_system(atmtyps,poly_orders, max_2b_cut, max_3b_cut, max_4b_cut);
 
     sys.set_atomtyp_indices(type_list);
 	
-	sys.run_checks({max_2b_cut,max_3b_cut,max_4b_cut},poly_orders);
+    sys.run_checks({max_2b_cut,max_3b_cut,max_4b_cut},poly_orders);
 
     build_neigh_lists(atmtyps, x_in, y_in, z_in, cella_in, cellb_in, cellc_in);
 
@@ -997,12 +1006,9 @@ void serial_chimes_interface::calculate(vector<double> & x_in, vector<double> & 
             for (int idx=0; idx<3; idx++)
             {
                 force_ptr_2b[0][idx] = &force[sys.sys_rep_parent[i]                 ][idx];
-				force_ptr_2b[1][idx] = &force[sys.sys_rep_parent[sys.sys_parent[jj]]][idx];     
+                force_ptr_2b[1][idx] = &force[sys.sys_rep_parent[sys.sys_parent[jj]]][idx];     
             }
-
-			compute_2B(dist, dr, typ_idxs_2b, force_ptr_2b, stensor, energy);
-
-			
+            compute_2B(dist, dr, typ_idxs_2b, force_ptr_2b, stensor, energy);
         }
     }
 	
@@ -1075,9 +1081,9 @@ void serial_chimes_interface::calculate(vector<double> & x_in, vector<double> & 
         }    
     }
 	
-	// Correct for use of replicates, if applicable
+    // Correct for use of replicates, if applicable
 	
-	energy /= pow(sys.n_replicates+1.0,3.0);
+    energy /= pow(sys.n_replicates+1.0,3.0);
     
     ////////////////////////
     // Finish pressure calculation

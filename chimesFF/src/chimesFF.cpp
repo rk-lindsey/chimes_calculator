@@ -334,7 +334,29 @@ void chimesFF::read_parameters(string paramfile)
                 line = get_next_line(param_file);
                 
                 tmp_no_items = split_line(line, tmp_str_items);
-                
+
+                int pair_input_version = 0 ;
+                if ( tmp_no_items == 8 )
+                {
+                  
+                  if ( rank == 0 && i == 0 ) cout << "chimesFF: Detected version 1 pair specification (with S_DELTA)\n" ;
+                  pair_input_version = 1 ;
+                }
+                else if ( tmp_no_items == 7 )
+                {
+                  if ( rank == 0 && i == 0 ) cout << "chimesFF: Detected version 2 pair specification (no S_DELTA)\n" ;
+                  pair_input_version = 2 ;
+                }
+                else
+                {
+                  if ( rank == 0 )
+                  {
+                    cout << "Incorrect input in line: " << line << endl ;
+                    cout << "Expect 7 or 8 entries\n" ;
+                  }
+                  exit(0) ;
+                }
+            
                 pair_params_atm_chem_1[i] = tmp_str_items[1];
                 pair_params_atm_chem_2[i] = tmp_str_items[2];
                 
@@ -343,24 +365,45 @@ void chimesFF::read_parameters(string paramfile)
                 
                 chimes_2b_cutoff[i].push_back(stod(tmp_str_items[3])); // Inner cutoff    
                 chimes_2b_cutoff[i].push_back(stod(tmp_str_items[4])); // Outer cutoff
-                
-                if (i==0)
+
+                int xform_style_idx, morse_idx ;
+                if ( pair_input_version == 1 )
                 {
-                    tmp_xform_style = tmp_str_items[6];
+                  xform_style_idx = 6 ;
+                  morse_idx = 7 ;
                 }
+                else if ( pair_input_version == 2 )
+                {
+                  xform_style_idx = 5 ;
+                  morse_idx = 6 ;
+                } 
                 else
                 {
-                    if ( tmp_str_items[6] != tmp_xform_style)    
-                    {
-                        if (rank == 0)
-                            cout << "chimesFF: " << "Distance transfomration style must be the same for all pair types" << endl;
-                            
-                        exit(0);
-                    }
+                  if ( rank == 0 ) cout << "Bad pair input version\n" ;
+                  exit(0) ;
                 }
-                
-                if (tmp_no_items >= 8)
-                    morse_var[i] = stod(tmp_str_items[7]);
+                    
+                if (i==0)
+                {
+                    tmp_xform_style = tmp_str_items[xform_style_idx];
+                }
+                else if ( tmp_str_items[xform_style_idx] != tmp_xform_style)    
+                {
+                  if (rank == 0)
+                    cout << "chimesFF: " << "Distance transformation style must be the same for all pair types" << endl;
+                  exit(0);
+                }
+
+                if (tmp_xform_style == "MORSE" )
+                {
+                  if ( tmp_no_items > morse_idx )
+                    morse_var[i] = stod(tmp_str_items[morse_idx]);
+                  else {
+                    if ( rank == 0 )
+                      cout << "chimesFF: Missing morse lambda value in line: \n" << line << endl ;
+                    exit(0) ;
+                  }
+                }
             }
                 
             xform_style = tmp_xform_style;
@@ -2075,7 +2118,7 @@ double chimesFF::max_cutoff(int ntypes, vector<vector<vector<double> > > & cutof
         for (int j=0; j<cutoff_list[i][1].size(); j++)
             if (cutoff_list[i][1][j] > max)
                 max = cutoff_list[i][1][j];
-    
+
     return max;
 
 }
