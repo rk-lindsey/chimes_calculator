@@ -1430,7 +1430,9 @@ inline void chimesFF::get_penalty(const double dx, const int & pair_idx, double 
     if ( r_penalty > 0.0 ) 
     {        
         E_penalty    = r_penalty * r_penalty * r_penalty * penalty_params[1];
-        force_scalar = 3.0 * r_penalty * r_penalty * penalty_params[1];
+
+        // force_scalar should be negative (LEF) 7/30/21.
+        force_scalar = -3.0 * r_penalty * r_penalty * penalty_params[1];
         
         if (rank == 0)
         {
@@ -1639,6 +1641,7 @@ void chimesFF::compute_2B(const double dx, const vector<double> & dr, const vect
     {
         energy += E_penalty;
 
+		// Note: force_scalar is negative (LEF) 7/30/21.
         *force[0][0] += force_scalar * dr[0]/ dx;
         *force[0][1] += force_scalar * dr[1]/ dx;
         *force[0][2] += force_scalar * dr[2]/ dx;
@@ -1646,6 +1649,20 @@ void chimesFF::compute_2B(const double dx, const vector<double> & dr, const vect
         *force[1][0] -= force_scalar * dr[0]/ dx;
         *force[1][1] -= force_scalar * dr[1]/ dx;
         *force[1][2] -= force_scalar * dr[2]/ dx;
+
+		// Update stress according to penalty force. (LEF) 07/30/21
+        *stress[0] -= force_scalar / dx * dr[0] * dr[0]; // xx tensor component
+        *stress[1] -= force_scalar / dx * dr[0] * dr[1]; // xy tensor component 
+        *stress[2] -= force_scalar / dx * dr[0] * dr[2]; // xz tensor component
+        
+        *stress[3] -= force_scalar / dx * dr[1] * dr[0]; // yx tensor component
+        *stress[4] -= force_scalar / dx * dr[1] * dr[1]; // yy tensor component
+        *stress[5] -= force_scalar / dx * dr[1] * dr[2]; // yz tensor component
+        
+        *stress[6] -= force_scalar / dx * dr[2] * dr[0]; // zx tensor component
+        *stress[7] -= force_scalar / dx * dr[2] * dr[1]; // zy tensor component
+        *stress[8] -= force_scalar / dx * dr[2] * dr[2]; // zz tensor component
+
     }
 }
 
