@@ -9,7 +9,7 @@
 #include <stdio.h>
 #include <string.h>
 #include <unistd.h>
-#include "wrapper-C.h"
+#include "chimescalc_C.h"
 
 int main (int argc, char **argv) 
 {

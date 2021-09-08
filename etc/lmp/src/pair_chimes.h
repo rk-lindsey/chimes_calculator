@@ -27,8 +27,8 @@ PairStyle(chimesFF,PairCHIMES); // PairStyle(key, class)
 
 #include "pair.h"
 
-#include "chimesFF.h"
-#include <vector>	
+#include "chimescalc.h"
+#include <vector>
 
 
 /*	Functions required by LAMMPS:
@@ -47,28 +47,28 @@ read_restart_settings		read global settings from restart file
 single				force and energy fo a single pairwise interaction between two atoms
 */
 
-	
+
 namespace LAMMPS_NS
 {
-	class PairCHIMES : public Pair 
+	class PairCHIMES : public Pair
 	{
 	 	public:
-			
+
 			// Variable definitions
-			
+
 			chimesFF chimes_calculator; // chimesFF instance
-			
+
 			char * chimesFF_paramfile;	// ChIMES parameter file
-			
+
 			double maxcut_3b;
 			double maxcut_4b;
-				
+
 			int n_3mers;				// number of neighborlist_Xmers entries
 			int n_4mers;
-			
+
 			std::vector<std::vector<int> > neighborlist_3mers;	// custom neighbor list; neighborlist_Xmers[cluster idx][atom in cluster idx]
 			std::vector<std::vector<int> > neighborlist_4mers;
-			
+
 
 			// 2-body vars for chimesFF access
 
@@ -77,8 +77,8 @@ namespace LAMMPS_NS
 			std::vector<vector <double> > dr_4b;
 
 			double                        dist;
-			std::vector        <double>   dist_3b;				
-			std::vector        <double>   dist_4b;	
+			std::vector        <double>   dist_3b;
+			std::vector        <double>   dist_4b;
 
 			std::vector<std::vector<double*> > force_ptr_2b;
 			std::vector<std::vector<double*> > force_ptr_3b;
@@ -86,7 +86,7 @@ namespace LAMMPS_NS
 
 			std::vector<int> typ_idxs_2b;
 			std::vector<int> typ_idxs_3b;
-			std::vector<int> typ_idxs_4b;	
+			std::vector<int> typ_idxs_4b;
 
 			// Vars for neighlist construction
 
@@ -94,36 +94,36 @@ namespace LAMMPS_NS
 			std::vector <int> tmp_4mer;
 
 			bool valid_3mer;
-			bool valid_4mer;	
-			
+			bool valid_4mer;
+
 			// Constructor/Deconstructor
-			
+
 			PairCHIMES(class LAMMPS *);
-			
+
 			virtual ~PairCHIMES();
-			
+
 			// Functions that have been written
 
 			void   settings(int narg, char **arg);
-			void   init_style();	
+			void   init_style();
 			void   coeff(int narg, char **arg);
 			void   allocate();
-			double init_one(int i, int j);	
+			double init_one(int i, int j);
 			void   compute(int eflag, int vflag);
 			void   build_mb_neighlists();
 
-			// Functions I haven't worked on 
-						
-			void write_restart();		
-			void read_restart();				
-			void write_restart_settings();	
+			// Functions I haven't worked on
+
+			void write_restart();
+			void read_restart();
+			void write_restart_settings();
 			void read_restart_settings();
-			void single();	
+			void single();
 
 		};
-}	
+}
 
 
-	
+
 #endif
 #endif

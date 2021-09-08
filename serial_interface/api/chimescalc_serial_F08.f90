@@ -9,9 +9,9 @@
 !> without the possibility of destroying that instance. Therefore, the Fortran interface only
 !> allows the creation of one ChIMES-calculator.
 !>
-module chimes_serial08
+module chimescalc_serial08
   use, intrinsic :: iso_c_binding, only : c_ptr, c_double, c_char, c_loc
-  use chimes_serial, only : f_init_chimes, f_set_chimes, f_calculate_chimes, string2Cstring
+  use chimescalc_serial, only : f_init_chimes, f_set_chimes, f_calculate_chimes, string2Cstring
   implicit none
 
   private
@@ -158,4 +158,4 @@ contains
   end subroutine ChimesCalc_calculate
 
 
-end module chimes_serial08
+end module chimescalc_serial08

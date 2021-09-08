@@ -4,7 +4,7 @@ DEBUG = 1
 
 CXX_LOC = $(realpath .)
 CXX_SRC = main.cpp $(CXX_LOC)/../../src/serial_chimes_interface.cpp $(CXX_LOC)/../../../chimesFF/src/chimesFF.cpp
-CXX_HDR = $(CXX_LOC)/../../src/serial_chimes_interface.h $(CXX_LOC)/../../../chimesFF/src/chimesFF.h
+CXX_HDR = $(CXX_LOC)/../../src/chimescalc_serial.h $(CXX_LOC)/../../../chimesFF/src/chimescalc.h
 
 clean:
 

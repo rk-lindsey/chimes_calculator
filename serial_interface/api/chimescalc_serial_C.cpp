@@ -1,7 +1,7 @@
-/* 
+/*
     ChIMES Calculator
     Copyright (C) 2020 Rebecca K. Lindsey, Nir Goldman, and Laurence E. Fried
-	Contributing Author:  Nir Goldman (2020) 
+	Contributing Author:  Nir Goldman (2020)
 */
 
 #include<vector>
@@ -17,17 +17,13 @@
 
 using namespace std;
 
-#include "serial_chimes_interface.h"
-#include "wrapper-C.h"
+#include "chimescalc_serial.h"
+#include "chimescalc_serial_C.h"
 static  serial_chimes_interface chimes, *chimes_ptr;
 
 
-void set_chimes_fromF90 (int *small=0)
-{	
-	set_chimes(*small);
-}
-void set_chimes (int small=1)
-{	
+void set_chimes_serial(int small=1)
+{
 	if ((small!=0)&&(small!=1))
 	{
 		cout << "ERROR: Small must be set to 0 (false) or 1 (true)" << endl;
@@ -38,28 +34,25 @@ void set_chimes (int small=1)
 	chimes_ptr->allow_replication = small;
 }
 
-void init_chimes (char *param_file, int *rank) 
+void init_chimes_serial(char *param_file, int *rank)
 {
   chimes_ptr->init_chimesFF(param_file, *rank);
 }
-void calculate_chimes_fromF90(int *natom, double *xc, double *yc, double *zc, char *atom_types[], double ca[3], double cb[3], double cc[3], double *energy, double fx[], double fy[], double fz[], double stress[9])
-{
-    calculate_chimes(*natom, xc, yc, zc, atom_types, ca, cb, cc, energy, fx, fy, fz, stress);
-}
+
 void calculate_chimes(int natom, double *xc, double *yc, double *zc, char *atom_types[], double ca[3], double cb[3], double cc[3], double *energy, double fx[], double fy[], double fz[], double stress[9])
 {
   vector<double>    x_vec(natom);
   vector<double>    y_vec(natom);
   vector<double>    z_vec(natom);
-  
-  vector<vector<double> > force_vec; 
+
+  vector<vector<double> > force_vec;
   force_vec.resize(natom, vector<double>(3,0.0));
-  
-  
+
+
   vector<string> atom_types_vec;
   atom_types_vec.resize(natom);
-  
-  
+
+
   for (int i = 0; i < natom; i++) {
     x_vec[i] = xc[i];
     y_vec[i] = yc[i];
