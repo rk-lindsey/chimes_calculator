@@ -27,9 +27,9 @@ if [ ! -z $PREFX ] ; then
 fi
 
 if [ $DEBUG -eq 1 ] ;then
-	my_flags="${my_flags} -DDEBUG=1" #  -DCMAKE_INSTALL_PREFIX=/Users/lindsey11/My_codes/Forks/chimes_calculator-fork/testdir ..
+	my_flags="${my_flags} -DDEBUG=1 -DCMAKE_BUILD_TYPE=Debug" #  -DCMAKE_INSTALL_PREFIX=/Users/lindsey11/My_codes/Forks/chimes_calculator-fork/testdir ..
 else
-	my_flags="${my_flags} -DDEBUG=0" # -DCMAKE_INSTALL_PREFIX=/Users/lindsey11/My_codes/Forks/chimes_calculator-fork/testdir ..
+	my_flags="${my_flags} -DDEBUG=0 -DCMAKE_BUILD_TYPE=Release" # -DCMAKE_INSTALL_PREFIX=/Users/lindsey11/My_codes/Forks/chimes_calculator-fork/testdir ..
 fi
 
 # Setup, make and install
