@@ -59,7 +59,7 @@ int main (int argc, char **argv)
   set_chimes(small);
   
   printf("Read args:\n");
-  for (i=1; i<argc; i++)
+  for (int i=1; i<argc; i++)
 	  printf("%i %s\n",i, argv[i]);
 
   int rank = 0;
@@ -97,7 +97,7 @@ int main (int argc, char **argv)
   fprintf(fout,"%0.6f\n", stress[5]);
   
   for (i = 0; i <natom; i++)
-  	fprintf(fout,"%0.6e\n%0.6e\n%0.6e\n", fx[i], fy[i],fz[i]);
+  	fprintf(fout,"%0.6f\n%0.6e\n%0.6e\n", fx[i], fy[i],fz[i]);
   fclose(fout);
   
   

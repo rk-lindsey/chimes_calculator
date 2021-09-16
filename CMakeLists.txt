@@ -8,15 +8,20 @@ project(ChIMES_Calculator
 	VERSION 1.0
 	DESCRIPTION "Utilities to compute ChIMES interactions"
 	LANGUAGES CXX C Fortran)
-    
-## Set optimize and debug flags based on build type (LEF) 07/27/21.
-##
+  
+# Set optimize and debug flags based on build type (LEF) 07/27/21.
+
 set(CMAKE_CXX_FLAGS "") # Can be updated if we want to adde extra flags 
 set(CMAKE_CXX_FLAGS_DEBUG "-g")
 set(CMAKE_CXX_FLAGS_RELEASE "-O3")
 set(CMAKE_Fortran_FLAGS "-std=f2003")
 set(CMAKE_Fortran_FLAGS_DEBUG "-g")
 set(CMAKE_Fortran_FLAGS_RELEASE "-O3")
+
+# Set default debug level
+
+set(DEBUG 0 CACHE STRING "Debug level")
+
 
 set(CMAKE_SKIP_INSTALL_ALL_DEPENDENCY true)
 
@@ -41,6 +46,8 @@ target_include_directories(CPP-interface PRIVATE ${CMAKE_CURRENT_SOURCE_DIR}/ser
 target_include_directories(CPP-interface PRIVATE ${CMAKE_CURRENT_SOURCE_DIR}/chimesFF/src/)
 target_compile_features   (CPP-interface PRIVATE cxx_std_11)
 
+target_compile_options    (CPP-interface PRIVATE -O3)
+
 IF (NOT CMAKE_INSTALL_PREFIX_INITIALIZED_TO_DEFAULT) 
 	install(TARGETS CPP-interface DESTINATION ${CMAKE_INSTALL_PREFIX}/serial_interface/examples/cpp/ OPTIONAL)
 ENDIF (NOT CMAKE_INSTALL_PREFIX_INITIALIZED_TO_DEFAULT) 
@@ -64,6 +71,8 @@ target_include_directories(C_wrapper-direct_interface PRIVATE ${CMAKE_CURRENT_SO
 target_include_directories(C_wrapper-direct_interface PRIVATE ${CMAKE_CURRENT_SOURCE_DIR}/chimesFF/api/)
 target_include_directories(C_wrapper-direct_interface PRIVATE ${CMAKE_CURRENT_SOURCE_DIR}/chimesFF/src/)
 target_compile_features   (C_wrapper-direct_interface PRIVATE cxx_std_11)
+
+target_compile_options    (C_wrapper-direct_interface PRIVATE -O3)
 
 IF (NOT CMAKE_INSTALL_PREFIX_INITIALIZED_TO_DEFAULT) 
 	install(TARGETS C_wrapper-direct_interface DESTINATION ${CMAKE_INSTALL_PREFIX}/chimesFF/examples/c/ OPTIONAL)
@@ -90,6 +99,8 @@ target_include_directories(C_wrapper-serial_interface PRIVATE ${CMAKE_CURRENT_SO
 target_include_directories(C_wrapper-serial_interface PRIVATE ${CMAKE_CURRENT_SOURCE_DIR}/chimesFF/src/)
 target_include_directories(C_wrapper-serial_interface PRIVATE ${CMAKE_CURRENT_SOURCE_DIR}/serial_interface/src/)
 target_compile_features   (C_wrapper-serial_interface PRIVATE cxx_std_11)
+
+target_compile_options    (C_wrapper-serial_interface PRIVATE -O3)
 
 IF (NOT CMAKE_INSTALL_PREFIX_INITIALIZED_TO_DEFAULT) 
 	install(TARGETS C_wrapper-serial_interface DESTINATION ${CMAKE_INSTALL_PREFIX}/serial_interface/examples/c/ OPTIONAL)
@@ -131,7 +142,7 @@ ENDIF (NOT CMAKE_INSTALL_PREFIX_INITIALIZED_TO_DEFAULT)
 ADD_LIBRARY(lib-C_wrapper-serial_interface MODULE
     ${CMAKE_CURRENT_SOURCE_DIR}/serial_interface/api/wrapper-C.cpp
     ${CMAKE_CURRENT_SOURCE_DIR}/serial_interface/src/serial_chimes_interface.cpp
-    ${CMAKE_CURRENT_SOURCE_DIR}/chimesFF/src/chimesFF.cpp    
+    ${CMAKE_CURRENT_SOURCE_DIR}/chimesFF/src/chimesFF.cpp
 )
 
 set_target_properties(lib-C_wrapper-serial_interface PROPERTIES PREFIX "") # Prevent CMake from prepending "lib" to libwrapper-C.so
@@ -199,8 +210,10 @@ target_include_directories(fortran_wrapper-serial_interface PRIVATE ${CMAKE_CURR
 target_compile_features   (fortran_wrapper-serial_interface PRIVATE cxx_std_11)
 target_compile_options    (fortran_wrapper-serial_interface PRIVATE -fPIC)
 
+target_compile_options    (fortran_wrapper-serial_interface PRIVATE -std=f2003)
+
+# Remove warnings about fortran flags being passed to C++ compiler
+
 IF (NOT CMAKE_INSTALL_PREFIX_INITIALIZED_TO_DEFAULT) 
 	install(TARGETS fortran_wrapper-serial_interface DESTINATION ${CMAKE_INSTALL_PREFIX}/serial_interface/examples/fortran/ OPTIONAL)
 ENDIF (NOT CMAKE_INSTALL_PREFIX_INITIALIZED_TO_DEFAULT)
-
-

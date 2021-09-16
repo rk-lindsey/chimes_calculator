@@ -1,5 +1,5 @@
 CXX     = g++ -O3 -std=c++11 -fPIC
-FCC     = gfortran -O3 -fPIC -std=f2003 -cpp # last flag allows processing of C-style pre-processor directives
+FCC     = gfortran -O3 -fPIC -std=f2008 -cpp # last flag allows processing of C-style pre-processor directives
 
 DEBUG   = 1
 
@@ -32,29 +32,31 @@ wrapper-C.o : $(WRAPPERC_SRC)
 
 WRAPPERF_LOC=$(F_LOC)/../../api
 WRAPPERF_SRC=$(WRAPPERF_LOC)/wrapper-F.F90
+WRAPPERF08_SRC=$(WRAPPERF_LOC)/wrapper-F08.F90
 
-wrapper-F.o chimes.mod : $(WRAPPERF_SRC) 
+wrapper-F.o wrapper.mod : $(WRAPPERF_SRC) 
 	$(FCC) -c $(WRAPPERF_SRC) -o wrapper-F.o
+
+wrapper-F08.o chimes_serial08.mod : $(WRAPPERF08_SRC) 
+	$(FCC) -c $(WRAPPERF08_SRC) -o wrapper-F08.o
 
 main.o : main.F90
 	$(FCC) -c main.F90 -o main.o  -DDEBUG=${DEBUG}
 
 
-LINKS = chimesFF.o serial_chimes_interface.o  wrapper-C.o wrapper-F.o main.o
-
+LINKS = chimesFF.o serial_chimes_interface.o  wrapper-C.o wrapper-F.o wrapper-F08.o main.o
 
 # Rudimentary OS detection
 UNAME := $(shell uname)
 
 ifeq (${UNAME},Darwin)
-        FCC += -lc++
+	FCC += -lc++
 else
-        FCC += -lstdc++
+	FCC += -stdc++
 endif
 
-
 test-F: $(LINKS)
-	$(FCC) $(LINKS) -o fortran_wrapper-serial_interface
+	$(FCC) $(LINKS) -o fortran08_wrapper-serial_interface
 lib : chimesFF.o serial_chimes_interface.o wrapper-C.o
 	ar rcs libchimes.a chimesFF.o serial_chimes_interface.o wrapper-C.o 
 
@@ -63,14 +65,15 @@ clean:
 	
 clean-all:
 	make clean
-	rm -f fortran_wrapper-serial_interface
+	rm -f fortran08_wrapper-serial_interface
 	rm -f libchimes.a
 	
 all:
 	make chimesFF.o
 	make serial_chimes_interface.o 
 	make wrapper-C.o
-	make wrapper-F.o chimes.mod
+	make wrapper-F.o wrapper.mod
+	make wrapper-F08.o chimes_serial08.mod
 	make main.o
 	make test-F
 	make lib
