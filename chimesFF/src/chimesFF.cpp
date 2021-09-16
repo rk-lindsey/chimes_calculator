@@ -1431,9 +1431,8 @@ inline void chimesFF::get_penalty(const double dx, const int & pair_idx, double 
     {        
         E_penalty    = r_penalty * r_penalty * r_penalty * penalty_params[1];
 
-        // force_scalar should be negative (LEF) 7/30/21.
         force_scalar = -3.0 * r_penalty * r_penalty * penalty_params[1];
-        
+
         if (rank == 0)
         {
             cout << "chimesFF: " << "Adding penalty in 2B Cheby calc, r < rmin+penalty_dist " << fixed 

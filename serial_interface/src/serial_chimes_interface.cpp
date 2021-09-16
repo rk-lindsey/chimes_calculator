@@ -1080,11 +1080,11 @@ void serial_chimes_interface::calculate(vector<double> & x_in, vector<double> & 
             compute_4B(dist_4b, dr_4b, typ_idxs_4b, force_ptr_4b, stensor, energy);
         }    
     }
-	
+
     // Correct for use of replicates, if applicable
 	
     energy /= pow(sys.n_replicates+1.0,3.0);
-    
+   
     ////////////////////////
     // Finish pressure calculation
     ////////////////////////
