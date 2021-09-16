@@ -22,11 +22,11 @@ using namespace std;
 static  serial_chimes_interface chimes, *chimes_ptr;
 
 
-void set_chimes_fromF90 (int *small)
+void set_chimes_fromF90 (int *small=0)
 {	
 	set_chimes(*small);
 }
-void set_chimes (int small)
+void set_chimes (int small=1)
 {	
 	if ((small!=0)&&(small!=1))
 	{
