@@ -65,7 +65,7 @@ if not os.path.exists(wrapper_path_lib):
 sys.path.append(config.CHMS_REPO + "/chimesFF/api")
 
 import wrapper_py
- 
+
 wrapper_py.chimes_wrapper = wrapper_py.init_chimes_wrapper(config.CHMS_REPO + "/build/lib-C_wrapper-direct_interface.so")
 wrapper_py.set_chimes()
 wrapper_py.init_chimes()
@@ -206,7 +206,7 @@ dummy_stress = [0.0]*9
 
 if hasattr(config,'QUADTYPES'):
 
-    for i in range(len(config.QUADTYPES)): # Iterate over 3-body types
+    for i in range(len(config.QUADTYPES)): # Iterate over 4-body types
 
         if len(quad_types)-1 < config.QUADTYPES[i]:
             print("ERROR: Read",len(quad_types), "4-body types from the parameter file")

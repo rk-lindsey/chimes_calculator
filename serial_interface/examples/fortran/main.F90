@@ -3,7 +3,7 @@
 ! Contributing Author:  Nir Goldman (2020) 
 
       program test_F_api
-      use wrapper
+      use chimes_serial
       use, intrinsic :: ISO_C_binding
       implicit none
       integer io_num, stat, small
@@ -23,7 +23,8 @@
       TYPE(C_PTR), allocatable, dimension(10) :: stringPtr(:)
       integer lenstr
       
-      small = 0
+
+      small = 1
 
       io_num = command_argument_count()
       if ((io_num .ne. 2) .and. (io_num .ne. 3)) then
@@ -76,13 +77,22 @@
       fz(:) = 0d0
       ! initialize system energy
       energy = 0d0
-      call f_set_chimes_fromF90(small)
+
+      call f_set_chimes(small)
+      
+      print*,"fcheck-1"
+
       c_file = string2Cstring(param_file)
       call f_init_chimes(c_file,  0) ! last '0' is the rank of the process
+      
+      print*,"fcheck-2"
+      
       stress(:) = 0d0
       do ns = 1, natom
         stringPtr(ns) = c_loc(c_atom(ns))
       enddo
+      
+      print*,"fcheck-3"
 
       call f_calculate_chimes (natom, xc, yc, zc, stringPtr, ca,  &
       &      cb, cc, energy, fx, fy, fz, stress)
@@ -114,9 +124,9 @@
       write(20,'(F15.6)') stress(3)*GPa
       write(20,'(F15.6)') stress(6)*GPa
       do i = 1, natom
-         write(20,'(E15.6)') fx(i)
-         write(20,'(E15.6)') fy(i)
-         write(20,'(E15.6)') fz(i)
+         write(20,'(F15.6)') fx(i)
+         write(20,'(F15.6)') fy(i)
+         write(20,'(F15.6)') fz(i)
       enddo
       close(20)
 #endif 
