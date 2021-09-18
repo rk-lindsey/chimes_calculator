@@ -129,7 +129,8 @@ void PairCHIMES::coeff(int narg, char **arg)
 	chimesFF_paramfile = arg[2]; 
 	
 	chimes_calculator.read_parameters(chimesFF_paramfile);
-	
+	set_chimes_type();
+
 	// Set special LAMMPS flags/cutoffs
 	
 	if (!allocated)
@@ -137,25 +138,25 @@ void PairCHIMES::coeff(int narg, char **arg)
 		
 	vector<vector<double> > cutoff_2b;
 	chimes_calculator.get_cutoff_2B(cutoff_2b);
-	
-	for(int i=1; i<=chimes_calculator.natmtyps; i++)
+
+	for(int i=1; i<=atom->ntypes; i++)
 	{
-		for(int j=i; j<=chimes_calculator.natmtyps; j++)
+		for(int j=i; j<=atom->ntypes; j++)
 		{
 			setflag[i][j] = 1;
 			setflag[j][i] = 1;
-
-			cutsq[i][j]  = cutoff_2b[ chimes_calculator.get_atom_pair_index( (i-1)*chimes_calculator.natmtyps + (j-1) ) ][1];
+			
+			cutsq[i][j]  = cutoff_2b[ chimes_calculator.get_atom_pair_index( chimes_type[i-1]*chimes_calculator.natmtyps + chimes_type[j-1] ) ][1];
 			cutsq[i][j] *= cutsq[i][j];
 			
 			if (i!=j)
 			{
-				cutsq[j][i]  = cutoff_2b[ chimes_calculator.get_atom_pair_index( (j-1)*chimes_calculator.natmtyps + (i-1) ) ][1];
+				cutsq[j][i]  = cutoff_2b[ chimes_calculator.get_atom_pair_index( chimes_type[j-1]*chimes_calculator.natmtyps + chimes_type[i-1]) ][1];
 				cutsq[j][i] *= cutsq[j][i];
 			}			
 		}
 	}
-	
+
 	maxcut_3b = chimes_calculator.max_cutoff_3B();
 	maxcut_4b = chimes_calculator.max_cutoff_4B();
 }
@@ -164,13 +165,13 @@ void PairCHIMES::allocate()
 {
 	allocated = 1;
 	
-	memory->create(setflag,chimes_calculator.natmtyps+1,chimes_calculator.natmtyps+1,"pair:setflag");
+	memory->create(setflag,atom->ntypes+1,atom->ntypes+1,"pair:setflag");
 	
-	for(int i=1; i<=chimes_calculator.natmtyps; i++)
-		for(int j=i; j<=chimes_calculator.natmtyps; j++)
+	for(int i=1; i<=atom->ntypes; i++)
+		for(int j=i; j<=atom->ntypes; j++)
 			setflag[i][j] = 0;
 
-	memory->create(cutsq,chimes_calculator.natmtyps+1,chimes_calculator.natmtyps+1,"pair:cutsq");
+	memory->create(cutsq,atom->ntypes+1,atom->ntypes+1,"pair:cutsq");
 }	
 
 void PairCHIMES::init_style()
@@ -478,8 +479,8 @@ void PairCHIMES::compute(int eflag, int vflag)
 
 			dist = get_dist(i,j,dr);
 			
-			typ_idxs_2b[0] = type[i]-1;		// Type (index) of the current atom... subtract 1 to account for chimesFF vs LAMMPS numbering convention
-			typ_idxs_2b[1] = type[j]-1;
+			typ_idxs_2b[0] = chimes_type[type[i]-1];		// Type (index) of the current atom... subtract 1 to account for chimesFF vs LAMMPS numbering convention
+			typ_idxs_2b[1] = chimes_type[type[j]-1];
 			
 			for (idx=0; idx<3; idx++)
 			{
@@ -520,9 +521,9 @@ void PairCHIMES::compute(int eflag, int vflag)
 			dist_3b[1] = get_dist(i,k,dr_3b[1]);
 			dist_3b[2] = get_dist(j,k,dr_3b[2]);
 
-			typ_idxs_3b[0] = type[i]-1;
-			typ_idxs_3b[1] = type[j]-1;
-			typ_idxs_3b[2] = type[k]-1;
+			typ_idxs_3b[0] = chimes_type[type[i]-1];
+			typ_idxs_3b[1] = chimes_type[type[j]-1];
+			typ_idxs_3b[2] = chimes_type[type[k]-1];
 
 			for (idx=0; idx<3; idx++)
 			{
@@ -563,10 +564,10 @@ void PairCHIMES::compute(int eflag, int vflag)
 			dist_4b[4] = get_dist(j,l,dr_4b[4]);
 			dist_4b[5] = get_dist(k,l,dr_4b[5]);
 
-			typ_idxs_4b[0] = type[i]-1;
-			typ_idxs_4b[1] = type[j]-1;
-			typ_idxs_4b[2] = type[k]-1;
-			typ_idxs_4b[3] = type[l]-1;
+			typ_idxs_4b[0] = chimes_type[type[i]-1];
+			typ_idxs_4b[1] = chimes_type[type[j]-1];
+			typ_idxs_4b[2] = chimes_type[type[k]-1];
+			typ_idxs_4b[3] = chimes_type[type[l]-1];
 
 			for (idx=0; idx<3; idx++)
 			{
@@ -589,6 +590,30 @@ void PairCHIMES::compute(int eflag, int vflag)
 	}
 
 	return;
+}
+
+void PairCHIMES::set_chimes_type()
+{
+	int nmatches = 0;
+
+	for (int i=1; i<= atom->ntypes; i++) 						// Lammps indexing starts at 1
+	{
+		for (int j=0; j<chimes_calculator.natmtyps; j++) 			// ChIMES indexing starts at 0
+		{
+			if (abs(atom->mass[i] - chimes_calculator.masses[j]) < 1e-3)	// Masses should match to at least 3 decimal places
+			{
+				chimes_type.push_back(j);
+				nmatches++;
+			}
+		}
+	}
+	
+	if (nmatches < atom->ntypes )
+	{
+		std::cout << "ERROR: LAMMPS coordinate file has " << atom->ntypes << " atom type masses" << std::endl; 
+		std::cout << "       but only found " << nmatches << " matches with the ChIMES parameter file." << std::endl;
+		exit(0);
+	} 
 }
 							
 void PairCHIMES::write_restart(){}			

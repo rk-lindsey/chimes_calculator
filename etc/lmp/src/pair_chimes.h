@@ -60,6 +60,8 @@ namespace LAMMPS_NS
 			
 			char * chimesFF_paramfile;	// ChIMES parameter file
 			
+			std::vector<int> chimes_type;	// For i = LMP atom type indx, chimes_type[i-1] gives the ChIMES parameter file type idx
+			
 			double maxcut_3b;
 			double maxcut_4b;
 				
@@ -110,6 +112,7 @@ namespace LAMMPS_NS
 			void   build_mb_neighlists();
 			double get_dist(int i, int j, vector<double> & dr);
 			double get_dist(int i, int j);
+			void   set_chimes_type();
 
 			// Functions I haven't worked on 
 						

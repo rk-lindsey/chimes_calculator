@@ -27,12 +27,13 @@ class chimesFF
         // General parameters 
         ////////////////////////
 	
-	int               rank;           // Used to prevent multiple cout statements when accessed from MPI
-        int               natmtyps;       // How many atom types are defined for this force field?
+	int              rank;           // Used to prevent multiple cout statements when accessed from MPI
+        int              natmtyps;       // How many atom types are defined for this force field?
 
         
-        vector<int>        poly_orders;    // [bodiedness-1]; i.e. 12 = 2-body only, 12th order; 12 5 = 2+3-body, 0 5 = 3-body only, 5th order
-        vector<string>     atmtyps;        // Atom types 
+        vector<int>      poly_orders;    // [bodiedness-1]; i.e. 12 = 2-body only, 12th order; 12 5 = 2+3-body, 0 5 = 3-body only, 5th order
+        vector<string>   atmtyps;        // Atom types 
+	vector<double>   masses;         // Atom masses
 	
 
         ////////////////////////
