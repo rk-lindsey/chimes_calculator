@@ -290,11 +290,13 @@ void chimesFF::read_parameters(string paramfile)
         if(line.find("# TYPEIDX #") != string::npos)
         {
             atmtyps.resize(natmtyps);
+	    masses.resize(natmtyps);
             for (int i=0; i<natmtyps; i++)
             {
                 line = get_next_line(param_file);
                 split_line(line, tmp_str_items);
                 atmtyps[i] = tmp_str_items[1];
+		masses[i]  = stod(tmp_str_items[3]);
                 
                 if (rank == 0)
                     cout << "chimesFF: " << "\t" << i << " " << atmtyps[i] << endl;
