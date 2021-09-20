@@ -1,6 +1,6 @@
 
 CXX   = g++ -O3 -std=c++11
-DEBUG = 0
+DEBUG = 1
 
 CXX_LOC = $(realpath .)
 CXX_SRC = main.cpp $(CXX_LOC)/../../src/serial_chimes_interface.cpp $(CXX_LOC)/../../../chimesFF/src/chimesFF.cpp

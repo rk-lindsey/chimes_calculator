@@ -27,6 +27,7 @@ Compile with:
 #include<vector>
 #include<string>
 #include<sstream>
+#include<cstring>
 
 using namespace std;
 
