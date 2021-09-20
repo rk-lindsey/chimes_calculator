@@ -42,14 +42,16 @@ main.o : main.F90
 
 LINKS = chimesFF.o serial_chimes_interface.o  wrapper-C.o wrapper-F.o main.o
 
+
 # Rudimentary OS detection
 UNAME := $(shell uname)
 
 ifeq (${UNAME},Darwin)
-	FCC += -lc++
+        FCC += -lc++
 else
-	FCC += -stdc++
+        FCC += -lstdc++
 endif
+
 
 test-F: $(LINKS)
 	$(FCC) $(LINKS) -o fortran_wrapper-serial_interface

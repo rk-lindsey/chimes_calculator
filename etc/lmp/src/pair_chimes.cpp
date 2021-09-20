@@ -94,9 +94,9 @@ PairCHIMES::PairCHIMES(LAMMPS *lmp) : Pair(lmp)
 	if (chimes_calculator.rank == 0)
 	{ 
 		std::cout << std::endl;
-		std::cout << "*********************** WARNING (pair_style chimesFF) ***********************" << std::endl;
-		std::cout << "Assuming 2-body interactions have larger cutoffs than (n>2)-body interactions" << std::endl;
-		std::cout << "*********************** WARNING (pair_style chimesFF) ***********************" << std::endl;
+		std::cout << "************************* WARNING (pair_style chimesFF) ************************" << std::endl;
+		std::cout << "Assuming n-body interactions have longer cutoffs than all (n+1)-body interactions" << std::endl;
+		std::cout << "************************* WARNING (pair_style chimesFF) ************************" << std::endl;
 		std::cout << std::endl;
 	}
 		
@@ -129,30 +129,34 @@ void PairCHIMES::coeff(int narg, char **arg)
 	chimesFF_paramfile = arg[2]; 
 	
 	chimes_calculator.read_parameters(chimesFF_paramfile);
-	
+	set_chimes_type();
+
 	// Set special LAMMPS flags/cutoffs
 	
 	if (!allocated)
 		allocate();
-	
-	for(int i=1; i<=chimes_calculator.natmtyps; i++)
+		
+	vector<vector<double> > cutoff_2b;
+	chimes_calculator.get_cutoff_2B(cutoff_2b);
+
+	for(int i=1; i<=atom->ntypes; i++)
 	{
-		for(int j=i; j<=chimes_calculator.natmtyps; j++)
+		for(int j=i; j<=atom->ntypes; j++)
 		{
 			setflag[i][j] = 1;
 			setflag[j][i] = 1;
-
-			cutsq[i][j]  = chimes_calculator.chimes_2b_cutoff[ chimes_calculator.atom_idx_pair_map[ (i-1)*chimes_calculator.natmtyps + (j-1) ] ][1];
+			
+			cutsq[i][j]  = cutoff_2b[ chimes_calculator.get_atom_pair_index( chimes_type[i-1]*chimes_calculator.natmtyps + chimes_type[j-1] ) ][1];
 			cutsq[i][j] *= cutsq[i][j];
 			
 			if (i!=j)
 			{
-				cutsq[j][i]  = chimes_calculator.chimes_2b_cutoff[ chimes_calculator.atom_idx_pair_map[ (j-1)*chimes_calculator.natmtyps + (i-1) ] ][1];
+				cutsq[j][i]  = cutoff_2b[ chimes_calculator.get_atom_pair_index( chimes_type[j-1]*chimes_calculator.natmtyps + chimes_type[i-1]) ][1];
 				cutsq[j][i] *= cutsq[j][i];
 			}			
 		}
 	}
-	
+
 	maxcut_3b = chimes_calculator.max_cutoff_3B();
 	maxcut_4b = chimes_calculator.max_cutoff_4B();
 }
@@ -161,13 +165,13 @@ void PairCHIMES::allocate()
 {
 	allocated = 1;
 	
-	memory->create(setflag,chimes_calculator.natmtyps+1,chimes_calculator.natmtyps+1,"pair:setflag");
+	memory->create(setflag,atom->ntypes+1,atom->ntypes+1,"pair:setflag");
 	
-	for(int i=1; i<=chimes_calculator.natmtyps; i++)
-		for(int j=i; j<=chimes_calculator.natmtyps; j++)
+	for(int i=1; i<=atom->ntypes; i++)
+		for(int j=i; j<=atom->ntypes; j++)
 			setflag[i][j] = 0;
 
-	memory->create(cutsq,chimes_calculator.natmtyps+1,chimes_calculator.natmtyps+1,"pair:cutsq");
+	memory->create(cutsq,atom->ntypes+1,atom->ntypes+1,"pair:cutsq");
 }	
 
 void PairCHIMES::init_style()
@@ -198,7 +202,24 @@ double PairCHIMES::init_one(int i, int j)
 		error->all(FLERR,"All pair coeffs are not set");
 	
 	return sqrt(cutsq[i][j]);
+}
+
+double PairCHIMES::get_dist(int i, int j, vector<double> & dr)
+{
+	double 	**x    = atom -> x;	// Access to system coordinates
+
+	dr[0] = x[j][0] - x[i][0];  
+	dr[1] = x[j][1] - x[i][1];
+	dr[2] = x[j][2] - x[i][2];
+
+	return sqrt(dr[0]*dr[0] + dr[1]*dr[1] + dr[2]*dr[2]);
+}
 	
+double PairCHIMES::get_dist(int i, int j)
+{
+	vector<double> dummy_dr(3);
+
+	return get_dist(i,j, dummy_dr);
 }
 
 void PairCHIMES::build_mb_neighlists()
@@ -214,11 +235,14 @@ void PairCHIMES::build_mb_neighlists()
 	
 	int i,j,k,l,inum,jnum,knum,lnum, ii, jj, kk, ll;		// Local iterator vars
 	int *ilist,*jlist,*klist,*llist, *numneigh,**firstneigh;	// Local neighborlist vars
-	tagint 	*tag   = atom -> tag;					// Access to global atom indices (sort of like "parent" indices)
+	tagint 	*tag   = atom -> tag;					// Access to global atom indices
 	int     itag, jtag, ktag, ltag;					// holds tags	
 	double 	**x    = atom -> x;					// Access to system coordinates
 	
-	double dist_ij;
+	double maxcut_3b_padded = maxcut_3b + neighbor-> skin;
+	double maxcut_4b_padded = maxcut_4b + neighbor-> skin;
+	
+	double dist_ij, dist_ik, dist_il, dist_jk, dist_jl, dist_kl;
 	
 	////////////////////////////////////////
 	// Access to neighbor list vars
@@ -231,43 +255,30 @@ void PairCHIMES::build_mb_neighlists()
 	
 	for (ii = 0; ii < inum; ii++)	// Loop over real atoms (ai)	
 	{
-
 		i     = ilist[ii];		
 		itag  = tag[i];			
 		jlist = firstneigh[i];		
 		jnum  = numneigh[i];	
-    	
+
 		for (jj = 0; jj < jnum; jj++)	
 		{
-			valid_3mer = true;
-			valid_4mer = true;		
-		
 			j     = jlist[jj];	
 			jtag  = tag[j];		
 			j    &= NEIGHMASK;
-			
-			if (jtag > itag) 
+
+			if (j == i)
 				continue;
+			if (jtag < itag) 
+				continue;				
 				
 			// Check ij distance
 
-			dr[0] = x[j][0] - x[i][0];  
-			dr[1] = x[j][1] - x[i][1];
-			dr[2] = x[j][2] - x[i][2];
-
-			dist = sqrt(dr[0]*dr[0] + dr[1]*dr[1] + dr[2]*dr[2]);
-			dist_ij = dist;
-
-			if (dist >= maxcut_3b)
-				valid_3mer = false;
-				
-			if (dist >= maxcut_4b)
-				valid_4mer = false;	
-				
-			if (!valid_3mer && !valid_4mer)
+			dist_ij = get_dist(i,j);
+			
+			if ( (dist_ij >= maxcut_3b_padded) && (dist_ij >= maxcut_4b_padded) )
 				continue;
 
-			klist = firstneigh[i];		
+			klist = firstneigh[i];	// ChIMES assumes all atoms must be within cutoff of eachother for a valid interaction	
 			knum  = numneigh[i];	
 			
 			for (kk = 0; kk < knum; kk++)	
@@ -275,82 +286,42 @@ void PairCHIMES::build_mb_neighlists()
 				k     = klist[kk];	
 				ktag  = tag[k];		
 				k    &= NEIGHMASK;
-				
-				if (j == k)
+
+				if ( (k==i) || (k==j) )
 					continue;
-				if (jtag > ktag) 
-					continue;
-				if (ktag > itag) 
+				if ( (ktag < itag) || (ktag < jtag) )
 					continue;						
 							
  	 			// Check ik distance			
 
-				dr[0] = x[k][0] - x[i][0];  
-				dr[1] = x[k][1] - x[i][1];
-				dr[2] = x[k][2] - x[i][2];
+				dist_ik = get_dist(i,k);
 
-				dist = sqrt(dr[0]*dr[0] + dr[1]*dr[1] + dr[2]*dr[2]);
-
-				if (dist >= maxcut_3b)
-					valid_3mer = false;
-					
-				if (dist >= maxcut_4b)
-					valid_4mer = false;	
-					
-				if (!valid_3mer && !valid_4mer)
-				{
-					if(dist_ij < maxcut_3b)
-						valid_3mer = true;
-					if(dist_ij < maxcut_4b)
-						valid_4mer = true;
+				if ( (dist_ik >= maxcut_3b_padded) && (dist_ik >= maxcut_4b_padded) )
 					continue;
-				}		
-
+					
 				// Check jk distance			
 
-				dr[0] = x[k][0] - x[j][0];  
-				dr[1] = x[k][1] - x[j][1];
-				dr[2] = x[k][2] - x[j][2];
+				dist_jk = get_dist(j,k);
+				
+				if( (dist_ij < maxcut_3b_padded) &&  (dist_ik < maxcut_3b_padded) && (dist_jk < maxcut_3b_padded) )
+				{
+					// If we're here and valid_3mer == true, then add the triplet to the chimes neigh list        
 
-				dist = sqrt(dr[0]*dr[0] + dr[1]*dr[1] + dr[2]*dr[2]);
-				
-				if (dist > maxcut_3b)
-					valid_3mer = false;
-					
-				if (dist >= maxcut_4b)
-					valid_4mer = false;
-				
-				if (!valid_3mer && !valid_4mer)
-				{
-					if(dist_ij < maxcut_3b)
-						valid_3mer = true;
-					if(dist_ij < maxcut_4b)
-						valid_4mer = true;
-					continue;
-				}
-				
-				// If we're here and valid_3mer == true, then add the triplet to the chimes neigh list        
-						
-				if (valid_3mer)
-				{
 					tmp_3mer[0] = i;
 					tmp_3mer[1] = j;
 					tmp_3mer[2] = k;
-					
+				
 					neighborlist_3mers.push_back(tmp_3mer);
 				}
+									
+				if ((dist_ij >= maxcut_4b_padded) || (dist_ik >= maxcut_4b_padded) || (dist_jk >= maxcut_4b_padded) )	
+					continue;					
+				
+				// Now decide if we should continue on to 4-body neighbor list construction
 
 				if (chimes_calculator.poly_orders[2] == 0)
 					continue;
-					
-				if(!valid_4mer)
-				{
-					if(dist_ij < maxcut_4b)
-						valid_4mer = true;
-					continue;
-				}
-				
-				
+
 				llist = firstneigh[i];	
 				lnum  = numneigh[i];	
 					
@@ -360,70 +331,45 @@ void PairCHIMES::build_mb_neighlists()
 					ltag  = tag[l];		
 					l    &= NEIGHMASK;
 					
-					if ((j == l)||(k == l))
+					if ( (l==i) || (l==j) || (l==k))
 						continue;
-					if ((jtag > ltag)||(ktag > ltag)) 
+					if ((ltag < itag) ||(ltag < jtag)||(ltag < ktag)) 
 						continue;
-					
-					if (itag > ltag) 
-						continue;
-						
+											
 					// Check il distance			
 
-					dr[0] = x[l][0] - x[i][0];  
-					dr[1] = x[l][1] - x[i][1];
-					dr[2] = x[l][2] - x[i][2];
+					dist_il = get_dist(i,l); 
 
-					dist = sqrt(dr[0]*dr[0] + dr[1]*dr[1] + dr[2]*dr[2]);
-
-					if (dist >= maxcut_4b)
+					if (dist_il >= maxcut_4b_padded)
 						continue;	
 
 					// Check jl distance			
 	
-					dr[0] = x[l][0] - x[j][0];  
-					dr[1] = x[l][1] - x[j][1];
-					dr[2] = x[l][2] - x[j][2];
+					dist_jl = get_dist(j,l);
 	
-					dist = sqrt(dr[0]*dr[0] + dr[1]*dr[1] + dr[2]*dr[2]);
-	
-					if (dist >= maxcut_4b)
-
+					if (dist_jl >= maxcut_4b_padded)
 						continue;
 								
-						
 					// Check kl distance			
-	
-					dr[0] = x[l][0] - x[k][0];  
-					dr[1] = x[l][1] - x[k][1];
-					dr[2] = x[l][2] - x[k][2];
-	
-					dist = sqrt(dr[0]*dr[0] + dr[1]*dr[1] + dr[2]*dr[2]);
-	
-					if (dist >= maxcut_4b)
 
+					dist_kl = get_dist(k,l);
+	
+					if (dist_kl >= maxcut_4b_padded)
 						continue;
 		
-	
 					// If we're here and valid_4mer == true, then add the quadruplet to the chimes neigh list
-							
-					if (valid_4mer)
-					{
-						tmp_4mer[0] = i;
-						tmp_4mer[1] = j;
-						tmp_4mer[2] = k;
-						tmp_4mer[3] = l;
-						
-						neighborlist_4mers.push_back(tmp_4mer);
-					}
+					
+					tmp_4mer[0] = i;
+					tmp_4mer[1] = j;
+					tmp_4mer[2] = k;
+					tmp_4mer[3] = l;
+					
+					neighborlist_4mers.push_back(tmp_4mer);
+					
 				}				
 			}
 		}
 	}
-	/*
-	std::cout << "3B neighbor list is of length:" << neighborlist_3mers.size() << std::endl;
-	std::cout << "4B neighbor list is of length:" << neighborlist_4mers.size() << std::endl;
-	*/
 }
 
 void PairCHIMES::compute(int eflag, int vflag)
@@ -465,25 +411,15 @@ void PairCHIMES::compute(int eflag, int vflag)
   		vflag_atom  = 0;
 	}
 
-
 	////////////////////////////////////////
 	// Access to (2-body) neighbor list vars
 	////////////////////////////////////////
 
-	inum       = list -> inum; 			// length of the list
+	inum       = list -> inum; 		// length of the list
 	ilist      = list -> ilist; 		// list of i atoms for which neighbor list exists
 	numneigh   = list -> numneigh;		// length of each of the ilist neighbor lists
 	firstneigh = list -> firstneigh;	// point to the list of neighbors of i
-	
-	// Build the ChIMES many-body neighbor lists..
-	
-	build_mb_neighlists();
 
-//	std::cout << "NEIGHBOR-> AGO: " <<  neighbor->ago << std::endl;
-
-
-/* Previous approach ... for some reason, this leads to drift in the conserved quantity .... would really be much more efficient if it worked!
-	
 	// Build the ChIMES many-body neighbor lists.. only do so when LAMMPS neighborlist has been updated
 	
 	if ( neighbor->ago == 0)
@@ -494,13 +430,12 @@ void PairCHIMES::compute(int eflag, int vflag)
 		build_mb_neighlists();		
 		if (chimes_calculator.rank == 0)
 		{
-			std::cout << "	Rank 0 3-body list size: " << neighborlist_3mers.size() << std::endl;
-			std::cout << "	Rank 0 4-body list size: " << neighborlist_4mers.size() << std::endl;
+			std::cout << "	Rank " << me << " 3-body list size: " << neighborlist_3mers.size() << std::endl;
+			std::cout << "	Rank " << me << " 4-body list size: " << neighborlist_4mers.size() << std::endl;
 			std::cout << "	...update complete" << std::endl;
 		}
 	}
-*/	
-	
+
 	////////////////////////////////////////
 	// Compute 1- and 2-body interactions
 	////////////////////////////////////////
@@ -510,7 +445,6 @@ void PairCHIMES::compute(int eflag, int vflag)
 		stensor[idx]  = &stmp[idx];
 		*stensor[idx] = 0;
 	}
-
 
 	for (ii = 0; ii < inum; ii++)		// Loop over the atoms owned by the current process
 	{
@@ -531,7 +465,6 @@ void PairCHIMES::compute(int eflag, int vflag)
 		
 		// Now move on to two-body force, stress, and energy
 		
-		
 		for (jj = 0; jj < jnum; jj++)			// Loop over neighbors of i
 		{
 			j     = jlist[jj];			// Index of the jj atom
@@ -543,15 +476,11 @@ void PairCHIMES::compute(int eflag, int vflag)
 				continue;
 				
 			// Get distance using ghost atoms... don't need MIC since we're using ghost atoms
+
+			dist = get_dist(i,j,dr);
 			
-			dr[0] = x[j][0] - x[i][0];  
-			dr[1] = x[j][1] - x[i][1];
-			dr[2] = x[j][2] - x[i][2];
-			
-			dist = sqrt(dr[0]*dr[0] + dr[1]*dr[1] + dr[2]*dr[2]);
-			
-			typ_idxs_2b[0] = type[i]-1;		// Type (index) of the current atom... subtract 1 to account for chimesFF vs LAMMPS numbering convention
-			typ_idxs_2b[1] = type[j]-1;
+			typ_idxs_2b[0] = chimes_type[type[i]-1];		// Type (index) of the current atom... subtract 1 to account for chimesFF vs LAMMPS numbering convention
+			typ_idxs_2b[1] = chimes_type[type[j]-1];
 			
 			for (idx=0; idx<3; idx++)
 			{
@@ -578,7 +507,6 @@ void PairCHIMES::compute(int eflag, int vflag)
 
 	if (chimes_calculator.poly_orders[1] > 0)
 	{
-
 		////////////////////////////////////////
 		// Compute 3-body interactions
 		////////////////////////////////////////
@@ -589,25 +517,13 @@ void PairCHIMES::compute(int eflag, int vflag)
 			j     = neighborlist_3mers[ii][1];
 			k     = neighborlist_3mers[ii][2];
 
-			dr_3b[0][0] = x[j][0] - x[i][0];  
-			dr_3b[0][1] = x[j][1] - x[i][1];
-			dr_3b[0][2] = x[j][2] - x[i][2];
-			
-			dr_3b[1][0] = x[k][0] - x[i][0];
-			dr_3b[1][1] = x[k][1] - x[i][1];
-			dr_3b[1][2] = x[k][2] - x[i][2];
-			
-			dr_3b[2][0] = x[k][0] - x[j][0];
-			dr_3b[2][1] = x[k][1] - x[j][1];
-			dr_3b[2][2] = x[k][2] - x[j][2];
-			
-			dist_3b[0] = sqrt(dr_3b[0][0]*dr_3b[0][0] + dr_3b[0][1]*dr_3b[0][1] + dr_3b[0][2]*dr_3b[0][2]);
-			dist_3b[1] = sqrt(dr_3b[1][0]*dr_3b[1][0] + dr_3b[1][1]*dr_3b[1][1] + dr_3b[1][2]*dr_3b[1][2]);
-			dist_3b[2] = sqrt(dr_3b[2][0]*dr_3b[2][0] + dr_3b[2][1]*dr_3b[2][1] + dr_3b[2][2]*dr_3b[2][2]);
-			
-			typ_idxs_3b[0] = type[i]-1;
-			typ_idxs_3b[1] = type[j]-1;
-			typ_idxs_3b[2] = type[k]-1;
+			dist_3b[0] = get_dist(i,j,dr_3b[0]);
+			dist_3b[1] = get_dist(i,k,dr_3b[1]);
+			dist_3b[2] = get_dist(j,k,dr_3b[2]);
+
+			typ_idxs_3b[0] = chimes_type[type[i]-1];
+			typ_idxs_3b[1] = chimes_type[type[j]-1];
+			typ_idxs_3b[2] = chimes_type[type[k]-1];
 
 			for (idx=0; idx<3; idx++)
 			{
@@ -640,40 +556,18 @@ void PairCHIMES::compute(int eflag, int vflag)
 			j     = neighborlist_4mers[ii][1];
 			k     = neighborlist_4mers[ii][2];
 			l     = neighborlist_4mers[ii][3];			
-		
-			dr_4b[0][0] = x[j][0] - x[i][0];  
-			dr_4b[0][1] = x[j][1] - x[i][1];
-			dr_4b[0][2] = x[j][2] - x[i][2];
-		
-			dr_4b[1][0] = x[k][0] - x[i][0];
-			dr_4b[1][1] = x[k][1] - x[i][1];
-			dr_4b[1][2] = x[k][2] - x[i][2];
-		
-			dr_4b[2][0] = x[l][0] - x[i][0];
-			dr_4b[2][1] = x[l][1] - x[i][1];
-			dr_4b[2][2] = x[l][2] - x[i][2];
-		
-			dr_4b[3][0] = x[k][0] - x[j][0];
-			dr_4b[3][1] = x[k][1] - x[j][1];
-			dr_4b[3][2] = x[k][2] - x[j][2];
+			
+			dist_4b[0] = get_dist(i,j,dr_4b[0]);				      
+			dist_4b[1] = get_dist(i,k,dr_4b[1]);
+			dist_4b[2] = get_dist(i,l,dr_4b[2]);
+			dist_4b[3] = get_dist(j,k,dr_4b[3]);
+			dist_4b[4] = get_dist(j,l,dr_4b[4]);
+			dist_4b[5] = get_dist(k,l,dr_4b[5]);
 
-			dr_4b[4][0] = x[l][0] - x[j][0];
-			dr_4b[4][1] = x[l][1] - x[j][1];
-			dr_4b[4][2] = x[l][2] - x[j][2];
-
-			dr_4b[5][0] = x[l][0] - x[k][0];
-			dr_4b[5][1] = x[l][1] - x[k][1];
-			dr_4b[5][2] = x[l][2] - x[k][2];
-
-			for(idx=0;idx<6; idx++)
-				dist_4b[idx] = sqrt(dr_4b[idx][0]*dr_4b[idx][0] 
-				                  + dr_4b[idx][1]*dr_4b[idx][1] 
-					          + dr_4b[idx][2]*dr_4b[idx][2]);					  
-
-			typ_idxs_4b[0] = type[i]-1;
-			typ_idxs_4b[1] = type[j]-1;
-			typ_idxs_4b[2] = type[k]-1;
-			typ_idxs_4b[3] = type[l]-1;
+			typ_idxs_4b[0] = chimes_type[type[i]-1];
+			typ_idxs_4b[1] = chimes_type[type[j]-1];
+			typ_idxs_4b[2] = chimes_type[type[k]-1];
+			typ_idxs_4b[3] = chimes_type[type[l]-1];
 
 			for (idx=0; idx<3; idx++)
 			{
@@ -692,14 +586,34 @@ void PairCHIMES::compute(int eflag, int vflag)
 
 			if (evflag)
 				ev_tally_mb(energy, *stensor[0], *stensor[1], *stensor[2], *stensor[4], *stensor[5], *stensor[8]);
+		}
+	}
 
+	return;
+}
 
+void PairCHIMES::set_chimes_type()
+{
+	int nmatches = 0;
+
+	for (int i=1; i<= atom->ntypes; i++) 						// Lammps indexing starts at 1
+	{
+		for (int j=0; j<chimes_calculator.natmtyps; j++) 			// ChIMES indexing starts at 0
+		{
+			if (abs(atom->mass[i] - chimes_calculator.masses[j]) < 1e-3)	// Masses should match to at least 3 decimal places
+			{
+				chimes_type.push_back(j);
+				nmatches++;
+			}
 		}
 	}
 	
-
-	
-	return;
+	if (nmatches < atom->ntypes )
+	{
+		std::cout << "ERROR: LAMMPS coordinate file has " << atom->ntypes << " atom type masses" << std::endl; 
+		std::cout << "       but only found " << nmatches << " matches with the ChIMES parameter file." << std::endl;
+		exit(0);
+	} 
 }
 							
 void PairCHIMES::write_restart(){}			

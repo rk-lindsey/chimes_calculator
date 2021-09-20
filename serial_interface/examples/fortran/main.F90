@@ -23,6 +23,7 @@
       TYPE(C_PTR), allocatable, dimension(10) :: stringPtr(:)
       integer lenstr
       
+
       small = 1
 
       io_num = command_argument_count()
@@ -76,13 +77,22 @@
       fz(:) = 0d0
       ! initialize system energy
       energy = 0d0
-      call f_set_chimes(1)
+
+      call f_set_chimes(small)
+      
+      print*,"fcheck-1"
+
       c_file = string2Cstring(param_file)
       call f_init_chimes(c_file,  0) ! last '0' is the rank of the process
+      
+      print*,"fcheck-2"
+      
       stress(:) = 0d0
       do ns = 1, natom
         stringPtr(ns) = c_loc(c_atom(ns))
       enddo
+      
+      print*,"fcheck-3"
 
       call f_calculate_chimes (natom, xc, yc, zc, stringPtr, ca,  &
       &      cb, cc, energy, fx, fy, fz, stress)

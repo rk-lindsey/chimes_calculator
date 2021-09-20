@@ -290,11 +290,13 @@ void chimesFF::read_parameters(string paramfile)
         if(line.find("# TYPEIDX #") != string::npos)
         {
             atmtyps.resize(natmtyps);
+	    masses.resize(natmtyps);
             for (int i=0; i<natmtyps; i++)
             {
                 line = get_next_line(param_file);
                 split_line(line, tmp_str_items);
                 atmtyps[i] = tmp_str_items[1];
+		masses[i]  = stod(tmp_str_items[3]);
                 
                 if (rank == 0)
                     cout << "chimesFF: " << "\t" << i << " " << atmtyps[i] << endl;
@@ -334,7 +336,29 @@ void chimesFF::read_parameters(string paramfile)
                 line = get_next_line(param_file);
                 
                 tmp_no_items = split_line(line, tmp_str_items);
-                
+
+                int pair_input_version = 0 ;
+                if ( tmp_no_items == 8 )
+                {
+                  
+                  if ( rank == 0 && i == 0 ) cout << "chimesFF: Detected version 1 pair specification (with S_DELTA)\n" ;
+                  pair_input_version = 1 ;
+                }
+                else if ( tmp_no_items == 7 )
+                {
+                  if ( rank == 0 && i == 0 ) cout << "chimesFF: Detected version 2 pair specification (no S_DELTA)\n" ;
+                  pair_input_version = 2 ;
+                }
+                else
+                {
+                  if ( rank == 0 )
+                  {
+                    cout << "Incorrect input in line: " << line << endl ;
+                    cout << "Expect 7 or 8 entries\n" ;
+                  }
+                  exit(0) ;
+                }
+            
                 pair_params_atm_chem_1[i] = tmp_str_items[1];
                 pair_params_atm_chem_2[i] = tmp_str_items[2];
                 
@@ -343,24 +367,45 @@ void chimesFF::read_parameters(string paramfile)
                 
                 chimes_2b_cutoff[i].push_back(stod(tmp_str_items[3])); // Inner cutoff    
                 chimes_2b_cutoff[i].push_back(stod(tmp_str_items[4])); // Outer cutoff
-                
-                if (i==0)
+
+                int xform_style_idx, morse_idx ;
+                if ( pair_input_version == 1 )
                 {
-                    tmp_xform_style = tmp_str_items[6];
+                  xform_style_idx = 6 ;
+                  morse_idx = 7 ;
                 }
+                else if ( pair_input_version == 2 )
+                {
+                  xform_style_idx = 5 ;
+                  morse_idx = 6 ;
+                } 
                 else
                 {
-                    if ( tmp_str_items[6] != tmp_xform_style)    
-                    {
-                        if (rank == 0)
-                            cout << "chimesFF: " << "Distance transfomration style must be the same for all pair types" << endl;
-                            
-                        exit(0);
-                    }
+                  if ( rank == 0 ) cout << "Bad pair input version\n" ;
+                  exit(0) ;
                 }
-                
-                if (tmp_no_items >= 8)
-                    morse_var[i] = stod(tmp_str_items[7]);
+                    
+                if (i==0)
+                {
+                    tmp_xform_style = tmp_str_items[xform_style_idx];
+                }
+                else if ( tmp_str_items[xform_style_idx] != tmp_xform_style)    
+                {
+                  if (rank == 0)
+                    cout << "chimesFF: " << "Distance transformation style must be the same for all pair types" << endl;
+                  exit(0);
+                }
+
+                if (tmp_xform_style == "MORSE" )
+                {
+                  if ( tmp_no_items > morse_idx )
+                    morse_var[i] = stod(tmp_str_items[morse_idx]);
+                  else {
+                    if ( rank == 0 )
+                      cout << "chimesFF: Missing morse lambda value in line: \n" << line << endl ;
+                    exit(0) ;
+                  }
+                }
             }
                 
             xform_style = tmp_xform_style;
@@ -1387,8 +1432,9 @@ inline void chimesFF::get_penalty(const double dx, const int & pair_idx, double 
     if ( r_penalty > 0.0 ) 
     {        
         E_penalty    = r_penalty * r_penalty * r_penalty * penalty_params[1];
-        force_scalar = 3.0 * r_penalty * r_penalty * penalty_params[1];
-        
+
+        force_scalar = -3.0 * r_penalty * r_penalty * penalty_params[1];
+
         if (rank == 0)
         {
             cout << "chimesFF: " << "Adding penalty in 2B Cheby calc, r < rmin+penalty_dist " << fixed 
@@ -1596,6 +1642,7 @@ void chimesFF::compute_2B(const double dx, const vector<double> & dr, const vect
     {
         energy += E_penalty;
 
+		// Note: force_scalar is negative (LEF) 7/30/21.
         *force[0][0] += force_scalar * dr[0]/ dx;
         *force[0][1] += force_scalar * dr[1]/ dx;
         *force[0][2] += force_scalar * dr[2]/ dx;
@@ -1603,6 +1650,20 @@ void chimesFF::compute_2B(const double dx, const vector<double> & dr, const vect
         *force[1][0] -= force_scalar * dr[0]/ dx;
         *force[1][1] -= force_scalar * dr[1]/ dx;
         *force[1][2] -= force_scalar * dr[2]/ dx;
+
+		// Update stress according to penalty force. (LEF) 07/30/21
+        *stress[0] -= force_scalar / dx * dr[0] * dr[0]; // xx tensor component
+        *stress[1] -= force_scalar / dx * dr[0] * dr[1]; // xy tensor component 
+        *stress[2] -= force_scalar / dx * dr[0] * dr[2]; // xz tensor component
+        
+        *stress[3] -= force_scalar / dx * dr[1] * dr[0]; // yx tensor component
+        *stress[4] -= force_scalar / dx * dr[1] * dr[1]; // yy tensor component
+        *stress[5] -= force_scalar / dx * dr[1] * dr[2]; // yz tensor component
+        
+        *stress[6] -= force_scalar / dx * dr[2] * dr[0]; // zx tensor component
+        *stress[7] -= force_scalar / dx * dr[2] * dr[1]; // zy tensor component
+        *stress[8] -= force_scalar / dx * dr[2] * dr[2]; // zz tensor component
+
     }
 }
 
@@ -2051,6 +2112,22 @@ void chimesFF::compute_4B(const vector<double> & dx, const vector<vector<double>
     return;
 }
 
+void chimesFF::get_cutoff_2B(vector<vector<double> >  & cutoff_2b)
+{
+	int dim = chimes_2b_cutoff.size();
+	
+	cutoff_2b.resize(dim);
+	
+	for (int i=0; i<dim; i++)
+	{
+		cutoff_2b[i].resize(0);
+		
+		for (int j=0; j<chimes_2b_cutoff[i].size(); j++)
+		
+			cutoff_2b[i].push_back(chimes_2b_cutoff[i][j]);
+	}
+}
+
 double chimesFF::max_cutoff(int ntypes, vector<vector<vector<double> > > & cutoff_list)
 {
     double max = cutoff_list[0][1][0]; 
@@ -2059,7 +2136,7 @@ double chimesFF::max_cutoff(int ntypes, vector<vector<vector<double> > > & cutof
         for (int j=0; j<cutoff_list[i][1].size(); j++)
             if (cutoff_list[i][1][j] > max)
                 max = cutoff_list[i][1][j];
-    
+
     return max;
 
 }
@@ -2112,4 +2189,9 @@ void chimesFF::set_atomtypes(vector<string> & type_list)
     
     for(int i=0;i<natmtyps;i++)
         type_list[i] = atmtyps[i];
+}
+
+int chimesFF::get_atom_pair_index(int pair_id)
+{
+	return atom_idx_pair_map[pair_id];
 }
