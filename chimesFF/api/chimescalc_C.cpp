@@ -17,7 +17,7 @@
 
 using namespace std;
 
-#include "chimescalc.h"
+#include "chimesFF.h"
 #include "chimescalc_C.h"
 static chimesFF chimes_start, *chimes_ptr;
 

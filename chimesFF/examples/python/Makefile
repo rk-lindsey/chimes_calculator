@@ -2,10 +2,10 @@ CC_LOC = $(realpath .)
 
 CXX=g++ -O3 -std=c++11 -fPIC
 
-CHIMESFF_SRC=$(CC_LOC)/../../src/chimescalc.cpp
-CHIMESFF_HDR=$(CC_LOC)/../../src/chimescalc.h
+CHIMESFF_SRC=$(CC_LOC)/../../src/chimesFF.cpp
+CHIMESFF_HDR=$(CC_LOC)/../../src/chimesFF.h
 
-chimescalc.o : $(CHIMESFF_SRC)
+chimesFF.o : $(CHIMESFF_SRC)
 	$(CXX) -c $(CHIMESFF_SRC)
 
 CC_WRAPPER_SRC=$(CC_LOC)/../../api/chimescalc_C.cpp
@@ -15,7 +15,7 @@ chimescalc_C.o : $(CC_WRAPPER_SRC) $(CC_WRAPPER_HDR) $(CHIMESFF_SRC)  $(CHIMESFF
 	$(CXX) -c $(CC_WRAPPER_SRC) $(CHIMESFF_SRC) -I $(CC_LOC)/../../api/ -I $(CC_LOC)/../../src/
 
 chimescalc_C.so:
-	$(CXX) -shared -o lib-C_wrapper-direct_interface.so chimescalc_C.o chimescalc.o
+	$(CXX) -shared -o lib-C_wrapper-direct_interface.so chimescalc_C.o chimesFF.o
 
 
 clean:
@@ -27,7 +27,7 @@ clean-all:
 	rm -f *.so
 
 all:
-	make chimescalc.o
+	make chimesFF.o
 	make chimescalc_C.o
 	make chimescalc_C.so
 	make clean
