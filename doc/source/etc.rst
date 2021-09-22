@@ -8,7 +8,7 @@ We are currently working to get toward ChIMES calculator implementation in `LAMM
 
 .. Note::
 
-    This example assumes users have downloaded the 7 Aug 2019 version of LAMMPS (stable version as of 11/1/19), which can be downloaded `here <https://lammps.sandia.gov/download.html>`_. 
+    This example assumes users have downloaded the 29 Oct 2020 version of LAMMPS (stable version as of 9/21/2021), which can be downloaded `here <https://lammps.sandia.gov/download.html>`_. 
 
 Compiling
 ^^^^^^^^^^^^^^^^

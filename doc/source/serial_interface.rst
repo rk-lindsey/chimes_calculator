@@ -75,23 +75,23 @@ void        calculate          =======================   =====
 The C API
 ^^^^^^^^^
 
-The C API (``wrapper-C*``) is located in ``serial_interface/api``. This wrapper provides C style name mangling and creates a  set of C-style wrapper functions. The latter are needed for compatibility with std::vector which is heavily used in ``serial_chimes_interface`` and not supported in most other languages. Any C code attempting to use the ChIMES calculator serial interface should ``#include "chimescalc_C.h"``
+The C API (``chimescalc_serial_C*``) is located in ``serial_interface/api``. This wrapper provides C style name mangling and creates a  set of C-style wrapper functions. The latter are needed for compatibility with std::vector which is heavily used in ``serial_chimes_interface`` and not supported in most other languages. Any C code attempting to use the ChIMES calculator serial interface should ``#include "chimescalc_C.h"``
 and at least include the following operations, in order:
 
     .. code-block:: cpp
 
        int my_rank = 0;
-       set_chimes();         // Instantiate; as for the C++ API (see warning message), can pass 0/1 for false/true
-       init_chimes("my_parameter_file", my_rank); // Set MPI rank (replace with zero if used in serial code)
+       set_chimes_serial();         // Instantiate; as for the C++ API (see warning message), can pass 0/1 for false/true
+       init_chimes_serial("my_parameter_file", my_rank); // Set MPI rank (replace with zero if used in serial code)
 
 For additional information on compiling, see :ref:`Implementation Examples <sec-ser-use-examples-api>`.
 
-Note that the ChIMES calculator serial interface ``wrapper-C`` API provides users with the following functions:
+Note that the ChIMES calculator serial interface ``chimescalc_serial_C`` API provides users with the following functions:
 
 =========== ========================    =================
 Return Type Name                        Arguments and Description
 =========== ========================    =================
-void        set_chimes                  Creates a pointer to a ``serial_chimes_interface`` object.
+void        set_chimes_serial           Creates a pointer to a ``serial_chimes_interface`` object.
 
                                         =======================   =====
 					Type                      Description
@@ -100,7 +100,7 @@ void        set_chimes                  Creates a pointer to a ``serial_chimes_i
 					=======================   =====
 
 
-void        init_chimes                 =======================   =====
+void        init_chimes_serial          =======================   =====
                                         Type                      Description
                                         =======================   =====
                                         string                    Parameter file
@@ -127,41 +127,18 @@ void        calculate_chimes            =======================   =====
                                         =======================   =====
 
                                         Takes system coordinates and cell lattice vectors, computes corresponding ChIMES energy, stress tensor, and system forces.
-
-
-void        calculate_chimes_fromF90    =======================   =====
-                                        Type                      Description
-                                        =======================   =====
-                                        int                       number of atoms in system
-                                        double array              Vector of x-coordinates for system atoms
-                                        double array              Vector of y-coordinates for system atoms
-                                        double array              Vector of z-coordinates for system atoms
-                                        char  array               System cell a lattice vector
-                                        double array              System cell b lattice vector
-                                        double array              System cell c lattice vector
-                                        double array              Vector of atom types for system atoms
-                                        double*                   Overall system energy (updated by function)
-                                        double array              Vector of forces for system atoms (updated by function); ([atom index][fx, fy, fz])
-                                        double array              System stress tensor (updated by function); ([s_xx, s_xy, s_xz, s_yx, s_yy, s_yz, s_zx, s_zy, s_zz])
-                                        =======================   =====
-
-                                        For calls from Fortran code. Takes system coordinates and cell lattice vectors, computes corresponding ChIMES energy, stress tensor, and system forces.
 =========== ========================    =================
-
-
----------------
-
 
 .. _sec-ser-fortran-api:
 
 The Fortran API
 ^^^^^^^^^^^^^^^
 
-The Fortran API (``wrapper-F*``) is located in ``serial_interface/api``. This wrapper enables access to ``serial_chimes_interface`` functions
+The Fortran API (``chimescalc_serial_F*``) is located in ``serial_interface/api``. This wrapper enables access to ``serial_chimes_interface`` functions
 through the C API and handles other details like differences in array storage order.
 
 
-Any Fortran code attempting to use the ChIMES Calculator should ``use wrapper`` and at least include the following
+Any Fortran code attempting to use the ChIMES Calculator should ``use chimescalc`` and at least include the following
 operations, in order:
 
     .. code-block:: fortran
@@ -175,13 +152,13 @@ operations, in order:
 
 For additional information on compiling, see :ref:`Implementation Examples <sec-ser-use-examples-api>`.
 
-Note that the ChIMES calculator serial interface ``wrapper-F`` API provides users with the following functions:
+Note that the ChIMES calculator serial interface ``chimescalc_serial_F`` API provides users with the following functions:
 
 
 =========== ========================    =================
 Return Type Name                        Arguments and Description
 =========== ========================    =================
-none        f_set_chimes_from_f90       Creates a pointer to a ``serial_chimes_interface`` object.
+none        f_set_chimes		Creates a pointer to a ``serial_chimes_interface`` object.
 
                                         =======================   =====
 					Type                      Description
@@ -234,25 +211,25 @@ C_string    string2Cstring              ======   ===
 The Python API
 ^^^^^^^^^^^^^^
 
-The Python API (``wrapper_py*``) is located in ``serial_interface/api``. Like the Fortran API, this wrapper enables access to
+The Python API (``chimescalc_serial_py*``) is located in ``serial_interface/api``. Like the Fortran API, this wrapper enables access to
 ``serial_chimes_interface`` functions through the C API, via ctypes.
 
-Any python code attempting to use the ChIMES Calculator should ``import wrapper_py`` and at least include the following
+Any python code attempting to use the ChIMES Calculator should ``import chimescalc_serial_py`` and at least include the following
 operations, in order:
 
     .. code-block:: python
 
        # Associate the wrapper with a compiled C API library file
-       wrapper_py.chimes_wrapper = wrapper_py.init_chimes_wrapper("lib-C_wrapper-serial_interface.so")
+       chimescalc_serial_py.chimes_wrapper = chimescalc_serial_py.init_chimes_wrapper("lib-C_wrapper-serial_interface.so")
        # Instantiate; as for the C++ API (see warning message), can pass 0/1 for false/true
-       wrapper_py.set_chimes()
+       chimescalc_serial_py.set_chimes()
        # Read the parameter file, set MPI rank to 0 (i.e. no MPI used)
-       wrapper_py.init_chimes("my_parameter_file", 0)
+       chimescalc_serial_py.init_chimes("my_parameter_file", 0)
 
 
 For additional information on compiling (i.e. generation of ``lib-C_wrapper-serial_interface.so``), see :ref:`Implementation Examples <sec-ser-use-examples-api>`.
 
-Note that the ChIMES calculator serial interface ``wrapper_py`` API provides users with the following functions:
+Note that the ChIMES calculator serial interface ``chimescalc_serial_py`` API provides users with the following functions:
 
 
 =============== ========================    =================
@@ -344,8 +321,8 @@ For user generated tests, note that ``*.xyz`` files must provide lattice vectors
     All example executables can be compiled at once via ``./install.sh`` from the ``chimes_calculator`` base directory, and similarly uninstalled via ``./uninstall.sh``. However, the examples below compile via the user-generated Makefiles located in each ``examples`` subdirectory, for demonstrative purposes.
 
 
-* **C Example:** The ``main`` function of this example includes the C API, ``wrapper-C.{h,cpp}``, which creates a global static pointer to a ``serial_chimes_interface`` object.
-  The ``serial_chimes_interface`` pointer object is set up, i.e. by ``set_chimes()``, and used for access to ``serial_chimes_interface`` member functions, etc.
+* **C Example:** The ``main`` function of this example includes the C API, ``chimescalc_serial_C.{h,cpp}``, which creates a global static pointer to a ``serial_chimes_interface`` object.
+  The ``serial_chimes_interface`` pointer object is set up, i.e. by ``set_chimes_serial()``, and used for access to ``serial_chimes_interface`` member functions, etc.
 
    * Navigate to ``serial_interface/examples/c``
    * Compile with: ``make all``
@@ -359,7 +336,7 @@ For user generated tests, note that ``*.xyz`` files must provide lattice vectors
    * Test with: ``./CPP-interface <parameter file> <xyz file>``
 
 * **Fortran Example:** Similar to the C example, this ``main`` function establishes a pointer to a ``serial_chimes_interface`` object via ``f_set_chimes()``.
-  The ``f_set_chimes()`` function call is defined in ``wrapper-F.F90,`` a wrapper for the C API ``wrapper-C.cpp`` (i.e which facilitates C-style access to
+  The ``f_set_chimes()`` function call is defined in ``chimescalc_serial_F.F90,`` a wrapper for the C API ``chimescalc_serial_C.cpp`` (i.e which facilitates C-style access to
   ``serial_chimes_interface`` member functions, etc). Actual linking is achieved at compilation. See the ``Makefile`` for details.
 
    * Navigate to ``serial_interface/examples/fortran``
@@ -367,8 +344,8 @@ For user generated tests, note that ``*.xyz`` files must provide lattice vectors
    * Test with: ``./fortran_wrapper-serial_interface <parameter file> <xyz file>``
    * Additional notes:
 
-* **Python Example:** This example accesses ``serial_chimes_interface`` functions through ``wrapper_py.py``, a ctypes-based python API for access to the C API functions
-  (i.e. through ``wrapper-C.cpp``). Once ``wrapper_py.py`` is imported, it is associated with a compiled C API library file, i.e. ``lib-C_wrapper-serial_interface.so`` and  can be used to access ``serial_chimes_interface`` member functions.
+* **Python Example:** This example accesses ``serial_chimes_interface`` functions through ``chimescalc_serial_py.py``, a ctypes-based python API for access to the C API functions
+  (i.e. through ``chimescalc_serial_C.cpp``). Once ``chimescalc_serial_py.py`` is imported, it is associated with a compiled C API library file, i.e. ``lib-C_wrapper-serial_interface.so`` and  can be used to access ``serial_chimes_interface`` member functions.
 
    * Navigate to ``serial_interface/examples/python``
    * Compile lib-C_wrapper-serial_interface.so with: ``make all``

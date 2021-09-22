@@ -180,7 +180,7 @@ void        compute_4B         ==========================   ===
 The C API
 ^^^^^^^^^
 
-The C API (``wrapper-C*``) is located in ``chimesFF/api``. This wrapper provides C style name mangling and creates a
+The C API (``chimescalc_C*``) is located in ``chimesFF/api``. This wrapper provides C style name mangling and creates a
 set of C-style wrapper functions. The latter are needed for compatibility with std::vector which is heavily used in ``chimesFF`` and not supported in most other languages. Any C code attempting to use the ChIMES Calculator should ``#include "chimescalc_C.h"``
 and at least include the following operations, in order:
 
@@ -193,7 +193,7 @@ and at least include the following operations, in order:
 
 For additional information on compiling, see :ref:`Implementation Examples <sec-use-examples-api>`.
 
-Note that the ChIMES calculator ``wrapper-C`` API provides users with the following functions:
+Note that the ChIMES calculator ``chimescalc_C`` API provides users with the following functions:
 
 =========== ================================  =================
 Return Type Name                              Arguments and Description
@@ -329,11 +329,11 @@ void        chimes_compute_4b_props_fromf90   ============  ===
 The Fortran API
 ^^^^^^^^^^^^^^^
 
-The Fortran API (``wrapper-F*``) is located in ``chimesFF/api``. This wrapper enables access to ``chimesFF`` functions
+The Fortran API (``chimescalc_F*``) is located in ``chimesFF/api``. This wrapper enables access to ``chimesFF`` functions
 through the C API and handles other details like differences in array storage order.
 
 
-Any Fortran code attempting to use the ChIMES Calculator should ``use wrapper`` and at least include the following
+Any Fortran code attempting to use the ChIMES Calculator should ``use chimescalc`` and at least include the following
 operations, in order:
 
     .. code-block:: fortran
@@ -345,7 +345,7 @@ operations, in order:
 
 For additional information on compiling, see :ref:`Implementation Examples <sec-use-examples-api>`.
 
-Note that the ChIMES calculator ``wrapper-F`` API provides users with the following functions:
+Note that the ChIMES calculator ``chimescalc_F`` API provides users with the following functions:
 
 =========== ==================================  =================
 Return Type Name                                Arguments and Description
@@ -441,23 +441,23 @@ C_string    string2Cstring                      ======   ===
 The Python API
 ^^^^^^^^^^^^^^
 
-The Python API (``wrapper_py*``) is located in ``chimesFF/api``. Like the Fortran API, this wrapper enables access to
+The Python API (``chimescalc_py*``) is located in ``chimesFF/api``. Like the Fortran API, this wrapper enables access to
 ``chimesFF`` functions through the C API, via ctypes.
 
-Any python code attempting to use the ChIMES Calculator should ``import wrapper_py`` and at least include the following
+Any python code attempting to use the ChIMES Calculator should ``import chimescalc_py`` and at least include the following
 operations, in order:
 
     .. code-block:: python
 
-       wrapper_py.chimes_wrapper = wrapper_py.init_chimes_wrapper("lib-C_wrapper-serial_interface.so") # Associate the wrapper with a compiled C API library file
-       wrapper_py.set_chimes()  # Instantiate
-       wrapper_py.init_chimes() # If run with MPI, an integer MPI rank can be passed to this function. By default, assumes rank = 0
-       wrapper_py.read_params("my_parameter_file")
+       chimescalc_py.chimes_wrapper = chimescalc_py.init_chimes_wrapper("lib-C_wrapper-serial_interface.so") # Associate the wrapper with a compiled C API library file
+       chimescalc_py.set_chimes()  # Instantiate
+       chimescalc_py.init_chimes() # If run with MPI, an integer MPI rank can be passed to this function. By default, assumes rank = 0
+       chimescalc_py.read_params("my_parameter_file")
 
 
 For additional information on compiling (i.e. generation of ``lib-C_wrapper-serial_interface.so``), see :ref:`Implementation Examples <sec-use-examples-api>`.
 
-Note that the ChIMES calculator ``wrapper_py`` API provides users with the following functions:
+Note that the ChIMES calculator ``chimescalc_py`` API provides users with the following functions:
 
 
 =========== ==================================  =================
@@ -561,7 +561,7 @@ The following codes demonstrates how ``chimesFF.{h,cpp}`` can be used to obtain 
     All example executables can be compiled at once via ``./install.sh`` from the ``chimes_calculator`` base directory, and similarly uninstalled via ``./uninstall.sh``. However, the examples below compile via the user-generated Makefiles located in each ``examples`` subdirectory, for demonstrative purposes.
 
 
-* **C Example:** The ``main`` function of this example includes the C API, ``wrapper-C.{h,cpp}``, which creates a global static pointer to a ``chimesFF`` object.
+* **C Example:** The ``main`` function of this example includes the C API, ``chimescalc_C.{h,cpp}``, which creates a global static pointer to a ``chimesFF`` object.
   The ``chimesFF`` pointer object is set up, i.e. by ``set_chimes()``, and used for access to ``chimesFF`` member functions, etc.
 
    * Navigate to ``chimesFF/examples/c``
@@ -580,7 +580,7 @@ The following codes demonstrates how ``chimesFF.{h,cpp}`` can be used to obtain 
    * Test with: ``./CPP-interface <parameter file> <xyz file> ``
 
 * **Fortran Example:** Similar to the C example, this ``main`` function establishes a pointer to a ``chimesFF`` object via ``f_set_chimes()``.
-  The ``f_set_chimes()`` function call is defined in ``wrapper-F.F90,`` a wrapper for the C API ``wrapper-C.cpp`` (i.e which facilitates C-style access to
+  The ``f_set_chimes()`` function call is defined in ``chimescalc_F.f90,`` a wrapper for the C API ``chimescalc_C.cpp`` (i.e which facilitates C-style access to
   ``chimesFF`` member functions, etc). Actual linking is achieved at compilation. See the ``Makefile`` for details.
 
    * Navigate to ``chimesFF/examples/fortran``
@@ -591,8 +591,8 @@ The following codes demonstrates how ``chimesFF.{h,cpp}`` can be used to obtain 
       * ``*.xyz`` files must not contain any information beyond atom type and x-, y-, and z- coordinate on coordinate lines.
       * This implementation does NOT use ghost atoms/layering thus the input system MUST have box lengths greater than two times the largest outer cutoff, or results will not be correct.
 
-* **Python Example:** This example accesses ``chimesFF`` functions through ``wrapper_py.py``, a ctypes-based python API for access to the C API functions
-  (i.e. through ``wrapper-C.cpp``). Once ``wrapper_py.py`` is imported, it is associated with a compiled C API library file, i.e. ``lib-C_wrapper-direct_interface.so`` and  can be used to access ``chimesFF`` member functions.
+* **Python Example:** This example accesses ``chimesFF`` functions through `chimescalc_py.py``, a ctypes-based python API for access to the C API functions
+  (i.e. through ``chimescalc_C.cpp``). Once ``chimescalc_py.py`` is imported, it is associated with a compiled C API library file, i.e. ``lib-C_wrapper-direct_interface.so`` and  can be used to access ``chimesFF`` member functions.
 
    * Navigate to ``chimesFF/examples/python``
    * Compile lib-C_wrapper-direct_interface.so with: ``make all``
