@@ -18,7 +18,7 @@ FCC = gfortran -O3 -fPIC -std=f2003
 
 FCC_WRAPPER_SRC=$(FCC_LOC)/../../api/chimescalc_F.F90
 
-chimescalc_F.o chimescalc_F.mod : $(FCC_WRAPPER_SRC)
+chimescalc_F.o chimescalc.mod : $(FCC_WRAPPER_SRC)
 	$(FCC) -c $(FCC_WRAPPER_SRC) -o chimescalc_F.o
 
 main.o : main.F90
@@ -48,7 +48,7 @@ clean-all:
 all:
 	make chimesFF.o
 	make chimescalc_C.o
-	make chimescalc_F.o chimescalc_F.mod
+	make chimescalc_F.o chimescalc.mod
 	make main.o
 	make test_wrapper-F
-	make clean
+	#make clean
