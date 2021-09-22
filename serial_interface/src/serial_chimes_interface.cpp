@@ -13,7 +13,7 @@
 
 using namespace std;
 
-#include "chimescalc_serial.h"
+#include "serial_chimes_interface.h"
 
 // Simple linear algebra functions (for arbitrary triclinic cell support)
 

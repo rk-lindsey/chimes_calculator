@@ -30,7 +30,7 @@ Compile with:
 
 using namespace std;
 
-#include "chimescalc_serial.h"
+#include "serial_chimes_interface.h"
 
 // Prototypes for some simple helper functions
 

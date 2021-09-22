@@ -17,7 +17,7 @@
 
 using namespace std;
 
-#include "chimescalc_serial.h"
+#include "serial_chimes_interface.h"
 #include "chimescalc_serial_C.h"
 static  serial_chimes_interface chimes, *chimes_ptr;
 

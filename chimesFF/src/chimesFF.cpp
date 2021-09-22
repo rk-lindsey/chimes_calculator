@@ -17,7 +17,7 @@
 
 using namespace std;
 
-#include "chimescalc.h"
+#include "chimesFF.h"
 
 static const double pi      = 3.14159265359;
 

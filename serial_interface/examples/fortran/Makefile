@@ -10,22 +10,22 @@ DEBUG   = 1
 F_LOC = $(realpath .)
 
 chimescalc_LOC=$(F_LOC)/../../../chimesFF/src
-chimescalc_SRC=$(chimescalc_LOC)/chimescalc.cpp
-chimescalc_HDR=$(chimescalc_LOC)/chimescalc.h
+chimescalc_SRC=$(chimescalc_LOC)/chimesFF.cpp
+chimescalc_HDR=$(chimescalc_LOC)/chimesFF.h
 
-chimescalc.o : $(chimescalc_SRC)
+chimesFF.o : $(chimescalc_SRC)
 	$(CXX) -c $(chimescalc_SRC) -I $(chimescalc_LOC)
 
 SERIAL_LOC=$(F_LOC)/../../src
-SERIAL_SRC=$(SERIAL_LOC)/chimescalc_serial.cpp
-SERIAL_HDR=$(SERIAL_LOC)/chimescalc_serial.h
+SERIAL_SRC=$(SERIAL_LOC)/serial_chimes_interface.cpp
+SERIAL_HDR=$(SERIAL_LOC)/serial_chimes_interface.h
 
-chimescalc_serial.o : $(SERIAL_SRC)
+serial_chimes_interface.o : $(SERIAL_SRC)
 	$(CXX) -c $(SERIAL_SRC) -I $(SERIAL_LOC) -I $(chimescalc_LOC)
 
 WRAPPERC_LOC=$(F_LOC)/../../api
 WRAPPERC_SRC=$(WRAPPERC_LOC)/chimescalc_serial_C.cpp
-WRAPPERC_HDR=$(WRAPPERC_LOC)/wrapper-h.cpp
+WRAPPERC_HDR=$(WRAPPERC_LOC)/chimescalc_serial_C.h
 
 chimescalc_serial_C.o : $(WRAPPERC_SRC)
 	$(CXX) -c $(WRAPPERC_SRC) -I $(WRAPPERC_LOC) -I $(SERIAL_LOC) -I $(chimescalc_LOC)
@@ -40,7 +40,7 @@ main.o : main.F90
 	$(FCC) -c main.F90 -o main.o  -DDEBUG=${DEBUG}
 
 
-LINKS = chimescalc.o chimescalc_serial.o  chimescalc_serial_C.o chimescalc_serial_F.o main.o
+LINKS = chimesFF.o serial_chimes_interface.o  chimescalc_serial_C.o chimescalc_serial_F.o main.o
 
 # Rudimentary OS detection
 UNAME := $(shell uname)
@@ -53,8 +53,9 @@ endif
 
 test-F: $(LINKS)
 	$(FCC) $(LINKS) -o fortran_wrapper-serial_interface
-lib : chimescalc.o chimescalc_serial.o chimescalc_serial_C.o
-	ar rcs libchimes.a chimescalc.o chimescalc_serial.o chimescalc_serial_C.o
+
+lib : chimesFF.o serial_chimes_interface.o chimescalc_serial_C.o
+	ar rcs libchimes.a chimesFF.o serial_chimes_interface.o chimescalc_serial_C.o
 
 clean:
 	rm -f *.o *.mod
@@ -65,8 +66,8 @@ clean-all:
 	rm -f libchimes.a
 
 all:
-	make chimescalc.o
-	make chimescalc_serial.o
+	make chimesFF.o
+	make serial_chimes_interface.o
 	make chimescalc_serial_C.o
 	make chimescalc_serial_F.o chimescalc_serial.mod
 	make main.o

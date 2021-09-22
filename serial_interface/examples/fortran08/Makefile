@@ -10,17 +10,17 @@ DEBUG   = 1
 F_LOC = $(realpath .)
 
 CHIMESFF_LOC=$(F_LOC)/../../../chimesFF/src
-CHIMESFF_SRC=$(CHIMESFF_LOC)/chimescalc.cpp
-CHIMESFF_HDR=$(CHIMESFF_LOC)/chimescalc.h
+CHIMESFF_SRC=$(CHIMESFF_LOC)/chimesFF.cpp
+CHIMESFF_HDR=$(CHIMESFF_LOC)/chimesFF.h
 
-chimescalc.o : $(CHIMESFF_SRC)
+chimesFF.o : $(CHIMESFF_SRC)
 	$(CXX) -c $(CHIMESFF_SRC) -I $(CHIMESFF_LOC)
 
 SERIAL_LOC=$(F_LOC)/../../src
-SERIAL_SRC=$(SERIAL_LOC)/chimescalc_serial.cpp
-SERIAL_HDR=$(SERIAL_LOC)/chimescalc_serial.h
+SERIAL_SRC=$(SERIAL_LOC)/serial_chimes_interface.cpp
+SERIAL_HDR=$(SERIAL_LOC)/serial_chimes_interface.h
 
-chimescalc_serial.o : $(SERIAL_SRC)
+serial_chimes_interface.o : $(SERIAL_SRC)
 	$(CXX) -c $(SERIAL_SRC) -I $(SERIAL_LOC) -I $(CHIMESFF_LOC)
 
 WRAPPERC_LOC=$(F_LOC)/../../api
@@ -44,7 +44,7 @@ main.o : main.F90
 	$(FCC) -c main.F90 -o main.o  -DDEBUG=${DEBUG}
 
 
-LINKS = chimescalc.o chimescalc_serial.o  chimescalc_serial_C.o chimescalc_serial_F.o chimescalc_serial_F08.o main.o
+LINKS = chimesFF.o serial_chimes_interface.o  chimescalc_serial_C.o chimescalc_serial_F.o chimescalc_serial_F08.o main.o
 
 # Rudimentary OS detection
 UNAME := $(shell uname)
@@ -57,8 +57,8 @@ endif
 
 test-F: $(LINKS)
 	$(FCC) $(LINKS) -o fortran08_wrapper-serial_interface
-lib : chimescalc.o chimescalc_serial.o chimescalc_serial_C.o
-	ar rcs libchimes.a chimescalc.o chimescalc_serial.o chimescalc_serial_C.o
+lib : chimesFF.o serial_chimes_interface.o chimescalc_serial_C.o
+	ar rcs libchimes.a chimesFF.o serial_chimes_interface.o chimescalc_serial_C.o
 
 clean:
 	rm -f *.o *.mod
@@ -69,8 +69,8 @@ clean-all:
 	rm -f libchimes.a
 
 all:
-	make chimescalc.o
-	make chimescalc_serial.o
+	make chimesFF.o
+	make serial_chimes_interface.o
 	make chimescalc_serial_C.o
 	make chimescalc_serial_F.o chimescalc_serial.mod
 	make chimescalc_serial_F08.o chimes_serial08.mod

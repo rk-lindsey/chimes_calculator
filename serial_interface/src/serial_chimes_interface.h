@@ -24,7 +24,7 @@ large systems.
 
 using namespace std;
 
-#include "chimescalc.h"
+#include "chimesFF.h"
 
 class simulation_system
 {
