@@ -7,11 +7,11 @@
 
 	The following must be included in any python script calling this wrapper:
 
-		import wrapper_py
-		wrapper_py.chimes_wrapper = wrapper_py.init_chimes_wrapper("/path/to/lib-C_wrapper-serial_interface.so")
-		wrapper_py.set_chimes()
-		wrapper_py.init_chimes()
-		wrapper_py.read_params("some_parameter_file.txt")
+		import chimescalc_py
+		chimescalc_py.chimes_wrapper = chimescalc_py.init_chimes_wrapper("/path/to/lib-C_wrapper-direct_interface.so")
+		chimescalc_py.set_chimes()
+		chimescalc_py.init_chimes()
+		chimescalc_py.read_params("some_parameter_file.txt")
 
     ChIMES Calculator
     Copyright (C) 2020 Rebecca K. Lindsey, Nir Goldman, and Laurence E. Fried
