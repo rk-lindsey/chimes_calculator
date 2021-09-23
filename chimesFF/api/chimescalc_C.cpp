@@ -1,7 +1,7 @@
-/* 
+/*
     ChIMES Calculator
     Copyright (C) 2020 Rebecca K. Lindsey, Nir Goldman, and Laurence E. Fried
-	Contributing Author:  Nir Goldman (2020) 
+	Contributing Author:  Nir Goldman (2020)
 */
 
 #include<vector>
@@ -18,19 +18,19 @@
 using namespace std;
 
 #include "chimesFF.h"
-#include "wrapper-C.h"
+#include "chimescalc_C.h"
 static chimesFF chimes_start, *chimes_ptr;
 
 double get_chimes_max_2b_cutoff() {
   double rcut_2b = chimes_ptr->max_cutoff_2B();
   return rcut_2b;
 }
-  
+
 double get_chimes_max_3b_cutoff() {
   double rcut_3b = chimes_ptr->max_cutoff_3B();
   return rcut_3b;
 }
-  
+
 double get_chimes_max_4b_cutoff() {
   double rcut_4b = chimes_ptr->max_cutoff_4B();
   return rcut_4b;
@@ -78,7 +78,7 @@ void chimes_compute_2b_props_fromf90(double *rij, double dr[3], char *type1, cha
 	static char *atype2b_fromf90[2];
 	atype2b_fromf90[0] = type1;
 	atype2b_fromf90[1] = type2;
-	
+
 	chimes_compute_2b_props(*rij, dr, atype2b_fromf90, force, stress, epot);
 }
 void chimes_compute_3b_props_fromf90(double dr_3b[3], double dist_3b[3][3], char *type1, char *type2, char *type3, double f3b[3][3], double stress[9], double *epot)
@@ -87,7 +87,7 @@ void chimes_compute_3b_props_fromf90(double dr_3b[3], double dist_3b[3][3], char
 	atype3b_fromf90[0] = type1;
 	atype3b_fromf90[1] = type2;
 	atype3b_fromf90[2] = type3;
-	
+
 	chimes_compute_3b_props(dr_3b, dist_3b, atype3b_fromf90, f3b, stress, epot);
 }
 void chimes_compute_4b_props_fromf90(double dr_4b[6], double dist_4b[6][3], char *type1, char *type2, char *type3, char *type4, double f4b[4][3], double stress[9], double *epot)
@@ -97,7 +97,7 @@ void chimes_compute_4b_props_fromf90(double dr_4b[6], double dist_4b[6][3], char
 	atype4b_fromf90[1] = type2;
 	atype4b_fromf90[2] = type3;
 	atype4b_fromf90[3] = type4;
-	
+
 	chimes_compute_4b_props(dr_4b, dist_4b, atype4b_fromf90, f4b, stress, epot);
 }
 
@@ -111,7 +111,7 @@ void chimes_compute_2b_props(double rij, double dr[3], char *atype2b[2], double 
   vector <int> type_vec(2);
   type_vec[0] = distance(chimes_ptr->atmtyps.begin(),find(chimes_ptr->atmtyps.begin(), chimes_ptr->atmtyps.end(), atype2b[0]));
   type_vec[1] = distance(chimes_ptr->atmtyps.begin(),find(chimes_ptr->atmtyps.begin(), chimes_ptr->atmtyps.end(), atype2b[1]));
-  
+
   if (type_vec[0] >= chimes_ptr->atmtyps.size())
   {
   	cout << "ERROR: input atom type not in parameter file: " << atype2b[0] << endl;
@@ -121,7 +121,7 @@ void chimes_compute_2b_props(double rij, double dr[3], char *atype2b[2], double 
   {
   	cout << "ERROR: input atom type not in parameter file: " << atype2b[0] << endl;
 	exit(0);
-  } 
+  }
   //type_vec[0] = chimes_ptr->atmtoidx[atype2b[0]];
   //type_vec[1] = chimes_ptr->atmtoidx[atype2b[1]];
   vector<vector<double*> >force_vec;
@@ -143,7 +143,7 @@ void chimes_compute_2b_props(double rij, double dr[3], char *atype2b[2], double 
   stress_vec[7] = &stress[7];
   stress_vec[8] = &stress[8];
   chimes_ptr->compute_2B(rij, dr_vec, type_vec, force_vec, stress_vec, *epot);
-  // save forces and stress tensor components 
+  // save forces and stress tensor components
   force[0][0] = *force_vec[0][0];
   force[0][1] = *force_vec[0][1];
   force[0][2] = *force_vec[0][2];
@@ -177,7 +177,7 @@ void chimes_compute_3b_props(double dr_3b[3], double dist_3b[3][3], char *atype3
   dist_3b_vec[2][0] = dist_3b[2][0];
   dist_3b_vec[2][1] = dist_3b[2][1];
   dist_3b_vec[2][2] = dist_3b[2][2];
-  vector <int> type_3b_vec(3);  
+  vector <int> type_3b_vec(3);
   type_3b_vec[0] = distance(chimes_ptr->atmtyps.begin(),find(chimes_ptr->atmtyps.begin(), chimes_ptr->atmtyps.end(), atype3b[0]));
   type_3b_vec[1] = distance(chimes_ptr->atmtyps.begin(),find(chimes_ptr->atmtyps.begin(), chimes_ptr->atmtyps.end(), atype3b[1]));
   type_3b_vec[2] = distance(chimes_ptr->atmtyps.begin(),find(chimes_ptr->atmtyps.begin(), chimes_ptr->atmtyps.end(), atype3b[2]));
@@ -214,7 +214,7 @@ void chimes_compute_3b_props(double dr_3b[3], double dist_3b[3][3], char *atype3
   stress_vec[7] = &stress[7];
   stress_vec[8] = &stress[8];
   chimes_ptr->compute_3B(dr_3b_vec, dist_3b_vec, type_3b_vec, force_3b_vec, stress_vec, *epot);
-  // save forces and stress tensor components 
+  // save forces and stress tensor components
   f3b[0][0] = *force_3b_vec[0][0];
   f3b[0][1] = *force_3b_vec[0][1];
   f3b[0][2] = *force_3b_vec[0][2];
@@ -275,7 +275,7 @@ void chimes_compute_4b_props(double dr_4b[6], double dist_4b[6][3], char *atype4
   		cout << "ERROR: input atom type not in parameter file: " << atype4b[i] << endl;
 		exit(0);
 	}
-  }  
+  }
   //type_4b_vec[0] = chimes_ptr->atmtoidx[atype4b[0]];
   //type_4b_vec[1] = chimes_ptr->atmtoidx[atype4b[1]];
   //type_4b_vec[2] = chimes_ptr->atmtoidx[atype4b[2]];
@@ -305,7 +305,7 @@ void chimes_compute_4b_props(double dr_4b[6], double dist_4b[6][3], char *atype4
   stress_vec[7] = &stress[7];
   stress_vec[8] = &stress[8];
   chimes_ptr->compute_4B(dr_4b_vec, dist_4b_vec, type_4b_vec, force_4b_vec, stress_vec, *epot);
-  // save forces and stress tensor components 
+  // save forces and stress tensor components
   f4b[0][0] = *force_4b_vec[0][0];
   f4b[0][1] = *force_4b_vec[0][1];
   f4b[0][2] = *force_4b_vec[0][2];

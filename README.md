@@ -66,4 +66,4 @@ License
 
 The ChIMES calculator is distributed under terms of [LGPL v3.0 License](https://github.com/rk-lindsey/chimes_calculator/blob/main/LICENSE).
 
-LLNL-CODE- 817533
+LLNL-CODE-817533

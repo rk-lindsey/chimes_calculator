@@ -26,7 +26,7 @@ import math
 chimes_module_path = os.path.abspath( os.getcwd() + "/../../api/")
 sys.path.append(chimes_module_path)
 
-import wrapper_py
+import chimescalc_py
 
 
 # Define helper functions
@@ -47,9 +47,9 @@ def get_dist(lx,ly,lz,xrd,ycrd,zcrd,i,j):
 
 # Initialize the ChIMES calculator
 
-wrapper_py.chimes_wrapper = wrapper_py.init_chimes_wrapper("lib-C_wrapper-serial_interface.so")
-wrapper_py.set_chimes()
-wrapper_py.init_chimes()
+chimescalc_py.chimes_wrapper = chimescalc_py.init_chimes_wrapper("lib-C_wrapper-direct_interface.so")
+chimescalc_py.set_chimes()
+chimescalc_py.init_chimes()
 
 
 # Read in the parameter and coordinate filename 
@@ -66,7 +66,7 @@ coord_file = sys.argv[2] # coordinate file
 
 # Read the parameters
 
-wrapper_py.read_params(param_file)
+chimescalc_py.read_params(param_file)
 
 # Read the coordinates, set up the force, stress, and energy vars
 
@@ -105,14 +105,14 @@ for i in range(natoms):
 
 # Do the calculations using PBC, without neighbor lists
 
-maxcut_2b = wrapper_py.get_chimes_max_2b_cutoff()
-maxcut_3b = wrapper_py.get_chimes_max_3b_cutoff()
-maxcut_4b = wrapper_py.get_chimes_max_4b_cutoff()
+maxcut_2b = chimescalc_py.get_chimes_max_2b_cutoff()
+maxcut_3b = chimescalc_py.get_chimes_max_3b_cutoff()
+maxcut_4b = chimescalc_py.get_chimes_max_4b_cutoff()
 maxcut    = max([maxcut_2b,maxcut_3b,maxcut_4b])
 
-order_2b = wrapper_py.get_chimes_2b_order()
-order_3b = wrapper_py.get_chimes_3b_order()
-order_4b = wrapper_py.get_chimes_4b_order()
+order_2b = chimescalc_py.get_chimes_2b_order()
+order_3b = chimescalc_py.get_chimes_3b_order()
+order_4b = chimescalc_py.get_chimes_4b_order()
 
 tmp_force = None
 
@@ -125,7 +125,7 @@ for i in range(natoms):
 		if dist_ij >= maxcut:
 			continue
 
-		tmp_force, stress, energy = wrapper_py.chimes_compute_2b_props(dist_ij, r_ij,[atmtyps[i],atmtyps[j]], [forces[i],forces[j]], stress, energy)
+		tmp_force, stress, energy = chimescalc_py.chimes_compute_2b_props(dist_ij, r_ij,[atmtyps[i],atmtyps[j]], [forces[i],forces[j]], stress, energy)
 
 		forces[i][0] = tmp_force[0][0]; forces[i][1] = tmp_force[0][1]; forces[i][2] = tmp_force[0][2]
 		forces[j][0] = tmp_force[1][0]; forces[j][1] = tmp_force[1][1]; forces[j][2] = tmp_force[1][2]
@@ -142,7 +142,7 @@ for i in range(natoms):
 				if dist_jk >= maxcut:
 					continue
 				
-				tmp_force, stress, energy = wrapper_py.chimes_compute_3b_props(
+				tmp_force, stress, energy = chimescalc_py.chimes_compute_3b_props(
 					[dist_ij,    dist_ik,    dist_jk],
 			 		[r_ij,       r_ik,       r_jk],
 					[atmtyps[i], atmtyps[j], atmtyps[k]],
@@ -174,7 +174,7 @@ for i in range(natoms):
 						if dist_kl >= maxcut_4b:
 							continue
 						
-						tmp_force, stress, energy = wrapper_py.chimes_compute_4b_props(
+						tmp_force, stress, energy = chimescalc_py.chimes_compute_4b_props(
 							[dist_ij, dist_ik, dist_il, dist_jk, dist_jl, dist_kl],
 					 		[r_ij,    r_ik,    r_il,   r_jk,    r_jl,    r_kl],
 							[atmtyps[i], atmtyps[j], atmtyps[k], atmtyps[l]],

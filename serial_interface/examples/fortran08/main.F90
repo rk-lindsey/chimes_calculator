@@ -4,7 +4,7 @@
 ! Contributing Author: Bálint Aradi (2021)
 
 program test_F08_api
-  use chimes_serial08, only : ChimesCalc, ChimesCalc_init
+  use chimescalc_serial08, only : ChimesCalc, ChimesCalc_init
   implicit none
 
   integer, parameter :: dp = kind(1.0d0)
@@ -36,7 +36,7 @@ program test_F08_api
     print*,"Exiting code.\n"
     STOP
   endif
-      
+
   if (io_num .eq. 3) then
     call GET_COMMAND_ARGUMENT(3, wq_char)
     read(wq_char,*,iostat=stat)  small
