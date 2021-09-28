@@ -27,12 +27,13 @@ class chimesFF
         // General parameters 
         ////////////////////////
 	
-	int               rank;           // Used to prevent multiple cout statements when accessed from MPI
-        int               natmtyps;       // How many atom types are defined for this force field?
+	int              rank;           // Used to prevent multiple cout statements when accessed from MPI
+	int              natmtyps;       // How many atom types are defined for this force field?
 
         
-        vector<int>        poly_orders;    // [bodiedness-1]; i.e. 12 = 2-body only, 12th order; 12 5 = 2+3-body, 0 5 = 3-body only, 5th order
-        vector<string>     atmtyps;        // Atom types 
+	vector<int>      poly_orders;    // [bodiedness-1]; i.e. 12 = 2-body only, 12th order; 12 5 = 2+3-body, 0 5 = 3-body only, 5th order
+	vector<string>   atmtyps;        // Atom types 
+	vector<double>   masses;         // Atom masses
 	
 
         ////////////////////////
@@ -54,7 +55,7 @@ class chimesFF
 
         void compute_4B(const vector<double> & dx, const vector<vector<double> > & dr, const vector<int> & typ_idxs, vector<vector<double* > > force, vector<double*> stress, double & energy );
 
-	void get_cutoff_2B(vector<vector<double> >  & cutoff_2b);	// Populates the 2b cutoffs
+		void get_cutoff_2B(vector<vector<double> >  & cutoff_2b);	// Populates the 2b cutoffs
 	
         double max_cutoff_2B(bool silent = false);    // Returns the largest 2B cutoff
         double max_cutoff_3B(bool silent = false);    // Returns the largest 3B cutoff
@@ -62,7 +63,7 @@ class chimesFF
         
         void set_atomtypes(vector<string> & type_list);
 	
-	int get_atom_pair_index(int pair_id);
+		int get_atom_pair_index(int pair_id);
 
     
     private:

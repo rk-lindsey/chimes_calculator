@@ -11,7 +11,7 @@
 	Expects to be run with python version 3.X
 
 	Run with: "python3 <this file> <parameter file> <coordinate file>"  or 
-               python3 <this file> <parameter file> <coordinate file> <allow replicates> <(optional) module path> <debug flag>
+               python3 Run with: python <this file> <parameter file> <xyz file> <allow_replicates(0/1)> <debug flag (0/1)> <path to wrapper_py.py>
 
     ChIMES Calculator
     Copyright (C) 2020 Rebecca K. Lindsey, Nir Goldman, and Laurence E. Fried
@@ -22,6 +22,14 @@
 import os
 import sys
 import math
+
+if (len(sys.argv) != 4) and (len(sys.argv) != 6):
+	
+	print( "ERROR: Wrong number of commandline args")
+	print( "       Run with: python <this file> <parameter file> <xyz file> <allow_replicates(0/1)>")
+	print( "       or")	
+	print( "       Run with: python3 <this file> <parameter file> <xyz file> <allow_replicates(0/1)> <debug flag (0/1)> <path to wrapper_py.py>")
+	exit()
 
 # A small helper function
 
@@ -43,13 +51,7 @@ import wrapper_py
 
 small = False
 
-if (len(sys.argv) != 4) and (len(sys.argv) != 6):
-	
-	print( "ERROR: Wrong number of commandline args")
-	print( "       Run with: python <this file> <parameter file> <xyz file> <allow_replicates(0/1)>")
-	print( "       or")	
-	print( "       Run with: python <this file> <parameter file> <xyz file> <allow_replicates(0/1)> <debug flag (0/1)> <path to wrapper_py.py>")
-	exit()
+
 
 param_file =          sys.argv[1]  # parameter file
 coord_file =          sys.argv[2]  # coordinate file

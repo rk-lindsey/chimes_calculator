@@ -290,11 +290,13 @@ void chimesFF::read_parameters(string paramfile)
         if(line.find("# TYPEIDX #") != string::npos)
         {
             atmtyps.resize(natmtyps);
+			masses.resize(natmtyps);
             for (int i=0; i<natmtyps; i++)
             {
                 line = get_next_line(param_file);
                 split_line(line, tmp_str_items);
                 atmtyps[i] = tmp_str_items[1];
+				masses[i]  = stod(tmp_str_items[3]);
                 
                 if (rank == 0)
                     cout << "chimesFF: " << "\t" << i << " " << atmtyps[i] << endl;
@@ -335,26 +337,26 @@ void chimesFF::read_parameters(string paramfile)
                 
                 tmp_no_items = split_line(line, tmp_str_items);
 
-                int pair_input_version = 0 ;
+                int pair_input_version = 0;
+				
                 if ( tmp_no_items == 8 )
                 {
-                  
-                  if ( rank == 0 && i == 0 ) cout << "chimesFF: Detected version 1 pair specification (with S_DELTA)\n" ;
-                  pair_input_version = 1 ;
+					if ( rank == 0 && i == 0 ) cout << "chimesFF: Detected version 1 pair specification (with S_DELTA)\n";
+					pair_input_version = 1;
                 }
                 else if ( tmp_no_items == 7 )
                 {
-                  if ( rank == 0 && i == 0 ) cout << "chimesFF: Detected version 2 pair specification (no S_DELTA)\n" ;
-                  pair_input_version = 2 ;
+					if ( rank == 0 && i == 0 ) cout << "chimesFF: Detected version 2 pair specification (no S_DELTA)\n";
+					pair_input_version = 2;
                 }
                 else
                 {
-                  if ( rank == 0 )
-                  {
-                    cout << "Incorrect input in line: " << line << endl ;
-                    cout << "Expect 7 or 8 entries\n" ;
-                  }
-                  exit(0) ;
+					if ( rank == 0 )
+					{
+						cout << "Incorrect input in line: " << line << endl;
+						cout << "Expect 7 or 8 entries\n";
+					}
+					exit(0);
                 }
             
                 pair_params_atm_chem_1[i] = tmp_str_items[1];
@@ -366,21 +368,22 @@ void chimesFF::read_parameters(string paramfile)
                 chimes_2b_cutoff[i].push_back(stod(tmp_str_items[3])); // Inner cutoff    
                 chimes_2b_cutoff[i].push_back(stod(tmp_str_items[4])); // Outer cutoff
 
-                int xform_style_idx, morse_idx ;
+                int xform_style_idx, morse_idx;
+				
                 if ( pair_input_version == 1 )
                 {
-                  xform_style_idx = 6 ;
-                  morse_idx = 7 ;
+					xform_style_idx = 6;
+					morse_idx = 7;
                 }
                 else if ( pair_input_version == 2 )
                 {
-                  xform_style_idx = 5 ;
-                  morse_idx = 6 ;
+					xform_style_idx = 5;
+					morse_idx = 6;
                 } 
                 else
                 {
-                  if ( rank == 0 ) cout << "Bad pair input version\n" ;
-                  exit(0) ;
+					if ( rank == 0 ) cout << "Bad pair input version\n";
+					exit(0);
                 }
                     
                 if (i==0)
@@ -389,21 +392,21 @@ void chimesFF::read_parameters(string paramfile)
                 }
                 else if ( tmp_str_items[xform_style_idx] != tmp_xform_style)    
                 {
-                  if (rank == 0)
-                    cout << "chimesFF: " << "Distance transformation style must be the same for all pair types" << endl;
-                  exit(0);
+					if (rank == 0)
+						cout << "chimesFF: " << "Distance transformation style must be the same for all pair types" << endl;
+					exit(0);
                 }
 
                 if (tmp_xform_style == "MORSE" )
                 {
-                  if ( tmp_no_items > morse_idx )
-                    morse_var[i] = stod(tmp_str_items[morse_idx]);
-                  else {
-                    if ( rank == 0 )
-                      cout << "chimesFF: Missing morse lambda value in line: \n" << line << endl ;
-                    exit(0) ;
-                  }
-                }
+					if ( tmp_no_items > morse_idx )
+						morse_var[i] = stod(tmp_str_items[morse_idx]);
+					else {
+						if ( rank == 0 )
+							cout << "chimesFF: Missing morse lambda value in line: \n" << line << endl;
+						exit(0);
+					}
+				}
             }
                 
             xform_style = tmp_xform_style;
@@ -413,18 +416,18 @@ void chimesFF::read_parameters(string paramfile)
             
             for (int i=0; i<no_pairs; i++)
             {
-                if (rank == 0)
-                    cout << "chimesFF: " << "\t" << pair_params_atm_chem_1[i] << " " << pair_params_atm_chem_2[i] << " r_cut_in: " << fixed << right << setprecision(5) << chimes_2b_cutoff[i][0] << " r_cut_out: " << chimes_2b_cutoff[i][1] << " " <<  xform_style;
+				if (rank == 0)
+					cout << "chimesFF: " << "\t" << pair_params_atm_chem_1[i] << " " << pair_params_atm_chem_2[i] << " r_cut_in: " << fixed << right << setprecision(5) << chimes_2b_cutoff[i][0] << " r_cut_out: " << chimes_2b_cutoff[i][1] << " " <<  xform_style;
                 
-                if (xform_style == "MORSE")
-		{
-                    if (rank == 0)
-                        cout << " " << morse_var[i] << endl;
-		}
-                else
-                    if (rank == 0)
-                        cout << endl;
-            }
+				if (xform_style == "MORSE")
+				{
+					if (rank == 0)
+						cout << " " << morse_var[i] << endl;
+				}
+				else
+					if (rank == 0)
+						cout << endl;
+			}
         }
             
         if(line.find("FCUT TYPE:") != string::npos)
@@ -508,10 +511,10 @@ void chimesFF::read_parameters(string paramfile)
     
     while (!found_end)
     {
-        line = get_next_line(param_file);
+		line = get_next_line(param_file);
 
-           if(line.find("ENDFILE") != string::npos)
-            break;            
+		if(line.find("ENDFILE") != string::npos)
+			break;            
         
         if(line.find("PAIRTYPE PARAMS:") != string::npos)
         {
@@ -601,8 +604,6 @@ void chimesFF::read_parameters(string paramfile)
             }                        
         }
     }
-    
-    
     
     // Rewind and read the 3-body Chebyshev pair parameters
     
@@ -792,7 +793,7 @@ void chimesFF::read_parameters(string paramfile)
         {
             line = get_next_line(param_file);
         
-               if(line.find("ENDFILE") != string::npos)
+			if(line.find("ENDFILE") != string::npos)
                 break;                
             
             if(line.find("SPECIAL 3B S_MAXIM:") != string::npos)
@@ -928,7 +929,7 @@ void chimesFF::read_parameters(string paramfile)
         {
             line = get_next_line(param_file);
         
-               if(line.find("ENDFILE") != string::npos)
+			if(line.find("ENDFILE") != string::npos)
                 break;    
             
             if(line.find("ATOM PAIR QUADRUPLETS:") != string::npos)
@@ -947,8 +948,7 @@ void chimesFF::read_parameters(string paramfile)
             }
             
             if(line.find("QUADRUPLETYPE PARAMS:") != string::npos)
-            {
-                
+            {            
                 line = get_next_line(param_file);
                 
                 split_line(line, tmp_str_items);
@@ -1135,9 +1135,9 @@ void chimesFF::read_parameters(string paramfile)
         
         while (!found_end)
         {
-            line = get_next_line(param_file);
+			line = get_next_line(param_file);
         
-               if(line.find("ENDFILE") != string::npos)
+			if(line.find("ENDFILE") != string::npos)
                 break;                
             
             if(line.find("SPECIAL 4B S_MAXIM:") != string::npos)
@@ -1197,7 +1197,8 @@ void chimesFF::read_parameters(string paramfile)
                         chimes_4b_cutoff[tmp_int][1][ get_index_if(quad_params_pair_typs[tmp_int], pair_name[2], disqualified) ] = cutoffval[2];    
                         chimes_4b_cutoff[tmp_int][1][ get_index_if(quad_params_pair_typs[tmp_int], pair_name[3], disqualified) ] = cutoffval[3];
                         chimes_4b_cutoff[tmp_int][1][ get_index_if(quad_params_pair_typs[tmp_int], pair_name[4], disqualified) ] = cutoffval[4];
-                        chimes_4b_cutoff[tmp_int][1][ get_index_if(quad_params_pair_typs[tmp_int], pair_name[5], disqualified) ] = cutoffval[5];                                               }
+                        chimes_4b_cutoff[tmp_int][1][ get_index_if(quad_params_pair_typs[tmp_int], pair_name[5], disqualified) ] = cutoffval[5];
+					}
                 }
                 
                 for(int i=0; i<nquads; i++)
@@ -1241,15 +1242,15 @@ void chimesFF::read_parameters(string paramfile)
                     vector<string> pair_name(6);
                     vector<double> cutoffval(6);
 
-                                        for(int i=0; i<nquads; i++)
-                                        {
-                                                chimes_4b_cutoff[i][0][0] = -1.0;
-                                                chimes_4b_cutoff[i][0][1] = -1.0;
-                                                chimes_4b_cutoff[i][0][2] = -1.0;
-                                                chimes_4b_cutoff[i][0][3] = -1.0;
-                                                chimes_4b_cutoff[i][0][4] = -1.0;
-                                                chimes_4b_cutoff[i][0][5] = -1.0;
-                                        }
+					for(int i=0; i<nquads; i++)
+					{
+						chimes_4b_cutoff[i][0][0] = -1.0;
+						chimes_4b_cutoff[i][0][1] = -1.0;
+						chimes_4b_cutoff[i][0][2] = -1.0;
+						chimes_4b_cutoff[i][0][3] = -1.0;
+						chimes_4b_cutoff[i][0][4] = -1.0;
+						chimes_4b_cutoff[i][0][5] = -1.0;
+					}
 
                     for(int i=0; i<nentries; i++)
                     {
@@ -1431,9 +1432,8 @@ inline void chimesFF::get_penalty(const double dx, const int & pair_idx, double 
     {        
         E_penalty    = r_penalty * r_penalty * r_penalty * penalty_params[1];
 
-        // force_scalar should be negative (LEF) 7/30/21.
         force_scalar = -3.0 * r_penalty * r_penalty * penalty_params[1];
-        
+
         if (rank == 0)
         {
             cout << "chimesFF: " << "Adding penalty in 2B Cheby calc, r < rmin+penalty_dist " << fixed 
@@ -1910,7 +1910,6 @@ void chimesFF::compute_4B(const vector<double> & dx, const vector<vector<double>
     
     build_atom_and_pair_mappers(natoms, npairs, typ_idxs, quad_params_pair_typs, quadidx, mapped_pair_idx);
         
-    
     // Check whether cutoffs are within allowed ranges
 
     for(int i=0; i<npairs; i++)
@@ -1957,8 +1956,8 @@ void chimesFF::compute_4B(const vector<double> & dx, const vector<vector<double>
         for (int i=0; i<npairs; i++)
             powers[i] = chimes_4b_powers[quadidx][coeffs][mapped_pair_idx[i]];
 
-        energy += coeff * fcut[0] * fcut[1] * fcut[2] * fcut[3] * fcut[4] * fcut[5] 
-                    * Tn_ij[ powers[0] ] * Tn_ik[ powers[1] ] * Tn_il[ powers[2] ] 
+		energy += coeff * fcut[0] * fcut[1] * fcut[2] * fcut[3] * fcut[4] * fcut[5] 
+                * Tn_ij[ powers[0] ] * Tn_ik[ powers[1] ] * Tn_il[ powers[2] ] 
                 * Tn_jk[ powers[3] ] * Tn_jl[ powers[4] ] * Tn_kl[ powers[5] ];        
 
         deriv[0] = fcut[0] * Tnd_ij[ powers[0] ] + fcutderiv[0] * Tn_ij[ powers[0] ];
@@ -2192,5 +2191,5 @@ void chimesFF::set_atomtypes(vector<string> & type_list)
 
 int chimesFF::get_atom_pair_index(int pair_id)
 {
-	return atom_idx_pair_map[pair_id];
+	return atom_int_pair_map[pair_id];
 }
