@@ -12,8 +12,9 @@
       &            cb, cc, energy, fx, fy, fz, stress)  &
       &            bind (C, name='calculate_chimes')
           use, intrinsic :: ISO_C_binding, only : C_char, C_ptr, C_int, C_double
-          type(c_ptr), dimension(*)  :: cptr(natom)
+          implicit none
           integer(C_int), value :: natom
+          type(c_ptr), dimension(*)  :: cptr(natom)
           real(C_double) :: xc(natom), yc(natom), zc(natom)
           real(C_double) :: fx(natom), fy(natom), fz(natom)
           character(C_char), dimension(80) :: c_atom(natom)
@@ -25,6 +26,7 @@
         subroutine f_set_chimes(small) bind &
       &            (C, name='set_chimes_serial')
           use, intrinsic :: ISO_C_binding, only : C_ptr, C_int
+          implicit none
           integer(C_int), value :: small
         end subroutine f_set_chimes
 
@@ -45,9 +47,9 @@
         character (len=1, kind=C_char) :: C_string (len_trim(string)+1)
         integer :: i, n
         n = len_trim (string)
-        forall (i = 1:n)
+        do i = 1, n
            C_string(i) = string(i:i)
-        end forall
+        end do
         C_string(n+1) = C_NULL_CHAR
       end function string2Cstring
 
