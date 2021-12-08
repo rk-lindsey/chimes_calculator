@@ -31,7 +31,7 @@ FFS[11]="published_params.liqCO.2+3b.cubic.txt"                               ; 
 FFS[12]="published_params.liqCO.2+3b.cubic.txt"                               ; CFGS[12]="diam.2_#000.xyz"                              ; OPTIONS[12]="1"
 FFS[13]="published_params.CO2400K.2+3+4b.Tersoff.special.offsets.txt" ; CFGS[13]="CO.9GPa_2400K.OUTCAR_#000.xyz" ; OPTIONS[13]="1"
 
-API_LIST="0 1 2 3"
+API_LIST="0 1 2 3 4"
 NO_TESTS=${#FFS[@]}
 LOC=`pwd`
 
