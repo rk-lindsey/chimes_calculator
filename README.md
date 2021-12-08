@@ -41,7 +41,7 @@ Releases
 
 For most users, we recommend using the ChIMES calculator [stable releases](https://github.com/rk-lindsey/chimes_calculator/releases).
 
-Each ChIMES calculator release series also has a corresponding branch, e.g. `releases/v0.14` has `0.14.x` versions, and `releases/v0.13` has `0.13.x` versions. We back-port important bug fixes to these branches but we do not advance the package versions or make changes that would otherwise change the way ChIMES calculator is used or behaves. So, you can base your ChIMES deployment on a release branch and `git pull` to get fixes, without the continuous changes that comes with `develop`.  The latest release is always available with the `releases/latest` tag.
+ChIMES releases are indicated via semantic versioning tags of the form vA.B.C. The letters A, B, and C indicate major changes impacting the API (i.e., precluding backwards compatibility), minor backwards compatible changes, and backwards compatible bug fixes, respectively
 
 <hr>
 

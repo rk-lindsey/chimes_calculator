@@ -24,15 +24,14 @@ The ChIMES calculator serial interface source files are located in ``serial_inte
 
 .. Warning::
 
-	When instantiated via ``serial_chimes_interface chimes``, the code will automatically replicate systems for
-    which the smallest cell length is greater than the ChIMES outer cutoff.
+    When instantiated via ``serial_chimes_interface chimes``, the code will automatically replicate systems for which the smallest cell length is greater than the ChIMES outer cutoff.
 
     This will produce incorrect results unless:
 
-    1. Configuration cell lengths are greater than teh ChIMES outer cutoff
-    2. The material is perfectly crystalling
+    1. Configuration cell lengths are greater than the ChIMES outer cutoff
+    2. The material is perfectly crystalline
 
-    Developer note: To recover behavior of the reserach code, instantiate with: ``serial_chimes_interface chimes(false)``
+    Developer note: To recover behavior of the research code, instantiate with: ``serial_chimes_interface chimes(false)``
 
 Note that the ChIMES calculator serial interface ``serial_chimes_interface`` class provides users with the following functions:
 
