@@ -31,21 +31,20 @@ FFS[11]="published_params.liqCO.2+3b.cubic.txt"                               ; 
 FFS[12]="published_params.liqCO.2+3b.cubic.txt"                               ; CFGS[12]="diam.2_#000.xyz"                              ; OPTIONS[12]="1"
 FFS[13]="published_params.CO2400K.2+3+4b.Tersoff.special.offsets.txt" ; CFGS[13]="CO.9GPa_2400K.OUTCAR_#000.xyz" ; OPTIONS[13]="1"
 
-API_LIST="0 1 2 3"
+API_LIST="0 1 2 3 4"
 NO_TESTS=${#FFS[@]}
 LOC=`pwd`
 
-API[0]="cpp"    ; EXE[0]="CPP-interface"                    ; XTRA[0]="" #"2"
-API[1]="c"      ; EXE[1]="C_wrapper-serial_interface"       ; XTRA[1]="" #"2"
-API[2]="fortran"; EXE[2]="fortran_wrapper-serial_interface" ; XTRA[2]="" #"2"
-API[3]="python" ; EXE[3]="main.py"                          ; XTRA[3]="" #"2 1"
+API[0]="cpp"    ;   EXE[0]="CPP-interface"                    ;   XTRA[0]="" #"2"
+API[1]="c"      ;   EXE[1]="C_wrapper-serial_interface"       ;   XTRA[1]="" #"2"
+API[2]="fortran";   EXE[2]="fortran_wrapper-serial_interface" ;   XTRA[2]="" #"2"
+API[3]="python" ;   EXE[3]="main.py"                          ;   XTRA[3]="" #"2 1"
 API[4]="fortran08"; EXE[4]="fortran08_wrapper-serial_interface" ; XTRA[4]="" #"0"
 
 echo "Running $STYLE tests"
 date
 
-#for compile in CMAKE MAKEFILE
-for compile in MAKEFILE
+for compile in Makefile # CMAKE
 do
 	echo "Testing compilation type: $compile"
 
