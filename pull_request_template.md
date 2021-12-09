@@ -2,4 +2,4 @@
 
 - [ ] Requested `develop` as target branch
 - [ ] Attached test suite log file
-- [ ] Alert reviewers if edits impact CMake or Makefile files
+- [ ] Alerted reviewers if edits impact CMake or Makefile files
