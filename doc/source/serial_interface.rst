@@ -28,7 +28,6 @@ The ChIMES calculator serial interface source files are located in ``serial_inte
 
     Developer note: To recover behavior of the research code, instantiate with: ``serial_chimes_interface chimes(false)``
 
-<<<<<<< HEAD
 Please see the following example of interfacing a C++ code with the ChIMES calculator: ``serial_interface/examples/cpp/main.cpp``. Note that the ChIMES calculator serial interface ``serial_chimes_interface`` class provides users with the following functions:
 
 =========== =================  ===============================
