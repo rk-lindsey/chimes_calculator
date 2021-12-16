@@ -29,7 +29,7 @@ def init_chimes_wrapper(lib_name):
 
 def set_chimes(small=False):
 	""" Instantiates the chimesFF object """
-	chimes_wrapper.set_chimes(small)
+	chimes_wrapper.set_chimes_serial(small)
 	return
 
 
@@ -40,7 +40,7 @@ def init_chimes(param_file, rank):
 	"""
 	in_paramfile = ctypes.c_char_p(param_file.encode())
 	in_rank      = ctypes.c_int(rank)
-	chimes_wrapper.init_chimes(in_paramfile, ctypes.byref(in_rank))
+	chimes_wrapper.init_chimes_serial(in_paramfile, ctypes.byref(in_rank))
 	return
 
 def calculate_chimes(natoms,xcrd,ycrd,zcrd,atmtyps,cell_a,cell_b,cell_c,energy,fx,fy,fz,stress):

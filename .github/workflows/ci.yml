@@ -1,0 +1,52 @@
+
+name: CI
+on: [push, pull_request]
+
+jobs:
+  gnu-build:
+    runs-on: ${{ matrix.os }}
+    strategy:
+      fail-fast: false
+      matrix:
+        os: [ubuntu-latest, macos-latest]
+
+    steps:
+    - name: Checkout code
+      uses: actions/checkout@v2
+
+    - name: Set up environment (Linux)
+      if: contains(matrix.os, 'ubuntu')
+      run: |
+        echo "ROOTFOLDER=${PWD}" >> $GITHUB_ENV
+        echo "FC=gfortran" >> $GITHUB_ENV
+        echo "CC=gcc" >> $GITHUB_ENV
+        sudo apt-get update
+        sudo apt-get install cmake ninja-build
+
+    - name: Set up environment (OSX)
+      if: contains(matrix.os, 'macos')
+      run: |
+        echo "ROOTFOLDER=${PWD}" >> $GITHUB_ENV
+        echo "FC=gfortran-9" >> $GITHUB_ENV
+        echo "CC=gcc-9" >> $GITHUB_ENV
+        brew install ninja
+
+    - name: Configure build
+      run: >-
+        cmake -B _build -G Ninja
+        -DCMAKE_INSTALL_PREFIX=${ROOTFOLDER}/_install
+        -DWITH_FORTRAN08_API=1
+
+    - name: Build project
+      run: |
+        cmake --build _build
+
+    - name: Install project
+      run: |
+        cmake --install _build
+
+    - name: Run integration test
+      run: |
+        CMAKE_PREFIX_PATH=${ROOTFOLDER}/_install cmake -B _build_integtest -G Ninja ${ROOTFOLDER}/serial_interface/examples/fortran08
+        cmake --build _build_integtest
+        ./_build_integtest/test_chimescalc ${ROOTFOLDER}/serial_interface/tests/force_fields/test_params.CHON.txt serial_interface/tests/configurations/CHON.testfile.000.xyz

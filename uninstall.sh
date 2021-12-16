@@ -8,14 +8,17 @@
 
 PREFX=${1-""} # Empty by default
 
+if [ -e "cat build/install_manifest.txt" ] ; then
 
-for i in `cat build/install_manifest.txt`
-do
-	echo "Removing installed file $i"
-	rm -f $i
-done
+	for i in `cat build/install_manifest.txt`
+	do
+		echo "Removing installed file $i"
+		rm -f $i
+	done
+fi
 
 rm -rf chimesFF/api/__pycache__/ chimesFF/api/wrapper_py.pyc
+rm -rf serial_interface/api/__pycache__/chimescalc_serial_py.cpython-37.pyc
 
 echo "Removing directory build"
 

@@ -1,4 +1,4 @@
-CXX     = g++ -O3 -std=c++11 
+CXX     = g++ -O3 -std=c++11
 CCOMP   = gcc -O3
 DEBUG   = 1
 
@@ -15,29 +15,29 @@ SERIAL_LOC=$(C_LOC)/../../src
 SERIAL_SRC=$(SERIAL_LOC)/serial_chimes_interface.cpp
 SERIAL_HDR=$(SERIAL_LOC)/serial_chimes_interface.h
 
-serial_chimes_interface.o : $(SERIAL_SRC) 
-	$(CXX) -c $(SERIAL_SRC) -I $(SERIAL_LOC) -I $(CHIMESFF_LOC) 
+serial_chimes_interface.o : $(SERIAL_SRC)
+	$(CXX) -c $(SERIAL_SRC) -I $(SERIAL_LOC) -I $(CHIMESFF_LOC)
 
 WRAPPER_LOC=$(C_LOC)/../../api
-WRAPPER_SRC=$(WRAPPER_LOC)/wrapper-C.cpp
-WRAPPER_HDR=$(WRAPPER_LOC)/wrapper-h.cpp
+WRAPPER_SRC=$(WRAPPER_LOC)/chimescalc_serial_C.cpp
+WRAPPER_HDR=$(WRAPPER_LOC)/chimescalc_serial_C.h
 
-wrapper-C.o : $(WRAPPER_SRC) 
+chimescalc_serial_C.o : $(WRAPPER_SRC)
 	$(CXX) -c $(WRAPPER_SRC) -I $(WRAPPER_LOC) -I $(SERIAL_LOC) -I $(CHIMESFF_LOC)
 
 TEST_LOC=$(C_LOC)
 TEST_SRC=$(TEST_LOC)/main.c
 
-main.o: $(TEST_SRC) 
-	$(CCOMP) -c $(TEST_SRC) -DDEBUG=${DEBUG}  -I $(WRAPPER_LOC) -I $(SERIAL_LOC) -I $(CHIMESFF_LOC) 
+main.o: $(TEST_SRC)
+	$(CCOMP) -c $(TEST_SRC) -DDEBUG=${DEBUG}  -I $(WRAPPER_LOC) -I $(SERIAL_LOC) -I $(CHIMESFF_LOC)
 
-TEST_LNK = chimesFF.o serial_chimes_interface.o wrapper-C.o main.o
+TEST_LNK = chimesFF.o serial_chimes_interface.o chimescalc_serial_C.o main.o
 
 test-C: $(TEST_LNK)
 	$(CXX) $(TEST_LNK) -o C_wrapper-serial_interface
 
 clean:
-	rm -f *.o 
+	rm -f *.o
 
 clean-all:
 	make clean
@@ -46,8 +46,7 @@ clean-all:
 all:
 	make chimesFF.o
 	make serial_chimes_interface.o
-	make wrapper-C.o
+	make chimescalc_serial_C.o
 	make main.o
 	make test-C
 	make clean
-	
