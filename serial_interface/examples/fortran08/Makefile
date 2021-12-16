@@ -31,8 +31,8 @@ chimescalc_serial_C.o : $(WRAPPERC_SRC)
 	$(CXX) -c $(WRAPPERC_SRC) -I $(WRAPPERC_LOC) -I $(SERIAL_LOC) -I $(CHIMESFF_LOC)
 
 WRAPPERF_LOC=$(F_LOC)/../../api
-WRAPPERF_SRC=$(WRAPPERF_LOC)/chimescalc_serial_F.F90
-WRAPPERF08_SRC=$(WRAPPERF_LOC)/chimescalc_serial_F08.F90
+WRAPPERF_SRC=$(WRAPPERF_LOC)/chimescalc_serial_F.f90
+WRAPPERF08_SRC=$(WRAPPERF_LOC)/chimescalc_serial_F08.f90
 
 chimescalc_serial_F.o wrapper.mod : $(WRAPPERF_SRC)
 	$(FCC) -c $(WRAPPERF_SRC) -o chimescalc_serial_F.o
