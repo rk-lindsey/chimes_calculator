@@ -15,12 +15,11 @@ include(GNUInstallDirs)
 set(INSTALL_INCLUDEDIR "${CMAKE_INSTALL_INCLUDEDIR}/${PROJECT_NAME_LOWER}")
 set(INSTALL_MODULEDIR "${INSTALL_INCLUDEDIR}/modfiles")
 
+include(cmake/ChimesCalc.cmake)
 include(config.cmake)
 
-if(WITH_FORTRAN_API OR WITH_FORTRAN08_API)
-    enable_language(Fortran)
-endif()
-
+chimescalc_setup_build_type()
+chimescalc_setup_compiler_flags()
 
 # Check whether libm is needed to provide the round() function in C
 include(CheckLibraryExists)
@@ -203,7 +202,6 @@ if(WITH_FORTRAN_API OR WITH_FORTRAN08_API)
 
     add_executable(fortran_wrapper-direct_interface chimesFF/examples/fortran/main.F90)
     target_link_libraries     (fortran_wrapper-direct_interface ChimesCalc_Fortran)
-    target_compile_options    (fortran_wrapper-direct_interface PRIVATE -std=f2003)
     target_compile_definitions(fortran_wrapper-direct_interface PRIVATE "DEBUG=${DEBUG}")
 
     if(NOT CMAKE_INSTALL_PREFIX_INITIALIZED_TO_DEFAULT)
@@ -214,7 +212,6 @@ if(WITH_FORTRAN_API OR WITH_FORTRAN08_API)
 
     add_executable(fortran_wrapper-serial_interface serial_interface/examples/fortran/main.F90)
     target_link_libraries     (fortran_wrapper-serial_interface ChimesCalc_Fortran)
-    target_compile_options    (fortran_wrapper-serial_interface PRIVATE -std=f2003)
     target_compile_definitions(fortran_wrapper-serial_interface PRIVATE "DEBUG=${DEBUG}")
 
     if(NOT CMAKE_INSTALL_PREFIX_INITIALIZED_TO_DEFAULT)
@@ -227,7 +224,6 @@ if(WITH_FORTRAN_API OR WITH_FORTRAN08_API)
         add_executable(fortran08_wrapper-serial_interface
             serial_interface/examples/fortran08/main.F90)
         target_link_libraries	  (fortran08_wrapper-serial_interface ChimesCalc_Fortran)
-	      target_compile_options    (fortran08_wrapper-serial_interface PRIVATE -std=f2008)
 	      target_compile_definitions(fortran08_wrapper-serial_interface PRIVATE "DEBUG=${DEBUG}")
 
 	      if(NOT CMAKE_INSTALL_PREFIX_INITIALIZED_TO_DEFAULT)
