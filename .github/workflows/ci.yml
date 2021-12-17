@@ -49,4 +49,4 @@ jobs:
       run: |
         CMAKE_PREFIX_PATH=${ROOTFOLDER}/_install cmake -B _build_integtest -G Ninja ${ROOTFOLDER}/serial_interface/examples/fortran08
         cmake --build _build_integtest
-        ./_build_integtest/test_chimescalc ${ROOTFOLDER}/serial_interface/tests/force_fields/test_params.CHON.txt serial_interface/tests/configurations/CHON.testfile.000.xyz
+        LD_LIBRARY_PATH=${ROOTFOLDER}/_install/lib ./_build_integtest/test_chimescalc ${ROOTFOLDER}/serial_interface/tests/force_fields/test_params.CHON.txt serial_interface/tests/configurations/CHON.testfile.000.xyz | grep "Energy (kcal/mol) -7.83714"
