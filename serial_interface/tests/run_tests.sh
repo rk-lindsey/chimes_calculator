@@ -44,7 +44,7 @@ API[4]="fortran08"; EXE[4]="fortran08_wrapper-serial_interface" ; XTRA[4]="" #"0
 echo "Running $STYLE tests"
 date
 
-for compile in MAKEFILE # CMAKE
+for compile in MAKEFILE CMAKE
 do
 	echo "Testing compilation type: $compile"
 
