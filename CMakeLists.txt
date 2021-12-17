@@ -124,8 +124,10 @@ add_library(lib-C_wrapper-direct_interface MODULE
 set_target_properties     (lib-C_wrapper-direct_interface PROPERTIES PREFIX "")
 # Tell it which language to use
 set_target_properties     (lib-C_wrapper-direct_interface PROPERTIES LINKER_LANGUAGE CXX)
-target_include_directories(lib-C_wrapper-direct_interface PUBLIC ${CMAKE_CURRENT_SOURCE_DIR}/chimesFF/src/)
-target_include_directories(lib-C_wrapper-direct_interface PUBLIC ${CMAKE_CURRENT_SOURCE_DIR}/chimesFF/api/)
+target_include_directories(lib-C_wrapper-direct_interface
+    PUBLIC ${CMAKE_CURRENT_SOURCE_DIR}/chimesFF/src/)
+target_include_directories(lib-C_wrapper-direct_interface
+    PUBLIC ${CMAKE_CURRENT_SOURCE_DIR}/chimesFF/api/)
 target_compile_features   (lib-C_wrapper-direct_interface PUBLIC cxx_std_11)
 
 if(NOT CMAKE_INSTALL_PREFIX_INITIALIZED_TO_DEFAULT)
@@ -151,7 +153,6 @@ target_include_directories(lib-C_wrapper-serial_interface
     PRIVATE ${CMAKE_CURRENT_SOURCE_DIR}/chimesFF/src/)
 target_compile_features   (lib-C_wrapper-serial_interface PUBLIC cxx_std_11)
 
-#install(TARGETS lib-C_wrapper-serial_interface DESTINATION ${CMAKE_CURRENT_SOURCE_DIR}/serial_interface/examples/python/)
 if(NOT CMAKE_INSTALL_PREFIX_INITIALIZED_TO_DEFAULT)
 	  install(TARGETS lib-C_wrapper-serial_interface
         DESTINATION ${CMAKE_INSTALL_PREFIX}/serial_interface/examples/python/ OPTIONAL)
