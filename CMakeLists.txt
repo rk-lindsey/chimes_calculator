@@ -59,6 +59,7 @@ target_include_directories(ChimesCalc PUBLIC
     $<BUILD_INTERFACE:${CMAKE_CURRENT_SOURCE_DIR}/chimesFF/src>
     $<BUILD_INTERFACE:${CMAKE_CURRENT_SOURCE_DIR}/chimesFF/api>
     $<BUILD_INTERFACE:${CMAKE_CURRENT_SOURCE_DIR}/serial_interface/src>
+    $<BUILD_INTERFACE:${CMAKE_CURRENT_SOURCE_DIR}/serial_interface/api>
     $<INSTALL_INTERFACE:${INSTALL_INCLUDEDIR}>
 )
 target_compile_definitions(ChimesCalc PRIVATE "DEBUG=${DEBUG}")
@@ -78,7 +79,6 @@ install(TARGETS ChimesCalc
 add_executable(CPP-interface serial_interface/examples/cpp/main.cpp)
 target_link_libraries(CPP-interface ChimesCalc)
 target_compile_features   (CPP-interface PUBLIC cxx_std_11)
-target_compile_options    (CPP-interface PUBLIC -O3)
 target_compile_definitions(CPP-interface PRIVATE "DEBUG=${DEBUG}")
 
 
@@ -89,7 +89,6 @@ ENDIF (NOT CMAKE_INSTALL_PREFIX_INITIALIZED_TO_DEFAULT)
 add_executable(C_wrapper-direct_interface chimesFF/examples/c/main.c)
 target_link_libraries     (C_wrapper-direct_interface ChimesCalc ${LIB_M})
 target_compile_features   (C_wrapper-direct_interface PRIVATE cxx_std_11)
-target_compile_options    (C_wrapper-direct_interface PRIVATE -O3)
 target_compile_definitions(C_wrapper-direct_interface PRIVATE "DEBUG=${DEBUG}")
 
 
@@ -100,9 +99,7 @@ ENDIF (NOT CMAKE_INSTALL_PREFIX_INITIALIZED_TO_DEFAULT)
 
 add_executable(C_wrapper-serial_interface serial_interface/examples/c/main.c)
 target_link_libraries     (C_wrapper-serial_interface ChimesCalc)
-target_include_directories(C_wrapper-serial_interface PRIVATE serial_interface/api/)
 target_compile_features   (C_wrapper-serial_interface PRIVATE cxx_std_11)
-target_compile_options    (C_wrapper-serial_interface PRIVATE -O3)
 target_compile_definitions(C_wrapper-serial_interface PRIVATE "DEBUG=${DEBUG}")
 
 IF (NOT CMAKE_INSTALL_PREFIX_INITIALIZED_TO_DEFAULT)
@@ -129,8 +126,6 @@ set_target_properties     (lib-C_wrapper-direct_interface PROPERTIES LINKER_LANG
 target_include_directories(lib-C_wrapper-direct_interface PUBLIC ${CMAKE_CURRENT_SOURCE_DIR}/chimesFF/src/)
 target_include_directories(lib-C_wrapper-direct_interface PUBLIC ${CMAKE_CURRENT_SOURCE_DIR}/chimesFF/api/)
 target_compile_features   (lib-C_wrapper-direct_interface PUBLIC cxx_std_11)
-target_compile_options    (lib-C_wrapper-direct_interface PUBLIC -O3)
-target_compile_options    (lib-C_wrapper-direct_interface PUBLIC -fPIC)
 
 IF (NOT CMAKE_INSTALL_PREFIX_INITIALIZED_TO_DEFAULT)
 	install(TARGETS lib-C_wrapper-direct_interface DESTINATION ${CMAKE_INSTALL_PREFIX}/chimesFF/examples/python/ OPTIONAL)
@@ -149,14 +144,11 @@ target_include_directories(lib-C_wrapper-serial_interface PRIVATE ${CMAKE_CURREN
 target_include_directories(lib-C_wrapper-serial_interface PRIVATE ${CMAKE_CURRENT_SOURCE_DIR}/serial_interface/src/)
 target_include_directories(lib-C_wrapper-serial_interface PRIVATE ${CMAKE_CURRENT_SOURCE_DIR}/chimesFF/src/)
 target_compile_features   (lib-C_wrapper-serial_interface PUBLIC cxx_std_11)
-target_compile_options    (lib-C_wrapper-serial_interface PUBLIC -O3)
-target_compile_options    (lib-C_wrapper-serial_interface PUBLIC -fPIC)
 
 #install(TARGETS lib-C_wrapper-serial_interface DESTINATION ${CMAKE_CURRENT_SOURCE_DIR}/serial_interface/examples/python/)
 IF (NOT CMAKE_INSTALL_PREFIX_INITIALIZED_TO_DEFAULT)
 	install(TARGETS lib-C_wrapper-serial_interface DESTINATION ${CMAKE_INSTALL_PREFIX}/serial_interface/examples/python/ OPTIONAL)
 ENDIF (NOT CMAKE_INSTALL_PREFIX_INITIALIZED_TO_DEFAULT)
-
 
 
 ###############################################################################
@@ -200,10 +192,10 @@ if(WITH_FORTRAN_API OR WITH_FORTRAN08_API)
     )
     install(DIRECTORY "${moddir}/" DESTINATION "${INSTALL_MODULEDIR}")
 
-    ############################################################
-   # Executables for Fortran (90/08)
-   ############################################################
 
+    ############################################################
+    # Executables for Fortran (90/08)
+    ############################################################
 
     add_executable(fortran_wrapper-direct_interface chimesFF/examples/fortran/main.F90)
     target_link_libraries     (fortran_wrapper-direct_interface ChimesCalc_Fortran)
