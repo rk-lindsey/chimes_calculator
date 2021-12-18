@@ -59,7 +59,7 @@ int main (int argc, char **argv)
   set_chimes_serial(small);
   
   printf("Read args:\n");
-  for (int i=1; i<argc; i++)
+  for (i=1; i<argc; i++)
 	  printf("%i %s\n",i, argv[i]);
 
   int rank = 0;
