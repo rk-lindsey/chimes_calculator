@@ -1,5 +1,5 @@
-CXX     = g++ -O3 -std=c++11 -fPIC
-FCC     = gfortran -O3 -fPIC -std=f2008 -cpp # last flag allows processing of C-style pre-processor directives
+CXX     = g++      -std=c++11 -O2 -fPIC      # Using -O2 instead of -O3 due to gcc compilation issues
+FCC     = gfortran -std=f2008 -O2 -fPIC -cpp 
 
 DEBUG   = 1
 
@@ -31,8 +31,8 @@ chimescalc_serial_C.o : $(WRAPPERC_SRC)
 	$(CXX) -c $(WRAPPERC_SRC) -I $(WRAPPERC_LOC) -I $(SERIAL_LOC) -I $(CHIMESFF_LOC)
 
 WRAPPERF_LOC=$(F_LOC)/../../api
-WRAPPERF_SRC=$(WRAPPERF_LOC)/chimescalc_serial_F.F90
-WRAPPERF08_SRC=$(WRAPPERF_LOC)/chimescalc_serial_F08.F90
+WRAPPERF_SRC=$(WRAPPERF_LOC)/chimescalc_serial_F.f90
+WRAPPERF08_SRC=$(WRAPPERF_LOC)/chimescalc_serial_F08.f90
 
 chimescalc_serial_F.o wrapper.mod : $(WRAPPERF_SRC)
 	$(FCC) -c $(WRAPPERF_SRC) -o chimescalc_serial_F.o
@@ -52,7 +52,7 @@ UNAME := $(shell uname)
 ifeq (${UNAME},Darwin)
 	FCC += -lc++
 else
-	FCC += -stdc++
+	FCC += -lstdc++
 endif
 
 test-F: $(LINKS)

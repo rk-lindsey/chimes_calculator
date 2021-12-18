@@ -6,8 +6,9 @@
 # or
 # ./install.sh <debug option (0 or 1)> <install prefix (full path)>
 
+BUILD=`pwd`/build
 DEBUG=${1-0}  # False (0) by default.
-PREFX=${2-""} # Empty by default
+PREFX=${2-$BUILD} # Empty by default
 
 # Clean up previous installation, 
 

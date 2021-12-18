@@ -27,7 +27,7 @@ PairStyle(chimesFF,PairCHIMES); // PairStyle(key, class)
 
 #include "pair.h"
 
-#include "chimescalc.h"
+#include "chimes_FF.h"
 #include <vector>
 
 

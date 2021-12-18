@@ -6,8 +6,7 @@ cmake_minimum_required(VERSION 3.10)
 
 project(TestChimes
     DESCRIPTION "Tests the Fortran interface of the ChIMES calculator"
-	LANGUAGES Fortran CXX
-)
+  	LANGUAGES Fortran CXX)
 
 find_package(ChimesCalc REQUIRED)
 add_executable(test_chimescalc "main.F90")
