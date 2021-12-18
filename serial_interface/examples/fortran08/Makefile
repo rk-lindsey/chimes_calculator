@@ -1,5 +1,5 @@
-CXX     = g++ -O3 -std=c++11 -fPIC
-FCC     = gfortran -O3 -fPIC -std=f2008 -cpp # last flag allows processing of C-style pre-processor directives
+CXX     = g++      -std=c++11 -O2 -fPIC      # Using -O2 instead of -O3 due to gcc compilation issues
+FCC     = gfortran -std=f2008 -O2 -fPIC -cpp 
 
 DEBUG   = 1
 
@@ -52,7 +52,7 @@ UNAME := $(shell uname)
 ifeq (${UNAME},Darwin)
 	FCC += -lc++
 else
-	FCC += -stdc++
+	FCC += -lstdc++
 endif
 
 test-F: $(LINKS)
