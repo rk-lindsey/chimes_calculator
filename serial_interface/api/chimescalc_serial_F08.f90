@@ -9,9 +9,9 @@
 !> without the possibility of destroying that instance. Therefore, the Fortran interface only
 !> allows the creation of one ChIMES-calculator.
 !>
-module chimes_serial08
-  use, intrinsic :: iso_c_binding, only : c_ptr, c_double, c_char, c_loc
-  use chimes_serial, only : f_init_chimes, f_set_chimes, f_calculate_chimes, string2Cstring
+module chimescalc_serial08
+  use, intrinsic :: iso_c_binding, only : c_ptr, c_double, c_char, c_loc, c_null_char
+  use chimescalc_serial, only : f_init_chimes, f_set_chimes, f_calculate_chimes, string2Cstring
   implicit none
 
   private
@@ -23,6 +23,11 @@ module chimes_serial08
   !> Internal variable counting nr. of active calculator instances (only 1 allowed)
   integer :: active_instances_ = 0
 
+  ! Workaround: gfortran 7, gfortran 8
+  ! Deferred length character arrays are not handled correclty, leading to trashed memory
+  ! Therefore a fixed character length array is used for the species names, instead
+  integer, parameter :: species_name_length = 20
+
 
   !> Chimes calculator
   type :: ChimesCalc
@@ -32,7 +37,7 @@ module chimes_serial08
     logical :: is_active_ = .false.
 
     !> C representation of the atom type names.
-    character(len=:), pointer :: c_atom_types_(:) => null()
+    character(len=species_name_length+1), pointer :: c_atom_types_(:) => null()
 
     !> C pointers referencing the atom type names
     type(c_ptr), allocatable :: c_atom_type_ptrs_(:)
@@ -114,10 +119,13 @@ contains
     end if
 
     natom = size(atom_types)
-    allocate(character(len=(len(atom_types) + 1)) :: this%c_atom_types_(natom))
+    !allocate(character(len=(len(atom_types) + 1)) :: this%c_atom_types_(natom))
+    allocate(this%c_atom_types_(natom))
     allocate(this%c_atom_type_ptrs_(natom))
     do iat = 1, natom
-      this%c_atom_types_(iat) = trim(atom_types(iat))//char(0)
+      !this%c_atom_types_(iat) = trim(atom_types(iat)) // c_null_char
+      this%c_atom_types_(iat) = &
+          & atom_types(iat)(1 : min(len_trim(atom_types(iat)), species_name_length)) // c_null_char
       this%c_atom_type_ptrs_(iat) = c_loc(this%c_atom_types_(iat))
     end do
 
@@ -158,4 +166,4 @@ contains
   end subroutine ChimesCalc_calculate
 
 
-end module chimes_serial08
+end module chimescalc_serial08

@@ -55,7 +55,7 @@ class chimesFF
 
         void compute_4B(const vector<double> & dx, const vector<vector<double> > & dr, const vector<int> & typ_idxs, vector<vector<double* > > force, vector<double*> stress, double & energy );
 
-		void get_cutoff_2B(vector<vector<double> >  & cutoff_2b);	// Populates the 2b cutoffs
+	void get_cutoff_2B(vector<vector<double> >  & cutoff_2b);	// Populates the 2b cutoffs
 	
         double max_cutoff_2B(bool silent = false);    // Returns the largest 2B cutoff
         double max_cutoff_3B(bool silent = false);    // Returns the largest 3B cutoff
@@ -63,7 +63,7 @@ class chimesFF
         
         void set_atomtypes(vector<string> & type_list);
 	
-		int get_atom_pair_index(int pair_id);
+	int get_atom_pair_index(int pair_id);
 
     
     private:
@@ -115,8 +115,8 @@ class chimesFF
         // 4-body maps
         
         vector    <string>    atom_typ_quad_map;    // [nmaps] "slow" maps, based on atom chemical symbol    // Used to build int map -- gives chemical symbol list (i.e. "SiOSiOOO")
-        vector      <int>        atom_idx_quad_map; // [nmaps] "slow" maps, based on atom chemical symbol    // Used to build int map -- gives correspoding parameter index (i.e. 3)
-        vector      <int>        atom_int_quad_map; // [nmaps] "fast" maps, based on atom type index         // gives the correspoding parameter index (i.e. 3) for a unique integer built from type index of four atoms of arbitrary order
+        vector      <int>     atom_idx_quad_map; // [nmaps] "slow" maps, based on atom chemical symbol    // Used to build int map -- gives correspoding parameter index (i.e. 3)
+        vector      <int>     atom_int_quad_map; // [nmaps] "fast" maps, based on atom type index         // gives the correspoding parameter index (i.e. 3) for a unique integer built from type index of four atoms of arbitrary order
         
         ////////////////////////
         // Polynomial parameters 
@@ -168,27 +168,5 @@ class chimesFF
 };
 
 #endif
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 
 

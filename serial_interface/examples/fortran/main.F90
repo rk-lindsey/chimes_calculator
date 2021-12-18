@@ -1,9 +1,9 @@
 ! ChIMES Calculator
 ! Copyright (C) 2020 Rebecca K. Lindsey, Nir Goldman, and Laurence E. Fried
-! Contributing Author:  Nir Goldman (2020) 
+! Contributing Author:  Nir Goldman (2020)
 
       program test_F_api
-      use chimes_serial
+      use chimescalc_serial
       use, intrinsic :: ISO_C_binding
       implicit none
       integer io_num, stat, small
@@ -22,7 +22,6 @@
       character(len=2) :: atom
       TYPE(C_PTR), allocatable, dimension(10) :: stringPtr(:)
       integer lenstr
-      
 
       small = 1
 
@@ -34,23 +33,23 @@
         print*,"Exiting code.\n"
         STOP
       endif
-      
+
       if (io_num .eq. 3) then
           call GET_COMMAND_ARGUMENT(3, wq_char)
           read(wq_char,*,iostat=stat)  small
       endif
-      
+
       call GET_COMMAND_ARGUMENT(1, wq_char)
       param_file = trim(wq_char)
       call GET_COMMAND_ARGUMENT(2, wq_char)
-      coord_file = trim(wq_char)  
-      
-      print*,"Read args:"      
+      coord_file = trim(wq_char)
+
+      print*,"Read args:"
       do i = 1, io_num
           call GET_COMMAND_ARGUMENT(i, wq_char)
           print*,i,trim(wq_char)
       enddo
-      
+
       open (unit=10, status='old', file=coord_file)
       read(10,*)natom
       read(10,*)ca(1),ca(2),ca(3),cb(1),cb(2),cb(3),cc(1),cc(2),cc(3)
@@ -112,9 +111,9 @@
          print '(F15.6)',fy(i)
          print '(F15.6)',fz(i)
       enddo
-      
+
 #if DEBUG==1
-      
+
       open (unit = 20, status = 'replace', file='debug.dat')
       write(20,'(F15.6)') energy
       write(20,'(F15.6)') stress(1)*GPa
@@ -129,6 +128,6 @@
          write(20,'(F15.6)') fz(i)
       enddo
       close(20)
-#endif 
+#endif
 
       end program

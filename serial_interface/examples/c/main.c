@@ -9,7 +9,7 @@
 #include <stdio.h>
 #include <string.h>
 #include <unistd.h>
-#include "wrapper-C.h"
+#include "chimescalc_serial_C.h"
 
 int main (int argc, char **argv) 
 {
@@ -56,14 +56,14 @@ int main (int argc, char **argv)
     atom[i] = atom_types[i];
   }
   fclose(fconf);
-  set_chimes(small);
+  set_chimes_serial(small);
   
   printf("Read args:\n");
-  for (int i=1; i<argc; i++)
+  for (i=1; i<argc; i++)
 	  printf("%i %s\n",i, argv[i]);
 
   int rank = 0;
-  init_chimes(argv[1],&rank);
+  init_chimes_serial(argv[1],&rank);
   
   calculate_chimes(natom, xc, yc, zc, atom, ca, cb, cc, &energy, fx, fy, fz, stress);
   for (i = 0; i < 9; i++) {
