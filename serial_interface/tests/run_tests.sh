@@ -44,39 +44,39 @@ API[4]="fortran08"; EXE[4]="fortran08_wrapper-serial_interface" ; XTRA[4]="" #"0
 echo "Running $STYLE tests"
 date
 
-for compile in MAKEFILE CMAKE
+for compile in MAKEFILE
 do
 	echo "Testing compilation type: $compile"
 
 	# Do the compilation
 
 	if [[ $compile == "MAKEFILE" ]]; then
-	
+
 		for i in $API_LIST # Cycle through APIs
 		do
-			cd ../examples/${API[$i]}	
-	
+			cd ../examples/${API[$i]}
+
 			echo "Compiling for API ${API[$i]}"
 			echo ""
 
 			if [[ "${API[$i]}" != "python" ]] ; then
-	
+
 				make all DEBUG=1
 			else
 				make all
 				cp lib-C_wrapper-serial_interface.so ../../tests
 			fi
-			
+
 			cd ../../tests
-			
-		done		
-	
+
+		done
+
 	elif [[ $compile == "CMAKE" ]] ; then
-		
+
 		cd ../../
 		./install.sh 1 $PREFX # Set the debug flag true
-		cp build/lib-C_wrapper-serial_interface.so  serial_interface/tests		
-		cd -  
+		cp build/lib-C_wrapper-serial_interface.so  serial_interface/tests
+		cd -
 
 	else
 		echo "Error: Unknown compilation method $compile"
@@ -84,64 +84,64 @@ do
 		echo "Check logic in run_test.sh"
 		exit 0
 	fi
-	
+
 	# Run the tasks
-		
+
 	for i in $API_LIST # Cycle through APIs
-	do	
-		
+	do
+
 		idx=1
 
 		for ((j=0;j<NO_TESTS;j++))
 		do
 			echo "Working on Test $idx of $NO_TESTS for API ${API[$i]}"
-			
+
 			for ((k=0; k<10; k++))
 			do
 				CFG=${CFGS[$j]}
 				CFG_PREFIX="${CFG%%_#*}_#"
 				CFG_SUFFIX=${CFG##*000}
-				
+
 				CFG=${CFG_PREFIX}00${k}${CFG_SUFFIX}
 
 				if [ ! -f configurations/$CFG ] ; then
 					continue
 				fi
-				
+
 				echo "		...Running $CFG"
-				
+
 				# Run the test
-				
+
 				if [[ "${API[$i]}" != "python" ]] ; then
-				
+
 					if [[ $compile == "CMAKE" ]] ; then
 						../../build/${EXE[$i]} force_fields/${FFS[$j]} configurations/$CFG ${OPTIONS[$j]} > /dev/null
 					else
 						../examples/${API[$i]}/${EXE[$i]} force_fields/${FFS[$j]} configurations/$CFG ${OPTIONS[$j]}  > /dev/null
 					fi
-					
-				else				
-					${PYTH3} ../examples/${API[$i]}/${EXE[$i]} force_fields/${FFS[$j]} configurations/$CFG ${OPTIONS[$j]} ${LOC}/../api 1 > /dev/null					
+
+				else
+					${PYTH3} ../examples/${API[$i]}/${EXE[$i]} force_fields/${FFS[$j]} configurations/$CFG ${OPTIONS[$j]} ${LOC}/../api 1 > /dev/null
 				fi
-				
+
 				# Compare results against expected results (expected_output/${FFS[$j]}.$CFG.dat)
-				
+
 				paste debug.dat expected_output/${FFS[$j]}.$CFG.dat > san.dat
 
 				# Print findings
-				
-				${PYTH3} compare.py san.dat 
+
+				${PYTH3} compare.py san.dat
 
 				if [[ $STYLE == "SHORT" ]] ; then
 					break
 				fi
-				
+
 			done
-			
+
 			echo "	Test $idx of $NO_TESTS for API ${API[$i]} complete"
 
 			let idx=idx+1
-			
+
 		done
 
 	done
@@ -163,5 +163,3 @@ rm -f debug.dat san.dat *.so
 
 cd ../../
 ./uninstall.sh $PREFX
-
-

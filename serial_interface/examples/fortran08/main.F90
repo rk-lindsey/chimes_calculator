@@ -70,7 +70,7 @@ program test_F08_api
   call chimes%calculate(coords, latvecs, energy, forces, stress)
 
   print *, "Success!"
-  print '(A,1X, F0.6)', "Energy (kcal/mol)", energy
+  print '(A,1X, F0.6)', "Energy (kcal/mol):", energy
   print *, "Stress tensors (GPa)"
   print '(A,1X, F15.6)', "s_xx: ", stress(1, 1) * GPa
   print '(A,1X, F15.6)', "s_yy: ", stress(2, 2) * GPa
@@ -78,7 +78,7 @@ program test_F08_api
   print '(A,1X, F15.6)', "s_xy: ", stress(1, 2) * GPa
   print '(A,1X, F15.6)', "s_xz: ", stress(1, 3) * GPa
   print '(A,1X, F15.6)', "s_yz: ", stress(2, 3) * GPa
-  print *, "Forces (kcal/mol)"
+  print *, "Forces (kcal/mol/A)"
   print '(F15.6)', forces
 
 #if DEBUG==1

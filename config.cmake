@@ -14,6 +14,10 @@ option(WITH_FORTRAN08_API "Whether the Fortran 2008 style API should be built" T
 # Turn this on, if the libraries should be built as shared libraries
 option(BUILD_SHARED_LIBS "Whether the libraries built should be shared" TRUE)
 
+# Test cases with labels matching the specified regexps will be included as tests in CMake builds
+# (You can still select subsets of the selected tests by name using the -R option of ctest)
+set(TEST_LABELS ".*" CACHE STRING "List of test label regexps to include as test in CMake builds")
+
 
 # C++ compiler dependent config options
 if("GNU" STREQUAL "${CMAKE_CXX_COMPILER_ID}")
