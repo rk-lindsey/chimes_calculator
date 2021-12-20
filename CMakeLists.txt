@@ -73,12 +73,13 @@ install(TARGETS ChimesCalc
 ####################################################################################################
 
 # Main executable installed as chimescalc
-add_executable(chimescalc serial_interface/examples/cpp/main.cpp)
-target_link_libraries(chimescalc ChimesCalc)
-target_compile_features   (chimescalc PUBLIC cxx_std_11)
-target_compile_definitions(chimescalc PRIVATE "DEBUG=${DEBUG}")
+add_executable(ChimesCalcExe serial_interface/examples/cpp/main.cpp)
+set_target_properties(ChimesCalcExe PROPERTIES OUTPUT_NAME "chimescalc")
+target_link_libraries(ChimesCalcExe ChimesCalc)
+target_compile_features   (ChimesCalcExe PUBLIC cxx_std_11)
+target_compile_definitions(ChimesCalcExe PRIVATE "DEBUG=${DEBUG}")
 
-install(TARGETS chimescalc DESTINATION ${CMAKE_INSTALL_BINDIR})
+install(TARGETS ChimesCalcExe DESTINATION ${CMAKE_INSTALL_BINDIR})
 
 # Test executables
 add_executable(test_c_direct chimesFF/examples/c/main.c)
