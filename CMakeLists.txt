@@ -1,8 +1,8 @@
 cmake_minimum_required(VERSION 3.13)
 
-############################################################
+####################################################################################################
 # General settings
-############################################################
+####################################################################################################
 
 project(ChimesCalc
     VERSION 1.0
@@ -29,9 +29,9 @@ if(NEEDS_LIB_M)
 endif()
 
 
-###############################################################################
-# C++/C library
-###############################################################################
+####################################################################################################
+# Static/shared library
+####################################################################################################
 
 set(c-sources
     "chimesFF/src/chimesFF.cpp"
@@ -65,102 +65,62 @@ target_compile_features(ChimesCalc PRIVATE cxx_std_11)
 install(TARGETS ChimesCalc
     EXPORT ${PROJECT_NAME_LOWER}-targets
     LIBRARY DESTINATION "${CMAKE_INSTALL_LIBDIR}"
-    PUBLIC_HEADER DESTINATION "${CMAKE_INSTALL_INCLUDEDIR}/${INSTALL_INCLUDEDIR}")
+    PUBLIC_HEADER DESTINATION "${INSTALL_INCLUDEDIR}")
 
 
-############################################################
+####################################################################################################
 # Executables for C/C++
-############################################################
+####################################################################################################
 
-add_executable(CPP-interface serial_interface/examples/cpp/main.cpp)
-target_link_libraries(CPP-interface ChimesCalc)
-target_compile_features   (CPP-interface PUBLIC cxx_std_11)
-target_compile_definitions(CPP-interface PRIVATE "DEBUG=${DEBUG}")
+# Main executable installed as chimescalc
+add_executable(ChimesCalcExe serial_interface/examples/cpp/main.cpp)
+set_target_properties(ChimesCalcExe PROPERTIES OUTPUT_NAME "chimescalc")
+target_link_libraries(ChimesCalcExe ChimesCalc)
+target_compile_features   (ChimesCalcExe PUBLIC cxx_std_11)
+target_compile_definitions(ChimesCalcExe PRIVATE "DEBUG=${DEBUG}")
 
+install(TARGETS ChimesCalcExe DESTINATION ${CMAKE_INSTALL_BINDIR})
 
-if(NOT CMAKE_INSTALL_PREFIX_INITIALIZED_TO_DEFAULT)
-	  install(TARGETS CPP-interface
-        DESTINATION ${CMAKE_INSTALL_PREFIX}/serial_interface/examples/cpp/ OPTIONAL)
-endif()
+# Test executables
+add_executable(test_c_direct chimesFF/examples/c/main.c)
+target_link_libraries     (test_c_direct ChimesCalc ${LIB_M})
+target_compile_features   (test_c_direct PRIVATE cxx_std_11)
+target_compile_definitions(test_c_direct PRIVATE "DEBUG=${DEBUG}")
 
-add_executable(C_wrapper-direct_interface chimesFF/examples/c/main.c)
-target_link_libraries     (C_wrapper-direct_interface ChimesCalc ${LIB_M})
-target_compile_features   (C_wrapper-direct_interface PRIVATE cxx_std_11)
-target_compile_definitions(C_wrapper-direct_interface PRIVATE "DEBUG=${DEBUG}")
-
-
-if(NOT CMAKE_INSTALL_PREFIX_INITIALIZED_TO_DEFAULT)
-	  install(TARGETS C_wrapper-direct_interface
-        DESTINATION ${CMAKE_INSTALL_PREFIX}/chimesFF/examples/c/ OPTIONAL)
-endif()
+add_executable(test_c_serial serial_interface/examples/c/main.c)
+target_link_libraries     (test_c_serial ChimesCalc)
+target_compile_features   (test_c_serial PRIVATE cxx_std_11)
+target_compile_definitions(test_c_serial PRIVATE "DEBUG=${DEBUG}")
 
 
-add_executable(C_wrapper-serial_interface serial_interface/examples/c/main.c)
-target_link_libraries     (C_wrapper-serial_interface ChimesCalc)
-target_compile_features   (C_wrapper-serial_interface PRIVATE cxx_std_11)
-target_compile_definitions(C_wrapper-serial_interface PRIVATE "DEBUG=${DEBUG}")
+####################################################################################################
+# Dynamically loadable library (e.g for Python)
+####################################################################################################
 
-if(NOT CMAKE_INSTALL_PREFIX_INITIALIZED_TO_DEFAULT)
-	  install(TARGETS C_wrapper-serial_interface
-        DESTINATION ${CMAKE_INSTALL_PREFIX}/serial_interface/examples/c/ OPTIONAL)
-endif()
+add_library(ChimesCalc_dynamic MODULE "${c-sources}")
 
+set_target_properties(ChimesCalc_dynamic
+    PROPERTIES OUTPUT_NAME "chimescalc_dl")
 
-############################################################
-# Executables/libraries for Python
-############################################################
+target_include_directories(ChimesCalc_dynamic PUBLIC
+    $<BUILD_INTERFACE:${CMAKE_CURRENT_SOURCE_DIR}/chimesFF/src>
+    $<BUILD_INTERFACE:${CMAKE_CURRENT_SOURCE_DIR}/chimesFF/api>
+    $<BUILD_INTERFACE:${CMAKE_CURRENT_SOURCE_DIR}/serial_interface/src>
+    $<BUILD_INTERFACE:${CMAKE_CURRENT_SOURCE_DIR}/serial_interface/api>
+    $<INSTALL_INTERFACE:${INSTALL_INCLUDEDIR}>)
 
+target_compile_definitions(ChimesCalc_dynamic PRIVATE "DEBUG=${DEBUG}")
+target_compile_features(ChimesCalc_dynamic PRIVATE cxx_std_11)
 
-# Shared: .dylib
-# Static: .a
-# Module: .so
-
-add_library(lib-C_wrapper-direct_interface MODULE
-    ${CMAKE_CURRENT_SOURCE_DIR}/chimesFF/api/chimescalc_C.cpp
-    ${CMAKE_CURRENT_SOURCE_DIR}/chimesFF/src/chimesFF.cpp)
-
-# Prevent CMake from prepending "lib" to libwrapper-C.so
-set_target_properties     (lib-C_wrapper-direct_interface PROPERTIES PREFIX "")
-# Tell it which language to use
-set_target_properties     (lib-C_wrapper-direct_interface PROPERTIES LINKER_LANGUAGE CXX)
-target_include_directories(lib-C_wrapper-direct_interface
-    PUBLIC ${CMAKE_CURRENT_SOURCE_DIR}/chimesFF/src/)
-target_include_directories(lib-C_wrapper-direct_interface
-    PUBLIC ${CMAKE_CURRENT_SOURCE_DIR}/chimesFF/api/)
-target_compile_features   (lib-C_wrapper-direct_interface PUBLIC cxx_std_11)
-
-if(NOT CMAKE_INSTALL_PREFIX_INITIALIZED_TO_DEFAULT)
-	  install(TARGETS lib-C_wrapper-direct_interface
-        DESTINATION ${CMAKE_INSTALL_PREFIX}/chimesFF/examples/python/ OPTIONAL)
-endif()
+install(TARGETS ChimesCalc_dynamic
+    EXPORT ${PROJECT_NAME_LOWER}-targets
+    LIBRARY DESTINATION "${CMAKE_INSTALL_LIBDIR}"
+    PUBLIC_HEADER DESTINATION "${INSTALL_INCLUDEDIR}")
 
 
-add_library(lib-C_wrapper-serial_interface MODULE
-    ${CMAKE_CURRENT_SOURCE_DIR}/serial_interface/api/chimescalc_serial_C.cpp
-    ${CMAKE_CURRENT_SOURCE_DIR}/serial_interface/src/serial_chimes_interface.cpp
-    ${CMAKE_CURRENT_SOURCE_DIR}/chimesFF/src/chimesFF.cpp)
-
-# Prevent CMake from prepending "lib" to libwrapper-C.so
-set_target_properties     (lib-C_wrapper-serial_interface PROPERTIES PREFIX "")
-# Tell it which language to use
-set_target_properties     (lib-C_wrapper-serial_interface PROPERTIES LINKER_LANGUAGE CXX)
-target_include_directories(lib-C_wrapper-serial_interface
-    PRIVATE ${CMAKE_CURRENT_SOURCE_DIR}/serial_interface/api/)
-target_include_directories(lib-C_wrapper-serial_interface
-    PRIVATE ${CMAKE_CURRENT_SOURCE_DIR}/serial_interface/src/)
-target_include_directories(lib-C_wrapper-serial_interface
-    PRIVATE ${CMAKE_CURRENT_SOURCE_DIR}/chimesFF/src/)
-target_compile_features   (lib-C_wrapper-serial_interface PUBLIC cxx_std_11)
-
-if(NOT CMAKE_INSTALL_PREFIX_INITIALIZED_TO_DEFAULT)
-	  install(TARGETS lib-C_wrapper-serial_interface
-        DESTINATION ${CMAKE_INSTALL_PREFIX}/serial_interface/examples/python/ OPTIONAL)
-endif()
-
-
-###############################################################################
-# Fortran library (separate library as it needs Fortran runtime to be linked)
-###############################################################################
+####################################################################################################
+# Fortran wrappers (not contained in base library as it requires Fortran runtime library)
+####################################################################################################
 
 if(WITH_FORTRAN_API OR WITH_FORTRAN08_API)
 
@@ -196,47 +156,26 @@ if(WITH_FORTRAN_API OR WITH_FORTRAN08_API)
     install(DIRECTORY "${moddir}/" DESTINATION "${INSTALL_MODULEDIR}")
 
 
-    ############################################################
+    ################################################################################################
     # Executables for Fortran (90/08)
-    ############################################################
+    ################################################################################################
 
-    add_executable(fortran_wrapper-direct_interface chimesFF/examples/fortran/main.F90)
-    target_link_libraries     (fortran_wrapper-direct_interface ChimesCalc_Fortran)
-    target_compile_definitions(fortran_wrapper-direct_interface PRIVATE "DEBUG=${DEBUG}")
-
-    if(NOT CMAKE_INSTALL_PREFIX_INITIALIZED_TO_DEFAULT)
-        install(TARGETS fortran_wrapper-direct_interface
-            DESTINATION ${CMAKE_INSTALL_PREFIX}/chimesFF/examples/fortran/ OPTIONAL)
-    endif()
-
-
-    add_executable(fortran_wrapper-serial_interface serial_interface/examples/fortran/main.F90)
-    target_link_libraries     (fortran_wrapper-serial_interface ChimesCalc_Fortran)
-    target_compile_definitions(fortran_wrapper-serial_interface PRIVATE "DEBUG=${DEBUG}")
-
-    if(NOT CMAKE_INSTALL_PREFIX_INITIALIZED_TO_DEFAULT)
-    	    install(TARGETS fortran_wrapper-direct_interface
-              DESTINATION ${CMAKE_INSTALL_PREFIX}/serial_interface/examples/fortran/ OPTIONAL)
-    endif()
+    add_executable(test_fortran_serial serial_interface/examples/fortran/main.F90)
+    target_link_libraries(test_fortran_serial ChimesCalc_Fortran)
+    target_compile_definitions(test_fortran_serial PRIVATE "DEBUG=${DEBUG}")
 
     # Optional, as ancient Fortran compilers may have difficulties with it
     if(WITH_FORTRAN08_API)
-        add_executable(fortran08_wrapper-serial_interface
-            serial_interface/examples/fortran08/main.F90)
-        target_link_libraries	  (fortran08_wrapper-serial_interface ChimesCalc_Fortran)
-	      target_compile_definitions(fortran08_wrapper-serial_interface PRIVATE "DEBUG=${DEBUG}")
-
-	      if(NOT CMAKE_INSTALL_PREFIX_INITIALIZED_TO_DEFAULT)
-	          install(TARGETS fortran08_wrapper-serial_interface
-                DESTINATION ${CMAKE_INSTALL_PREFIX}/serial_interface/examples/fortran08/ OPTIONAL)
-	      endif()
+        add_executable(test_fortran08_serial serial_interface/examples/fortran08/main.F90)
+        target_link_libraries(test_fortran08_serial ChimesCalc_Fortran)
+	      target_compile_definitions(test_fortran08_serial PRIVATE "DEBUG=${DEBUG}")
     endif()
 
 endif()
 
-###############################################################################
+####################################################################################################
 # Create CMake export file
-###############################################################################
+####################################################################################################
 
 include(CMakePackageConfigHelpers)
 
@@ -260,3 +199,68 @@ install(
     FILES "${CMAKE_CURRENT_BINARY_DIR}/cmake/${PROJECT_NAME_LOWER}-config.cmake"
     "${CMAKE_CURRENT_BINARY_DIR}/cmake/${PROJECT_NAME_LOWER}-config-version.cmake"
     DESTINATION "${CMAKE_INSTALL_LIBDIR}/cmake/${PROJECT_NAME_LOWER}")
+
+
+####################################################################################################
+# Add regression tests for the various APIs
+####################################################################################################
+
+enable_testing()
+
+set(apis
+    "cpp;${CMAKE_CURRENT_BINARY_DIR}/chimescalc"
+    "c;${CMAKE_CURRENT_BINARY_DIR}/test_c_serial"
+    "fortran;${CMAKE_CURRENT_BINARY_DIR}/test_fortran_serial"
+    "fortran08;${CMAKE_CURRENT_BINARY_DIR}/test_fortran08_serial")
+
+set(_testdir "${CMAKE_CURRENT_SOURCE_DIR}/serial_interface/tests")
+file(STRINGS ${_testdir}/tests _testcases)
+foreach(_testcase IN LISTS _testcases)
+    if("${_testcase}" STREQUAL "")
+        continue()
+    endif()
+    list(GET _testcase 0 _paramfile)
+    string(STRIP "${_paramfile}" _paramfile)
+    list(GET _testcase 1 _geometry)
+    string(STRIP "${_geometry}" _geometry)
+    string(REPLACE "#" "" _geometry_escaped "${_geometry}")
+    list(GET _testcase 2 _configopt)
+    string(STRIP "${_configopt}" _configopt)
+    list(GET _testcase 3 _testlabels)
+    string(STRIP "${_testlabels}" _testlabels)
+
+    set(_add_test False)
+    foreach(_label IN LISTS TEST_LABELS)
+        if("${_testlabels}" MATCHES "${_label}")
+            set(_add_test True)
+            break()
+        endif()
+    endforeach()
+    if(NOT _add_test)
+        continue()
+    endif()
+
+    set(_apis "${apis}")
+    list(LENGTH _apis _apis_length )
+    while(_apis_length GREATER 0)
+        list(POP_FRONT _apis _api_abbrev)
+        list(POP_FRONT _apis _api_executable)
+        #message(STATUS "Test added: ${_api_abbrev}:${_paramfile}:${_geometry_escaped}")
+        list(LENGTH _apis _apis_length)
+
+        add_test(
+            NAME "${_api_abbrev}/${_paramfile}:${_geometry_escaped}"
+            COMMAND
+                ${_testdir}/run_test_case
+                ${_api_executable}
+                ${_paramfile}
+                ${_geometry}
+                ${_configopt}
+                ${CMAKE_CURRENT_BINARY_DIR}/_test/${_api_abbrev}/${_paramfile}:${_geometry_escaped})
+        if("${_api_abbrev}" STREQUAL "py")
+            set_tests_properties("${_api_abbrev}/${_paramfile}:${_geometry_escaped}"
+                PROPERTIES ENVIRONMENT "PYTHONPATH=${CMAKE_CURRENT_BINARY_DIR}"
+                ENVIRONMENT "LD_LIBRARY_PATH=${CMAKE_CURRENT_BINARY_DIR}")
+        endif()
+    endwhile()
+endforeach()
