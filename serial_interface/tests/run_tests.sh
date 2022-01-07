@@ -143,7 +143,7 @@ do
 done
 
 
-read -p "Press enter to continue on to test cleanup." tmpvar
+read -p "Press enter to continue on to test cleanup. " tmpvar
 
 
 # Clean up
@@ -153,7 +153,7 @@ do
 	cd ../examples/${API[$i]}
 	make clean-all
 	rm -f *.so *.a
-	cd ../../tests
+	cd -
 done
 
 rm -f debug.dat san.dat *.so output_lib.xyzf

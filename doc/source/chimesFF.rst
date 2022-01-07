@@ -329,7 +329,7 @@ void        chimes_compute_4b_props_fromf90   ============  ===
 The Fortran API
 ^^^^^^^^^^^^^^^
 
-The Fortran API (``chimescalc_F*``) is located in ``chimesFF/api``. This wrapper enables access to ``chimesFF`` functions
+The Fortran API (``chimescalc_F.f90``) is located in ``chimesFF/api``. This wrapper enables access to ``chimesFF`` functions
 through the C API and handles other details like differences in array storage order.
 
 
@@ -449,13 +449,13 @@ operations, in order:
 
     .. code-block:: python
 
-       chimescalc_py.chimes_wrapper = chimescalc_py.init_chimes_wrapper("lib-C_wrapper-serial_interface.so") # Associate the wrapper with a compiled C API library file
+       chimescalc_py.chimes_wrapper = chimescalc_py.init_chimes_wrapper("chimescalc_dl.so") # Associate the wrapper with a compiled C API library file
        chimescalc_py.set_chimes()  # Instantiate
        chimescalc_py.init_chimes() # If run with MPI, an integer MPI rank can be passed to this function. By default, assumes rank = 0
        chimescalc_py.read_params("my_parameter_file")
 
 
-For additional information on compiling (i.e. generation of ``lib-C_wrapper-serial_interface.so``), see :ref:`Implementation Examples <sec-use-examples-api>`.
+For additional information on compiling (i.e. generation of ``chimescalc_dl.so``), see :ref:`Implementation Examples <sec-use-examples-api>`.
 
 Note that the ChIMES calculator ``chimescalc_py`` API provides users with the following functions:
 
@@ -558,7 +558,7 @@ The following codes demonstrates how ``chimesFF.{h,cpp}`` can be used to obtain 
 
 .. Note::
 
-    All example executables can be compiled at once via ``./install.sh`` from the ``chimes_calculator`` base directory, and similarly uninstalled via ``./uninstall.sh``. However, the examples below compile via the user-generated Makefiles located in each ``examples`` subdirectory, for demonstrative purposes.
+    All example executables can be compiled at once in ``./build`` with CMake, via ``./install.sh`` from the ``chimes_calculator`` base directory, and similarly uninstalled via ``./uninstall.sh``. However, the examples below compile via the user-generated Makefiles located in each ``examples`` subdirectory, for demonstrative purposes.
 
 
 * **C Example:** The ``main`` function of this example includes the C API, ``chimescalc_C.{h,cpp}``, which creates a global static pointer to a ``chimesFF`` object.
@@ -566,7 +566,7 @@ The following codes demonstrates how ``chimesFF.{h,cpp}`` can be used to obtain 
 
    * Navigate to ``chimesFF/examples/c``
    * Compile with: ``make all``
-   * Test with: ``./C_wrapper-direct_interface <parameter file> <xyz file>``
+   * Test with: ``./chimescalc-test_direct-C <parameter file> <xyz file>``
    * Additional notes:
 
       * ``*.xyz`` files must not contain any information beyond atom type and x-, y-, and z- coordinate on coordinate lines.
@@ -577,7 +577,7 @@ The following codes demonstrates how ``chimesFF.{h,cpp}`` can be used to obtain 
 
    * Navigate to ``chimesFF/examples/cpp``
    * Compile with: ``make all``
-   * Test with: ``./CPP-interface <parameter file> <xyz file> ``
+   * Test with: ``./chimescalc <parameter file> <xyz file>``
 
 * **Fortran Example:** Similar to the C example, this ``main`` function establishes a pointer to a ``chimesFF`` object via ``f_set_chimes()``.
   The ``f_set_chimes()`` function call is defined in ``chimescalc_F.f90,`` a wrapper for the C API ``chimescalc_C.cpp`` (i.e which facilitates C-style access to
@@ -585,20 +585,22 @@ The following codes demonstrates how ``chimesFF.{h,cpp}`` can be used to obtain 
 
    * Navigate to ``chimesFF/examples/fortran``
    * Compile with: ``make all``
-   * Test with: ``./fortran_wrapper-direct_interface <parameter file> <xyz file>``
+   * Test with: ``./chimescalc-test_direct-F <parameter file> <xyz file>``
    * Additional notes:
 
       * ``*.xyz`` files must not contain any information beyond atom type and x-, y-, and z- coordinate on coordinate lines.
       * This implementation does NOT use ghost atoms/layering thus the input system MUST have box lengths greater than two times the largest outer cutoff, or results will not be correct.
 
-* **Python Example:** This example accesses ``chimesFF`` functions through `chimescalc_py.py``, a ctypes-based python API for access to the C API functions
-  (i.e. through ``chimescalc_C.cpp``). Once ``chimescalc_py.py`` is imported, it is associated with a compiled C API library file, i.e. ``lib-C_wrapper-direct_interface.so`` and  can be used to access ``chimesFF`` member functions.
+* **Python Example:** This example accesses ``chimesFF`` functions through ``chimescalc_py.py``, a ctypes-based python API for access to the C API functions
+  (i.e. through ``chimescalc_C.cpp``). Once ``chimescalc_py.py`` is imported, it is associated with a compiled C API library file, i.e. ``chimescalc_dl.so`` and  can be used to access ``chimesFF`` member functions.
 
    * Navigate to ``chimesFF/examples/python``
-   * Compile lib-C_wrapper-direct_interface.so with: ``make all``
-   * Test with: python main.py <parameter file> <coordinate file>
+   * Compile ``chimescalc_dl.so`` with: ``make all``
+   * Test with: ``python main.py <parameter file> <coordinate file>``
    * Additional notes:
 
-      * Requires ``lib-C_wrapper-direct_interface.so`` in the same directory, which is generated via ``make all``
+      * Requires ``chimescalc_dl.so`` in the same directory, which is generated via ``make all``
       * Expects to be run with Python version 3.X
-      * This implementation does NOT use ghost atoms/layering thus the input system MUST have box lengths greater than two times the largest outer cutoff, or results will not be correct.
+
+.. Warning::
+    This Python implementation example does NOT use ghost atoms/layering thus the input system MUST have box lengths greater than two times the largest outer cutoff, or results will not be correct.

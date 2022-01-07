@@ -39,7 +39,9 @@ A utility for generating ChIMES potential energy surface scans for *n*-body clus
 Variables ``CHMS_REPO`` and ``PARAM_FILE`` specify the ``chimes_calculator`` repository location, and path to the ChIMES parameter of file. Note that paths should be provided in their absolute form. Following these variables, three sets of options are provided. Focusing on options beginning with ``PAIR``, one must provide the following: 
 
 * A list of pair type indices for which scans should be generated
+
     * Indices should correspond to values following ``PAIRTYPE PARAMS:`` in the target parameter file
+    
 * A list of the minimum pair distance for each pair type to consider during the scan
 * A list of the maximum pair distance for each pair type to consider during the scan
 * A scan step size

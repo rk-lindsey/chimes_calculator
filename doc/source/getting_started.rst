@@ -103,7 +103,7 @@ Sample ChIMES parameter and input files are provided in the ``serial_interface/t
 
 .. code-block:: bash
     
-    serial_interface/examples/cpp/CPP-interface \
+    serial_interface/examples/cpp/chimescalc \
     serial_interface/tests/force_fields/published_params.liqC.2b.cubic.txt \
     serial_interface/tests/configurations/liqC.2.5gcc_6000K.OUTCAR_#000.xyz | tee my_test.log 
     
