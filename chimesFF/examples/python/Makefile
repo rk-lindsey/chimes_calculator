@@ -15,7 +15,7 @@ chimescalc_C.o : $(CC_WRAPPER_SRC) $(CC_WRAPPER_HDR) $(CHIMESFF_SRC)  $(CHIMESFF
 	$(CXX) -c $(CC_WRAPPER_SRC) $(CHIMESFF_SRC) -I $(CC_LOC)/../../api/ -I $(CC_LOC)/../../src/
 
 chimescalc_C.so:
-	$(CXX) -shared -o lib-C_wrapper-direct_interface.so chimescalc_C.o chimesFF.o
+	$(CXX) -shared -o libchimescalc-direct_dl.so chimescalc_C.o chimesFF.o
 
 
 clean:

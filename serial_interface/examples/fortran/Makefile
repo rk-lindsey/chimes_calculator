@@ -54,18 +54,18 @@ endif
 
 
 test-F: $(LINKS)
-	$(FCC) $(LINKS) -o fortran_wrapper-serial_interface
+	$(FCC) $(LINKS) -o chimescalc-test_serial-F
 
 lib : chimesFF.o serial_chimes_interface.o chimescalc_serial_C.o
-	ar rcs libchimes.a chimesFF.o serial_chimes_interface.o chimescalc_serial_C.o
+	ar rcs libchimescalc-fortran.a chimesFF.o serial_chimes_interface.o chimescalc_serial_C.o
 
 clean:
 	rm -f *.o *.mod
 
 clean-all:
 	make clean
-	rm -f fortran_wrapper-serial_interface
-	rm -f libchimes.a
+	rm -f chimescalc-test_serial-F
+	rm -f libchimescalc-fortran.a
 
 all:
 	make chimesFF.o

@@ -2,13 +2,10 @@
 
 	A simple python interface for chimesFF access.
 
-	Expects "libwrapper-C.so" in the same directory as this script
-
-
 	The following must be included in any python script calling this wrapper:
 
 		import chimescalc_py
-		chimescalc_py.chimes_wrapper = chimescalc_py.init_chimes_wrapper("/path/to/lib-C_wrapper-direct_interface.so")
+		chimescalc_py.chimes_wrapper = chimescalc_py.init_chimes_wrapper("libchimescalc-direct_dl.so")
 		chimescalc_py.set_chimes()
 		chimescalc_py.init_chimes()
 		chimescalc_py.read_params("some_parameter_file.txt")

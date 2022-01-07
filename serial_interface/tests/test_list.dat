@@ -1,5 +1,3 @@
-test_params.CHON.txt;  CHON.testfile_#000.xyz;  0;  minimal
-
 published_params.liqC.2b.cubic.txt;  liqC.2.5gcc_6000K.OUTCAR_#000.xyz;  0;  short
 published_params.liqC.2b.cubic.txt;  liqC.2.5gcc_6000K.OUTCAR_#001.xyz;  0;  long
 published_params.liqC.2b.cubic.txt;  liqC.2.5gcc_6000K.OUTCAR_#002.xyz;  0;  long
@@ -22,8 +20,6 @@ published_params.liqC.2+3b.cubic.txt;  liqC.2.5gcc_6000K.OUTCAR_#007.xyz;  0;  l
 published_params.liqC.2+3b.cubic.txt;  liqC.2.5gcc_6000K.OUTCAR_#008.xyz;  0;  long
 published_params.liqC.2+3b.cubic.txt;  liqC.2.5gcc_6000K.OUTCAR_#009.xyz;  0;  long
 
-validated_params.liqCO.2+3b.cubic.txt;  CO.2.5gcc_6500K.OUTCAR_#000.relabel.xyz;  1;  short
-
 published_params.liqCO.2+3b.cubic.txt;  CO.2.5gcc_6500K.OUTCAR_#000.xyz;  1;  short
 published_params.liqCO.2+3b.cubic.txt;  CO.2.5gcc_6500K.OUTCAR_#001.xyz;  1;  long
 published_params.liqCO.2+3b.cubic.txt;  CO.2.5gcc_6500K.OUTCAR_#002.xyz;  1;  long
@@ -35,17 +31,11 @@ published_params.liqCO.2+3b.cubic.txt;  CO.2.5gcc_6500K.OUTCAR_#007.xyz;  1;  lo
 published_params.liqCO.2+3b.cubic.txt;  CO.2.5gcc_6500K.OUTCAR_#008.xyz;  1;  long
 published_params.liqCO.2+3b.cubic.txt;  CO.2.5gcc_6500K.OUTCAR_#009.xyz;  1;  long
 
+validated_params.liqCO.2+3b.cubic.txt;  CO.2.5gcc_6500K.OUTCAR_#000.relabel.xyz;  1;  short
+
 published_params.liqCO.2+3b.cubic.txt;  CO.2.5gcc_6500K.OUTCAR_#000.scramble.xyz;  1;  short
 
 published_params.liqCO.2+3b.cubic.txt;  CO.2.5gcc_6500K.OUTCAR_#000.translate.xyz;  1;  short
-
-published_params.liqCO.2+3b.cubic.txt;  diam.64_#000.xyz;  1;  short
-
-published_params.liqCO.2+3b.cubic.txt;  diam.16_#000.xyz;  1;  short
-
-published_params.liqCO.2+3b.cubic.txt;  diam.8_#000.xyz;   1;  short
-
-published_params.liqCO.2+3b.cubic.txt;  diam.2_#000.xyz;   1;  short
 
 published_params.HN3.2+3+4b.Tersoff.special.offsets.txt;  HN3.2gcc_3000K.OUTCAR_#000.xyz;  0;  short
 published_params.HN3.2+3+4b.Tersoff.special.offsets.txt;  HN3.2gcc_3000K.OUTCAR_#001.xyz;  0;  long
@@ -59,5 +49,15 @@ published_params.HN3.2+3+4b.Tersoff.special.offsets.txt;  HN3.2gcc_3000K.OUTCAR_
 
 validated_params.TiO2.2+3b.Tersoff.txt;  TiO2.unitcell_arbrot_#000.xyz;  0;  short
 validated_params.TiO2.2+3b.Tersoff.txt;  TiO2.unitcell_arbrot_#001.xyz;  0;  long
+
+test_params.CHON.txt;  CHON.testfile_#000.xyz;  0;  minimal
+
+published_params.liqCO.2+3b.cubic.txt;  diam.64_#000.xyz;  1;  short
+
+published_params.liqCO.2+3b.cubic.txt;  diam.16_#000.xyz;  1;  short
+
+published_params.liqCO.2+3b.cubic.txt;  diam.8_#000.xyz;   1;  short
+
+published_params.liqCO.2+3b.cubic.txt;  diam.2_#000.xyz;   1;  short
 
 published_params.CO2400K.2+3+4b.Tersoff.special.offsets.txt;  CO.9GPa_2400K.OUTCAR_#000.xyz;  1;  short

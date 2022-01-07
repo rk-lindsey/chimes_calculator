@@ -22,14 +22,14 @@ test_wrapper-C.o : main.c $(WRAPPER_SRC) $(WRAPPER_HDR)
 LINKS = chimesFF.o test_wrapper-C.o chimescalc_C.o
 
 test_wrapper-C : $(LINKS)
-	$(CXX)  $(LINKS) -o C_wrapper-direct_interface
+	$(CXX)  $(LINKS) -o chimescalc-test_direct-C
 
 clean:
 	rm -f *.o
 
 clean-all:
 	rm -f *.o
-	rm -f C_wrapper-direct_interface
+	rm -f chimescalc-test_direct-C
 
 all:
 	make chimesFF.o
