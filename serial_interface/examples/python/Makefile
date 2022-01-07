@@ -31,7 +31,7 @@ chimescalc_serial_C.o : $(WRAPPER_SRC)
 
 
 chimescalc_serial_C.so:
-	$(CXX) -shared -o lib-C_wrapper-serial_interface.so chimescalc_serial_C.o serial_chimes_interface.o chimesFF.o
+	$(CXX) -shared -o libchimescalc-serial_dl.so chimescalc_serial_C.o serial_chimes_interface.o chimesFF.o
 
 clean:
 	rm -f *.o

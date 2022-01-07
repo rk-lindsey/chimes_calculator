@@ -36,14 +36,14 @@ else
 endif
 
 test_wrapper-F: $(LINKS)
-	$(FCC) $(LINKS) -o fortran_wrapper-direct_interface
+	$(FCC) $(LINKS) -o chimescalc-test_direct-F
 
 clean:
 	rm -f *.o *.mod
 
 clean-all:
 	rm -f *.o *.mod
-	rm -f fortran_wrapper-direct_interface
+	rm -f chimescalc-test_direct-F
 
 all:
 	make chimesFF.o

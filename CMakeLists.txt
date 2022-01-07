@@ -82,15 +82,15 @@ target_compile_definitions(ChimesCalcExe PRIVATE "DEBUG=${DEBUG}")
 install(TARGETS ChimesCalcExe DESTINATION ${CMAKE_INSTALL_BINDIR})
 
 # Test executables
-add_executable(test_c_direct chimesFF/examples/c/main.c)
-target_link_libraries     (test_c_direct ChimesCalc ${LIB_M})
-target_compile_features   (test_c_direct PRIVATE cxx_std_11)
-target_compile_definitions(test_c_direct PRIVATE "DEBUG=${DEBUG}")
+add_executable(chimescalc-test_direct-C chimesFF/examples/c/main.c)
+target_link_libraries     (chimescalc-test_direct-C ChimesCalc ${LIB_M})
+target_compile_features   (chimescalc-test_direct-C PRIVATE cxx_std_11)
+target_compile_definitions(chimescalc-test_direct-C PRIVATE "DEBUG=${DEBUG}")
 
-add_executable(test_c_serial serial_interface/examples/c/main.c)
-target_link_libraries     (test_c_serial ChimesCalc)
-target_compile_features   (test_c_serial PRIVATE cxx_std_11)
-target_compile_definitions(test_c_serial PRIVATE "DEBUG=${DEBUG}")
+add_executable(chimescalc-test_serial-C serial_interface/examples/c/main.c)
+target_link_libraries     (chimescalc-test_serial-C ChimesCalc)
+target_compile_features   (chimescalc-test_serial-C PRIVATE cxx_std_11)
+target_compile_definitions(chimescalc-test_serial-C PRIVATE "DEBUG=${DEBUG}")
 
 
 ####################################################################################################
@@ -160,15 +160,15 @@ if(WITH_FORTRAN_API OR WITH_FORTRAN08_API)
     # Executables for Fortran (90/08)
     ################################################################################################
 
-    add_executable(test_fortran_serial serial_interface/examples/fortran/main.F90)
-    target_link_libraries(test_fortran_serial ChimesCalc_Fortran)
-    target_compile_definitions(test_fortran_serial PRIVATE "DEBUG=${DEBUG}")
+    add_executable(chimescalc-test_serial-F serial_interface/examples/fortran/main.F90)
+    target_link_libraries(chimescalc-test_serial-F ChimesCalc_Fortran)
+    target_compile_definitions(chimescalc-test_serial-F PRIVATE "DEBUG=${DEBUG}")
 
     # Optional, as ancient Fortran compilers may have difficulties with it
     if(WITH_FORTRAN08_API)
-        add_executable(test_fortran08_serial serial_interface/examples/fortran08/main.F90)
-        target_link_libraries(test_fortran08_serial ChimesCalc_Fortran)
-	      target_compile_definitions(test_fortran08_serial PRIVATE "DEBUG=${DEBUG}")
+        add_executable(chimescalc-test_serial-F08 serial_interface/examples/fortran08/main.F90)
+        target_link_libraries(chimescalc-test_serial-F08 ChimesCalc_Fortran)
+	      target_compile_definitions(chimescalc-test_serial-F08 PRIVATE "DEBUG=${DEBUG}")
     endif()
 
 endif()
@@ -209,12 +209,12 @@ enable_testing()
 
 set(apis
     "cpp;${CMAKE_CURRENT_BINARY_DIR}/chimescalc"
-    "c;${CMAKE_CURRENT_BINARY_DIR}/test_c_serial"
-    "fortran;${CMAKE_CURRENT_BINARY_DIR}/test_fortran_serial"
-    "fortran08;${CMAKE_CURRENT_BINARY_DIR}/test_fortran08_serial")
+    "c;${CMAKE_CURRENT_BINARY_DIR}/chimescalc-test_serial-C"
+    "fortran;${CMAKE_CURRENT_BINARY_DIR}/chimescalc-test_serial-F"
+    "fortran08;${CMAKE_CURRENT_BINARY_DIR}/chimescalc-test_serial-F08")
 
 set(_testdir "${CMAKE_CURRENT_SOURCE_DIR}/serial_interface/tests")
-file(STRINGS ${_testdir}/tests _testcases)
+file(STRINGS ${_testdir}/test_list.dat _testcases)
 foreach(_testcase IN LISTS _testcases)
     if("${_testcase}" STREQUAL "")
         continue()
@@ -251,7 +251,7 @@ foreach(_testcase IN LISTS _testcases)
         add_test(
             NAME "${_api_abbrev}/${_paramfile}:${_geometry_escaped}"
             COMMAND
-                ${_testdir}/run_test_case
+                ${_testdir}/run_single_test.sh
                 ${_api_executable}
                 ${_paramfile}
                 ${_geometry}

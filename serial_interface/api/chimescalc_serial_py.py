@@ -2,13 +2,10 @@
 
 	A simple python interface for the serial_chimes_interface.
 
-	Expects "libwrapper-C.so" in the same directory as this script
-
-
 	The following must be included in any python script calling this wrapper:
 
 		import wrapper_py
-		wrapper_py.chimes_wrapper = wrapper_py.init_chimes_wrapper("/path/to/lib-C_wrapper-serial_interface.so")
+		wrapper_py.chimes_wrapper = wrapper_py.init_chimes_wrapper("/path/to/libchimescalc_dl.so")
 		wrapper_py.set_chimes()
 		wrapper_py.init_chimes()
 		wrapper_py.read_params("some_parameter_file.txt")
