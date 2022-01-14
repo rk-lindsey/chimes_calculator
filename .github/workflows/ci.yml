@@ -17,36 +17,53 @@ jobs:
     - name: Set up environment (Linux)
       if: contains(matrix.os, 'ubuntu')
       run: |
-        echo "ROOTFOLDER=${PWD}" >> $GITHUB_ENV
+        echo "SOURCEDIR=${PWD}" >> $GITHUB_ENV
+        echo "WORKDIR=${PWD}" >> $GITHUB_ENV
         echo "FC=gfortran" >> $GITHUB_ENV
         echo "CC=gcc" >> $GITHUB_ENV
+        echo "CXX=g++" >> $GITHUB_ENV
         sudo apt-get update
         sudo apt-get install cmake ninja-build
 
     - name: Set up environment (OSX)
       if: contains(matrix.os, 'macos')
       run: |
-        echo "ROOTFOLDER=${PWD}" >> $GITHUB_ENV
+        echo "SOURCEDIR=${PWD}" >> $GITHUB_ENV
+        echo "WORKDIR=${PWD}" >> $GITHUB_ENV
         echo "FC=gfortran-9" >> $GITHUB_ENV
         echo "CC=gcc-9" >> $GITHUB_ENV
+        echo "CXX=g++-9" >> $GITHUB_ENV
         brew install ninja
 
     - name: Configure build
-      run: >-
-        cmake -B _build -G Ninja
-        -DCMAKE_INSTALL_PREFIX=${ROOTFOLDER}/_install
-        -DWITH_FORTRAN08_API=1
+      run: |
+        mkdir ${WORKDIR}/_build
+        cd ${WORKDIR}/_build
+        cmake -G Ninja -DCMAKE_INSTALL_PREFIX=${WORKDIR}/_install -DWITH_FORTRAN08_API=1 -DTEST_LABELS="minimal" ${SOURCEDIR}
+        cd -
 
     - name: Build project
       run: |
-        cmake --build _build
+        cd ${WORKDIR}/_build
+        ninja all
+        cd -
+
+    - name: Test project
+      run: |
+        cd ${WORKDIR}/_build
+        ctest
+        cd -
 
     - name: Install project
       run: |
-        cmake --install _build
+        cd ${WORKDIR}/_build
+        ninja install
+        cd -
 
     - name: Run integration test
       run: |
-        CMAKE_PREFIX_PATH=${ROOTFOLDER}/_install cmake -B _build_integtest -G Ninja ${ROOTFOLDER}/serial_interface/examples/fortran08
-        cmake --build _build_integtest
-        LD_LIBRARY_PATH=${ROOTFOLDER}/_install/lib ./_build_integtest/test_chimescalc ${ROOTFOLDER}/serial_interface/tests/force_fields/test_params.CHON.txt serial_interface/tests/configurations/CHON.testfile.000.xyz | grep "Energy (kcal/mol) -7.83714"
+        mkdir ${WORKDIR}/_build_integtest
+        cd ${WORKDIR}/_build_integtest
+        CMAKE_PREFIX_PATH=${WORKDIR}/_install cmake -G Ninja ${SOURCEDIR}/serial_interface/examples/fortran08
+        ninja all
+        LD_LIBRARY_PATH=${WORKDIR}/_install/lib ./test_chimescalc ${SOURCEDIR}/serial_interface/tests/force_fields/test_params.CHON.txt ${SOURCEDIR}/serial_interface/tests/configurations/CHON.testfile.000.xyz | grep "Energy (kcal/mol): -7.83714"

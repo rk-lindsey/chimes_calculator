@@ -8,10 +8,9 @@
       implicit none
       integer io_num, stat, small
       double precision, parameter :: GPa = 6.9479 ! convert kcal/mol.A^3 to GPa
-      character(C_char), dimension(80) :: c_file
-      character(C_char), dimension(80) :: dummy_var
-      character(80) :: coord_file, param_file
-      CHARACTER ( len = 100 ) :: wq_char
+      character(C_char), dimension(1025) :: c_file
+      character(1024) :: coord_file, param_file
+      CHARACTER ( len = 1024 ) :: wq_char
       integer :: i, j, k, l, natom, ns
       real(C_double) ::   lx, ly, lz
       real(C_double) :: stress(9)
@@ -78,34 +77,33 @@
       energy = 0d0
 
       call f_set_chimes(small)
-      
+
       print*,"fcheck-1"
 
-      c_file = string2Cstring(param_file)
-      call f_init_chimes(c_file,  0) ! last '0' is the rank of the process
-      
+      call f_init_chimes(trim(param_file) // c_null_char,  0) ! last '0' is the rank of the process
+
       print*,"fcheck-2"
-      
+
       stress(:) = 0d0
       do ns = 1, natom
         stringPtr(ns) = c_loc(c_atom(ns))
       enddo
-      
+
       print*,"fcheck-3"
 
       call f_calculate_chimes (natom, xc, yc, zc, stringPtr, ca,  &
       &      cb, cc, energy, fx, fy, fz, stress)
 
       print *, "Success!"
-      print '(A,1X, F0.6)', "Energy (kcal/mol)",energy
-      print *, "Stress tensors (GPa)"
+      print '(A,1X, F0.6)', "Energy (kcal/mol):",energy
+      print *, "Stress tensors (GPa):"
       print '(A,1X, F15.6)', "s_xx: ",stress(1)*GPa
       print '(A,1X, F15.6)', "s_yy: ",stress(5)*GPa
       print '(A,1X, F15.6)', "s_zz: ",stress(9)*GPa
       print '(A,1X, F15.6)', "s_xy: ",stress(2)*GPa
       print '(A,1X, F15.6)', "s_xz: ",stress(3)*GPa
       print '(A,1X, F15.6)', "s_yz: ",stress(6)*GPa
-      print *, "Forces (kcal/mol)"
+      print *, "Forces (kcal/mol/A):"
       do i = 1, natom
          print '(F15.6)',fx(i)
          print '(F15.6)',fy(i)

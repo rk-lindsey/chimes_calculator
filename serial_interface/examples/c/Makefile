@@ -34,14 +34,14 @@ main.o: $(TEST_SRC)
 TEST_LNK = chimesFF.o serial_chimes_interface.o chimescalc_serial_C.o main.o
 
 test-C: $(TEST_LNK)
-	$(CXX) $(TEST_LNK) -o C_wrapper-serial_interface
+	$(CXX) $(TEST_LNK) -o chimescalc-test_serial-C
 
 clean:
 	rm -f *.o
 
 clean-all:
 	make clean
-	rm -f C_wrapper-serial_interface
+	rm -f chimescalc-test_serial-C
 
 all:
 	make chimesFF.o
