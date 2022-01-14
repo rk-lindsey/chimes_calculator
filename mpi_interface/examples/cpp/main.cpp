@@ -49,25 +49,24 @@ void   tally_FES(double & energy,  vector<double> & fx, vector<double> & fy, vec
 
 int main(int argc, char **argv)
 {
+    // Prepare for use with MPI
 
-// Prepare for use with MPI
+    int nprocs, rank;
 
-int nprocs, rank;
-
-#ifdef USE_MPI
-    MPI_Init     (&argc, &argv);
-    MPI_Comm_size(MPI_COMM_WORLD, &nprocs);
-    MPI_Comm_rank(MPI_COMM_WORLD, &rank);
+    #ifdef USE_MPI
+        MPI_Init     (&argc, &argv);
+        MPI_Comm_size(MPI_COMM_WORLD, &nprocs);
+        MPI_Comm_rank(MPI_COMM_WORLD, &rank);
     
-    if (rank==0)
-        cout << "Code compiled in MPI mode."; 
-#else
-    if (RANK==0)
-        cout << "Code compiled in serial mode."; 
-#endif
+        if (rank==0)
+            cout << "Code compiled in MPI mode."; 
+    #else
+        if (rank==0)
+            cout << "Code compiled in serial mode."; 
+    #endif
 
-if (rank==0)
-    cout <<" Will run on " << nprocs << " processor(s)." << endl;
+    if (rank==0)
+        cout <<" Will run on " << nprocs << " processor(s)." << endl;
 
     // Read generic code input
     
@@ -83,7 +82,7 @@ if (rank==0)
         for (int i=1; i<argc; i++)
     
             cout << i << " " << argv[i] << endl;
-        }
+    }
     
     if(argc == 4)
         if((strncmp(argv[3],"true",4) == 0) || (strncmp(argv[3],"True",4) == 0) || (strncmp(argv[3],"TRUE",4) == 0) || (strncmp(argv[3],"1"   ,1) == 0))
@@ -154,17 +153,15 @@ if (rank==0)
     
     // Compute ChIMES energy, force, and stress
     
-    mpi_chimes_interface chimes(is_small, rank, nprocs);        // Create an instance of the MPI interface
+    mpi_chimes_interface chimes(is_small);        // Create an instance of the MPI interface
 
-    chimes.init_chimesFF(params, rank);    // Initialize
+    chimes.init_chimesFF(params, rank, nprocs);    // Initialize
 
-    chimes.calculate(xcrds, ycrds, zcrds, cell_a, cell_b, cell_c, atom_types, energy, fx, fy, fz, stress);
+    chimes.calculate(natoms, xcrds, ycrds, zcrds, cell_a, cell_b, cell_c, atom_types, energy, fx, fy, fz, stress);
     
     // Now MPI reduce
     
-    
     tally_FES(energy, fx, fy, fz, stress, rank);    
-
 
     if(rank == 0)
     {
@@ -206,6 +203,11 @@ if (rank==0)
 
         cout << endl;
     }
+
+#ifdef USE_MPI
+	MPI_Finalize() ;
+#endif
+	exit(0);
 }
 
 int split_line(string line, vector<string> & items, int rank)

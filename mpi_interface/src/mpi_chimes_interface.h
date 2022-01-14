@@ -34,10 +34,11 @@ class mpi_chimes_interface : public serial_chimes_interface
         int nprocs = 1;	// Number of processors
         int rank   = 0;	// Index of current processor
 
-        mpi_chimes_interface(bool small = true, int my_rank = 0, int my_nprocs = 1);
+        mpi_chimes_interface(bool small = true);
         ~mpi_chimes_interface();
 
-        void    calculate(vector<double> & x_in, vector<double> & y_in, vector<double> & z_in, vector<double> & cella_in, vector<double> & cellb_in, vector<double> & cellc_in, vector<string> & atmtyps, double & energy, vector<double> & fx, vector<double> & fy, vector<double> & fz, vector<double> & stress);
+        void    init_chimesFF(string chimesFF_paramfile, int my_rank = 0, int my_nprocs = 1);
+        void    calculate(int natom, vector<double> & x_in, vector<double> & y_in, vector<double> & z_in, vector<double> & cella_in, vector<double> & cellb_in, vector<double> & cellc_in, vector<string> & atmtyps, double & energy, vector<double> & fx, vector<double> & fy, vector<double> & fz, vector<double> & stress);
         
     protected:
         

@@ -17,10 +17,22 @@ using namespace std;
 
 // mpi_chimes_interface member functions
 
-mpi_chimes_interface::mpi_chimes_interface(bool small, int my_rank, int my_nprocs)
+void mpi_chimes_interface::init_chimesFF(string chimesFF_paramfile, int my_rank, int my_nprocs)
 {
+    // Overloaded. Set some MPI stuff and then call the serial version for the rest
+
     rank   = my_rank;
     nprocs = my_nprocs;
+
+    // Initialize the chimesFF object, read parameters
+
+    init(rank);
+    read_parameters(chimesFF_paramfile);
+    set_atomtypes(type_list);   
+}
+
+mpi_chimes_interface::mpi_chimes_interface(bool small)
+{
     
     // For small systems, allow explicit replication prior to ghost atom construction
     // This should ONLY be done for perfectly crystalline systems
@@ -53,7 +65,7 @@ mpi_chimes_interface::mpi_chimes_interface(bool small, int my_rank, int my_nproc
 mpi_chimes_interface::~mpi_chimes_interface()
 {}
     
-void mpi_chimes_interface::calculate(vector<double> & x_in, vector<double> & y_in, vector<double> & z_in, vector<double> & cella_in, vector<double> & cellb_in, vector<double> & cellc_in, vector<string> & atmtyps, double & energy, vector<double> & fx, vector<double> & fy, vector<double> & fz, vector<double> & stress)
+void mpi_chimes_interface::calculate(int natoms, vector<double> & x_in, vector<double> & y_in, vector<double> & z_in, vector<double> & cella_in, vector<double> & cellb_in, vector<double> & cellc_in, vector<string> & atmtyps, double & energy, vector<double> & fx, vector<double> & fy, vector<double> & fz, vector<double> & stress)
 {    
     // Read system, set up lattice constants/hmats
 
