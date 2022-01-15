@@ -1,6 +1,5 @@
 alias gcc=gcc-11 # For Becky's osx situation
 
-
 # Compile libchimescalc-mpi_dl.so
 
 make clean-all
