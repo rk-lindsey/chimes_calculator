@@ -64,8 +64,6 @@ for i in range(len(sys.argv)-1):
 	
 # Initialize the ChIMES calculator curr_path should be /.../usr/WS2/rlindsey/chimes_calculator-fork/serial_interface/tests/
 
-print("HERE:",os.getcwd)
-
 chimescalc_serial_py.chimes_wrapper = chimescalc_serial_py.init_chimes_wrapper("libchimescalc_dl.so")
 chimescalc_serial_py.set_chimes(small)
 
