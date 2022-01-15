@@ -1,6 +1,5 @@
 alias gcc=gcc-11 # For Becky's osx situation
 
-
 # Compile libchimescalc-mpi_dl.so
 
 make clean-all
@@ -12,4 +11,4 @@ ff=../../../serial_interface/tests/force_fields/published_params.HN3.2+3+4b.Ters
 cf=../../../serial_interface/tests/configurations/HN3.2gcc_3000K.OUTCAR_#000.xyz
 op=0
 
-#smpirun -np 4 python main.py $ff $cf $op ../../api 1 > /dev/null
+mpirun -np 4 python main.py $ff $cf $op ../../api 1 > /dev/null
