@@ -8,7 +8,6 @@
 		wrapper_py.chimes_wrapper = wrapper_py.init_chimes_wrapper("/path/to/libchimescalc_dl.so")
 		wrapper_py.set_chimes()
 		wrapper_py.init_chimes()
-		wrapper_py.read_params("some_parameter_file.txt")
 
     ChIMES Calculator
     Copyright (C) 2020 Rebecca K. Lindsey, Nir Goldman, and Laurence E. Fried
