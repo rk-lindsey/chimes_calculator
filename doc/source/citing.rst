@@ -90,7 +90,7 @@ COND-1           (`link <https://doi.org/10.1038/s41467-019-14034-z>`_)       M.
 HN-1             (`link <https://doi.org/10.1063/5.0029011>`_)                H. Pham*, R.K. Lindsey, L.E. Fried, N. Goldman, `J. Chem. Phys.` **153** 224102 (2020).
 DNTF-DFTB        (`link <https://doi.org/10.26434/chemrxiv.14043839.v1>`_)    R.K. Lindsey*, S. Bastea*, N. Goldman, L. Fried, `J. Chem. Phys.` **154** 164115 (2021).
 TiH-DFTB         (`link <https://doi.org/10.1021/acs.jctc.1c00172>`_)         N. Goldman*, K. Kweon, R.K. Lindsey, L.E. Fried, T.W. Heo, B. Sadigh, P. Soderlind, A. Landa, A. Perron, J. Jeffries, B. Wood, `J. Chem. Theory Comput.` **17** 4435 (2021).
-QMD-DFTB	 (`link <https://doi.org/10.1021/acs.jpclett.2c00453>`_)     C.H. Pham*, R.K. Lindsey, L.E. Fried, N. Goldman, `J. Phys. Chem. Lett.` **13** 2934 (2022).
+QMD-DFTB         (`link <https://doi.org/10.1021/acs.jpclett.2c00453>`_)      C.H. Pham*, R.K. Lindsey, L.E. Fried, N. Goldman, `J. Phys. Chem. Lett.` **13** 2934 (2022).
 ==============   ==========================================================   ==============
 
 .. .. DNTF-1 DNTF      (`link <https://doi.org/?????????????????>`_)                R.K. Lindsey*, S. Bastea*, N. Goldman, L. Fried, ???.
