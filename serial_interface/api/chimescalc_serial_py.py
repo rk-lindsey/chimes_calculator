@@ -24,9 +24,9 @@ chimes_wrapper = None
 def init_chimes_wrapper(lib_name):
 	return ctypes.CDLL(lib_name)
 
-def set_chimes(small=False):
+def set_chimes(small=False, for_fitting=False):
 	""" Instantiates the chimesFF object """
-	chimes_wrapper.set_chimes_serial(small)
+	chimes_wrapper.set_chimes_serial(small, for_fitting)
 	return
 
 

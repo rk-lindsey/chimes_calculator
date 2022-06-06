@@ -6,7 +6,7 @@
       use chimescalc_serial
       use, intrinsic :: ISO_C_binding
       implicit none
-      integer io_num, stat, small
+      integer io_num, stat, small, for_fitting
       double precision, parameter :: GPa = 6.9479 ! convert kcal/mol.A^3 to GPa
       character(C_char), dimension(1025) :: c_file
       character(1024) :: coord_file, param_file
@@ -22,7 +22,8 @@
       TYPE(C_PTR), allocatable, dimension(10) :: stringPtr(:)
       integer lenstr
 
-      small = 1
+      small       = 1
+      for_fitting = 0
 
       io_num = command_argument_count()
       if ((io_num .ne. 2) .and. (io_num .ne. 3)) then
@@ -76,7 +77,7 @@
       ! initialize system energy
       energy = 0d0
 
-      call f_set_chimes(small)
+      call f_set_chimes(small, for_fitting)
 
       print*,"fcheck-1"
 

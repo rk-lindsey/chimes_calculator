@@ -1,0 +1,8 @@
+Note: This capability has only been tested on LLNL's Quartz HPC system (Jun. 6, 2022) - be sure to log in prior to executing install script.
+Note: Installation will take ~30 minutes
+
+Install with: 
+./install.sh
+
+Uninstall with:
+./uninstall.sh

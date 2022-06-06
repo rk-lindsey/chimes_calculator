@@ -54,7 +54,7 @@ module chimescalc_serial08
 contains
 
   !> Initializes ChIMES calculator
-  subroutine ChimesCalc_init(this, paramfile, nrank, small)
+  subroutine ChimesCalc_init(this, paramfile, nrank, small, for_fitting)
 
     !> Initialized instance on exit.
     type(ChimesCalc), intent(inout) :: this
@@ -65,6 +65,7 @@ contains
     !> Rank parameter (?)
     integer, intent(in) :: nrank
     integer, intent(in) :: small
+    integer, intent(in) :: for_fitting
 
     if (this%is_active_) then
       error stop "This ChimesCalc instance has already been initialized"
@@ -75,7 +76,7 @@ contains
     this%is_active_ = .true.
     active_instances_ = 1
 
-    call f_set_chimes(small)
+    call f_set_chimes(small, for_fitting)
     call f_init_chimes(string2Cstring(paramfile), nrank)
 
   end subroutine ChimesCalc_init

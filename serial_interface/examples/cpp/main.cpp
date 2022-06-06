@@ -122,7 +122,7 @@ int main(int argc, char **argv)
 
     // Compute ChIMES energy, force, and stress
 
-    serial_chimes_interface chimes(is_small);        // Create an instance of the serial interface
+    serial_chimes_interface chimes(is_small, true);        // Create an instance of the serial interface
 
     chimes.init_chimesFF(params, 0);    // Initialize
 

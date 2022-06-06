@@ -36,16 +36,27 @@ class simulation_system
 		double get_dist(int i,int j, vector<double> & rij);
 		double get_dist(int i,int j);
 
-		void init(vector<string> & atmtyps, vector<double> & x_in, vector<double> & y_in, vector<double> & z_in, vector<double> & cella_in, vector<double> & cellb_in, vector<double> & cellc_in, double max_2b_cut, bool small = false);
+		void init(vector<string> & atmtyps,
+                  vector<double> & x_in, 
+                  vector<double> & y_in, 
+                  vector<double> & z_in, 
+                  vector<double> & cella_in, 
+                  vector<double> & cellb_in, 
+                  vector<double> & cellc_in, 
+                  double max_2b_cut, 
+                  bool small = false,
+                  bool is_for_fitting = false
+                  );
 		void set_atomtyp_indices(vector<string> & type_list);
 		void copy(simulation_system & to);
 		void reorient();
 		void build_layered_system(vector<string> & atmtyps, vector<int> & poly_orders, double max_2b_cut, double max_3b_cut, double max_4b_cut);
 		void build_neigh_lists(vector<int> & poly_orders, vector<vector<int> > & neighlist_2b, vector<vector<int> > & neighlist_3b, vector<vector<int> > & neighlist_4b, double max_2b_cut, double max_3b_cut, double max_4b_cut);
 		void run_checks(const vector<double>& max_cuts, vector<int>&poly_orders);
+        void print_bad(int traj_bad_flag);       // Print the BAD_CONFIGS files
 
-
-		bool allow_replication;	// If true, replicates coordinates prior to calculation
+		bool allow_replication;	    // If true, replicates coordinates prior to calculation
+        bool for_fitting;           // If true, produces special trajectory files used by the active learning driver
 
 		int n_replicates; // number of "real" replicate layers to make
 		int n_layers;     // number of ghost layers to make
@@ -68,8 +79,10 @@ class simulation_system
 		
 	private: 
 		
-		vector<double>    hmat;        // System h-matrix
-		vector<double>    invr_hmat;   // Inverse h-matrix
+        
+        bool ever_called_before;        // Was this class ever called before?
+		vector<double>    hmat;         // System h-matrix
+		vector<double>    invr_hmat;    // Inverse h-matrix
 
 		// Used by both sys and neigh coordinates
 
@@ -86,6 +99,16 @@ class simulation_system
 		double extent_x;    // Length of projection of the rotated cell a onto the x axis
 		double extent_y;    // Length of projection of the rotated cell b onto the y axis
 		double extent_z;    // Length of projection of the rotated cell c onto the z axis	
+
+        // Onlyl used when for_fitting is true
+        
+        ofstream BAD_CONFIGS_1;	// Configs where r_ij < r_cut,in 
+        ofstream BAD_CONFIGS_2;	// Configs where r_ij < r_cut,in +d_penalty
+        ofstream BAD_CONFIGS_3; // All other configs, but only printed every fit_traj_print_frq frames
+        
+        int traj_bad_flag;      // A flag which determines what the worst type of pair is in the trajectory (in terms of the above BAD_CONFIGS files)
+        void print_bad(ofstream & tmp_ofstream); // Overloaded
+    
 };
 
 
@@ -93,48 +116,49 @@ class serial_chimes_interface : public chimesFF
 {
     public:
 
-        serial_chimes_interface(bool small = true);
+        serial_chimes_interface(bool small = true, bool is_for_fitting = false);
         ~serial_chimes_interface();
 		
-	bool allow_replication;	// If true, replicates coordinates prior to calculation
-           
-	void    init_chimesFF(string chimesFF_paramfile, int rank);
+	    bool allow_replication;	// If true, replicates coordinates prior to calculation
+        bool for_fitting;       // If true, produces special trajectory files used by the active learning driver
+               
+	    void    init_chimesFF(string chimesFF_paramfile, int rank);
         void    calculate(vector<double> & x_in, vector<double> & y_in, vector<double> & z_in, vector<double> & cella_in, vector<double> & cellb_in, vector<double> & cellc_in, vector<string> & atmtyps, double & energy, vector<vector<double> > & force, vector<double> & stress);
 
     private:
 
-	simulation_system sys;		// Input system
-	simulation_system neigh;	// Re-oriented ss
-        vector<string>    type_list;   // A list of possible unique atom types and thier corresponding numerical index, per the parameter file
+	    simulation_system sys;          // Input system
+	    simulation_system neigh;        // Re-oriented ss
+        vector<string>    type_list;    // A list of possible unique atom types and thier corresponding numerical index, per the parameter file
 
         double max_2b_cut;    // Maximum 2-body outer cutoff
         double max_3b_cut;    // Maximum 3-body outer cutoff
         double max_4b_cut;    // Maximum 4-body outer cutoff
-
+        
         vector<vector<int> > neighlist_2b;    // [real atom index][list of real/ghost atom neighbors]
         vector<vector<int> > neighlist_3b;    // [interaction set index][list of 3 atoms within interaction range] -- currently unused
         vector<vector<int> > neighlist_4b;    // [interaction set index][list of 4 atoms within interaction range] -- currently unused
-
+        
         // Pointers, etc for chimes calculator interfacing (2-body only for now)
         // To set up for many body calculations, see the LAMMPS implementation
-
+        
         double                     dist;
         vector        <double>     dist_3b;
         vector        <double>     dist_4b;
-
+        
         vector        <double>     dr;
         vector<vector<double> >    dr_3b;
         vector<vector<double> >    dr_4b;
-
+        
         vector<vector<double*> >   force_ptr_2b;
         vector<vector<double*> >   force_ptr_3b;
         vector<vector<double*> >   force_ptr_4b;
-
+        
         vector<int>                typ_idxs_2b;
         vector<int>                typ_idxs_3b;
         vector<int>                typ_idxs_4b;
-
-	void build_neigh_lists(vector<string> & atmtyps, vector<double> & x_in, vector<double> & y_in, vector<double> & z_in, vector<double> & cella_in, vector<double> & cellb_in, vector<double> & cellc_in);
+        
+	    void build_neigh_lists(vector<string> & atmtyps, vector<double> & x_in, vector<double> & y_in, vector<double> & z_in, vector<double> & cella_in, vector<double> & cellb_in, vector<double> & cellc_in);
 };
 
 #endif

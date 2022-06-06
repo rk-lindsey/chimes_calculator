@@ -13,7 +13,8 @@
 
 int main (int argc, char **argv) 
 {
-	int small = 0;	// 0 = false, 1 = true
+	int small       = 0; // 0 = false, 1 = true
+	int for_fitting = 0; // 0 = false, 1 = true
 	
   if ((argc != 4)&&(argc !=3))
   {
@@ -56,7 +57,7 @@ int main (int argc, char **argv)
     atom[i] = atom_types[i];
   }
   fclose(fconf);
-  set_chimes_serial(small);
+  set_chimes_serial(small, for_fitting);
   
   printf("Read args:\n");
   for (i=1; i<argc; i++)

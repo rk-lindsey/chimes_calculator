@@ -1423,10 +1423,24 @@ inline void chimesFF::get_penalty(const double dx, const int & pair_idx, double 
 
     E_penalty    = 0.0;
     force_scalar = 1.0;
+    
+    
+    // Keep track of how bad this atom pair is
+
+    if (dx < chimes_2b_cutoff[pair_idx][0])
+        traj_bad_flag = 1;
+    else if (dx - penalty_params[0] < chimes_2b_cutoff[pair_idx][0])
+        traj_bad_flag = 2; 
+    else
+        traj_bad_flag = 3;
+    
+
+    // Calculate the penalty potential
 
     if (dx - penalty_params[0] < chimes_2b_cutoff[pair_idx][0])
 
         r_penalty = chimes_2b_cutoff[pair_idx][0] + penalty_params[0] - dx;
+    
 
     if ( r_penalty > 0.0 )
     {
@@ -1434,14 +1448,12 @@ inline void chimesFF::get_penalty(const double dx, const int & pair_idx, double 
 
         force_scalar = -3.0 * r_penalty * r_penalty * penalty_params[1];
 
-        if (rank == 0)
-        {
-            cout << "chimesFF: " << "Adding penalty in 2B Cheby calc, r < rmin+penalty_dist " << fixed
-                 << dx << " "
-                 << chimes_2b_cutoff[pair_idx][0] + penalty_params[0]
-                 << " pair type: " << pair_idx << endl;
-            cout << "chimesFF: " << "\t...Penalty potential = "<< E_penalty << endl;
-        }
+        cout << "chimesFF: " << "Adding penalty in 2B Cheby calc, r < rmin+penalty_dist " << fixed
+             << dx << " "
+             << chimes_2b_cutoff[pair_idx][0] + penalty_params[0]
+             << " pair type: " << pair_idx << endl;
+        cout << "chimesFF: " << "\t...Penalty potential = "<< E_penalty << endl;
+
     }
 }
 
@@ -1551,7 +1563,7 @@ void chimesFF::compute_1B(const int typ_idx, double & energy )
     energy += energy_offsets[typ_idx];
 }
 
-void chimesFF::compute_2B(const double dx, const vector<double> & dr, const vector<int> typ_idxs, vector<vector<double* > > force, vector<double*> stress, double & energy )
+void chimesFF::compute_2B(const double dx, const vector<double> & dr, const vector<int> typ_idxs, vector<vector<double* > > force, vector<double*> stress, double & energy)
 {
     // Compute 2b (input: 2 atoms or distances, corresponding types... outputs (updates) force, acceleration, energy, stress
     //
@@ -2192,4 +2204,9 @@ void chimesFF::set_atomtypes(vector<string> & type_list)
 int chimesFF::get_atom_pair_index(int pair_id)
 {
 	return atom_int_pair_map[pair_id];
+}
+
+int chimesFF::get_traj_bad_flag()
+{
+    return traj_bad_flag;
 }

@@ -49,13 +49,15 @@ import chimescalc_serial_py
 
 # Read in the parameter and coordinate filename 
 
-small = False
+small       = False
+for_fitting = False # Not having this read in from args, for now
 
 
 
 param_file =          sys.argv[1]  # parameter file
 coord_file =          sys.argv[2]  # coordinate file
 small      = str2bool(sys.argv[3]) # allow replicates?
+ 
 	
 print("Read args:")
 
@@ -64,10 +66,8 @@ for i in range(len(sys.argv)-1):
 	
 # Initialize the ChIMES calculator curr_path should be /.../usr/WS2/rlindsey/chimes_calculator-fork/serial_interface/tests/
 
-print("HERE:",os.getcwd)
-
 chimescalc_serial_py.chimes_wrapper = chimescalc_serial_py.init_chimes_wrapper("libchimescalc_dl.so")
-chimescalc_serial_py.set_chimes(small)
+chimescalc_serial_py.set_chimes(small, for_fitting)
 
 rank = 0
 

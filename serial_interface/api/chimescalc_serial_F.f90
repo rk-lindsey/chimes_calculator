@@ -8,9 +8,7 @@
 
       interface
 
-        subroutine f_calculate_chimes (natom, xc, yc, zc, cptr, ca,  &
-      &            cb, cc, energy, fx, fy, fz, stress)  &
-      &            bind (C, name='calculate_chimes')
+        subroutine f_calculate_chimes (natom, xc, yc, zc, cptr, ca,  cb, cc, energy, fx, fy, fz, stress)  bind (C, name='calculate_chimes')
           use, intrinsic :: ISO_C_binding, only : C_char, C_ptr, C_int, C_double
           implicit none
           integer(C_int), value :: natom
@@ -23,15 +21,14 @@
           real(C_double) :: stress(9)
         end subroutine f_calculate_chimes
 
-        subroutine f_set_chimes(small) bind &
-      &            (C, name='set_chimes_serial')
+        subroutine f_set_chimes(small, for_fitting) bind (C, name='set_chimes_serial')
           use, intrinsic :: ISO_C_binding, only : C_ptr, C_int
           implicit none
           integer(C_int), value :: small
+          integer(C_int), value :: for_fitting
         end subroutine f_set_chimes
 
-        subroutine f_init_chimes(param_file, rank) &
-      &            bind (C, name='init_chimes_serial')
+        subroutine f_init_chimes(param_file, rank) bind (C, name='init_chimes_serial')
           import C_int, C_char
           integer(C_int), intent(in) :: rank
           character (kind=C_char), dimension(*) :: param_file

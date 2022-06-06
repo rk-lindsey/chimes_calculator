@@ -82,7 +82,7 @@ void   a_cross_b(const vector<double> & a, const vector<double> & b, vector<doub
     cross[2] =    (a[0]*b[1] - a[1]*b[0]);
     return;
 }
-void set_hmat(const vector<double> & cell_a,const vector<double> & cell_b, const vector<double> & cell_c, vector<double> & hmat, vector<double> & invr_hmat, int replicates)
+void   set_hmat(const vector<double> & cell_a,const vector<double> & cell_b, const vector<double> & cell_c, vector<double> & hmat, vector<double> & invr_hmat, int replicates)
 {
 	// Define the h-matrix (stores the cell vectors locally)
 
@@ -118,10 +118,19 @@ void set_hmat(const vector<double> & cell_a,const vector<double> & cell_b, const
 simulation_system::simulation_system()
 {
     hmat     .resize(9);
-    invr_hmat.resize(9);
+    invr_hmat.resize(9);   
+    ever_called_before = false;
+    
 }
 simulation_system::~simulation_system()
-{}
+{
+    if (for_fitting)
+    {
+        BAD_CONFIGS_1.close();
+        BAD_CONFIGS_2.close();
+        BAD_CONFIGS_3.close();
+    }    
+}
 void simulation_system::set_atomtyp_indices(vector<string> & type_list)
 {
     sys_atmtyp_indices.resize(n_ghost);
@@ -146,12 +155,26 @@ void simulation_system::set_atomtyp_indices(vector<string> & type_list)
         }
     }
 }
-
-void simulation_system::init(vector<string> & atmtyps, vector<double> & x_in, vector<double> & y_in, vector<double> & z_in, vector<double> & cella_in, vector<double> & cellb_in, vector<double> & cellc_in, double max_2b_cut, bool small)
+void simulation_system::init(vector<string> & atmtyps, vector<double> & x_in, vector<double> & y_in, vector<double> & z_in, vector<double> & cella_in, vector<double> & cellb_in, vector<double> & cellc_in, double max_2b_cut, bool small, bool is_for_fitting)
 {
+    
 	allow_replication = small;
 	max_cut = max_2b_cut;
 	static bool called_before = false;
+    
+    for_fitting = is_for_fitting;
+
+    //////////////////////////////////////////
+    // STEP 0: Set up trajectory files if needed
+    //////////////////////////////////////////
+
+    if (for_fitting && !ever_called_before)
+    {
+            BAD_CONFIGS_1.open("traj_bad_r.lt.rin.xyz");
+            BAD_CONFIGS_2.open("traj_bad_r.lt.rin+dp.xyz");
+            BAD_CONFIGS_3.open("traj_bad_r.ge.rin+dp_dftbfrq.xyz");
+    }
+    ever_called_before = true;
 
     //////////////////////////////////////////
     // STEP 1: Copy the system
@@ -861,7 +884,6 @@ double simulation_system::get_dist(int i,int j)
 
     return get_dist(i,j,rij);
 }
-
 void simulation_system::run_checks(const vector<double>& max_cuts, vector<int>&poly_orders)
 {
 	// Sanity check 1: Are the cell vectors long enough?
@@ -903,9 +925,39 @@ void simulation_system::run_checks(const vector<double>& max_cuts, vector<int>&p
 	}
 }
 
+void simulation_system::print_bad(ofstream & tmp_ofstream)
+{
+    // Print the headers
+    
+    tmp_ofstream << n_atoms << endl;
+    tmp_ofstream << "NON_ORTHO" << " ";
+    for(int i=0; i<9; i++)
+       tmp_ofstream << hmat[i] << " ";
+    tmp_ofstream << endl;
+    
+    // Print coordinates
+    
+    for (int i=0; i<n_atoms; i++)
+        tmp_ofstream << sys_atmtyps[i] << " " << sys_x[i] << " " << sys_y[i] << " " << sys_z[i] << endl;
+}
+void simulation_system::print_bad(int traj_bad_flag)
+{
+    if (traj_bad_flag == 1)
+        print_bad(BAD_CONFIGS_1);
+    else if (traj_bad_flag == 2)
+        print_bad(BAD_CONFIGS_2);
+    else if (traj_bad_flag == 3)
+          print_bad(BAD_CONFIGS_3);
+    else
+    {
+        cout << "ERROR: Bad traj_bad_flag in simulation_system::print_bad(): " << traj_bad_flag << endl;
+        exit(0);
+    }
+}
+
 // serial_chimes_interface member functions
 
-serial_chimes_interface::serial_chimes_interface(bool small)
+serial_chimes_interface::serial_chimes_interface(bool small, bool is_for_fitting)
 {
 	// For small systems, allow explicit replication prior to ghost atom construction
 	// This should ONLY be done for perfectly crystalline systems
@@ -933,6 +985,8 @@ serial_chimes_interface::serial_chimes_interface(bool small)
     max_2b_cut = 0.0;
     max_3b_cut = 0.0;
     max_4b_cut = 0.0;
+    
+    for_fitting = is_for_fitting;
 
 }
 serial_chimes_interface::~serial_chimes_interface()
@@ -966,7 +1020,7 @@ void serial_chimes_interface::calculate(vector<double> & x_in, vector<double> & 
     max_3b_cut = max_cutoff_3B(true) ;
     max_4b_cut = max_cutoff_4B(true) ;
 	
-    sys.init(atmtyps, x_in, y_in, z_in, cella_in, cellb_in, cellc_in, max_2b_cut, allow_replication);	
+    sys.init(atmtyps, x_in, y_in, z_in, cella_in, cellb_in, cellc_in, max_2b_cut, allow_replication, for_fitting);	
 	
     sys.build_layered_system(atmtyps,poly_orders, max_2b_cut, max_3b_cut, max_4b_cut);
 
@@ -989,6 +1043,9 @@ void serial_chimes_interface::calculate(vector<double> & x_in, vector<double> & 
     ////////////////////////
     // interate over 1- and 2b's
     ////////////////////////
+    
+    int overall_traj_bad_flag = 4;  // Set to a large meangless number - will only get updated if new number is smaller.
+    int this_traj_bad_flag;
 
     for(int i=0; i<sys.n_atoms; i++)
     {
@@ -1009,8 +1066,19 @@ void serial_chimes_interface::calculate(vector<double> & x_in, vector<double> & 
                 force_ptr_2b[1][idx] = &force[sys.sys_rep_parent[sys.sys_parent[jj]]][idx];     
             }
             compute_2B(dist, dr, typ_idxs_2b, force_ptr_2b, stensor, energy);
+            
+            if (for_fitting)
+            {
+                this_traj_bad_flag = get_traj_bad_flag();
+            
+                if (this_traj_bad_flag < overall_traj_bad_flag)
+                    overall_traj_bad_flag = this_traj_bad_flag;
+            }
         }
     }
+    
+    if (for_fitting)
+        sys.print_bad(overall_traj_bad_flag);
 
     ////////////////////////
     // interate over 3b's

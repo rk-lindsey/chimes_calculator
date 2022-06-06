@@ -8,7 +8,7 @@
 extern "C" {
 #endif 
 
-void set_chimes_serial(int small);
+void set_chimes_serial(int small, int for_fitting);
 void init_chimes_serial(char *param_file, int *rank);
 void calculate_chimes(int natom, double *xc, double *yc, double *zc, char *atom_types[], double ca[3], double cb[3], double cc[3], double *energy, double fx[], double fy[], double fz[], double stress[9]); 
 #ifdef __cplusplus

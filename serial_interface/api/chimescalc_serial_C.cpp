@@ -22,7 +22,7 @@ using namespace std;
 static  serial_chimes_interface chimes, *chimes_ptr;
 
 
-void set_chimes_serial(int small=1)
+void set_chimes_serial(int small=1, int for_fitting=0)
 {
 	if ((small!=0)&&(small!=1))
 	{
@@ -32,6 +32,7 @@ void set_chimes_serial(int small=1)
 	}
 	chimes_ptr = &chimes;
 	chimes_ptr->allow_replication = small;
+    chimes_ptr->for_fitting = for_fitting;
 }
 
 void init_chimes_serial(char *param_file, int *rank)

@@ -15,15 +15,17 @@ program test_F08_api
   character(1024) :: coord_file, param_file
   CHARACTER ( len = 100 ) :: wq_char
   integer :: iatom, natom
-  integer :: small
+  integer :: small, for_fitting
   real(dp) :: latvecs(3, 3), stress(3, 3)
   real(dp) :: energy
   real(dp), allocatable :: coords(:,:), forces(:,:)
   character(len=10), allocatable :: atom_types(:)
 
 
-  small = 0
-  io_num = command_argument_count()
+  small       = 0
+  for_fitting = 0
+  io_num      = command_argument_count()
+  
 !  if (io_num < 2) then
 !    print *, "To run: ./test_F08.x <parameter file> <xyz config. file>"
 !    print *, "Exiting code."
@@ -61,7 +63,7 @@ program test_F08_api
   stress(:,:) = 0.0_dp
 
   ! Initialize ChiMES calculator
-  call ChimesCalc_init(chimes, trim(param_file), 1, small)
+  call ChimesCalc_init(chimes, trim(param_file), 1, small, for_fitting)
 
   ! Set that atom types. You need this call only once (unless atom types change)
   call chimes%set_atom_types(atom_types)
