@@ -95,8 +95,6 @@ contains
 
     integer :: nAtom
     
-    print *, "SANFDSFS", input%chimesFit, input%chimesFile
-
     call TChimesCalc_init(this%chimesCalc, input%chimesFile, 0, 0, input%chimesFit)
     nAtom = size(species0)
     allocate(this%energyPerAtom(nAtom), source=0.0_dp)

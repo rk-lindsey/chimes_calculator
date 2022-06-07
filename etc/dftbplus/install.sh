@@ -1,11 +1,5 @@
 #!/bin/bash
 
-################################
-# Get relevant paths
-################################
-
-chimes_path=`realpath ../../`
-dftb_path=`realpath ./build/dftbplus-22.1/`
 
 ################################
 # Download the dftb+ source code
@@ -18,18 +12,26 @@ tar -xvf dftbplus-22.1.tar.xz
 cd dftbplus-22.1
 
 ################################
+# Get relevant paths
+################################
+
+chimes_path=`realpath ../../../../`
+dftb_path=`realpath .`
+
+################################
 # Create a symlink to the ChIMES code
 ################################
 
-ln -s $chimes_calc ${dftb_path}/external/chimes/origin/
+rm -rf ${dftb_path}/external/chimes/origin/*
+ln -s ${chimes_path}/* ${dftb_path}/external/chimes/origin/
 
 ################################
 # Replace the relavant dftbplus files
 ################################
 
-cp ${chimes_path}/etc/dftbplus/etc/chimes.F90    ${dftb_path}/src/dftbp/extlibs
-cp ${chimes_path}/etc/dftbplus/etc/chimesrep.F90 ${dftb_path}/src/dftbp/dftb/repulsive
-cp ${chimes_path}/etc/dftbplus/etc/parser.F90   ${dftb_path}/src/dftbp/dftbplus
+cp ${chimes_path}/etc/dftbplus/etc/chimes.F90    ${dftb_path}/src/dftbp/extlibs/chimes.F90
+cp ${chimes_path}/etc/dftbplus/etc/chimesrep.F90 ${dftb_path}/src/dftbp/dftb/repulsive/chimesrep.F90
+cp ${chimes_path}/etc/dftbplus/etc/parser.F90    ${dftb_path}/src/dftbp/dftbplus/parser.F90 
 
 
 ################################
