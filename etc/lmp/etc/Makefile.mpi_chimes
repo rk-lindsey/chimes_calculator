@@ -6,19 +6,19 @@ SHELL = /bin/sh
 # compiler/linker settings
 # specify flags and libraries needed for your compiler
 
-CC =		mpicxx
-CCFLAGS =	-O3 -std=c++11 -restrict
-SHFLAGS =	-fPIC
-DEPFLAGS =	-M
+CC         = mpiicpc
+CCFLAGS    = -O3 -std=c++11 -restrict
+SHFLAGS    = -fPIC
+DEPFLAGS   = -M
 
-LINK =		mpicxx
-LINKFLAGS =	-O3  -std=c++11
-LIB = 
-SIZE =		size
+LINK       = mpiicpc
+LINKFLAGS  = -O3  -std=c++11
+LIB        = 
+SIZE       = size
 
-ARCHIVE =	ar
-ARFLAGS =	-rc
-SHLIBFLAGS =	-shared
+ARCHIVE    = ar
+ARFLAGS    = -rc
+SHLIBFLAGS = -shared
 
 # ---------------------------------------------------------------------
 # LAMMPS-specific settings, all OPTIONAL
@@ -28,7 +28,7 @@ SHLIBFLAGS =	-shared
 # LAMMPS ifdef settings
 # see possible settings in Section 3.5 of the manual
 
-LMP_INC =	-DLAMMPS_GZIP -DLAMMPS_MEMALIGN=64  # -DLAMMPS_CXX98
+LMP_INC    = -DLAMMPS_GZIP -DLAMMPS_MEMALIGN=64  # -DLAMMPS_CXX98
 
 # MPI library
 # see discussion in Section 3.4 of the manual
@@ -39,9 +39,10 @@ LMP_INC =	-DLAMMPS_GZIP -DLAMMPS_MEMALIGN=64  # -DLAMMPS_CXX98
 # PATH = path for MPI library
 # LIB = name of MPI library
 
-MPI_INC =       -DMPICH_SKIP_MPICXX -DOMPI_SKIP_MPICXX=1
-MPI_PATH = 
-MPI_LIB =	
+
+MPI_INC     = -DMPICH_SKIP_MPICXX -DOMPI_SKIP_MPICXX=1 -I${I_MPI_ROOT}/include
+MPI_PATH    = -L${I_MPI_ROOT}/lib -L${I_MPI_ROOT}/lib/release
+MPI_LIB     = 
 
 # FFT library
 # see discussion in Section 3.5.2 of manual
@@ -50,9 +51,9 @@ MPI_LIB =
 # PATH = path for FFT library
 # LIB = name of FFT library
 
-FFT_INC =    	
-FFT_PATH = 
-FFT_LIB =	
+FFT_INC     =    	
+FFT_PATH    = 
+FFT_LIB     =	
 
 # JPEG and/or PNG library
 # see discussion in Section 3.5.4 of manual
@@ -61,9 +62,9 @@ FFT_LIB =
 # PATH = path(s) for JPEG library and/or PNG library
 # LIB = name(s) of JPEG library and/or PNG library
 
-JPG_INC =       
-JPG_PATH = 	
-JPG_LIB =	
+JPG_INC     =       
+JPG_PATH    = 	
+JPG_LIB     =	
 
 # ---------------------------------------------------------------------
 # build rules and dependencies
