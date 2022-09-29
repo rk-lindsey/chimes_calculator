@@ -14,6 +14,34 @@ PREFX=${2-$BUILD} # Empty by default
 
 ./uninstall.sh $PREFX
 
+
+# Load modules
+
+# Determine computing environment and attempt to load module files automatically
+
+lochost=`hostname`
+hosttype=""
+
+if [[ $lochost == *"arc-ts.umich.edu"* ]]; then
+    hosttype=UM-ARC
+elif [[ $lochost == *"quartz"* ]]; then
+    hosttype=LLNL-LC
+else
+    echo "WARNING: Host type ($hosttype) unknown"
+    echo "Be sure to load modules/conifugre compilers by hand."
+fi
+
+echo "Found host type: $hosttype"
+
+if [[ "$hosttype" == "LLNL-LC" ]] ; then
+    source modfiles/LLNL-LC.mod
+elif [[ "$hosttype" == "UM-ARC" ]] ; then
+    source modfiles/UM-ARC.mod
+fi
+
+module list
+
+
 # Move into build directory 
 
 mkdir build
