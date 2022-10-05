@@ -6,21 +6,31 @@ Using the ChIMES Calculator with LAMMPS
 
 We are currently working toward ChIMES calculator implementation in `LAMMPS <https://lammps.sandia.gov>`_ as a USER package. In the interim, the following provides a guide to implementing the ChIMES calculator as a LAMMPS pairstyle.
 
-.. Note::
 
-    This example assumes users have downloaded the 29 Oct 2020 release of LAMMPS (stable version as of 10/29/20), which can be downloaded `here <https://lammps.sandia.gov/download.html>`_. 
 
 Quick start
 ^^^^^^^^^^^^^^^^
 
 Provided a system with a C++11-compatible compiler and an MPI compatible compiler are available, LAMMPS can be downloaded, installed, linked to ChIMES, and compiled all at once by navigating to ``etc/lmp``, adding Intel compilers to your path  and executing ``./install.sh``. Once complete, the installation can be tested by navigating to ``etc/lmp/tests`` and running the example via ``../exe/lmp_mpi_chimes -i in.lammps``. 
 
-The install script will automatically detect whether users are on UM (Greatlakes) or LLNL (Quartz/Borax(o) HPC and handle Intel compiler environment setup automatically. For all other users, note that Intel oneapi compilers (which are now free) can be used to properly configure your enviroment for all Intel capabilities (e.g., icc, mpiicpc, mkl, etc.) - simply locate and execute the setvars.sh script within your Intel installation.
+As with installation of the ChIMES Calculator itself, if you are on a HPC using module files, you may need to load them first. Module files are already configured for a handful of HPC - inspect the contents of modfiles to see if
+yours is listed. If it is (e.g., LLNL-LC.mod), execute ``export hosttype=LLNL-LC; ./install.sh`` to install. Otherwise, load the appropriate modules by hand before running the
+install script.
+
+Note that Intel oneapi compilers (which are now free) can be used to properly configure your enviroment for all Intel capabilities (e.g., icc, mpiicpc, mkl, etc.) - simply locate and execute the setvars.sh script within your Intel installation.
 
 
+-----
 
-Compiling
-^^^^^^^^^^^^^^^^
+Detailed Compilation Overview
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+
+.. Note::
+
+    This example assumes users have downloaded the 29 Oct 2020 release of LAMMPS (stable version as of 10/29/20), which can be downloaded `here <https://lammps.sandia.gov/download.html>`_. 
+    
+    
 
 To integrate the ChIMES calculator in LAMMPS, locate the following files, and place them in the following destination among the LAMMPS source code:
 
