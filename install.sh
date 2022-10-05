@@ -27,8 +27,8 @@ if [[ $lochost == *"arc-ts.umich.edu"* ]]; then
 elif [[ $lochost == *"quartz"* ]]; then
     hosttype=LLNL-LC
 elif [[ $lochost == *"login"* ]]; then
-    read -p "Are you running on JHU ARCH's Rockfish? (y/n)" JHU_ARC
-    if [ "$JHU_ARC" == "y"] ; then
+    read -p "Are you running on JHU ARCH's Rockfish? (y/n)" JHU_ARCH
+    if [[ "$JHU_ARCH" == "y" ]]; then
         hosttype=JHU-ARCH
     else
         echo "WARNING: Host type ($hosttype) unknown"
