@@ -13,7 +13,11 @@ We are currently working toward ChIMES calculator implementation in `LAMMPS <htt
 Quick start
 ^^^^^^^^^^^^^^^^
 
-Provided a system with a C++11-compatible compiler and an MPI compatible compiler are available, LAMMPS can be downloaded, installed, linked to ChIMES, and compiled all at once by navigating to ``etc/lmp`` and executing ``./install.sh``. Once complete, the installation can be tested by navigating to ``etc/lmp/tests`` and running the example via ``../exe/lmp_mpi_chimes -i in.lammps``.
+Provided a system with a C++11-compatible compiler and an MPI compatible compiler are available, LAMMPS can be downloaded, installed, linked to ChIMES, and compiled all at once by navigating to ``etc/lmp``, adding Intel compilers to your path  and executing ``./install.sh``. Once complete, the installation can be tested by navigating to ``etc/lmp/tests`` and running the example via ``../exe/lmp_mpi_chimes -i in.lammps``. 
+
+The install script will automatically detect whether users are on UM (Greatlakes) or LLNL (Quartz/Borax(o) HPC and handle Intel compiler environment setup automatically. For all other users, note that Intel oneapi compilers (which are now free) can be used to properly configure your enviroment for all Intel capabilities (e.g., icc, mpiicpc, mkl, etc.) - simply locate and execute the setvars.sh script within your Intel installation.
+
+
 
 Compiling
 ^^^^^^^^^^^^^^^^
