@@ -26,9 +26,17 @@ if [[ $lochost == *"arc-ts.umich.edu"* ]]; then
     hosttype=UM-ARC
 elif [[ $lochost == *"quartz"* ]]; then
     hosttype=LLNL-LC
+elif [[ $lochost == *"login"* ]]; then
+    read -p "Are you running on JHU ARCH's Rockfish? (y/n)" JHU_ARCH
+    if [[ "$JHU_ARCH" == "y" ]]; then
+        hosttype=JHU-ARCH
+    else
+        echo "WARNING: Host type ($hosttype) unknown"
+        echo "Be sure to load modules/configure compilers by hand."
+    fi
 else
     echo "WARNING: Host type ($hosttype) unknown"
-    echo "Be sure to load modules/conifugre compilers by hand."
+    echo "Be sure to load modules/configure compilers by hand."
 fi
 
 echo "Found host type: $hosttype"
@@ -37,6 +45,11 @@ if [[ "$hosttype" == "LLNL-LC" ]] ; then
     source modfiles/LLNL-LC.mod
 elif [[ "$hosttype" == "UM-ARC" ]] ; then
     source modfiles/UM-ARC.mod
+elif [[ "$hosttype" == "JHU-ARCH" ]] ; then
+    module unload gcc/9.3.0 openmpi/3.1.6 git/2.28.0
+    source modfiles/JHU-ARCH.mod
+    ICC=`which icc`
+    MPI=`which mpicxx`
 fi
 
 module list
