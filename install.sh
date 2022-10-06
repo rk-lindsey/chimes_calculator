@@ -1,10 +1,19 @@
 #!/bin/bash
 
 # Builds all relevant chimes_calculator executables/library files 
-# Run with:
-# ./install.sh 
-# or
-# ./install.sh <debug option (0 or 1)> <install prefix (full path)>
+#
+# If working on a machine with a corresponding .mod file in the modfiles folder
+# (e.g., modfiles/LLNL-LC.mod), execute with, e.g.:
+#
+#   export hosttype=LLNL-LC; ./install.sh
+# 
+# Otherwise, load necessary modules manually and execute with 
+# 
+#   ./install.sh
+# 
+# Note that additional arguments can be specified, i.e.:
+#
+#   ./install.sh <debug option (0 or 1)> <install prefix (full path)>
 
 BUILD=`pwd`/build
 DEBUG=${1-0}  # False (0) by default.
@@ -14,42 +23,30 @@ PREFX=${2-$BUILD} # Empty by default
 
 ./uninstall.sh $PREFX
 
+# Load modules based on user-specified host-type
 
-# Load modules
-
-# Determine computing environment and attempt to load module files automatically
-
-lochost=`hostname`
-hosttype=""
-
-if [[ $lochost == *"arc-ts.umich.edu"* ]]; then
-    hosttype=UM-ARC
-elif [[ $lochost == *"quartz"* ]]; then
-    hosttype=LLNL-LC
-elif [[ $lochost == *"login"* ]]; then
-    read -p "Are you running on JHU ARCH's Rockfish? (y/n)" JHU_ARCH
-    if [[ "$JHU_ARCH" == "y" ]]; then
-        hosttype=JHU-ARCH
-    else
-        echo "WARNING: Host type ($hosttype) unknown"
-        echo "Be sure to load modules/configure compilers by hand."
-    fi
-else
-    echo "WARNING: Host type ($hosttype) unknown"
-    echo "Be sure to load modules/configure compilers by hand."
-fi
-
-echo "Found host type: $hosttype"
-
-if [[ "$hosttype" == "LLNL-LC" ]] ; then
+if [ ! -v hosttype ] ; then
+    echo "No hosttype specified"
+    echo "Be sure to load modules/configure compilers by hand before running this script!"
+elif [[ "$hosttype" == "LLNL-LC" ]] ; then
     source modfiles/LLNL-LC.mod
 elif [[ "$hosttype" == "UM-ARC" ]] ; then
     source modfiles/UM-ARC.mod
 elif [[ "$hosttype" == "JHU-ARCH" ]] ; then
-    module unload gcc/9.3.0 openmpi/3.1.6 git/2.28.0
     source modfiles/JHU-ARCH.mod
     ICC=`which icc`
-    MPI=`which mpicxx`
+    MPI=`which mpicxx`    
+else
+    echo ""
+    echo "ERROR: Unknown hosttype ($hosttype) specified"
+    echo ""
+
+    echo "Valid options are:"
+    for i in `ls modfiles`; do echo "   ${i%.mod}"; done
+    echo ""
+    echo "Please run again with: export hosttype=<host type>; ./install.sh"
+    echo "Or manually load modules and run with: ./install.sh"
+    exit 0
 fi
 
 module list
