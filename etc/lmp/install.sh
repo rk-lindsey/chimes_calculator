@@ -28,33 +28,36 @@ cp etc/pair.{h,cpp} 			build/lammps_stable_29Oct2020/src
 cp etc/Makefile.mpi_chimes 		build/lammps_stable_29Oct2020/src/MAKE
 
 
-# Determine computing environment and attempt to load module files automatically
-
-lochost=`hostname`
-hosttype=""
-
-if [[ $lochost == *"arc-ts.umich.edu"* ]]; then
-    hosttype=UM-ARC
-elif [[ $lochost == *"quartz"* ]]; then
-    hosttype=LLNL-LC
-else
-    echo "WARNING: Host type ($hosttype) unknown"
-    echo "Be sure to load modules/conifugre compilers by hand."
-fi
-
-echo "Found host type: $hosttype"
-
 # Load module files and configure compilers
 # Note: If using intel compilers from after Jan. 2021 (e.g.,) have access to oneapi
 #       this means instead of loading inidividual modules for mpi, mkl, etc, can just execute
 #       load the intel (e.g., icc) module and run the the setvars.sh command, e.g. located at 
 #       /sw/pkgs/arc/intel/2022.1.2/setvars.sh --also avail for free
 
-if [[ "$hosttype" == "LLNL-LC" ]] ; then
+if [ ! -v hosttype ] ; then
+    echo "No hosttype specified"
+    echo "Be sure to load modules/configure compilers by hand before running this script!"
+elif [[ "$hosttype" == "LLNL-LC" ]] ; then
     source modfiles/LLNL-LC.mod
 elif [[ "$hosttype" == "UM-ARC" ]] ; then
     source modfiles/UM-ARC.mod
+elif [[ "$hosttype" == "JHU-ARCH" ]] ; then
+    source modfiles/JHU-ARCH.mod
+    ICC=`which icc`
+    MPI=`which mpicxx`    
+else
+    echo ""
+    echo "ERROR: Unknown hosttype ($hosttype) specified"
+    echo ""
+
+    echo "Valid options are:"
+    for i in `ls modfiles`; do echo "   ${i%.mod}"; done
+    echo ""
+    echo "Please run again with: export hosttype=<host type>; ./install.sh"
+    echo "Or manually load modules and run with: ./install.sh"
+    exit 0
 fi
+
 
 module list
 

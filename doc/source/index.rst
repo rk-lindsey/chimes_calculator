@@ -19,6 +19,7 @@ The ChIMES Calculator is developed at Lawrence Livermore National Laboratory wit
 .. toctree::
    :maxdepth: 1
    
+   quick_start
    getting_started
    releases
    chimesFF
