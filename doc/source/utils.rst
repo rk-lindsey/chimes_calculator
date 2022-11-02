@@ -46,7 +46,7 @@ Variables ``CHMS_REPO`` and ``PARAM_FILE`` specify the ``chimes_calculator`` rep
 * A list of the maximum pair distance for each pair type to consider during the scan
 * A scan step size
 
-All input and output distances are in Angstroms, and all energies are provided in kcal/mol. Additionally, note that the penalty function will be included in scan results unless ``PAIRSTART`` is greater than the sum of the pair interaction inner cutoff and the penalty kick-in distance, or if the user has set ``PAIR CHEBYSHEV PENALTY SCALING`` to zero in the parameter file. Similar variables must be set to specify desired 3- and 4-body scans. Note that empty lists can be provided if no scan is desired.
+All input and output distances are in Angstroms, and all energies are provided in kcal/mol. Additionally, note that the penalty function will be included in scan results unless ``PAIRSTART`` is greater than the sum of the pair interaction inner cutoff and the penalty kick-in distance, or if the user has set ``PAIR CHEBYSHEV PENALTY SCALING:`` to zero in the parameter file. Similar variables must be set to specify desired 3- and 4-body scans. Note that empty lists can be provided if no scan is desired.
 
 
 Output
