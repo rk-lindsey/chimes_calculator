@@ -25,9 +25,11 @@ PREFX=${2-$BUILD} # Empty by default
 
 # Load modules based on user-specified host-type
 
-if [ ! -v hosttype ] ; then
-    echo "No hosttype specified"
+if [ -z "$hosttype" ] ; then
+    echo ""
+    echo "WARNING: No hosttype specified"
     echo "Be sure to load modules/configure compilers by hand before running this script!"
+    echo ""
 elif [[ "$hosttype" == "LLNL-LC" ]] ; then
     source modfiles/LLNL-LC.mod
 elif [[ "$hosttype" == "UM-ARC" ]] ; then
@@ -49,7 +51,10 @@ else
     exit 0
 fi
 
-module list
+echo "Detected hosttype: $hosttype"
+if [ ! -z "$hasmod" ] ; then
+    module list
+fi
 
 
 # Move into build directory 
