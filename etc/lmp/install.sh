@@ -87,3 +87,4 @@ echo "Generated the following LAMMPS executable with ChIMES support:"
 echo "${loc}/exe/lmp_mpi_chimes"
 echo "See ${loc}/tests for usage examples"
 echo ""
+

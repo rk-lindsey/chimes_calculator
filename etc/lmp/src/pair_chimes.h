@@ -28,7 +28,7 @@ PairStyle(chimesFF,PairCHIMES); // PairStyle(key, class)
 #include "pair.h"
 
 #include "chimesFF.h"
-#include <vector>
+#include <vector>	
 
 
 /*	Functions required by LAMMPS:
@@ -47,48 +47,48 @@ read_restart_settings		read global settings from restart file
 single				force and energy fo a single pairwise interaction between two atoms
 */
 
-
+	
 namespace LAMMPS_NS
 {
-	class PairCHIMES : public Pair
+	class PairCHIMES : public Pair 
 	{
 	 	public:
-
+			
 			// Variable definitions
-
+			
 			chimesFF chimes_calculator; // chimesFF instance
-
+			
 			char * chimesFF_paramfile;	// ChIMES parameter file
 			
 			std::vector<int> chimes_type;	// For i = LMP atom type indx, chimes_type[i-1] gives the ChIMES parameter file type idx
 			
 			double maxcut_3b;
 			double maxcut_4b;
-
+				
 			int n_3mers;				// number of neighborlist_Xmers entries
 			int n_4mers;
-
+			
 			std::vector<std::vector<int> > neighborlist_3mers;	// custom neighbor list; neighborlist_Xmers[cluster idx][atom in cluster idx]
 			std::vector<std::vector<int> > neighborlist_4mers;
-
+			
 
 			// 2-body vars for chimesFF access
 
 			std::vector        <double>   dr;
-			std::vector<vector <double> > dr_3b;
-			std::vector<vector <double> > dr_4b;
+		    std::vector        <double>   dr_3b;
+		    std::vector        <double >  dr_4b;
 
 			double                        dist;
-			std::vector        <double>   dist_3b;
-			std::vector        <double>   dist_4b;
+			std::vector        <double>   dist_3b;				
+			std::vector        <double>   dist_4b;	
 
-			std::vector<std::vector<double*> > force_ptr_2b;
-			std::vector<std::vector<double*> > force_ptr_3b;
-			std::vector<std::vector<double*> > force_ptr_4b;
+			std::vector<double> force_2b;
+		    std::vector<double> force_3b;
+		    std::vector<double> force_4b;
 
 			std::vector<int> typ_idxs_2b;
 			std::vector<int> typ_idxs_3b;
-			std::vector<int> typ_idxs_4b;
+			std::vector<int> typ_idxs_4b;	
 
 			// Vars for neighlist construction
 
@@ -96,36 +96,36 @@ namespace LAMMPS_NS
 			std::vector <int> tmp_4mer;	
 			
 			// Constructor/Deconstructor
-
+			
 			PairCHIMES(class LAMMPS *);
-
+			
 			virtual ~PairCHIMES();
-
+			
 			// Functions that have been written
 
 			void   settings(int narg, char **arg);
-			void   init_style();
+			void   init_style();	
 			void   coeff(int narg, char **arg);
 			void   allocate();
-			double init_one(int i, int j);
+			double init_one(int i, int j);	
 			void   compute(int eflag, int vflag);
 			void   build_mb_neighlists();
-			double get_dist(int i, int j, vector<double> & dr);
-			double get_dist(int i, int j);
+		    inline double get_dist(int i, int j, double* dr);
+		    inline double get_dist(int i, int j);
 			void   set_chimes_type();
 
-			// Functions I haven't worked on
-
-			void write_restart();
-			void read_restart();
-			void write_restart_settings();
+			// Functions I haven't worked on 
+						
+			void write_restart();		
+			void read_restart();				
+			void write_restart_settings();	
 			void read_restart_settings();
-			void single();
+			void single();	
 
 		};
-}
+}	
 
 
-
+	
 #endif
 #endif

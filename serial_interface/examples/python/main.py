@@ -64,14 +64,12 @@ for i in range(len(sys.argv)-1):
 	
 # Initialize the ChIMES calculator curr_path should be /.../usr/WS2/rlindsey/chimes_calculator-fork/serial_interface/tests/
 
-print("HERE:",os.getcwd)
-
-chimescalc_serial_py.chimes_wrapper = chimescalc_serial_py.init_chimes_wrapper("libchimescalc_dl.so")
-chimescalc_serial_py.set_chimes(small)
+wrapper_py.chimes_wrapper = wrapper_py.init_chimes_wrapper(curr_path + "/../examples/python/lib-C_wrapper-serial_interface.so")
+wrapper_py.set_chimes(small)
 
 rank = 0
 
-chimescalc_serial_py.init_chimes(param_file, rank)
+wrapper_py.init_chimes(param_file, rank)
 
 # Read the coordinates, set up the force, stress, and energy vars
 
@@ -113,7 +111,7 @@ for i in range(natoms):
 
 # Do the calculations
 
-fx, fy, fz, stress, energy = chimescalc_serial_py.calculate_chimes(
+fx, fy, fz, stress, energy = wrapper_py.calculate_chimes(
                            natoms, 
 			   xcrd, 
 			   ycrd, 
