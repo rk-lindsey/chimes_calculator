@@ -9,15 +9,18 @@
 # 
 # Otherwise, load necessary modules manually and execute with 
 # 
-#   ./install.sh
+# ./install.sh 
 # 
 # Note that additional arguments can be specified, i.e.:
 #
 #   ./install.sh <debug option (0 or 1)> <install prefix (full path)>
 
+# Verbose is required for testing.
+
 BUILD=`pwd`/build
 DEBUG=${1-0}  # False (0) by default.
 PREFX=${2-$BUILD} # Empty by default
+VERBOSE=${4-0}
 
 # Clean up previous installation, 
 
@@ -32,6 +35,11 @@ if [ -z "$hosttype" ] ; then
     echo ""
 elif [[ "$hosttype" == "LLNL-LC" ]] ; then
     source modfiles/LLNL-LC.mod
+    ICC=`which icc`
+	IFORT=`which ifort`
+	my_flags="$my_flags -DCMAKE_CXX_COMPILER=${ICC} -DCMAKE_Fortran_COMPILER=${IFORT} -DCMAKE_C_COMPILER=${ICC}"
+	my_flags="$my_flags -DCMAKE_CXX_FLAGS_RELEASE=\"-O3 -fno-alias -fno-fnalias -xhost\""
+    
 elif [[ "$hosttype" == "UM-ARC" ]] ; then
     source modfiles/UM-ARC.mod
 elif [[ "$hosttype" == "JHU-ARCH" ]] ; then
@@ -62,12 +70,14 @@ fi
 mkdir build
 cd build
 
-# Generate cmake flags
-
-my_flags=""
+if [[ $VERBOSE -eq 1 ]] ; then
+    my_flags="-DVERBOSE=1"
+else
+    my_flags="-DVERBOSE=0"
+fi    
 
 if [ ! -z $PREFX ] ; then
-	my_flags="-DCMAKE_INSTALL_PREFIX=${PREFX}"
+	my_flags="-DCMAKE_INSTALL_PREFIX=${PREFX} $my_flags"
 fi
 
 if [ $DEBUG -eq 1 ] ;then

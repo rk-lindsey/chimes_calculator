@@ -7,20 +7,20 @@ CHIMESFF_HDR=$(FCC_LOC)/../../src/chimesFF.h
 
 chimesFF.o : $(CHIMESFF_SRC)
 	$(CXX) -c $(CHIMESFF_SRC)
-
+	
 CC_WRAPPER_SRC=$(FCC_LOC)/../../api/chimescalc_C.cpp
 CC_WRAPPER_HDR=$(FCC_LOC)/../../api/chimescalc_C.h
-
+		
 chimescalc_C.o : $(CC_WRAPPER_SRC) $(CC_WRAPPER_HDR) $(CHIMESFF_SRC)  $(CHIMESFF_HDR)
-	$(CXX) -c $(CC_WRAPPER_SRC) $(CHIMESFF_SRC) -I $(FCC_LOC)/../../api/ -I $(FCC_LOC)/../../src/
+	$(CXX) -c $(CC_WRAPPER_SRC) $(CHIMESFF_SRC) -I $(FCC_LOC)/../../api/ -I $(FCC_LOC)/../../src/	
 
 FCC = gfortran -O3 -fPIC -std=f2003
 
 FCC_WRAPPER_SRC=$(FCC_LOC)/../../api/chimescalc_F.F90
-
+	
 chimescalc_F.o chimescalc.mod : $(FCC_WRAPPER_SRC)
 	$(FCC) -c $(FCC_WRAPPER_SRC) -o chimescalc_F.o
-
+	
 main.o : main.F90
 	$(FCC) -c main.F90 -o main.o
 
@@ -49,6 +49,6 @@ all:
 	make chimesFF.o
 	make chimescalc_C.o
 	make chimescalc_F.o chimescalc.mod
-	make main.o
+	make main.o 
 	make test_wrapper-F
 	#make clean
