@@ -1309,19 +1309,51 @@ void Pair::ev_tally4(int i, int j, int k, int m, double evdwl,
    do not make sense. Expects newton_pair = 1.
  ------------------------------------------------------------------------- */
 
-
-void Pair::ev_tally_mb(double evdwl, double sxx, double sxy, double sxz, double syy, double syz, double szz)
-{
-    eng_vdwl += evdwl;
-
-    virial[0] += sxx;
-    virial[1] += syy;
-    virial[2] += szz;
-    virial[3] += sxy;
-    virial[4] += sxz;
-    virial[5] += syz; 
+ void Pair::ev_tally_mb(int npair, int atmpairidxlst[6][2], double evdwl, std::vector<double>fscalar, std::vector<double> & dist, std::vector<double> &dr)
+ {
+     double v[6];
     
- }
+     eng_vdwl += evdwl; // Note: Assume eflag_global alsways true and eflag atom always false
+
+     if (vflag_either) // Note: Assume newton_pair always true for this pair type
+     {
+         for (int i=0; i<npair; i++)
+         {
+             v[0] = fscalar[i] * dr[i*3+0] * dr[i*3+0] / dist[i];
+             v[1] = fscalar[i] * dr[i*3+1] * dr[i*3+1] / dist[i];
+             v[2] = fscalar[i] * dr[i*3+2] * dr[i*3+2] / dist[i];
+             v[3] = fscalar[i] * dr[i*3+0] * dr[i*3+1] / dist[i];
+             v[4] = fscalar[i] * dr[i*3+0] * dr[i*3+2] / dist[i];
+             v[5] = fscalar[i] * dr[i*3+1] * dr[i*3+2] / dist[i];
+            
+             if (vflag_global)
+             {
+                 virial[0] += v[0];
+                 virial[1] += v[1];
+                 virial[2] += v[2];
+                 virial[3] += v[3];
+                 virial[4] += v[4];
+                 virial[5] += v[5];
+             }
+             if(vflag_atom)
+             {
+                 vatom[atmpairidxlst[i][0]][0] += 0.5*v[0];
+                 vatom[atmpairidxlst[i][0]][1] += 0.5*v[1];
+                 vatom[atmpairidxlst[i][0]][2] += 0.5*v[2];
+                 vatom[atmpairidxlst[i][0]][3] += 0.5*v[3];
+                 vatom[atmpairidxlst[i][0]][4] += 0.5*v[4];
+                 vatom[atmpairidxlst[i][0]][5] += 0.5*v[5];
+                
+                 vatom[atmpairidxlst[i][1]][0] += 0.5*v[0];
+                 vatom[atmpairidxlst[i][1]][1] += 0.5*v[1];
+                 vatom[atmpairidxlst[i][1]][2] += 0.5*v[2];
+                 vatom[atmpairidxlst[i][1]][3] += 0.5*v[3];
+                 vatom[atmpairidxlst[i][1]][4] += 0.5*v[4];
+                 vatom[atmpairidxlst[i][1]][5] += 0.5*v[5];
+             }
+         }
+     }                      
+  }
 
 /* ----------------------------------------------------------------------
    tally ecoul and virial into each of atoms in list
