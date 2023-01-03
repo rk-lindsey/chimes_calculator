@@ -151,13 +151,17 @@ public:
         
     void compute_1B(const int typ_idx, double & energy );
         
-    void compute_2B(const double dx, const vector<double> & dr, const vector<int> typ_idxs, vector<double> & force,
-                    vector<double> & stress, double & energy, chimes2BTmp &tmp);
-        
-    void compute_3B(const vector<double> & dx, const vector<double> & dr, const vector<int> & typ_idxs, vector<double> & force,
-                    vector<double> & stress, double & energy, chimes3BTmp &tmp);
+	// 2+B compute functions overloaded with force_scalar_in var for compatibility with LAMMPS
 
-    void compute_4B(const vector<double> & dx, const vector<double> & dr, const vector<int> & typ_idxs, vector<double> & force, vector<double> & stress, double & energy, chimes4BTmp &tmp);
+	void compute_2B(const double dx, const vector<double> & dr, const vector<int> typ_idxs, vector<double> & force, vector<double> & stress, double & energy, chimes2BTmp &tmp);
+	void compute_2B(const double dx, const vector<double> & dr, const vector<int> typ_idxs, vector<double> & force, vector<double> & stress, double & energy, chimes2BTmp &tmp, double & force_scalar_in); 
+
+	void compute_3B(const vector<double> & dx, const vector<double> & dr, const vector<int> & typ_idxs, vector<double> & force,vector<double> & stress, double & energy, chimes3BTmp &tmp);
+	void compute_3B(const vector<double> & dx, const vector<double> & dr, const vector<int> & typ_idxs, vector<double> & force,vector<double> & stress, double & energy, chimes3BTmp &tmp, vector<double> & force_scalar_in); 
+
+	void compute_4B(const vector<double> & dx, const vector<double> & dr, const vector<int> & typ_idxs, vector<double> & force, vector<double> & stress, double & energy, chimes4BTmp &tmp);
+	void compute_4B(const vector<double> & dx, const vector<double> & dr, const vector<int> & typ_idxs, vector<double> & force, vector<double> & stress, double & energy, chimes4BTmp &tmp, vector<double> & force_scalar_in);
+
 
     void get_cutoff_2B(vector<vector<double> >  & cutoff_2b);   // Populates the 2b cutoffs
     
