@@ -9,6 +9,7 @@ jobs:
       fail-fast: false
       matrix:
         os: [ubuntu-latest, macos-latest]
+        version: [11]
 
     steps:
     - name: Checkout code
@@ -24,15 +25,18 @@ jobs:
         echo "CXX=g++" >> $GITHUB_ENV
         sudo apt-get update
         sudo apt-get install cmake ninja-build
-
+          
+    # Note: xcode version 14.0 (default on macos-latest @ 2022-11-23) fails to link gfortran compiled
+    # code. Therefore, 14.1 is selected below (which seems to be installed.)
     - name: Set up environment (OSX)
       if: contains(matrix.os, 'macos')
       run: |
+        xcversion select 14.1
         echo "SOURCEDIR=${PWD}" >> $GITHUB_ENV
         echo "WORKDIR=${PWD}" >> $GITHUB_ENV
-        echo "FC=gfortran-9" >> $GITHUB_ENV
-        echo "CC=gcc-9" >> $GITHUB_ENV
-        echo "CXX=g++-9" >> $GITHUB_ENV
+        echo "FC=gfortran-${{ matrix.version }}" >> $GITHUB_ENV
+        echo "CC=gcc-${{ matrix.version }}" >> $GITHUB_ENV
+        echo "CXX=g++-${{ matrix.version }}" >> $GITHUB_ENV
         brew install ninja
 
     - name: Configure build
