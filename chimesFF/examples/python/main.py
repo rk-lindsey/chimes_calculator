@@ -66,7 +66,7 @@ coord_file = sys.argv[2] # coordinate file
 
 # Read the parameters
 
-chimescalc_py.read_params(param_file)
+wrapper_py.read_params(param_file)
 
 # Read the coordinates, set up the force, stress, and energy vars
 

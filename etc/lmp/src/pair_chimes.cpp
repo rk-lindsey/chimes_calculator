@@ -71,16 +71,17 @@ PairCHIMES::PairCHIMES(LAMMPS *lmp) : Pair(lmp)
 	
 	// 2, 3, and 4-body vars for chimesFF access
 
-	dr     .resize(3);
-	dr_3b  .resize(3, std::vector<double>(3)); 
-	dr_4b  .resize(6, std::vector<double>(3));
+	dr     .resize(CHDIM);
+	dr_3b  .resize(3*CHDIM); 
+	dr_4b  .resize(6*CHDIM);
 	
 	dist_3b.resize(3);			       
 	dist_4b.resize(6);			       
-	
-	force_ptr_2b.resize(2,std::vector<double*>(3));
-	force_ptr_3b.resize(3,std::vector<double*>(3));
-	force_ptr_4b.resize(4,std::vector<double*>(3));
+
+	// CHDIM is the number of spatial dimensions (usually 3).
+	force_2b.resize(2*CHDIM);
+	force_3b.resize(3*CHDIM) ;
+	force_4b.resize(4*CHDIM) ;
 	
 	typ_idxs_2b.resize(2);
 	typ_idxs_3b.resize(3);
@@ -129,7 +130,11 @@ void PairCHIMES::coeff(int narg, char **arg)
 	chimesFF_paramfile = arg[2]; 
 	
 	chimes_calculator.read_parameters(chimesFF_paramfile);
+
 	set_chimes_type();
+    //chimes_calculator.set_atomtypes(chimes_type);
+    chimes_calculator.build_pair_int_trip_map() ; 
+    chimes_calculator.build_pair_int_quad_map() ;
 
 	// Set special LAMMPS flags/cutoffs
 	
@@ -204,7 +209,7 @@ double PairCHIMES::init_one(int i, int j)
 	return sqrt(cutsq[i][j]);
 }
 
-double PairCHIMES::get_dist(int i, int j, vector<double> & dr)
+inline double PairCHIMES::get_dist(int i, int j, double *dr)
 {
 	double 	**x    = atom -> x;	// Access to system coordinates
 
@@ -214,10 +219,10 @@ double PairCHIMES::get_dist(int i, int j, vector<double> & dr)
 
 	return sqrt(dr[0]*dr[0] + dr[1]*dr[1] + dr[2]*dr[2]);
 }
-	
-double PairCHIMES::get_dist(int i, int j)
+
+inline double PairCHIMES::get_dist(int i, int j)
 {
-	vector<double> dummy_dr(3);
+	double dummy_dr[3] ;
 
 	return get_dist(i,j, dummy_dr);
 }
@@ -376,8 +381,14 @@ void PairCHIMES::compute(int eflag, int vflag)
 {
 	// Vars for access to chimesFF compute_XB functions
 	
-	std::vector            <double*>  stensor(9);	// pointers to system stress tensor
-	std::vector            <double>   stmp(9);	// Dummy var to prevent chimesFF from directly modifying LAMMPS stress
+	std::vector  <double>  stensor(6);	// pointers to system stress tensor
+    
+	// Temp vars to hold chimes output for passing to ev_tally function
+	
+    std::vector<double>         fscalar(6);
+    std::vector<double>         tmp_dist(1);
+    std::vector<double>         tmp_dr(6);
+    int atmidxlst[6][2];
 	
 	// General LAMMPS compute vars
 	
@@ -420,6 +431,11 @@ void PairCHIMES::compute(int eflag, int vflag)
 	numneigh   = list -> numneigh;		// length of each of the ilist neighbor lists
 	firstneigh = list -> firstneigh;	// point to the list of neighbors of i
 
+
+    chimes2BTmp chimes_2btmp(chimes_calculator.poly_orders[0]) ;
+    chimes3BTmp chimes_3btmp(chimes_calculator.poly_orders[1]) ;
+    chimes4BTmp chimes_4btmp(chimes_calculator.poly_orders[2]) ;      
+	
 	// Build the ChIMES many-body neighbor lists.. only do so when LAMMPS neighborlist has been updated
 	
 	if ( neighbor->ago == 0)
@@ -440,12 +456,6 @@ void PairCHIMES::compute(int eflag, int vflag)
 	// Compute 1- and 2-body interactions
 	////////////////////////////////////////
 	
-	for (idx=0; idx<9; idx++)
-	{
-		stensor[idx]  = &stmp[idx];
-		*stensor[idx] = 0;
-	}
-
 	for (ii = 0; ii < inum; ii++)		// Loop over the atoms owned by the current process
 	{
 		i     = ilist[ii];				// Index of the current atom
@@ -461,8 +471,8 @@ void PairCHIMES::compute(int eflag, int vflag)
 		chimes_calculator.compute_1B(type[i]-1, energy);
 		
 		if(evflag)
-			ev_tally_mb(energy, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0);
-		
+			ev_tally_mb(0, atmidxlst, energy, fscalar, tmp_dist, tmp_dr);
+
 		// Now move on to two-body force, stress, and energy
 		
 		for (jj = 0; jj < jnum; jj++)			// Loop over neighbors of i
@@ -477,31 +487,39 @@ void PairCHIMES::compute(int eflag, int vflag)
 				
 			// Get distance using ghost atoms... don't need MIC since we're using ghost atoms
 
-			dist = get_dist(i,j,dr);
+			dist = get_dist(i,j,&dr[0]);
 			
 			typ_idxs_2b[0] = chimes_type[type[i]-1];		// Type (index) of the current atom... subtract 1 to account for chimesFF vs LAMMPS numbering convention
 			typ_idxs_2b[1] = chimes_type[type[j]-1];
-			
-			for (idx=0; idx<3; idx++)
-			{
-				force_ptr_2b[0][idx] = &f[i][idx];
-				force_ptr_2b[1][idx] = &f[j][idx];	
-			}
-			
+
+			// Using std::fill for maximum efficiency.
+			std::fill(force_2b.begin(), force_2b.end(), 0.0) ;
+
 			// Do the same for stress tensors
-			
-			for (idx=0; idx<9; idx++)
-				*stensor[idx] = 0;
+			std::fill(stensor.begin(), stensor.end(), 0.0) ;
 
 			energy = 0.0;	
 		
-			chimes_calculator.compute_2B( dist, dr, typ_idxs_2b, force_ptr_2b, stensor, energy);			
+			chimes_calculator.compute_2B( dist, dr, typ_idxs_2b, force_2b, stensor, energy, chimes_2btmp);			
+
+			for (idx=0; idx<3; idx++)
+			{
+				f[i][idx] += force_2b[0*CHDIM+idx] ;
+				f[j][idx] += force_2b[1*CHDIM+idx] ;
+			}
 
 			// "Save"/tally up the energy and stresses to the global virial/energy data objects (see pair.cpp ~ line 1000)
 			// Compute pressure, (in contrast to chimes_md) AFTER penalty has been added		
 			
+			if(vflag_atom)
+            {
+			    atmidxlst[0][0] = i;
+			    atmidxlst[0][1] = j;
+            }
+			tmp_dist    [0] = dist;
+			
 			if (evflag)
-				ev_tally_mb(energy, *stensor[0], *stensor[1], *stensor[2], *stensor[4], *stensor[5], *stensor[8]);
+				ev_tally_mb(2, atmidxlst, energy, fscalar, tmp_dist, dr);         
 		}
 	}
 
@@ -517,30 +535,40 @@ void PairCHIMES::compute(int eflag, int vflag)
 			j     = neighborlist_3mers[ii][1];
 			k     = neighborlist_3mers[ii][2];
 
-			dist_3b[0] = get_dist(i,j,dr_3b[0]);
-			dist_3b[1] = get_dist(i,k,dr_3b[1]);
-			dist_3b[2] = get_dist(j,k,dr_3b[2]);
+			dist_3b[0] = get_dist(i,j,&dr_3b[0*CHDIM]);
+			dist_3b[1] = get_dist(i,k,&dr_3b[1*CHDIM]);
+			dist_3b[2] = get_dist(j,k,&dr_3b[2*CHDIM]);
 
 			typ_idxs_3b[0] = chimes_type[type[i]-1];
 			typ_idxs_3b[1] = chimes_type[type[j]-1];
 			typ_idxs_3b[2] = chimes_type[type[k]-1];
 
+			std::fill(force_3b.begin(), force_3b.end(), 0.0) ;
+			std::fill(stensor.begin(), stensor.end(), 0.0) ;
+				
+			energy = 0.0 ;
+			
+			chimes_calculator.compute_3B( dist_3b, dr_3b, typ_idxs_3b, force_3b, stensor, energy, chimes_3btmp);
+
 			for (idx=0; idx<3; idx++)
 			{
-				force_ptr_3b[0][idx] = &f[i][idx];
-				force_ptr_3b[1][idx] = &f[j][idx];
-				force_ptr_3b[2][idx] = &f[k][idx];
+				f[i][idx] += force_3b[0*CHDIM+idx] ;
+				f[j][idx] += force_3b[1*CHDIM+idx] ;
+				f[k][idx] += force_3b[2*CHDIM+idx] ;
 			}
 
-			for (idx=0; idx<9; idx++)
-				*stensor[idx] = 0;	
-				
-			energy = 0;
+            if (vflag_atom)
+            {
+			    atmidxlst[0][0] = i;
+			    atmidxlst[0][1] = j;
+			    atmidxlst[1][0] = i;
+			    atmidxlst[1][1] = k;
+			    atmidxlst[2][0] = j;
+			    atmidxlst[2][1] = k;
+            }
 			
-			chimes_calculator.compute_3B( dist_3b, dr_3b, typ_idxs_3b, force_ptr_3b, stensor, energy);				
-	
 			if (evflag)
-				ev_tally_mb(energy, *stensor[0], *stensor[1], *stensor[2], *stensor[4], *stensor[5], *stensor[8]);
+				ev_tally_mb(3, atmidxlst, energy, fscalar, dist_3b, dr_3b);		            
 		}		
 	}
 
@@ -557,37 +585,57 @@ void PairCHIMES::compute(int eflag, int vflag)
 			k     = neighborlist_4mers[ii][2];
 			l     = neighborlist_4mers[ii][3];			
 			
-			dist_4b[0] = get_dist(i,j,dr_4b[0]);				      
-			dist_4b[1] = get_dist(i,k,dr_4b[1]);
-			dist_4b[2] = get_dist(i,l,dr_4b[2]);
-			dist_4b[3] = get_dist(j,k,dr_4b[3]);
-			dist_4b[4] = get_dist(j,l,dr_4b[4]);
-			dist_4b[5] = get_dist(k,l,dr_4b[5]);
+			dist_4b[0] = get_dist(i,j,&dr_4b[0*CHDIM]);				      
+			dist_4b[1] = get_dist(i,k,&dr_4b[1*CHDIM]);
+			dist_4b[2] = get_dist(i,l,&dr_4b[2*CHDIM]);
+			dist_4b[3] = get_dist(j,k,&dr_4b[3*CHDIM]);
+			dist_4b[4] = get_dist(j,l,&dr_4b[4*CHDIM]);
+			dist_4b[5] = get_dist(k,l,&dr_4b[5*CHDIM]);
 
 			typ_idxs_4b[0] = chimes_type[type[i]-1];
 			typ_idxs_4b[1] = chimes_type[type[j]-1];
 			typ_idxs_4b[2] = chimes_type[type[k]-1];
 			typ_idxs_4b[3] = chimes_type[type[l]-1];
 
+			std::fill(force_4b.begin(), force_4b.end(), 0.0) ;
+			std::fill(stensor.begin(), stensor.end(), 0.0) ;
+
+			energy = 0.0 ;	
+			
+			chimes_calculator.compute_4B( dist_4b, dr_4b, typ_idxs_4b, force_4b, stensor, energy, chimes_4btmp);
+
 			for (idx=0; idx<3; idx++)
 			{
-				force_ptr_4b[0][idx] = &f[i][idx];
-				force_ptr_4b[1][idx] = &f[j][idx];
-				force_ptr_4b[2][idx] = &f[k][idx];
-				force_ptr_4b[3][idx] = &f[l][idx];
+				f[i][idx] += force_4b[0*CHDIM+idx] ;
+				f[j][idx] += force_4b[1*CHDIM+idx] ;
+				f[k][idx] += force_4b[2*CHDIM+idx] ;
+				f[l][idx] += force_4b[3*CHDIM+idx] ;
 			}
-
-			for (idx=0; idx<9; idx++)
-				*stensor[idx] = 0;	
-
-			energy = 0;	
 			
-			chimes_calculator.compute_4B( dist_4b, dr_4b, typ_idxs_4b, force_ptr_4b, stensor, energy);
-
+            if (vflag_atom)
+            {
+			    atmidxlst[0][0] = i;
+			    atmidxlst[0][1] = j;
+			    atmidxlst[1][0] = i;
+			    atmidxlst[1][1] = k;
+			    atmidxlst[2][0] = i;
+			    atmidxlst[2][1] = l;
+			    atmidxlst[3][0] = j;
+			    atmidxlst[3][1] = k;
+			    atmidxlst[4][0] = j;
+			    atmidxlst[4][1] = l;
+			    atmidxlst[5][0] = k;
+			    atmidxlst[5][1] = l;
+            }
+			
 			if (evflag)
-				ev_tally_mb(energy, *stensor[0], *stensor[1], *stensor[2], *stensor[4], *stensor[5], *stensor[8]);
+				ev_tally_mb(4, atmidxlst, energy, fscalar, dist_4b, dr_4b);	
+            
 		}
 	}
+
+if (vflag_fdotr) 
+        virial_fdotr_compute();
 
 	return;
 }
@@ -605,8 +653,8 @@ void PairCHIMES::set_chimes_type()
 				chimes_type.push_back(j);
 				nmatches++;
 			}
-		}
-	}
+		}	}
+
 	
 	if (nmatches < atom->ntypes )
 	{
