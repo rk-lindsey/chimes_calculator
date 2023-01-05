@@ -34,9 +34,11 @@ cp etc/Makefile.mpi_chimes 		build/lammps_stable_29Oct2020/src/MAKE
 #       load the intel (e.g., icc) module and run the the setvars.sh command, e.g. located at 
 #       /sw/pkgs/arc/intel/2022.1.2/setvars.sh --also avail for free
 
-if [ ! -v hosttype ] ; then
-    echo "No hosttype specified"
+if [ -z "$hosttype" ] ; then
+    echo ""
+    echo "WARNING: No hosttype specified"
     echo "Be sure to load modules/configure compilers by hand before running this script!"
+    echo ""
 elif [[ "$hosttype" == "LLNL-LC" ]] ; then
     source modfiles/LLNL-LC.mod
 elif [[ "$hosttype" == "UM-ARC" ]] ; then
@@ -59,7 +61,10 @@ else
 fi
 
 
-module list
+echo "Detected hosttype: $hosttype"
+if [ ! -z "$hasmod" ] ; then
+    module list
+fi
 
 
 # Compile
@@ -82,3 +87,4 @@ echo "Generated the following LAMMPS executable with ChIMES support:"
 echo "${loc}/exe/lmp_mpi_chimes"
 echo "See ${loc}/tests for usage examples"
 echo ""
+

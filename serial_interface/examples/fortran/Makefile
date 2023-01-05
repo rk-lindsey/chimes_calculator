@@ -2,8 +2,9 @@ CXX     = g++ -O3 -std=c++11 -fPIC
 FCC     = gfortran -O3 -fPIC -std=f2003 -cpp # last flag allows processing of C-style pre-processor directives
 
 DEBUG   = 1
+VERBOSE = 1
 
-#CCFLAGS = -fPIC -O3 -std=c++11
+#CCFLAGS = -fPIC -O3 -std=c++11 
 #FFLAGS  = -O3 -fPIC
 #COMM1   = chimescalc_serial_F.o main.o
 
@@ -20,7 +21,7 @@ SERIAL_LOC=$(F_LOC)/../../src
 SERIAL_SRC=$(SERIAL_LOC)/serial_chimes_interface.cpp
 SERIAL_HDR=$(SERIAL_LOC)/serial_chimes_interface.h
 
-serial_chimes_interface.o : $(SERIAL_SRC)
+serial_chimes_interface.o : $(SERIAL_SRC) 
 	$(CXX) -c $(SERIAL_SRC) -I $(SERIAL_LOC) -I $(chimescalc_LOC)
 
 WRAPPERC_LOC=$(F_LOC)/../../api
@@ -59,7 +60,7 @@ test-F: $(LINKS)
 lib : chimesFF.o serial_chimes_interface.o chimescalc_serial_C.o
 	ar rcs libchimescalc-fortran.a chimesFF.o serial_chimes_interface.o chimescalc_serial_C.o
 
-clean:
+clean: 
 	rm -f *.o *.mod
 
 clean-all:
@@ -69,10 +70,11 @@ clean-all:
 
 all:
 	make chimesFF.o
-	make serial_chimes_interface.o
+	make serial_chimes_interface.o 
 	make chimescalc_serial_C.o
 	make chimescalc_serial_F.o chimescalc_serial.mod
 	make main.o
 	make test-F
 	make lib
 	make clean
+

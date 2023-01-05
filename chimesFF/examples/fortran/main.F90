@@ -1,6 +1,6 @@
 ! ChIMES Calculator
 ! Copyright (C) 2020 Rebecca K. Lindsey, Nir Goldman, and Laurence E. Fried
-! Contributing Author:  Nir Goldman (2020)
+! Contributing Author:  Nir Goldman (2020) 
 
       program test_F_api
       use chimescalc
@@ -8,12 +8,12 @@
       implicit none
       integer io_num
       double precision, parameter :: GPa = 6.9479 ! convert kcal/mol.A^3 to GPa
-      character(C_char), dimension(80) :: c_file
+      character(C_char), dimension(80) :: c_file 
       character(C_char), dimension(80) :: dummy_var
       character(2000) :: coord_file, param_file
       CHARACTER ( len = 2000 ) :: wq_char
       integer :: i, j, k, l, natom
-      integer(C_int) :: rank
+      integer(C_int) :: rank 
       real(C_double) ::   lx, ly, lz, ldummy
       double precision :: vol
       real(C_double) :: stress(9)
@@ -36,8 +36,8 @@
       real(C_double) :: dr_3b(3), dist_3b(3,3)
       real(C_double) :: dr_4b(6), dist_4b(3,6)
       real(C_double) :: rij
-      type(C_ptr) :: c_rij
-
+      type(C_ptr) :: c_rij 
+      
       io_num = command_argument_count()
       if (io_num .lt. 2) then
         print*,"To run: ./test_F.x <parameter file> <xyz config. file>"
@@ -91,22 +91,22 @@
         do j = i+1, natom
           xij = xc(i) - xc(j)
           xij = xij - lx*nint(xij/lx)
-          dr(1) = xij
+          dr(1) = xij   
           yij = yc(i) - yc(j)
           yij = yij - lx*nint(yij/ly)
-          dr(2) = yij
+          dr(2) = yij   
           zij = zc(i) - zc(j)
           zij = zij - lx*nint(zij/lz)
-          dr(3) = zij
+          dr(3) = zij   
           rij = sqrt(xij*xij + yij*yij + zij*zij)
           f2b(:,1) = ftot(:,i)
           f2b(:,2) = ftot(:,j)
-
+          
           type1 = string2Cstring(atom_type(i))
           type2 = string2Cstring(atom_type(j))
           if (rij .le. rcut_2b) then
           ! f2b, stress tensor, epot are all cumulative
-             call f_chimes_compute_2b_props_fromf90(rij, dr, type1, &
+             call f_chimes_compute_2b_props_fromf90(rij, dr, type1, & 
       &           type2, f2b, stress, sys_ener)
           endif
           !save results back in ftot
@@ -129,7 +129,7 @@
             do k = j+1, natom
        ! compute relative coordinates and apply minimum image PBC
        ! order in chimesFF is ij, ik, jk
-       ! ij pairs
+       ! ij pairs 
               xij = (xc(i) - xc(j));
               xij = xij - lx*nint(xij/lx);
               yij = (yc(i) - yc(j));
@@ -151,7 +151,7 @@
               dist_3b(2,2) = yik;
               dist_3b(3,2) = zik;
               dr_3b(2) = sqrt(xik*xik + yik*yik + zik*zik);
-       ! jk pairs
+       ! jk pairs 
               xjk = (xc(j) - xc(k));
               xjk = xjk - lx*nint(xjk/lx);
               yjk = (yc(j) - yc(k));
@@ -165,7 +165,7 @@
               f3b(:,1) = ftot(:,i)
               f3b(:,2) = ftot(:,j)
               f3b(:,3) = ftot(:,k)
-
+          
               type1 = string2Cstring(atom_type(i))
               type2 = string2Cstring(atom_type(j))
               type3 = string2Cstring(atom_type(k))
@@ -173,7 +173,7 @@
                 if (dr_3b(2) .le. rcut_3b) then
                   if (dr_3b(3) .le. rcut_3b) then
                     ! f2b, stress tensor, epot are all cumulative
-                    call f_chimes_compute_3b_props_fromf90(dr_3b, dist_3b, type1, &
+                    call f_chimes_compute_3b_props_fromf90(dr_3b, dist_3b, type1, & 
       &                  type2, type3, f3b, stress, sys_ener)
                   endif
                 endif
@@ -202,7 +202,7 @@
               do l = k+1, natom
                 ! compute relative coordinates and apply minimum image PBC
                 ! order in chimesFF is: ij, ik, il, jk, jl, kl
-                ! ij pairs
+                ! ij pairs 
                 xij = (xc(i) - xc(j));
                 xij = xij - lx*nint(xij/lx);
                 yij = (yc(i) - yc(j));
@@ -213,7 +213,7 @@
                 dist_4b(2,1) = yij;
                 dist_4b(3,1) = zij;
                 dr_4b(1) = sqrt(xij*xij + yij*yij + zij*zij);
-                ! ik pairs
+                ! ik pairs 
                 xik = (xc(i) - xc(k));
                 xik = xik - lx*nint(xik/lx);
                 yik = (yc(i) - yc(k));
@@ -224,7 +224,7 @@
                 dist_4b(2,2) = yik;
                 dist_4b(3,2) = zik;
                 dr_4b(2) = sqrt(xik*xik + yik*yik + zik*zik);
-                ! il pairs
+                ! il pairs 
                 xil = (xc(i) - xc(l));
                 xil = xil - lx*nint(xil/lx);
                 yil = (yc(i) - yc(l));
@@ -235,7 +235,7 @@
                 dist_4b(2,3) = yil;
                 dist_4b(3,3) = zil;
                 dr_4b(3) = sqrt(xil*xil + yil*yil + zil*zil);
-                ! jk pairs
+                ! jk pairs 
                 xjk = (xc(j) - xc(k));
                 xjk = xjk - lx*nint(xjk/lx);
                 yjk = (yc(j) - yc(k));
@@ -246,7 +246,7 @@
                 dist_4b(2,4) = yjk;
                 dist_4b(3,4) = zjk;
                 dr_4b(4) = sqrt(xjk*xjk + yjk*yjk + zjk*zjk);
-                ! jl pairs
+                ! jl pairs 
                 xjl = (xc(j) - xc(l));
                 xjl = xjl - lx*nint(xjl/lx);
                 yjl = (yc(j) - yc(l));
@@ -257,7 +257,7 @@
                 dist_4b(2,5) = yjl;
                 dist_4b(3,5) = zjl;
                 dr_4b(5) = sqrt(xjl*xjl + yjl*yjl + zjl*zjl);
-                ! kl pairs
+                ! kl pairs 
                 xkl = (xc(k) - xc(l));
                 xkl = xkl - lx*nint(xkl/lx);
                 ykl = (yc(k) - yc(l));
@@ -284,7 +284,7 @@
                         if (dr_4b(5) .le. rcut_4b) then
                           if (dr_4b(6) .le. rcut_4b) then
                           ! f2b, stress tensor, epot are all cumulative
-                            call f_chimes_compute_4b_props_fromf90(dr_4b, dist_4b, type1, &
+                            call f_chimes_compute_4b_props_fromf90(dr_4b, dist_4b, type1, & 
       &                          type2, type3, type4, f4b, stress, sys_ener)
                           endif
                         endif
