@@ -175,7 +175,7 @@ string chimesFF::get_next_line(istream& str)
         if (rank == 0)
             cout << "chimesFF: " << "Error reading line" << line << endl;
         exit(0);
-    }
+    } 
 
     return line;
 }
@@ -657,7 +657,7 @@ void chimesFF::read_parameters(string paramfile)
                 line = get_next_line(param_file);
                 
                 split_line(line, tmp_str_items);
-                
+
                 tmp_int = stoi(tmp_str_items[1]);
                 
                 trip_params_atm_chems[tmp_int].push_back(tmp_str_items[3]);
@@ -674,27 +674,36 @@ void chimesFF::read_parameters(string paramfile)
                 trip_params_pair_typs[tmp_int].push_back(tmp_str_items[1]);
                 trip_params_pair_typs[tmp_int].push_back(tmp_str_items[2]);
                 trip_params_pair_typs[tmp_int].push_back(tmp_str_items[3]);
+		
+		// Check for excluded triplet types
+	
+		if(tmp_str_items[4] != "EXCLUDED:")
+		{
+                	ncoeffs_3b[tmp_int] = stoi(tmp_str_items[7]);    
+	
+        	        get_next_line(param_file);
+        	        get_next_line(param_file);
             
-                ncoeffs_3b[tmp_int] = stoi(tmp_str_items[7]);    
-
-                get_next_line(param_file);
-                get_next_line(param_file);
-            
-                for(int i=0; i<ncoeffs_3b[tmp_int]; i++)
-                {
-                    line = get_next_line(param_file);
-                    split_line(line, tmp_str_items);
+        	        for(int i=0; i<ncoeffs_3b[tmp_int]; i++)
+        	        {
+        	            line = get_next_line(param_file);
+        	            split_line(line, tmp_str_items);
                     
-                    tmp_int_vec[0] = stoi(tmp_str_items[1]);
-                    tmp_int_vec[1] = stoi(tmp_str_items[2]);
-                    tmp_int_vec[2] = stoi(tmp_str_items[3]);
+        	            tmp_int_vec[0] = stoi(tmp_str_items[1]);
+        	            tmp_int_vec[1] = stoi(tmp_str_items[2]);
+        	            tmp_int_vec[2] = stoi(tmp_str_items[3]);
                     
-                    chimes_3b_powers[tmp_int].push_back(tmp_int_vec);                    
-                    chimes_3b_params[tmp_int].push_back(stod(tmp_str_items[6]));
+        	            chimes_3b_powers[tmp_int].push_back(tmp_int_vec);                    
+        	            chimes_3b_params[tmp_int].push_back(stod(tmp_str_items[6]));
                 
-                    if (rank == 0)
-                        cout << "chimesFF: " << "\t" << chimes_3b_powers[tmp_int][i][0] << " " << chimes_3b_powers[tmp_int][i][1] << " " << chimes_3b_powers[tmp_int][i][2] << " " << chimes_3b_params[tmp_int][i] << endl;
-                }
+        	            if (rank == 0)
+        	                cout << "chimesFF: " << "\t" << chimes_3b_powers[tmp_int][i][0] << " " << chimes_3b_powers[tmp_int][i][1] << " " << chimes_3b_powers[tmp_int][i][2] << " " << chimes_3b_params[tmp_int][i] << endl;
+        	        }
+		}
+		else
+		{
+			cout << "chimesFF: \tType is excluded... skipping." << endl;
+		}
             }    
             
             if(line.find("TRIPMAPS:") != string::npos)
@@ -981,41 +990,50 @@ void chimesFF::read_parameters(string paramfile)
                 quad_params_pair_typs[tmp_int].push_back(tmp_str_items[3]);
                 quad_params_pair_typs[tmp_int].push_back(tmp_str_items[4]);
                 quad_params_pair_typs[tmp_int].push_back(tmp_str_items[5]);
-                quad_params_pair_typs[tmp_int].push_back(tmp_str_items[6]);                
-            
-                ncoeffs_4b[tmp_int] = stoi(tmp_str_items[10]);    
+                quad_params_pair_typs[tmp_int].push_back(tmp_str_items[6]);   
+		
+		// Check for excluded triplet types
+	
+		if(tmp_str_items[7] != "EXCLUDED:")
+		{		                         
+	                ncoeffs_4b[tmp_int] = stoi(tmp_str_items[10]);    
 
-                get_next_line(param_file);
-                get_next_line(param_file);
+	                get_next_line(param_file);
+	                get_next_line(param_file);
             
-                vector<int> tmp_int_vec(6);
+	                vector<int> tmp_int_vec(6);
                 
-                for(int i=0; i<ncoeffs_4b[tmp_int]; i++)
-                {                
-                    line = get_next_line(param_file);
-                    split_line(line, tmp_str_items);
+	                for(int i=0; i<ncoeffs_4b[tmp_int]; i++)
+	                {                
+	                    line = get_next_line(param_file);
+	                    split_line(line, tmp_str_items);
                     
-                    tmp_int_vec[0] = stoi(tmp_str_items[1]);
-                    tmp_int_vec[1] = stoi(tmp_str_items[2]);
-                    tmp_int_vec[2] = stoi(tmp_str_items[3]);
-                    tmp_int_vec[3] = stoi(tmp_str_items[4]);
-                    tmp_int_vec[4] = stoi(tmp_str_items[5]);
-                    tmp_int_vec[5] = stoi(tmp_str_items[6]);
+	                    tmp_int_vec[0] = stoi(tmp_str_items[1]);
+	                    tmp_int_vec[1] = stoi(tmp_str_items[2]);
+	                    tmp_int_vec[2] = stoi(tmp_str_items[3]);
+	                    tmp_int_vec[3] = stoi(tmp_str_items[4]);
+	                    tmp_int_vec[4] = stoi(tmp_str_items[5]);
+	                    tmp_int_vec[5] = stoi(tmp_str_items[6]);
                     
-                    chimes_4b_powers[tmp_int].push_back(tmp_int_vec);                 
+	                    chimes_4b_powers[tmp_int].push_back(tmp_int_vec);                 
                     
-                    chimes_4b_params[tmp_int].push_back(stod(tmp_str_items[9]));
+	                    chimes_4b_params[tmp_int].push_back(stod(tmp_str_items[9]));
                 
-                    if (rank == 0)
-                        cout << "chimesFF: " << "\t" << 
-                        chimes_4b_powers[tmp_int][i][0] << " " << 
-                        chimes_4b_powers[tmp_int][i][1] << " " << 
-                        chimes_4b_powers[tmp_int][i][2] << " " << 
-                        chimes_4b_powers[tmp_int][i][3] << " " << 
-                        chimes_4b_powers[tmp_int][i][4] << " " << 
-                        chimes_4b_powers[tmp_int][i][5] << " " <<                                
-                        chimes_4b_params[tmp_int][i] << endl;
-                }
+	                    if (rank == 0)
+                        	cout << "chimesFF: " << "\t" << 
+                        	chimes_4b_powers[tmp_int][i][0] << " " << 
+                	        chimes_4b_powers[tmp_int][i][1] << " " << 
+                	        chimes_4b_powers[tmp_int][i][2] << " " << 
+                	        chimes_4b_powers[tmp_int][i][3] << " " << 
+                	        chimes_4b_powers[tmp_int][i][4] << " " << 
+                	        chimes_4b_powers[tmp_int][i][5] << " " <<                                
+                	        chimes_4b_params[tmp_int][i] << endl;
+                	}
+		}
+		else
+		{
+			cout << "chimesFF: \tType is excluded... skipping." << endl;		
+		}
             }    
             
             if(line.find("QUADMAPS:") != string::npos)
@@ -2116,6 +2134,10 @@ void chimesFF::build_pair_int_quad_map()
                     int idx = i*natmtyps*natmtyps*natmtyps + j*natmtyps*natmtyps + k*natmtyps + l ;
                     int quadidx = atom_int_quad_map[idx];
 
+                    // Skip excluded interactions
+                    if (quadidx < 0)
+                        continue;
+
                     build_atom_and_pair_mappers(natoms, npairs, typ_idxs, quad_params_pair_typs[quadidx], pair_map);
 
                     // Save for re-use in force evaluators.
@@ -2136,7 +2158,10 @@ void chimesFF::build_pair_int_quad_map()
     {
         if ( pair_int_quad_map[i].size() == 0 )
         {
-            cout << "Error: Did not initialize pair_int_quad_map entry " << i << endl ;
+		if (atom_int_quad_map[i] >= 0)
+            		cout << "Error: Did not initialize pair_int_quad_map for entry " << i << endl ;
+		else
+			cout << "Warning: Did not initialize pair_int_quad_map for excluded entry " << i << endl ;
         }
     }   
 }
@@ -2151,7 +2176,7 @@ void chimesFF::build_pair_int_trip_map()
     vector<int> pair_map(npairs) ;
     vector<int> typ_idxs(natoms) ;
 
-    if ( atom_int_trip_map.size() == 0 ) return ; // No quads !
+    if ( atom_int_trip_map.size() == 0 ) return ; // No trips !
     
     pair_int_trip_map.resize(natmtyps*natmtyps*natmtyps) ;
     
@@ -2165,6 +2190,10 @@ void chimesFF::build_pair_int_trip_map()
             {
                 typ_idxs[2] = k ;
                 int tripidx = atom_int_trip_map[i*natmtyps*natmtyps + j*natmtyps + k];
+		
+		// Skip excluded interactions
+		if (tripidx < 0)
+			continue;
 
                 build_atom_and_pair_mappers(natoms, npairs, typ_idxs, trip_params_pair_typs[tripidx], pair_map);
                     
@@ -2185,7 +2214,10 @@ void chimesFF::build_pair_int_trip_map()
     {
         if ( pair_int_trip_map[i].size() == 0 )
         {
-            cout << "Error: Did not initialize pair_int_trip_map entry " << i << endl ;
+		if (atom_int_trip_map[i] >= 0)
+            		cout << "Error: Did not initialize pair_int_trip_map for entry " << i << endl ;
+		else
+			cout << "Warning: Did not initialize pair_int_trip_map for excluded entry " << i << endl ;
         }
     }
     
