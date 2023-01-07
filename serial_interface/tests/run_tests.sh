@@ -14,7 +14,7 @@
 
 STYLE=${1-"LONG"} # By default,run "LONG" test, but if user runs with "./run_tests SHORT, runs short tests
 PREFX=${2-""}     # By default, don't set any special install prefix
-PYTH3=python3.7
+PYTH3=python3
 
 # Populate FFS, CFGS, and OPTIONS from test_list.dat
 
