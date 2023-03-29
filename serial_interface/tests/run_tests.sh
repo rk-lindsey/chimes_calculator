@@ -25,7 +25,7 @@ do
 	FFS+=($FF); CFGS+=($CFG); OPTIONS+=($OPTION)
 done < tmp-data.dat; rm -f tmp-data.dat
 
-API_LIST="0 1 2 3 4"
+API_LIST="0 1 2 3 4 5 6"
 NO_TESTS=${#FFS[@]}
 LOC=`pwd`
 
@@ -34,6 +34,8 @@ API[1]="c"        ; EXE[1]="chimescalc-test_serial-C"   ; XTRA[1]="" #"2"
 API[2]="fortran"  ; EXE[2]="chimescalc-test_serial-F"   ; XTRA[2]="" #"2"
 API[3]="python"   ; EXE[3]="main.py"			; XTRA[3]="" #"2 1"
 API[4]="fortran08"; EXE[4]="chimescalc-test_serial-F08" ; XTRA[4]="" #"0"
+API[5]="fortran_instance"; EXE[5]="chimescalc-test_serial-F_instance" ; XTRA[5]="" #"0"
+API[6]="c_instance"; EXE[6]="chimescalc-test_serial-C_instance" ; XTRA[6]="" #"0"
 
 echo "Running $STYLE tests"
 date
