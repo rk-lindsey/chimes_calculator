@@ -40,8 +40,6 @@ void set_chimes_serial(int small=1)
 		cout << "Received: " << small << endl;
 		exit(0);
 	}
-	//chimes_ptr = &chimes;
-	//chimes_ptr->allow_replication = small;
         chimes_ptr = &chimes;
         set_chimes_serial_instance(chimes_ptr, small);
 
@@ -61,12 +59,13 @@ void set_chimes_serial_instance(void *handle, int small=1)
 void init_chimes_serial(char *param_file, int *rank)
 {
   	//chimes_ptr->init_chimesFF(param_file, *rank);
-        init_chimes_serial_instance(chimes_ptr, param_file, rank);
+        init_chimes_serial_instance(chimes_ptr, param_file, *rank);
 }
-void init_chimes_serial_instance(void *handle, char *param_file, int *rank)
+void init_chimes_serial_instance(void *handle, char *param_file, int rank)
 {
         auto new_ptr = (serial_chimes_interface *) handle;
-        new_ptr->init_chimesFF(param_file, *rank);
+	//printf("rank = %d\n", *rank);
+        new_ptr->init_chimesFF(param_file, 0);
 }
 void calculate_chimes(int natom, double *xc, double *yc, double *zc, char *atom_types[], double ca[3], double cb[3], double cc[3], double *energy, double fx[], double fy[], double fz[], double stress[9])
 {
