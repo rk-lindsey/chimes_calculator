@@ -162,7 +162,6 @@ public:
 	void compute_4B(const vector<double> & dx, const vector<double> & dr, const vector<int> & typ_idxs, vector<double> & force, vector<double> & stress, double & energy, chimes4BTmp &tmp);
 	void compute_4B(const vector<double> & dx, const vector<double> & dr, const vector<int> & typ_idxs, vector<double> & force, vector<double> & stress, double & energy, chimes4BTmp &tmp, vector<double> & force_scalar_in);
 
-
     void get_cutoff_2B(vector<vector<double> >  & cutoff_2b);   // Populates the 2b cutoffs
     
     double max_cutoff_2B(bool silent = false);    // Returns the largest 2B cutoff
@@ -175,6 +174,11 @@ public:
     void build_pair_int_trip_map() ;
     void build_pair_int_quad_map() ;
     
+    // Functions to aid using ChIMES Calculator for fitting
+    
+    inline int  get_badness();
+    inline void reset_badness();
+    
 private:
         
     string            xform_style;    //  Morse, direct, inverse, etc...
@@ -184,6 +188,7 @@ private:
     vector<double>    morse_var;      // [npairs]; morse_lambda
     vector<double>    penalty_params; // [2];  Second dimension: [0] = A_pen, [1] = d_pen
     vector<double>    energy_offsets; // [natmtyps]; Single atom ChIMES energies
+    int               badness;        // Keeps track of whether any interactions for atoms owned by proc rank are below rcutin, in the penalty region, or in the r>rcutin+dp region. 0 = good, 1 = in penalty region, 2 = below rcutin 
         
     // Names (chemical symbols for constituent atoms) .. handled differently for 2-body versus >2-body interactions
 
@@ -339,26 +344,41 @@ inline void chimesFF::get_penalty(const double dx, const int & pair_idx, double 
     
     E_penalty    = 0.0;
     force_scalar = 1.0;
-    
-    if (dx - penalty_params[0] < chimes_2b_cutoff[pair_idx][0])
-        
+
+    if (dx - penalty_params[0] < chimes_2b_cutoff[pair_idx][0]) // Then we're within the penalty-enforced region of distance space
+    {    
         r_penalty = chimes_2b_cutoff[pair_idx][0] + penalty_params[0] - dx;
         
+        if(dx < chimes_2b_cutoff[pair_idx][0])
+            badness = 2;
+        else if (1 > badness) // Only update badness if candiate badness is worse than its current value
+            badness = 1;
+    }    
     if ( r_penalty > 0.0 ) 
     {        
         E_penalty    = r_penalty * r_penalty * r_penalty * penalty_params[1];
 
         force_scalar = -3.0 * r_penalty * r_penalty * penalty_params[1];
 
-        if (rank == 0)
-        {
+        //if (rank == 0) // Commenting out - we need all ranks to report if the penalty function has been sampled
+        //{
             cout << "chimesFF: " << "Adding penalty in 2B Cheby calc, r < rmin+penalty_dist " << fixed 
                  << dx << " " 
                  << chimes_2b_cutoff[pair_idx][0] + penalty_params[0]  
                  << " pair type: " << pair_idx << endl;
             cout << "chimesFF: " << "\t...Penalty potential = "<< E_penalty << endl;
-        }
+        //}
     }   
+}
+
+inline int chimesFF::get_badness()
+{
+    return badness;
+}
+
+inline void chimesFF::reset_badness()
+{
+    badness = 0;
 }
 
 inline void chimesFF::build_atom_and_pair_mappers(const int natoms, const int npairs, const vector<int> & typ_idxs,
