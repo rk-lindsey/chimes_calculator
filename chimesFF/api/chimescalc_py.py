@@ -69,7 +69,13 @@ def read_params(param_file):
 	chimes_wrapper.chimes_read_params(in_param_file)
 	return
 	
+def build_pair_int_trip_map():
+	chimes_wrapper.chimes_build_pair_int_trip_map()
+	return
 	
+def build_pair_int_quad_map():
+	chimes_wrapper.chimes_build_pair_int_quad_map()
+	return	
 def chimes_compute_2b_props(rij, dr, atype2b, force, stress, epot):
 	"""
 	Compute 2-body contributions to force, stress, and energy for a 
@@ -136,7 +142,7 @@ def chimes_compute_3b_props(dr_3b, dist_3b, atype3b, force, stress, epot):
 						  (force[2][0], force[2][1], force[2][2]))
 	in_stress  =  (ctypes.c_double * 9)(stress[0], stress[1], stress[2], stress[3], stress[4], stress[5], stress[6], stress[7], stress[8])
 	in_epot    =   ctypes.c_double(epot)
-	
+
 	chimes_wrapper.chimes_compute_3b_props(
 		in_dr,
 		in_dist,
