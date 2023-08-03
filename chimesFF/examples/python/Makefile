@@ -1,6 +1,6 @@
 CC_LOC = $(realpath .)
 
-CXX=g++ -g  -std=c++11 -fPIC
+CXX=g++ -O3  -std=c++11 -fPIC
 
 CHIMESFF_SRC=$(CC_LOC)/../../src/chimesFF.cpp
 CHIMESFF_HDR=$(CC_LOC)/../../src/chimesFF.h
