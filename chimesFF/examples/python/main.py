@@ -47,7 +47,7 @@ def get_dist(lx,ly,lz,xrd,ycrd,zcrd,i,j):
 
 # Initialize the ChIMES calculator
 
-chimescalc_py.chimes_wrapper = chimescalc_py.init_chimes_wrapper("libchimescalc-direct_dl.so")
+chimescalc_py.chimes_wrapper = chimescalc_py.init_chimes_wrapper(os.getcwd() + "/libchimescalc-direct_dl.so")
 chimescalc_py.set_chimes()
 chimescalc_py.init_chimes()
 
@@ -66,7 +66,7 @@ coord_file = sys.argv[2] # coordinate file
 
 # Read the parameters
 
-wrapper_py.read_params(param_file)
+chimescalc_py.read_params(param_file)
 
 # Read the coordinates, set up the force, stress, and energy vars
 
