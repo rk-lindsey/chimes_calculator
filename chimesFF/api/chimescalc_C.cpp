@@ -71,6 +71,8 @@ void init_chimes (int rank) {
 
 void chimes_read_params(char *param_file) {
   chimes_ptr->read_parameters(param_file);
+  chimes_ptr->build_pair_int_trip_map();
+  chimes_ptr->build_pair_int_quad_map();
 }
 
 void chimes_compute_2b_props_fromf90(double *rij, double dr[3], char *type1, char *type2, double force[2][3], double stress[9], double *epot)
