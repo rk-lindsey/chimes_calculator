@@ -17,6 +17,8 @@ int get_chimes_4b_order();
 void set_chimes();
 void init_chimes(int rank);
 void chimes_read_params(char *param_file);
+void chimes_build_pair_int_trip_map();
+void chimes_build_pair_int_quad_map();
 void chimes_compute_2b_props(double rij, double dr[3], char *atype2b[2], double force[2][3], double stress[9], double *epot);
 void chimes_compute_3b_props(double dr_3b[3], double dist_3b[3][3], char *atype3b[3], double f3b[3][3], double stress[9], double *epot);
 void chimes_compute_4b_props(double dr_4b[6], double dist_4b[6][3], char *atype4b[4], double f4b[4][3], double stress[9], double *epot);
