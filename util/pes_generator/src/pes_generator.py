@@ -179,7 +179,7 @@ if hasattr(config,'TRIPTYPES'):
             
                     energy       = 0.0
                     dummy_force  = [[0.0, 0.0, 0.0], [0.0, 0.0, 0.0], [0.0, 0.0, 0.0]] # Need to re-declare because compute_2b changes its dimension
-                
+                    dummy_stress = [0.0]*9
                     # Get/write the 3-body only energy
                 
                     dummy_force, dummy_stress, energy = chimescalc_py.chimes_compute_3b_props([steps[j], steps[k], steps[l]], dummy_rij, trip_types[config.TRIPTYPES[i]], dummy_force, dummy_stress, energy)
