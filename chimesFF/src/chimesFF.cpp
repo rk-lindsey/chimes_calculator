@@ -1562,23 +1562,23 @@ void chimesFF::compute_3B(const vector<double> & dx, const vector<double> & dr, 
     }
 #endif
 
-
     int type_idx =  typ_idxs[0]*natmtyps*natmtyps + typ_idxs[1]*natmtyps + typ_idxs[2] ;
     int tripidx = atom_int_trip_map[type_idx];
 
     if(tripidx < 0)    // Skipping an excluded interaction
         return;
-    
+        
     // Check whether cutoffs are within allowed ranges
     vector<int> & mapped_pair_idx = pair_int_trip_map[type_idx] ;
-        
+
+   
     if (dx[0] >= chimes_3b_cutoff[ tripidx ][1][mapped_pair_idx[0]])    // ij
         return;    
     if (dx[1] >= chimes_3b_cutoff[ tripidx ][1][mapped_pair_idx[1]])    // ik
         return;    
     if (dx[2] >= chimes_3b_cutoff[ tripidx ][1][mapped_pair_idx[2]])    // jk
         return;    
-    
+     
     // At this point, all distances are within allowed ranges. We can now proceed to the force/stress/energy calculation
 
 #ifdef USE_DISTANCE_TENSOR  
@@ -1586,6 +1586,7 @@ void chimesFF::compute_3B(const vector<double> & dx, const vector<double> & dr, 
     double dr2[CHDIM*CHDIM*npairs*npairs] ;
     init_distance_tensor(dr2, dr, npairs) ;
 #endif
+
 
     // Set up the polynomials
 
@@ -1611,7 +1612,7 @@ void chimesFF::compute_3B(const vector<double> & dx, const vector<double> & dr, 
     double coeff;
     int powers[npairs] ;
     double force_scalar[npairs] ;
-    
+
     for(int coeffs=0; coeffs<ncoeffs_3b[tripidx]; coeffs++)
     {
         coeff = chimes_3b_params[tripidx][coeffs];
@@ -1710,7 +1711,7 @@ void chimesFF::compute_3B(const vector<double> & dx, const vector<double> & dr, 
         stress[5] -= force_scalar[2]  * dr[2*CHDIM+2] * dr[2*CHDIM+2]; // zz tensor component
 #endif        
     }
-
+    
     force_scalar_in[0] = force_scalar[0];
     force_scalar_in[1] = force_scalar[1];
     force_scalar_in[2] = force_scalar[2];

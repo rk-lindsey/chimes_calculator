@@ -75,6 +75,14 @@ void chimes_read_params(char *param_file) {
   chimes_ptr->build_pair_int_quad_map();
 }
 
+void chimes_build_pair_int_trip_map() {
+  chimes_ptr->build_pair_int_trip_map();
+}
+
+void chimes_build_pair_int_quad_map() {
+  chimes_ptr->build_pair_int_quad_map();
+}
+
 void chimes_compute_2b_props_fromf90(double *rij, double dr[3], char *type1, char *type2, double force[2][3], double stress[9], double *epot)
 {
 	static char *atype2b_fromf90[2];
@@ -155,6 +163,7 @@ void chimes_compute_2b_props(double rij, double dr[3], char *atype2b[2], double 
 }
 
 void chimes_compute_3b_props(double dr_3b[3], double dist_3b[3][3], char *atype3b[3], double f3b[3][3], double stress[9], double *epot) {
+
   // convert all doubles, etc., from C to type vector for C++
   vector <double> dr_3b_vec(3);
   dr_3b_vec[0] = dr_3b[0];
@@ -192,7 +201,7 @@ void chimes_compute_3b_props(double dr_3b[3], double dist_3b[3][3], char *atype3
   vector<double> force_3b_vec(3*CHDIM, 0.0) ;
   vector<double> stress_vec(9,0.0);
   chimes3BTmp chimes_tmp(chimes_ptr->poly_orders[1]) ;
-  
+
   chimes_ptr->compute_3B(dr_3b_vec, dist_3b_vec, type_3b_vec, force_3b_vec, stress_vec, *epot,
       chimes_tmp) ;
 
@@ -217,6 +226,7 @@ void chimes_compute_3b_props(double dr_3b[3], double dist_3b[3][3], char *atype3
   stress[6] += stress_vec[6];
   stress[7] += stress_vec[7];
   stress[8] += stress_vec[8];
+  
 }
 
 void chimes_compute_4b_props(double dr_4b[6], double dist_4b[6][3], char *atype4b[4], double f4b[4][3], double stress[9], double *epot)
