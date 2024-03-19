@@ -59,6 +59,8 @@ int main (int argc, char **argv)
   set_chimes();
   init_chimes(0);
   chimes_read_params(argv[1]);
+  chimes_build_pair_int_trip_map();
+  chimes_build_pair_int_quad_map();
   int order2b, order3b, order4b;
   order2b = get_chimes_2b_order();
   order3b = get_chimes_3b_order();

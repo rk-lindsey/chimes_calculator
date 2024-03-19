@@ -47,7 +47,7 @@ def get_dist(lx,ly,lz,xrd,ycrd,zcrd,i,j):
 
 # Initialize the ChIMES calculator
 
-chimescalc_py.chimes_wrapper = chimescalc_py.init_chimes_wrapper("libchimescalc-direct_dl.so")
+chimescalc_py.chimes_wrapper = chimescalc_py.init_chimes_wrapper(os.getcwd() + "/libchimescalc-direct_dl.so")
 chimescalc_py.set_chimes()
 chimescalc_py.init_chimes()
 
@@ -66,7 +66,9 @@ coord_file = sys.argv[2] # coordinate file
 
 # Read the parameters
 
-wrapper_py.read_params(param_file)
+chimescalc_py.read_params(param_file)
+chimescalc_py.build_pair_int_trip_map()
+chimescalc_py.build_pair_int_quad_map()
 
 # Read the coordinates, set up the force, stress, and energy vars
 
@@ -129,7 +131,7 @@ for i in range(natoms):
 
 		forces[i][0] = tmp_force[0][0]; forces[i][1] = tmp_force[0][1]; forces[i][2] = tmp_force[0][2]
 		forces[j][0] = tmp_force[1][0]; forces[j][1] = tmp_force[1][1]; forces[j][2] = tmp_force[1][2]
-			
+        
 		if (order_3b > 0) or (order_4b> 0):
 
 			for k in range(j+1,natoms):
@@ -153,7 +155,7 @@ for i in range(natoms):
 				forces[i][0] = tmp_force[0][0]; forces[i][1] = tmp_force[0][1]; forces[i][2] = tmp_force[0][2]
 				forces[j][0] = tmp_force[1][0]; forces[j][1] = tmp_force[1][1]; forces[j][2] = tmp_force[1][2]
 				forces[k][0] = tmp_force[2][0]; forces[k][1] = tmp_force[2][1]; forces[k][2] = tmp_force[2][2]
-				
+
 				if dist_ik >= maxcut_4b:
 					continue
 				if dist_jk >= maxcut_4b:

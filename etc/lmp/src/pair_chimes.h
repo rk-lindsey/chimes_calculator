@@ -42,9 +42,9 @@ init_style 	(done)		initialization specific to this pair style
 
 write_restart			write i,j pair coeffs to restart file
 read_restart			read i,j pair coeffs from restart file
-write_restart_settings		write global settings to restart file
-read_restart_settings		read global settings from restart file
-single				force and energy fo a single pairwise interaction between two atoms
+write_restart_settings	write global settings to restart file
+read_restart_settings	read global settings from restart file
+single				    force and energy fo a single pairwise interaction between two atoms
 */
 
 	
@@ -56,21 +56,25 @@ namespace LAMMPS_NS
 			
 			// Variable definitions
 			
-			chimesFF chimes_calculator; // chimesFF instance
+			chimesFF chimes_calculator;   // chimesFF instance
 			
-			char * chimesFF_paramfile;	// ChIMES parameter file
+			char * chimesFF_paramfile;	  // ChIMES parameter file
 			
-			std::vector<int> chimes_type;	// For i = LMP atom type indx, chimes_type[i-1] gives the ChIMES parameter file type idx
+			std::vector<int> chimes_type; // For i = LMP atom type indx, chimes_type[i-1] gives the ChIMES parameter file type idx
 			
 			double maxcut_3b;
 			double maxcut_4b;
 				
-			int n_3mers;				// number of neighborlist_Xmers entries
+			int n_3mers;				   // number of neighborlist_Xmers entries
 			int n_4mers;
 			
 			std::vector<std::vector<int> > neighborlist_3mers;	// custom neighbor list; neighborlist_Xmers[cluster idx][atom in cluster idx]
 			std::vector<std::vector<int> > neighborlist_4mers;
-			
+            
+            // Prepare files necessary for ChIMES fitting 
+            
+            bool     for_fitting;
+            ofstream badness_stream;			
 
 			// 2-body vars for chimesFF access
 

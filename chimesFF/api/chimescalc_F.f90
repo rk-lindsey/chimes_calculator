@@ -64,6 +64,14 @@
           implicit none
           character (kind=C_char), dimension(*) :: param_file
         end subroutine f_chimes_read_params
+        
+        subroutine f_chimes_build_pair_int_trip_map() &
+      &   bind (C, name='chimes_build_pair_int_trip_map')
+        end subroutine f_chimes_build_pair_int_trip_map       
+
+        subroutine f_chimes_build_pair_int_quad_map() &
+      &   bind (C, name='chimes_build_pair_int_quad_map')
+        end subroutine f_chimes_build_pair_int_quad_map 
 
         function f_get_chimes_2b_order () result (order2b) &
           bind (C, name='get_chimes_2b_order')

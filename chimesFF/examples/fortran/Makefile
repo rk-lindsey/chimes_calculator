@@ -16,7 +16,7 @@ chimescalc_C.o : $(CC_WRAPPER_SRC) $(CC_WRAPPER_HDR) $(CHIMESFF_SRC)  $(CHIMESFF
 
 FCC = gfortran -O3 -fPIC -std=f2003
 
-FCC_WRAPPER_SRC=$(FCC_LOC)/../../api/chimescalc_F.F90
+FCC_WRAPPER_SRC=$(FCC_LOC)/../../api/chimescalc_F.f90
 	
 chimescalc_F.o chimescalc.mod : $(FCC_WRAPPER_SRC)
 	$(FCC) -c $(FCC_WRAPPER_SRC) -o chimescalc_F.o
