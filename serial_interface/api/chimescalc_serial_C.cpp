@@ -21,7 +21,17 @@ using namespace std;
 #include "chimescalc_serial_C.h"
 static  serial_chimes_interface chimes, *chimes_ptr;
 
-
+void *chimes_open_instance()
+{
+        serial_chimes_interface *new_ptr = nullptr;
+        new_ptr = new serial_chimes_interface;
+        return (void *) new_ptr;
+}
+void chimes_close_instance(void *handle)
+{
+        auto ptr = (serial_chimes_interface *) handle;
+        delete ptr;
+}
 void set_chimes_serial(int small=1)
 {
 	if ((small!=0)&&(small!=1))
@@ -30,17 +40,40 @@ void set_chimes_serial(int small=1)
 		cout << "Received: " << small << endl;
 		exit(0);
 	}
-	chimes_ptr = &chimes;
-	chimes_ptr->allow_replication = small;
+        chimes_ptr = &chimes;
+        set_chimes_serial_instance(chimes_ptr, small);
+
+}
+void set_chimes_serial_instance(void *handle, int small=1)
+{
+        auto new_ptr = (serial_chimes_interface *) handle;
+        if ((small!=0)&&(small!=1))
+        {
+                cout << "ERROR: Small must be set to 0 (false) or 1 (true)" << endl;
+                cout << "Received: " << small << endl;
+                exit(0);
+        }
+        new_ptr->allow_replication = small;
 }
 
 void init_chimes_serial(char *param_file, int *rank)
 {
-  chimes_ptr->init_chimesFF(param_file, *rank);
+  	//chimes_ptr->init_chimesFF(param_file, *rank);
+        init_chimes_serial_instance(chimes_ptr, param_file, *rank);
 }
-
+void init_chimes_serial_instance(void *handle, char *param_file, int rank)
+{
+        auto new_ptr = (serial_chimes_interface *) handle;
+	//printf("rank = %d\n", *rank);
+        new_ptr->init_chimesFF(param_file, 0);
+}
 void calculate_chimes(int natom, double *xc, double *yc, double *zc, char *atom_types[], double ca[3], double cb[3], double cc[3], double *energy, double fx[], double fy[], double fz[], double stress[9])
 {
+        calculate_chimes_instance(chimes_ptr, natom, xc, yc, zc, atom_types, ca, cb, cc, energy, fx, fy, fz, stress);
+}
+void calculate_chimes_instance(void *handle, int natom, double *xc, double *yc, double *zc, char *atom_types[], double ca[3], double cb[3], double cc[3], double *energy, double fx[], double fy[], double fz[], double stress[9])
+{
+  auto new_ptr = (serial_chimes_interface *) handle;
   vector<double>    x_vec(natom);
   vector<double>    y_vec(natom);
   vector<double>    z_vec(natom);
@@ -66,9 +99,6 @@ void calculate_chimes(int natom, double *xc, double *yc, double *zc, char *atom_
   for (int i = 0; i < 9; i++) {
     stress_vec[i] = stress[i];
   }
-  //for (int i = 0; i < 9; i++) {
-  //  stress[i] = stress_vec[i];
-  //}
   vector<double>cell_a_vec(3);
   vector<double>cell_b_vec(3);
   vector<double>cell_c_vec(3);
@@ -82,7 +112,7 @@ void calculate_chimes(int natom, double *xc, double *yc, double *zc, char *atom_
   cell_c_vec[1] = cc[1];
   cell_c_vec[2] = cc[2];
 
-  chimes_ptr->calculate(x_vec, y_vec, z_vec, cell_a_vec, cell_b_vec, cell_c_vec, atom_types_vec, *energy, force_vec, stress_vec);
+  new_ptr->calculate(x_vec, y_vec, z_vec, cell_a_vec, cell_b_vec, cell_c_vec, atom_types_vec, *energy, force_vec, stress_vec);
   for (int i = 0; i < natom; i++) {
     fx[i] = force_vec[i][0];
     fy[i] = force_vec[i][1];

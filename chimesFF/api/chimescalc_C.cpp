@@ -71,6 +71,8 @@ void init_chimes (int rank) {
 
 void chimes_read_params(char *param_file) {
   chimes_ptr->read_parameters(param_file);
+  chimes_ptr->build_pair_int_trip_map();
+  chimes_ptr->build_pair_int_quad_map();
 }
 
 void chimes_build_pair_int_trip_map() {
