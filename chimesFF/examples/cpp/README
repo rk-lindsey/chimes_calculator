@@ -11,12 +11,12 @@ an integer defining how many layers of ghost atoms should be used
 self-interaction across the periodic boundary. 
 
 Compile with:
-        make test-CPP
+        make all
 
 To test the executable:
 
-./test-CPP <parameter file> <xyz file> <nlayers>
+./chimescalc <parameter file> <xyz file> <nlayers>
 
-e.g. ./test-CPP ../../../serial_interface/tests/force_fields/published_params.liqC.2b.cubic.txt ../../../serial_interface/tests/configurations/liqC.2.5gcc_6000K.OUTCAR_#000.xyzf 2
+e.g. ./chimescalc ../../../serial_interface/tests/force_fields/published_params.liqC.2b.cubic.txt ../../../serial_interface/tests/configurations/liqC.2.5gcc_6000K.OUTCAR_#000.xyzf 2
 
 Note: xyz file must be orthorhombic and must provide lattice vectors in the comment line, e.g. lx 0.0 0.0 0.0 ly 0.0 0.0 0.0 lz
