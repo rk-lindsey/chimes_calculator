@@ -45,7 +45,9 @@ elif [[ "$hosttype" == "UM-ARC" ]] ; then
 elif [[ "$hosttype" == "JHU-ARCH" ]] ; then
     source modfiles/JHU-ARCH.mod
     ICC=`which icc`
-    MPI=`which mpicxx`    
+    MPI=`which mpicxx`   
+elif [[ "$hosttype" == "UT-TACC" ]] ; then
+    source modfiles/UT-TACC.mod	
 else
     echo ""
     echo "ERROR: Unknown hosttype ($hosttype) specified"

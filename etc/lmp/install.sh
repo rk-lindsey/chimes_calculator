@@ -47,6 +47,10 @@ elif [[ "$hosttype" == "JHU-ARCH" ]] ; then
     source modfiles/JHU-ARCH.mod
     ICC=`which icc`
     MPI=`which mpicxx`    
+elif [[ "$hosttype" == "UT-TACC" ]] ; then
+    source modfiles/UT-TACC.mod
+    cp etc/Makefile.mpi_chimes.UT-TACC build/lammps_stable_29Oct2020/src/MAKE/Makefile.mpi_chimes
+
 else
     echo ""
     echo "ERROR: Unknown hosttype ($hosttype) specified"
