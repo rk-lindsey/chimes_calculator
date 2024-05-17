@@ -15,8 +15,8 @@ Compile with:
 
 To test the executable:
 
-./test_wrapper-F <parameter file> <xyz file>
+./chimescalc-test_direct-F <parameter file> <xyz file>
 
-e.g. ./test_wrapper-F ../../../serial_interface/tests/force_fields/published_params.liqC.2b.cubic.txt ../../../serial_interface/tests/configurations/liqC.2.5gcc_6000K.OUTCAR_#000.xyzf
+e.g. ./chimescalc-test_direct-F ../../../serial_interface/tests/force_fields/published_params.liqC.2b.cubic.txt ../../../serial_interface/tests/configurations/liqC.2.5gcc_6000K.OUTCAR_#000.xyzf
 
 Note: xyz file must be orthorhombic and must provide lattice vectors in the comment line, e.g. lx 0.0 0.0 0.0 ly 0.0 0.0 0.0 lz

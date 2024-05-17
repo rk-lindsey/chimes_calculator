@@ -92,6 +92,11 @@ target_link_libraries     (chimescalc-test_serial-C ChimesCalc)
 target_compile_features   (chimescalc-test_serial-C PRIVATE cxx_std_11)
 target_compile_definitions(chimescalc-test_serial-C PRIVATE "DEBUG=${DEBUG}")
 
+add_executable(chimescalc-test_serial-C_instance serial_interface/examples/c_instance/main.c)
+target_link_libraries     (chimescalc-test_serial-C_instance ChimesCalc)
+target_compile_features   (chimescalc-test_serial-C_instance PRIVATE cxx_std_11)
+target_compile_definitions(chimescalc-test_serial-C_instance PRIVATE "DEBUG=${DEBUG}")
+
 
 ####################################################################################################
 # Dynamically loadable library (e.g for Python)
@@ -163,6 +168,9 @@ if(WITH_FORTRAN_API OR WITH_FORTRAN08_API)
     add_executable(chimescalc-test_serial-F serial_interface/examples/fortran/main.F90)
     target_link_libraries(chimescalc-test_serial-F ChimesCalc_Fortran)
     target_compile_definitions(chimescalc-test_serial-F PRIVATE "DEBUG=${DEBUG}")
+    add_executable(chimescalc-test_serial-F_instance serial_interface/examples/fortran_instance/main.F90)
+    target_link_libraries(chimescalc-test_serial-F_instance ChimesCalc_Fortran)
+    target_compile_definitions(chimescalc-test_serial-F_instance PRIVATE "DEBUG=${DEBUG}")
 
     # Optional, as ancient Fortran compilers may have difficulties with it
     if(WITH_FORTRAN08_API)
@@ -210,7 +218,9 @@ enable_testing()
 set(apis
     "cpp;${CMAKE_CURRENT_BINARY_DIR}/chimescalc"
     "c;${CMAKE_CURRENT_BINARY_DIR}/chimescalc-test_serial-C"
+    "c_instance;${CMAKE_CURRENT_BINARY_DIR}/chimescalc-test_serial-C_instance"
     "fortran;${CMAKE_CURRENT_BINARY_DIR}/chimescalc-test_serial-F"
+    "fortran_instance;${CMAKE_CURRENT_BINARY_DIR}/chimescalc-test_serial-F_instance"
     "fortran08;${CMAKE_CURRENT_BINARY_DIR}/chimescalc-test_serial-F08")
 
 set(_testdir "${CMAKE_CURRENT_SOURCE_DIR}/serial_interface/tests")
