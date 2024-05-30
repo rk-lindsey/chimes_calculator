@@ -177,11 +177,15 @@ void simulation_system::init(vector<string> & atmtyps, vector<double> & x_in, ve
     n_ghost = n_atoms;
     n_repl  = n_atoms;
     
-    sys_atmtyp_indices.resize(0);
+    sys_atmtyp_indices .resize(0);
     
-    sys_x.resize(0);
-    sys_y.resize(0);
-    sys_z.resize(0);
+    sys_x              .resize(0);
+    sys_y              .resize(0);
+    sys_z              .resize(0);
+    sys_parent         .resize(0);
+    sys_rep_parent     .resize(0);
+    atmtyps            .erase(atmtyps.begin() + n_atoms, atmtyps.end());
+    sys_atmtyps        .resize(0);
     
     for (int a=0; a<n_atoms; a++)
     {
@@ -529,8 +533,14 @@ void simulation_system::build_layered_system(vector<string> & atmtyps, vector<in
         }
     }
 
-    // Build the layers
-
+    // Build the layers. First clear out the associated vectors so you don't run into memory issues on multiple calls:
+  
+    sys_atmtyps.erase(sys_atmtyps.begin() + n_atoms, sys_atmtyps.end());
+    sys_x      .erase(sys_x      .begin() + n_atoms, sys_x      .end());
+    sys_y      .erase(sys_y      .begin() + n_atoms, sys_y      .end());
+    sys_z      .erase(sys_z      .begin() + n_atoms, sys_z      .end());
+    sys_parent .erase(sys_parent .begin() + n_atoms, sys_parent .end());
+ 
     double tmp_x, tmp_y, tmp_z;
 
     for (int i=-n_layers; i<=n_layers; i++) // x
@@ -567,10 +577,13 @@ void simulation_system::build_layered_system(vector<string> & atmtyps, vector<in
                     sys_z[n_ghost-1] = hmat[6]*tmp_x + hmat[7]*tmp_y + hmat[8]*tmp_z;    
 
                     sys_parent.push_back(a);
+                    
+
                 }
             }
         }
     }
+    
 }
 void simulation_system::build_neigh_lists(vector<int> & poly_orders, vector<vector<int> > & neighlist_2b, vector<vector<int> > & neighlist_3b, vector<vector<int> > & neighlist_4b, double max_2b_cut, double max_3b_cut, double max_4b_cut)
 {
