@@ -1,0 +1,1638 @@
+Running LONG tests
+Thu May  9 12:33:40 PDT 2024
+Testing compilation type: CMAKE
+Removing directory build
+Removing files installed at /g/g15/stimac1/chimes_calc_JS/build
+This runs the command "rm -rf /g/g15/stimac1/chimes_calc_JS/build"
+Are you sure you want to proceed?
+
+WARNING: No hosttype specified
+Be sure to load modules/configure compilers by hand before running this script!
+
+Detected hosttype: 
+-- The CXX compiler identification is GNU 8.5.0
+-- The C compiler identification is GNU 8.5.0
+-- Detecting CXX compiler ABI info
+-- Detecting CXX compiler ABI info - done
+-- Check for working CXX compiler: /usr/lib64/ccache/c++ - skipped
+-- Detecting CXX compile features
+-- Detecting CXX compile features - done
+-- Detecting C compiler ABI info
+-- Detecting C compiler ABI info - done
+-- Check for working C compiler: /usr/lib64/ccache/cc - skipped
+-- Detecting C compile features
+-- Detecting C compile features - done
+-- The Fortran compiler identification is GNU 10.3.1
+-- Detecting Fortran compiler ABI info
+-- Detecting Fortran compiler ABI info - done
+-- Check for working Fortran compiler: /usr/tce/bin/gfortran - skipped
+-- Build type: Release (manually selected single-config)
+-- Flags for CXX-compiler (build type: Release):    -O3 -funroll-all-loops
+-- Flags for C-compiler (build type: Release):    -O3 -funroll-all-loops
+-- Flags for Fortran-compiler (build type: Release):   -std=f2008  -O3 -funroll-all-loops
+-- Looking for round in m
+-- Looking for round in m - found
+-- Configuring done
+-- Generating done
+-- Build files have been written to: /g/g15/stimac1/chimes_calc_JS/build
+[  3%] Building CXX object CMakeFiles/ChimesCalc.dir/chimesFF/src/chimesFF.cpp.o
+[  7%] Building CXX object CMakeFiles/ChimesCalc.dir/chimesFF/api/chimescalc_C.cpp.o
+[ 10%] Building CXX object CMakeFiles/ChimesCalc.dir/serial_interface/src/serial_chimes_interface.cpp.o
+[ 14%] Building CXX object CMakeFiles/ChimesCalc.dir/serial_interface/api/chimescalc_serial_C.cpp.o
+[ 17%] Linking CXX shared library libchimescalc.so
+[ 17%] Built target ChimesCalc
+[ 21%] Building CXX object CMakeFiles/ChimesCalcExe.dir/serial_interface/examples/cpp/main.cpp.o
+[ 25%] Linking CXX executable chimescalc
+[ 25%] Built target ChimesCalcExe
+[ 28%] Building C object CMakeFiles/chimescalc-test_direct-C.dir/chimesFF/examples/c/main.c.o
+[ 32%] Linking C executable chimescalc-test_direct-C
+[ 32%] Built target chimescalc-test_direct-C
+[ 35%] Building C object CMakeFiles/chimescalc-test_serial-C.dir/serial_interface/examples/c/main.c.o
+[ 39%] Linking C executable chimescalc-test_serial-C
+[ 39%] Built target chimescalc-test_serial-C
+[ 42%] Building C object CMakeFiles/chimescalc-test_serial-C_instance.dir/serial_interface/examples/c_instance/main.c.o
+[ 46%] Linking C executable chimescalc-test_serial-C_instance
+[ 46%] Built target chimescalc-test_serial-C_instance
+[ 50%] Building CXX object CMakeFiles/ChimesCalc_dynamic.dir/chimesFF/src/chimesFF.cpp.o
+[ 53%] Building CXX object CMakeFiles/ChimesCalc_dynamic.dir/chimesFF/api/chimescalc_C.cpp.o
+[ 57%] Building CXX object CMakeFiles/ChimesCalc_dynamic.dir/serial_interface/src/serial_chimes_interface.cpp.o
+[ 60%] Building CXX object CMakeFiles/ChimesCalc_dynamic.dir/serial_interface/api/chimescalc_serial_C.cpp.o
+[ 64%] Linking CXX shared module libchimescalc_dl.so
+[ 64%] Built target ChimesCalc_dynamic
+Scanning dependencies of target ChimesCalc_Fortran
+[ 67%] Building Fortran object CMakeFiles/ChimesCalc_Fortran.dir/chimesFF/api/chimescalc_F.f90.o
+[ 71%] Building Fortran object CMakeFiles/ChimesCalc_Fortran.dir/serial_interface/api/chimescalc_serial_F.f90.o
+[ 75%] Building Fortran object CMakeFiles/ChimesCalc_Fortran.dir/serial_interface/api/chimescalc_serial_F08.f90.o
+[ 78%] Linking Fortran shared library libchimescalc_fortran.so
+[ 78%] Built target ChimesCalc_Fortran
+Scanning dependencies of target chimescalc-test_serial-F
+[ 82%] Building Fortran object CMakeFiles/chimescalc-test_serial-F.dir/serial_interface/examples/fortran/main.F90.o
+[ 85%] Linking Fortran executable chimescalc-test_serial-F
+[ 85%] Built target chimescalc-test_serial-F
+Scanning dependencies of target chimescalc-test_serial-F_instance
+[ 89%] Building Fortran object CMakeFiles/chimescalc-test_serial-F_instance.dir/serial_interface/examples/fortran_instance/main.F90.o
+[ 92%] Linking Fortran executable chimescalc-test_serial-F_instance
+[ 92%] Built target chimescalc-test_serial-F_instance
+Scanning dependencies of target chimescalc-test_serial-F08
+[ 96%] Building Fortran object CMakeFiles/chimescalc-test_serial-F08.dir/serial_interface/examples/fortran08/main.F90.o
+[100%] Linking Fortran executable chimescalc-test_serial-F08
+[100%] Built target chimescalc-test_serial-F08
+Consolidate compiler generated dependencies of target ChimesCalc
+[ 17%] Built target ChimesCalc
+Consolidate compiler generated dependencies of target ChimesCalcExe
+[ 25%] Built target ChimesCalcExe
+Consolidate compiler generated dependencies of target chimescalc-test_direct-C
+[ 32%] Built target chimescalc-test_direct-C
+Consolidate compiler generated dependencies of target chimescalc-test_serial-C
+[ 39%] Built target chimescalc-test_serial-C
+Consolidate compiler generated dependencies of target chimescalc-test_serial-C_instance
+[ 46%] Built target chimescalc-test_serial-C_instance
+Consolidate compiler generated dependencies of target ChimesCalc_dynamic
+[ 64%] Built target ChimesCalc_dynamic
+[ 78%] Built target ChimesCalc_Fortran
+[ 85%] Built target chimescalc-test_serial-F
+[ 92%] Built target chimescalc-test_serial-F_instance
+[100%] Built target chimescalc-test_serial-F08
+Install the project...
+-- Install configuration: "Release"
+-- Installing: /g/g15/stimac1/chimes_calc_JS/build/lib64/libchimescalc.so
+-- Installing: /g/g15/stimac1/chimes_calc_JS/build/include/chimescalc/chimesFF.h
+-- Installing: /g/g15/stimac1/chimes_calc_JS/build/include/chimescalc/chimescalc_C.h
+-- Installing: /g/g15/stimac1/chimes_calc_JS/build/include/chimescalc/serial_chimes_interface.h
+-- Installing: /g/g15/stimac1/chimes_calc_JS/build/include/chimescalc/chimescalc_serial_C.h
+-- Installing: /g/g15/stimac1/chimes_calc_JS/build/bin/chimescalc
+-- Set runtime path of "/g/g15/stimac1/chimes_calc_JS/build/bin/chimescalc" to ""
+-- Installing: /g/g15/stimac1/chimes_calc_JS/build/lib64/libchimescalc_dl.so
+-- Installing: /g/g15/stimac1/chimes_calc_JS/build/lib64/libchimescalc_fortran.so
+-- Set runtime path of "/g/g15/stimac1/chimes_calc_JS/build/lib64/libchimescalc_fortran.so" to ""
+-- Installing: /g/g15/stimac1/chimes_calc_JS/build/include/chimescalc/modfiles
+-- Installing: /g/g15/stimac1/chimes_calc_JS/build/include/chimescalc/modfiles/chimescalc.mod
+-- Installing: /g/g15/stimac1/chimes_calc_JS/build/include/chimescalc/modfiles/chimescalc_serial.mod
+-- Installing: /g/g15/stimac1/chimes_calc_JS/build/include/chimescalc/modfiles/chimescalc_serial08.mod
+-- Installing: /g/g15/stimac1/chimes_calc_JS/build/lib64/cmake/chimescalc/chimescalc-targets.cmake
+-- Installing: /g/g15/stimac1/chimes_calc_JS/build/lib64/cmake/chimescalc/chimescalc-targets-release.cmake
+-- Installing: /g/g15/stimac1/chimes_calc_JS/build/lib64/cmake/chimescalc/chimescalc-config.cmake
+-- Installing: /g/g15/stimac1/chimes_calc_JS/build/lib64/cmake/chimescalc/chimescalc-config-version.cmake
+/g/g15/stimac1/chimes_calc_JS/serial_interface/tests
+Working on Test 1 of 14 for API cpp
+		...Running liqC.2.5gcc_6000K.OUTCAR_#000.xyz
+		...Running liqC.2.5gcc_6000K.OUTCAR_#001.xyz
+		...Running liqC.2.5gcc_6000K.OUTCAR_#002.xyz
+		...Running liqC.2.5gcc_6000K.OUTCAR_#003.xyz
+		...Running liqC.2.5gcc_6000K.OUTCAR_#004.xyz
+		...Running liqC.2.5gcc_6000K.OUTCAR_#005.xyz
+		...Running liqC.2.5gcc_6000K.OUTCAR_#006.xyz
+		...Running liqC.2.5gcc_6000K.OUTCAR_#007.xyz
+		...Running liqC.2.5gcc_6000K.OUTCAR_#008.xyz
+		...Running liqC.2.5gcc_6000K.OUTCAR_#009.xyz
+	Test 1 of 14 for API cpp complete
+Working on Test 2 of 14 for API cpp
+		...Running liqC.2.5gcc_6000K.OUTCAR_#000.xyz
+		...Running liqC.2.5gcc_6000K.OUTCAR_#001.xyz
+		...Running liqC.2.5gcc_6000K.OUTCAR_#002.xyz
+		...Running liqC.2.5gcc_6000K.OUTCAR_#003.xyz
+		...Running liqC.2.5gcc_6000K.OUTCAR_#004.xyz
+		...Running liqC.2.5gcc_6000K.OUTCAR_#005.xyz
+		...Running liqC.2.5gcc_6000K.OUTCAR_#006.xyz
+		...Running liqC.2.5gcc_6000K.OUTCAR_#007.xyz
+		...Running liqC.2.5gcc_6000K.OUTCAR_#008.xyz
+		...Running liqC.2.5gcc_6000K.OUTCAR_#009.xyz
+	Test 2 of 14 for API cpp complete
+Working on Test 3 of 14 for API cpp
+		...Running CO.2.5gcc_6500K.OUTCAR_#000.xyz
+		...Running CO.2.5gcc_6500K.OUTCAR_#001.xyz
+		...Running CO.2.5gcc_6500K.OUTCAR_#002.xyz
+		...Running CO.2.5gcc_6500K.OUTCAR_#003.xyz
+		...Running CO.2.5gcc_6500K.OUTCAR_#004.xyz
+		...Running CO.2.5gcc_6500K.OUTCAR_#005.xyz
+		...Running CO.2.5gcc_6500K.OUTCAR_#006.xyz
+		...Running CO.2.5gcc_6500K.OUTCAR_#007.xyz
+		...Running CO.2.5gcc_6500K.OUTCAR_#008.xyz
+		...Running CO.2.5gcc_6500K.OUTCAR_#009.xyz
+	Test 3 of 14 for API cpp complete
+Working on Test 4 of 14 for API cpp
+		...Running CO.2.5gcc_6500K.OUTCAR_#000.relabel.xyz
+	Test 4 of 14 for API cpp complete
+Working on Test 5 of 14 for API cpp
+		...Running CO.2.5gcc_6500K.OUTCAR_#000.scramble.xyz
+	Test 5 of 14 for API cpp complete
+Working on Test 6 of 14 for API cpp
+		...Running CO.2.5gcc_6500K.OUTCAR_#000.translate.xyz
+	Test 6 of 14 for API cpp complete
+Working on Test 7 of 14 for API cpp
+		...Running HN3.2gcc_3000K.OUTCAR_#000.xyz
+		...Running HN3.2gcc_3000K.OUTCAR_#001.xyz
+		...Running HN3.2gcc_3000K.OUTCAR_#002.xyz
+		...Running HN3.2gcc_3000K.OUTCAR_#003.xyz
+		...Running HN3.2gcc_3000K.OUTCAR_#004.xyz
+		...Running HN3.2gcc_3000K.OUTCAR_#005.xyz
+		...Running HN3.2gcc_3000K.OUTCAR_#006.xyz
+		...Running HN3.2gcc_3000K.OUTCAR_#007.xyz
+		...Running HN3.2gcc_3000K.OUTCAR_#008.xyz
+		...Running HN3.2gcc_3000K.OUTCAR_#009.xyz
+	Test 7 of 14 for API cpp complete
+Working on Test 8 of 14 for API cpp
+		...Running TiO2.unitcell_arbrot_#000.xyz
+		...Running TiO2.unitcell_arbrot_#001.xyz
+	Test 8 of 14 for API cpp complete
+Working on Test 9 of 14 for API cpp
+		...Running CHON.testfile_#000.xyz
+	Test 9 of 14 for API cpp complete
+Working on Test 10 of 14 for API cpp
+		...Running diam.64_#000.xyz
+	Test 10 of 14 for API cpp complete
+Working on Test 11 of 14 for API cpp
+		...Running diam.16_#000.xyz
+	Test 11 of 14 for API cpp complete
+Working on Test 12 of 14 for API cpp
+		...Running diam.8_#000.xyz
+	Test 12 of 14 for API cpp complete
+Working on Test 13 of 14 for API cpp
+		...Running diam.2_#000.xyz
+	Test 13 of 14 for API cpp complete
+Working on Test 14 of 14 for API cpp
+		...Running CO.9GPa_2400K.OUTCAR_#000.xyz
+	Test 14 of 14 for API cpp complete
+Working on Test 1 of 14 for API c
+		...Running liqC.2.5gcc_6000K.OUTCAR_#000.xyz
+		...Running liqC.2.5gcc_6000K.OUTCAR_#001.xyz
+		...Running liqC.2.5gcc_6000K.OUTCAR_#002.xyz
+		...Running liqC.2.5gcc_6000K.OUTCAR_#003.xyz
+		...Running liqC.2.5gcc_6000K.OUTCAR_#004.xyz
+		...Running liqC.2.5gcc_6000K.OUTCAR_#005.xyz
+		...Running liqC.2.5gcc_6000K.OUTCAR_#006.xyz
+		...Running liqC.2.5gcc_6000K.OUTCAR_#007.xyz
+		...Running liqC.2.5gcc_6000K.OUTCAR_#008.xyz
+		...Running liqC.2.5gcc_6000K.OUTCAR_#009.xyz
+	Test 1 of 14 for API c complete
+Working on Test 2 of 14 for API c
+		...Running liqC.2.5gcc_6000K.OUTCAR_#000.xyz
+		...Running liqC.2.5gcc_6000K.OUTCAR_#001.xyz
+		...Running liqC.2.5gcc_6000K.OUTCAR_#002.xyz
+		...Running liqC.2.5gcc_6000K.OUTCAR_#003.xyz
+		...Running liqC.2.5gcc_6000K.OUTCAR_#004.xyz
+		...Running liqC.2.5gcc_6000K.OUTCAR_#005.xyz
+		...Running liqC.2.5gcc_6000K.OUTCAR_#006.xyz
+		...Running liqC.2.5gcc_6000K.OUTCAR_#007.xyz
+		...Running liqC.2.5gcc_6000K.OUTCAR_#008.xyz
+		...Running liqC.2.5gcc_6000K.OUTCAR_#009.xyz
+	Test 2 of 14 for API c complete
+Working on Test 3 of 14 for API c
+		...Running CO.2.5gcc_6500K.OUTCAR_#000.xyz
+		...Running CO.2.5gcc_6500K.OUTCAR_#001.xyz
+		...Running CO.2.5gcc_6500K.OUTCAR_#002.xyz
+		...Running CO.2.5gcc_6500K.OUTCAR_#003.xyz
+		...Running CO.2.5gcc_6500K.OUTCAR_#004.xyz
+		...Running CO.2.5gcc_6500K.OUTCAR_#005.xyz
+		...Running CO.2.5gcc_6500K.OUTCAR_#006.xyz
+		...Running CO.2.5gcc_6500K.OUTCAR_#007.xyz
+		...Running CO.2.5gcc_6500K.OUTCAR_#008.xyz
+		...Running CO.2.5gcc_6500K.OUTCAR_#009.xyz
+	Test 3 of 14 for API c complete
+Working on Test 4 of 14 for API c
+		...Running CO.2.5gcc_6500K.OUTCAR_#000.relabel.xyz
+	Test 4 of 14 for API c complete
+Working on Test 5 of 14 for API c
+		...Running CO.2.5gcc_6500K.OUTCAR_#000.scramble.xyz
+	Test 5 of 14 for API c complete
+Working on Test 6 of 14 for API c
+		...Running CO.2.5gcc_6500K.OUTCAR_#000.translate.xyz
+	Test 6 of 14 for API c complete
+Working on Test 7 of 14 for API c
+		...Running HN3.2gcc_3000K.OUTCAR_#000.xyz
+		...Running HN3.2gcc_3000K.OUTCAR_#001.xyz
+		...Running HN3.2gcc_3000K.OUTCAR_#002.xyz
+		...Running HN3.2gcc_3000K.OUTCAR_#003.xyz
+		...Running HN3.2gcc_3000K.OUTCAR_#004.xyz
+		...Running HN3.2gcc_3000K.OUTCAR_#005.xyz
+		...Running HN3.2gcc_3000K.OUTCAR_#006.xyz
+		...Running HN3.2gcc_3000K.OUTCAR_#007.xyz
+		...Running HN3.2gcc_3000K.OUTCAR_#008.xyz
+		...Running HN3.2gcc_3000K.OUTCAR_#009.xyz
+	Test 7 of 14 for API c complete
+Working on Test 8 of 14 for API c
+		...Running TiO2.unitcell_arbrot_#000.xyz
+		...Running TiO2.unitcell_arbrot_#001.xyz
+	Test 8 of 14 for API c complete
+Working on Test 9 of 14 for API c
+		...Running CHON.testfile_#000.xyz
+	Test 9 of 14 for API c complete
+Working on Test 10 of 14 for API c
+		...Running diam.64_#000.xyz
+	Test 10 of 14 for API c complete
+Working on Test 11 of 14 for API c
+		...Running diam.16_#000.xyz
+	Test 11 of 14 for API c complete
+Working on Test 12 of 14 for API c
+		...Running diam.8_#000.xyz
+	Test 12 of 14 for API c complete
+Working on Test 13 of 14 for API c
+		...Running diam.2_#000.xyz
+	Test 13 of 14 for API c complete
+Working on Test 14 of 14 for API c
+		...Running CO.9GPa_2400K.OUTCAR_#000.xyz
+	Test 14 of 14 for API c complete
+Working on Test 1 of 14 for API fortran
+		...Running liqC.2.5gcc_6000K.OUTCAR_#000.xyz
+		...Running liqC.2.5gcc_6000K.OUTCAR_#001.xyz
+		...Running liqC.2.5gcc_6000K.OUTCAR_#002.xyz
+		...Running liqC.2.5gcc_6000K.OUTCAR_#003.xyz
+		...Running liqC.2.5gcc_6000K.OUTCAR_#004.xyz
+		...Running liqC.2.5gcc_6000K.OUTCAR_#005.xyz
+		...Running liqC.2.5gcc_6000K.OUTCAR_#006.xyz
+		...Running liqC.2.5gcc_6000K.OUTCAR_#007.xyz
+		...Running liqC.2.5gcc_6000K.OUTCAR_#008.xyz
+		...Running liqC.2.5gcc_6000K.OUTCAR_#009.xyz
+	Test 1 of 14 for API fortran complete
+Working on Test 2 of 14 for API fortran
+		...Running liqC.2.5gcc_6000K.OUTCAR_#000.xyz
+		...Running liqC.2.5gcc_6000K.OUTCAR_#001.xyz
+		...Running liqC.2.5gcc_6000K.OUTCAR_#002.xyz
+		...Running liqC.2.5gcc_6000K.OUTCAR_#003.xyz
+		...Running liqC.2.5gcc_6000K.OUTCAR_#004.xyz
+		...Running liqC.2.5gcc_6000K.OUTCAR_#005.xyz
+		...Running liqC.2.5gcc_6000K.OUTCAR_#006.xyz
+		...Running liqC.2.5gcc_6000K.OUTCAR_#007.xyz
+		...Running liqC.2.5gcc_6000K.OUTCAR_#008.xyz
+		...Running liqC.2.5gcc_6000K.OUTCAR_#009.xyz
+	Test 2 of 14 for API fortran complete
+Working on Test 3 of 14 for API fortran
+		...Running CO.2.5gcc_6500K.OUTCAR_#000.xyz
+		...Running CO.2.5gcc_6500K.OUTCAR_#001.xyz
+		...Running CO.2.5gcc_6500K.OUTCAR_#002.xyz
+		...Running CO.2.5gcc_6500K.OUTCAR_#003.xyz
+		...Running CO.2.5gcc_6500K.OUTCAR_#004.xyz
+		...Running CO.2.5gcc_6500K.OUTCAR_#005.xyz
+		...Running CO.2.5gcc_6500K.OUTCAR_#006.xyz
+		...Running CO.2.5gcc_6500K.OUTCAR_#007.xyz
+		...Running CO.2.5gcc_6500K.OUTCAR_#008.xyz
+		...Running CO.2.5gcc_6500K.OUTCAR_#009.xyz
+	Test 3 of 14 for API fortran complete
+Working on Test 4 of 14 for API fortran
+		...Running CO.2.5gcc_6500K.OUTCAR_#000.relabel.xyz
+	Test 4 of 14 for API fortran complete
+Working on Test 5 of 14 for API fortran
+		...Running CO.2.5gcc_6500K.OUTCAR_#000.scramble.xyz
+	Test 5 of 14 for API fortran complete
+Working on Test 6 of 14 for API fortran
+		...Running CO.2.5gcc_6500K.OUTCAR_#000.translate.xyz
+	Test 6 of 14 for API fortran complete
+Working on Test 7 of 14 for API fortran
+		...Running HN3.2gcc_3000K.OUTCAR_#000.xyz
+		...Running HN3.2gcc_3000K.OUTCAR_#001.xyz
+		...Running HN3.2gcc_3000K.OUTCAR_#002.xyz
+		...Running HN3.2gcc_3000K.OUTCAR_#003.xyz
+		...Running HN3.2gcc_3000K.OUTCAR_#004.xyz
+		...Running HN3.2gcc_3000K.OUTCAR_#005.xyz
+		...Running HN3.2gcc_3000K.OUTCAR_#006.xyz
+		...Running HN3.2gcc_3000K.OUTCAR_#007.xyz
+		...Running HN3.2gcc_3000K.OUTCAR_#008.xyz
+		...Running HN3.2gcc_3000K.OUTCAR_#009.xyz
+	Test 7 of 14 for API fortran complete
+Working on Test 8 of 14 for API fortran
+		...Running TiO2.unitcell_arbrot_#000.xyz
+		...Running TiO2.unitcell_arbrot_#001.xyz
+	Test 8 of 14 for API fortran complete
+Working on Test 9 of 14 for API fortran
+		...Running CHON.testfile_#000.xyz
+	Test 9 of 14 for API fortran complete
+Working on Test 10 of 14 for API fortran
+		...Running diam.64_#000.xyz
+	Test 10 of 14 for API fortran complete
+Working on Test 11 of 14 for API fortran
+		...Running diam.16_#000.xyz
+	Test 11 of 14 for API fortran complete
+Working on Test 12 of 14 for API fortran
+		...Running diam.8_#000.xyz
+	Test 12 of 14 for API fortran complete
+Working on Test 13 of 14 for API fortran
+		...Running diam.2_#000.xyz
+	Test 13 of 14 for API fortran complete
+Working on Test 14 of 14 for API fortran
+		...Running CO.9GPa_2400K.OUTCAR_#000.xyz
+	Test 14 of 14 for API fortran complete
+Working on Test 1 of 14 for API python
+		...Running liqC.2.5gcc_6000K.OUTCAR_#000.xyz
+		...Running liqC.2.5gcc_6000K.OUTCAR_#001.xyz
+		...Running liqC.2.5gcc_6000K.OUTCAR_#002.xyz
+		...Running liqC.2.5gcc_6000K.OUTCAR_#003.xyz
+		...Running liqC.2.5gcc_6000K.OUTCAR_#004.xyz
+		...Running liqC.2.5gcc_6000K.OUTCAR_#005.xyz
+		...Running liqC.2.5gcc_6000K.OUTCAR_#006.xyz
+		...Running liqC.2.5gcc_6000K.OUTCAR_#007.xyz
+		...Running liqC.2.5gcc_6000K.OUTCAR_#008.xyz
+		...Running liqC.2.5gcc_6000K.OUTCAR_#009.xyz
+	Test 1 of 14 for API python complete
+Working on Test 2 of 14 for API python
+		...Running liqC.2.5gcc_6000K.OUTCAR_#000.xyz
+		...Running liqC.2.5gcc_6000K.OUTCAR_#001.xyz
+		...Running liqC.2.5gcc_6000K.OUTCAR_#002.xyz
+		...Running liqC.2.5gcc_6000K.OUTCAR_#003.xyz
+		...Running liqC.2.5gcc_6000K.OUTCAR_#004.xyz
+		...Running liqC.2.5gcc_6000K.OUTCAR_#005.xyz
+		...Running liqC.2.5gcc_6000K.OUTCAR_#006.xyz
+		...Running liqC.2.5gcc_6000K.OUTCAR_#007.xyz
+		...Running liqC.2.5gcc_6000K.OUTCAR_#008.xyz
+		...Running liqC.2.5gcc_6000K.OUTCAR_#009.xyz
+	Test 2 of 14 for API python complete
+Working on Test 3 of 14 for API python
+		...Running CO.2.5gcc_6500K.OUTCAR_#000.xyz
+		...Running CO.2.5gcc_6500K.OUTCAR_#001.xyz
+		...Running CO.2.5gcc_6500K.OUTCAR_#002.xyz
+		...Running CO.2.5gcc_6500K.OUTCAR_#003.xyz
+		...Running CO.2.5gcc_6500K.OUTCAR_#004.xyz
+		...Running CO.2.5gcc_6500K.OUTCAR_#005.xyz
+		...Running CO.2.5gcc_6500K.OUTCAR_#006.xyz
+		...Running CO.2.5gcc_6500K.OUTCAR_#007.xyz
+		...Running CO.2.5gcc_6500K.OUTCAR_#008.xyz
+		...Running CO.2.5gcc_6500K.OUTCAR_#009.xyz
+	Test 3 of 14 for API python complete
+Working on Test 4 of 14 for API python
+		...Running CO.2.5gcc_6500K.OUTCAR_#000.relabel.xyz
+	Test 4 of 14 for API python complete
+Working on Test 5 of 14 for API python
+		...Running CO.2.5gcc_6500K.OUTCAR_#000.scramble.xyz
+	Test 5 of 14 for API python complete
+Working on Test 6 of 14 for API python
+		...Running CO.2.5gcc_6500K.OUTCAR_#000.translate.xyz
+	Test 6 of 14 for API python complete
+Working on Test 7 of 14 for API python
+		...Running HN3.2gcc_3000K.OUTCAR_#000.xyz
+		...Running HN3.2gcc_3000K.OUTCAR_#001.xyz
+		...Running HN3.2gcc_3000K.OUTCAR_#002.xyz
+		...Running HN3.2gcc_3000K.OUTCAR_#003.xyz
+		...Running HN3.2gcc_3000K.OUTCAR_#004.xyz
+		...Running HN3.2gcc_3000K.OUTCAR_#005.xyz
+		...Running HN3.2gcc_3000K.OUTCAR_#006.xyz
+		...Running HN3.2gcc_3000K.OUTCAR_#007.xyz
+		...Running HN3.2gcc_3000K.OUTCAR_#008.xyz
+		...Running HN3.2gcc_3000K.OUTCAR_#009.xyz
+	Test 7 of 14 for API python complete
+Working on Test 8 of 14 for API python
+		...Running TiO2.unitcell_arbrot_#000.xyz
+		...Running TiO2.unitcell_arbrot_#001.xyz
+	Test 8 of 14 for API python complete
+Working on Test 9 of 14 for API python
+		...Running CHON.testfile_#000.xyz
+	Test 9 of 14 for API python complete
+Working on Test 10 of 14 for API python
+		...Running diam.64_#000.xyz
+	Test 10 of 14 for API python complete
+Working on Test 11 of 14 for API python
+		...Running diam.16_#000.xyz
+	Test 11 of 14 for API python complete
+Working on Test 12 of 14 for API python
+		...Running diam.8_#000.xyz
+	Test 12 of 14 for API python complete
+Working on Test 13 of 14 for API python
+		...Running diam.2_#000.xyz
+	Test 13 of 14 for API python complete
+Working on Test 14 of 14 for API python
+		...Running CO.9GPa_2400K.OUTCAR_#000.xyz
+	Test 14 of 14 for API python complete
+Working on Test 1 of 14 for API fortran08
+		...Running liqC.2.5gcc_6000K.OUTCAR_#000.xyz
+		...Running liqC.2.5gcc_6000K.OUTCAR_#001.xyz
+		...Running liqC.2.5gcc_6000K.OUTCAR_#002.xyz
+		...Running liqC.2.5gcc_6000K.OUTCAR_#003.xyz
+		...Running liqC.2.5gcc_6000K.OUTCAR_#004.xyz
+		...Running liqC.2.5gcc_6000K.OUTCAR_#005.xyz
+		...Running liqC.2.5gcc_6000K.OUTCAR_#006.xyz
+		...Running liqC.2.5gcc_6000K.OUTCAR_#007.xyz
+		...Running liqC.2.5gcc_6000K.OUTCAR_#008.xyz
+		...Running liqC.2.5gcc_6000K.OUTCAR_#009.xyz
+	Test 1 of 14 for API fortran08 complete
+Working on Test 2 of 14 for API fortran08
+		...Running liqC.2.5gcc_6000K.OUTCAR_#000.xyz
+		...Running liqC.2.5gcc_6000K.OUTCAR_#001.xyz
+		...Running liqC.2.5gcc_6000K.OUTCAR_#002.xyz
+		...Running liqC.2.5gcc_6000K.OUTCAR_#003.xyz
+		...Running liqC.2.5gcc_6000K.OUTCAR_#004.xyz
+		...Running liqC.2.5gcc_6000K.OUTCAR_#005.xyz
+		...Running liqC.2.5gcc_6000K.OUTCAR_#006.xyz
+		...Running liqC.2.5gcc_6000K.OUTCAR_#007.xyz
+		...Running liqC.2.5gcc_6000K.OUTCAR_#008.xyz
+		...Running liqC.2.5gcc_6000K.OUTCAR_#009.xyz
+	Test 2 of 14 for API fortran08 complete
+Working on Test 3 of 14 for API fortran08
+		...Running CO.2.5gcc_6500K.OUTCAR_#000.xyz
+		...Running CO.2.5gcc_6500K.OUTCAR_#001.xyz
+		...Running CO.2.5gcc_6500K.OUTCAR_#002.xyz
+		...Running CO.2.5gcc_6500K.OUTCAR_#003.xyz
+		...Running CO.2.5gcc_6500K.OUTCAR_#004.xyz
+		...Running CO.2.5gcc_6500K.OUTCAR_#005.xyz
+		...Running CO.2.5gcc_6500K.OUTCAR_#006.xyz
+		...Running CO.2.5gcc_6500K.OUTCAR_#007.xyz
+		...Running CO.2.5gcc_6500K.OUTCAR_#008.xyz
+		...Running CO.2.5gcc_6500K.OUTCAR_#009.xyz
+	Test 3 of 14 for API fortran08 complete
+Working on Test 4 of 14 for API fortran08
+		...Running CO.2.5gcc_6500K.OUTCAR_#000.relabel.xyz
+	Test 4 of 14 for API fortran08 complete
+Working on Test 5 of 14 for API fortran08
+		...Running CO.2.5gcc_6500K.OUTCAR_#000.scramble.xyz
+	Test 5 of 14 for API fortran08 complete
+Working on Test 6 of 14 for API fortran08
+		...Running CO.2.5gcc_6500K.OUTCAR_#000.translate.xyz
+	Test 6 of 14 for API fortran08 complete
+Working on Test 7 of 14 for API fortran08
+		...Running HN3.2gcc_3000K.OUTCAR_#000.xyz
+		...Running HN3.2gcc_3000K.OUTCAR_#001.xyz
+		...Running HN3.2gcc_3000K.OUTCAR_#002.xyz
+		...Running HN3.2gcc_3000K.OUTCAR_#003.xyz
+		...Running HN3.2gcc_3000K.OUTCAR_#004.xyz
+		...Running HN3.2gcc_3000K.OUTCAR_#005.xyz
+		...Running HN3.2gcc_3000K.OUTCAR_#006.xyz
+		...Running HN3.2gcc_3000K.OUTCAR_#007.xyz
+		...Running HN3.2gcc_3000K.OUTCAR_#008.xyz
+		...Running HN3.2gcc_3000K.OUTCAR_#009.xyz
+	Test 7 of 14 for API fortran08 complete
+Working on Test 8 of 14 for API fortran08
+		...Running TiO2.unitcell_arbrot_#000.xyz
+		...Running TiO2.unitcell_arbrot_#001.xyz
+	Test 8 of 14 for API fortran08 complete
+Working on Test 9 of 14 for API fortran08
+		...Running CHON.testfile_#000.xyz
+	Test 9 of 14 for API fortran08 complete
+Working on Test 10 of 14 for API fortran08
+		...Running diam.64_#000.xyz
+	Test 10 of 14 for API fortran08 complete
+Working on Test 11 of 14 for API fortran08
+		...Running diam.16_#000.xyz
+	Test 11 of 14 for API fortran08 complete
+Working on Test 12 of 14 for API fortran08
+		...Running diam.8_#000.xyz
+	Test 12 of 14 for API fortran08 complete
+Working on Test 13 of 14 for API fortran08
+		...Running diam.2_#000.xyz
+	Test 13 of 14 for API fortran08 complete
+Working on Test 14 of 14 for API fortran08
+		...Running CO.9GPa_2400K.OUTCAR_#000.xyz
+	Test 14 of 14 for API fortran08 complete
+Working on Test 1 of 14 for API fortran_instance
+		...Running liqC.2.5gcc_6000K.OUTCAR_#000.xyz
+		...Running liqC.2.5gcc_6000K.OUTCAR_#001.xyz
+		...Running liqC.2.5gcc_6000K.OUTCAR_#002.xyz
+		...Running liqC.2.5gcc_6000K.OUTCAR_#003.xyz
+		...Running liqC.2.5gcc_6000K.OUTCAR_#004.xyz
+		...Running liqC.2.5gcc_6000K.OUTCAR_#005.xyz
+		...Running liqC.2.5gcc_6000K.OUTCAR_#006.xyz
+		...Running liqC.2.5gcc_6000K.OUTCAR_#007.xyz
+		...Running liqC.2.5gcc_6000K.OUTCAR_#008.xyz
+		...Running liqC.2.5gcc_6000K.OUTCAR_#009.xyz
+	Test 1 of 14 for API fortran_instance complete
+Working on Test 2 of 14 for API fortran_instance
+		...Running liqC.2.5gcc_6000K.OUTCAR_#000.xyz
+		...Running liqC.2.5gcc_6000K.OUTCAR_#001.xyz
+		...Running liqC.2.5gcc_6000K.OUTCAR_#002.xyz
+		...Running liqC.2.5gcc_6000K.OUTCAR_#003.xyz
+		...Running liqC.2.5gcc_6000K.OUTCAR_#004.xyz
+		...Running liqC.2.5gcc_6000K.OUTCAR_#005.xyz
+		...Running liqC.2.5gcc_6000K.OUTCAR_#006.xyz
+		...Running liqC.2.5gcc_6000K.OUTCAR_#007.xyz
+		...Running liqC.2.5gcc_6000K.OUTCAR_#008.xyz
+		...Running liqC.2.5gcc_6000K.OUTCAR_#009.xyz
+	Test 2 of 14 for API fortran_instance complete
+Working on Test 3 of 14 for API fortran_instance
+		...Running CO.2.5gcc_6500K.OUTCAR_#000.xyz
+		...Running CO.2.5gcc_6500K.OUTCAR_#001.xyz
+		...Running CO.2.5gcc_6500K.OUTCAR_#002.xyz
+		...Running CO.2.5gcc_6500K.OUTCAR_#003.xyz
+		...Running CO.2.5gcc_6500K.OUTCAR_#004.xyz
+		...Running CO.2.5gcc_6500K.OUTCAR_#005.xyz
+		...Running CO.2.5gcc_6500K.OUTCAR_#006.xyz
+		...Running CO.2.5gcc_6500K.OUTCAR_#007.xyz
+		...Running CO.2.5gcc_6500K.OUTCAR_#008.xyz
+		...Running CO.2.5gcc_6500K.OUTCAR_#009.xyz
+	Test 3 of 14 for API fortran_instance complete
+Working on Test 4 of 14 for API fortran_instance
+		...Running CO.2.5gcc_6500K.OUTCAR_#000.relabel.xyz
+	Test 4 of 14 for API fortran_instance complete
+Working on Test 5 of 14 for API fortran_instance
+		...Running CO.2.5gcc_6500K.OUTCAR_#000.scramble.xyz
+	Test 5 of 14 for API fortran_instance complete
+Working on Test 6 of 14 for API fortran_instance
+		...Running CO.2.5gcc_6500K.OUTCAR_#000.translate.xyz
+	Test 6 of 14 for API fortran_instance complete
+Working on Test 7 of 14 for API fortran_instance
+		...Running HN3.2gcc_3000K.OUTCAR_#000.xyz
+		...Running HN3.2gcc_3000K.OUTCAR_#001.xyz
+		...Running HN3.2gcc_3000K.OUTCAR_#002.xyz
+		...Running HN3.2gcc_3000K.OUTCAR_#003.xyz
+		...Running HN3.2gcc_3000K.OUTCAR_#004.xyz
+		...Running HN3.2gcc_3000K.OUTCAR_#005.xyz
+		...Running HN3.2gcc_3000K.OUTCAR_#006.xyz
+		...Running HN3.2gcc_3000K.OUTCAR_#007.xyz
+		...Running HN3.2gcc_3000K.OUTCAR_#008.xyz
+		...Running HN3.2gcc_3000K.OUTCAR_#009.xyz
+	Test 7 of 14 for API fortran_instance complete
+Working on Test 8 of 14 for API fortran_instance
+		...Running TiO2.unitcell_arbrot_#000.xyz
+		...Running TiO2.unitcell_arbrot_#001.xyz
+	Test 8 of 14 for API fortran_instance complete
+Working on Test 9 of 14 for API fortran_instance
+		...Running CHON.testfile_#000.xyz
+	Test 9 of 14 for API fortran_instance complete
+Working on Test 10 of 14 for API fortran_instance
+		...Running diam.64_#000.xyz
+	Test 10 of 14 for API fortran_instance complete
+Working on Test 11 of 14 for API fortran_instance
+		...Running diam.16_#000.xyz
+	Test 11 of 14 for API fortran_instance complete
+Working on Test 12 of 14 for API fortran_instance
+		...Running diam.8_#000.xyz
+	Test 12 of 14 for API fortran_instance complete
+Working on Test 13 of 14 for API fortran_instance
+		...Running diam.2_#000.xyz
+	Test 13 of 14 for API fortran_instance complete
+Working on Test 14 of 14 for API fortran_instance
+		...Running CO.9GPa_2400K.OUTCAR_#000.xyz
+	Test 14 of 14 for API fortran_instance complete
+Working on Test 1 of 14 for API c_instance
+		...Running liqC.2.5gcc_6000K.OUTCAR_#000.xyz
+		...Running liqC.2.5gcc_6000K.OUTCAR_#001.xyz
+		...Running liqC.2.5gcc_6000K.OUTCAR_#002.xyz
+		...Running liqC.2.5gcc_6000K.OUTCAR_#003.xyz
+		...Running liqC.2.5gcc_6000K.OUTCAR_#004.xyz
+		...Running liqC.2.5gcc_6000K.OUTCAR_#005.xyz
+		...Running liqC.2.5gcc_6000K.OUTCAR_#006.xyz
+		...Running liqC.2.5gcc_6000K.OUTCAR_#007.xyz
+		...Running liqC.2.5gcc_6000K.OUTCAR_#008.xyz
+		...Running liqC.2.5gcc_6000K.OUTCAR_#009.xyz
+	Test 1 of 14 for API c_instance complete
+Working on Test 2 of 14 for API c_instance
+		...Running liqC.2.5gcc_6000K.OUTCAR_#000.xyz
+		...Running liqC.2.5gcc_6000K.OUTCAR_#001.xyz
+		...Running liqC.2.5gcc_6000K.OUTCAR_#002.xyz
+		...Running liqC.2.5gcc_6000K.OUTCAR_#003.xyz
+		...Running liqC.2.5gcc_6000K.OUTCAR_#004.xyz
+		...Running liqC.2.5gcc_6000K.OUTCAR_#005.xyz
+		...Running liqC.2.5gcc_6000K.OUTCAR_#006.xyz
+		...Running liqC.2.5gcc_6000K.OUTCAR_#007.xyz
+		...Running liqC.2.5gcc_6000K.OUTCAR_#008.xyz
+		...Running liqC.2.5gcc_6000K.OUTCAR_#009.xyz
+	Test 2 of 14 for API c_instance complete
+Working on Test 3 of 14 for API c_instance
+		...Running CO.2.5gcc_6500K.OUTCAR_#000.xyz
+		...Running CO.2.5gcc_6500K.OUTCAR_#001.xyz
+		...Running CO.2.5gcc_6500K.OUTCAR_#002.xyz
+		...Running CO.2.5gcc_6500K.OUTCAR_#003.xyz
+		...Running CO.2.5gcc_6500K.OUTCAR_#004.xyz
+		...Running CO.2.5gcc_6500K.OUTCAR_#005.xyz
+		...Running CO.2.5gcc_6500K.OUTCAR_#006.xyz
+		...Running CO.2.5gcc_6500K.OUTCAR_#007.xyz
+		...Running CO.2.5gcc_6500K.OUTCAR_#008.xyz
+		...Running CO.2.5gcc_6500K.OUTCAR_#009.xyz
+	Test 3 of 14 for API c_instance complete
+Working on Test 4 of 14 for API c_instance
+		...Running CO.2.5gcc_6500K.OUTCAR_#000.relabel.xyz
+	Test 4 of 14 for API c_instance complete
+Working on Test 5 of 14 for API c_instance
+		...Running CO.2.5gcc_6500K.OUTCAR_#000.scramble.xyz
+	Test 5 of 14 for API c_instance complete
+Working on Test 6 of 14 for API c_instance
+		...Running CO.2.5gcc_6500K.OUTCAR_#000.translate.xyz
+	Test 6 of 14 for API c_instance complete
+Working on Test 7 of 14 for API c_instance
+		...Running HN3.2gcc_3000K.OUTCAR_#000.xyz
+		...Running HN3.2gcc_3000K.OUTCAR_#001.xyz
+		...Running HN3.2gcc_3000K.OUTCAR_#002.xyz
+		...Running HN3.2gcc_3000K.OUTCAR_#003.xyz
+		...Running HN3.2gcc_3000K.OUTCAR_#004.xyz
+		...Running HN3.2gcc_3000K.OUTCAR_#005.xyz
+		...Running HN3.2gcc_3000K.OUTCAR_#006.xyz
+		...Running HN3.2gcc_3000K.OUTCAR_#007.xyz
+		...Running HN3.2gcc_3000K.OUTCAR_#008.xyz
+		...Running HN3.2gcc_3000K.OUTCAR_#009.xyz
+	Test 7 of 14 for API c_instance complete
+Working on Test 8 of 14 for API c_instance
+		...Running TiO2.unitcell_arbrot_#000.xyz
+		...Running TiO2.unitcell_arbrot_#001.xyz
+	Test 8 of 14 for API c_instance complete
+Working on Test 9 of 14 for API c_instance
+		...Running CHON.testfile_#000.xyz
+	Test 9 of 14 for API c_instance complete
+Working on Test 10 of 14 for API c_instance
+		...Running diam.64_#000.xyz
+	Test 10 of 14 for API c_instance complete
+Working on Test 11 of 14 for API c_instance
+		...Running diam.16_#000.xyz
+	Test 11 of 14 for API c_instance complete
+Working on Test 12 of 14 for API c_instance
+		...Running diam.8_#000.xyz
+	Test 12 of 14 for API c_instance complete
+Working on Test 13 of 14 for API c_instance
+		...Running diam.2_#000.xyz
+	Test 13 of 14 for API c_instance complete
+Working on Test 14 of 14 for API c_instance
+		...Running CO.9GPa_2400K.OUTCAR_#000.xyz
+	Test 14 of 14 for API c_instance complete
+Working on Test 1 of 14 for API python_instance
+		...Running liqC.2.5gcc_6000K.OUTCAR_#000.xyz
+		...Running liqC.2.5gcc_6000K.OUTCAR_#001.xyz
+		...Running liqC.2.5gcc_6000K.OUTCAR_#002.xyz
+		...Running liqC.2.5gcc_6000K.OUTCAR_#003.xyz
+		...Running liqC.2.5gcc_6000K.OUTCAR_#004.xyz
+		...Running liqC.2.5gcc_6000K.OUTCAR_#005.xyz
+		...Running liqC.2.5gcc_6000K.OUTCAR_#006.xyz
+		...Running liqC.2.5gcc_6000K.OUTCAR_#007.xyz
+		...Running liqC.2.5gcc_6000K.OUTCAR_#008.xyz
+		...Running liqC.2.5gcc_6000K.OUTCAR_#009.xyz
+	Test 1 of 14 for API python_instance complete
+Working on Test 2 of 14 for API python_instance
+		...Running liqC.2.5gcc_6000K.OUTCAR_#000.xyz
+		...Running liqC.2.5gcc_6000K.OUTCAR_#001.xyz
+		...Running liqC.2.5gcc_6000K.OUTCAR_#002.xyz
+		...Running liqC.2.5gcc_6000K.OUTCAR_#003.xyz
+		...Running liqC.2.5gcc_6000K.OUTCAR_#004.xyz
+		...Running liqC.2.5gcc_6000K.OUTCAR_#005.xyz
+		...Running liqC.2.5gcc_6000K.OUTCAR_#006.xyz
+		...Running liqC.2.5gcc_6000K.OUTCAR_#007.xyz
+		...Running liqC.2.5gcc_6000K.OUTCAR_#008.xyz
+		...Running liqC.2.5gcc_6000K.OUTCAR_#009.xyz
+	Test 2 of 14 for API python_instance complete
+Working on Test 3 of 14 for API python_instance
+		...Running CO.2.5gcc_6500K.OUTCAR_#000.xyz
+		...Running CO.2.5gcc_6500K.OUTCAR_#001.xyz
+		...Running CO.2.5gcc_6500K.OUTCAR_#002.xyz
+		...Running CO.2.5gcc_6500K.OUTCAR_#003.xyz
+		...Running CO.2.5gcc_6500K.OUTCAR_#004.xyz
+		...Running CO.2.5gcc_6500K.OUTCAR_#005.xyz
+		...Running CO.2.5gcc_6500K.OUTCAR_#006.xyz
+		...Running CO.2.5gcc_6500K.OUTCAR_#007.xyz
+		...Running CO.2.5gcc_6500K.OUTCAR_#008.xyz
+		...Running CO.2.5gcc_6500K.OUTCAR_#009.xyz
+	Test 3 of 14 for API python_instance complete
+Working on Test 4 of 14 for API python_instance
+		...Running CO.2.5gcc_6500K.OUTCAR_#000.relabel.xyz
+	Test 4 of 14 for API python_instance complete
+Working on Test 5 of 14 for API python_instance
+		...Running CO.2.5gcc_6500K.OUTCAR_#000.scramble.xyz
+	Test 5 of 14 for API python_instance complete
+Working on Test 6 of 14 for API python_instance
+		...Running CO.2.5gcc_6500K.OUTCAR_#000.translate.xyz
+	Test 6 of 14 for API python_instance complete
+Working on Test 7 of 14 for API python_instance
+		...Running HN3.2gcc_3000K.OUTCAR_#000.xyz
+		...Running HN3.2gcc_3000K.OUTCAR_#001.xyz
+		...Running HN3.2gcc_3000K.OUTCAR_#002.xyz
+		...Running HN3.2gcc_3000K.OUTCAR_#003.xyz
+		...Running HN3.2gcc_3000K.OUTCAR_#004.xyz
+		...Running HN3.2gcc_3000K.OUTCAR_#005.xyz
+		...Running HN3.2gcc_3000K.OUTCAR_#006.xyz
+		...Running HN3.2gcc_3000K.OUTCAR_#007.xyz
+		...Running HN3.2gcc_3000K.OUTCAR_#008.xyz
+		...Running HN3.2gcc_3000K.OUTCAR_#009.xyz
+	Test 7 of 14 for API python_instance complete
+Working on Test 8 of 14 for API python_instance
+		...Running TiO2.unitcell_arbrot_#000.xyz
+		...Running TiO2.unitcell_arbrot_#001.xyz
+	Test 8 of 14 for API python_instance complete
+Working on Test 9 of 14 for API python_instance
+		...Running CHON.testfile_#000.xyz
+	Test 9 of 14 for API python_instance complete
+Working on Test 10 of 14 for API python_instance
+		...Running diam.64_#000.xyz
+	Test 10 of 14 for API python_instance complete
+Working on Test 11 of 14 for API python_instance
+		...Running diam.16_#000.xyz
+	Test 11 of 14 for API python_instance complete
+Working on Test 12 of 14 for API python_instance
+		...Running diam.8_#000.xyz
+	Test 12 of 14 for API python_instance complete
+Working on Test 13 of 14 for API python_instance
+		...Running diam.2_#000.xyz
+	Test 13 of 14 for API python_instance complete
+Working on Test 14 of 14 for API python_instance
+		...Running CO.9GPa_2400K.OUTCAR_#000.xyz
+	Test 14 of 14 for API python_instance complete
+Testing compilation type: MAKEFILE
+Compiling for API cpp
+
+g++ -O3 -std=c++11 main.cpp /g/g15/stimac1/chimes_calc_JS/serial_interface/examples/cpp/../../src/serial_chimes_interface.cpp /g/g15/stimac1/chimes_calc_JS/serial_interface/examples/cpp/../../../chimesFF/src/chimesFF.cpp  -o chimescalc -I /g/g15/stimac1/chimes_calc_JS/serial_interface/examples/cpp/../../src -I /g/g15/stimac1/chimes_calc_JS/serial_interface/examples/cpp/../../../chimesFF/src/ -DDEBUG=1
+Compiling for API c
+
+make chimesFF.o
+make[1]: Entering directory '/g/g15/stimac1/chimes_calc_JS/serial_interface/examples/c'
+g++ -O3 -std=c++11  -c /g/g15/stimac1/chimes_calc_JS/serial_interface/examples/c/../../../chimesFF/src/chimesFF.cpp -I /g/g15/stimac1/chimes_calc_JS/serial_interface/examples/c/../../../chimesFF/src
+make[1]: Leaving directory '/g/g15/stimac1/chimes_calc_JS/serial_interface/examples/c'
+make serial_chimes_interface.o
+make[1]: Entering directory '/g/g15/stimac1/chimes_calc_JS/serial_interface/examples/c'
+g++ -O3 -std=c++11  -c /g/g15/stimac1/chimes_calc_JS/serial_interface/examples/c/../../src/serial_chimes_interface.cpp -I /g/g15/stimac1/chimes_calc_JS/serial_interface/examples/c/../../src -I /g/g15/stimac1/chimes_calc_JS/serial_interface/examples/c/../../../chimesFF/src 
+make[1]: Leaving directory '/g/g15/stimac1/chimes_calc_JS/serial_interface/examples/c'
+make chimescalc_serial_C.o
+make[1]: Entering directory '/g/g15/stimac1/chimes_calc_JS/serial_interface/examples/c'
+g++ -O3 -std=c++11  -c /g/g15/stimac1/chimes_calc_JS/serial_interface/examples/c/../../api/chimescalc_serial_C.cpp -I /g/g15/stimac1/chimes_calc_JS/serial_interface/examples/c/../../api -I /g/g15/stimac1/chimes_calc_JS/serial_interface/examples/c/../../src -I /g/g15/stimac1/chimes_calc_JS/serial_interface/examples/c/../../../chimesFF/src
+make[1]: Leaving directory '/g/g15/stimac1/chimes_calc_JS/serial_interface/examples/c'
+make main.o
+make[1]: Entering directory '/g/g15/stimac1/chimes_calc_JS/serial_interface/examples/c'
+gcc -O3 -c /g/g15/stimac1/chimes_calc_JS/serial_interface/examples/c/main.c -DDEBUG=1  -I /g/g15/stimac1/chimes_calc_JS/serial_interface/examples/c/../../api -I /g/g15/stimac1/chimes_calc_JS/serial_interface/examples/c/../../src -I /g/g15/stimac1/chimes_calc_JS/serial_interface/examples/c/../../../chimesFF/src
+make[1]: Leaving directory '/g/g15/stimac1/chimes_calc_JS/serial_interface/examples/c'
+make test-C
+make[1]: Entering directory '/g/g15/stimac1/chimes_calc_JS/serial_interface/examples/c'
+g++ -O3 -std=c++11  chimesFF.o serial_chimes_interface.o chimescalc_serial_C.o main.o -o chimescalc-test_serial-C
+make[1]: Leaving directory '/g/g15/stimac1/chimes_calc_JS/serial_interface/examples/c'
+make clean
+make[1]: Entering directory '/g/g15/stimac1/chimes_calc_JS/serial_interface/examples/c'
+rm -f *.o 
+make[1]: Leaving directory '/g/g15/stimac1/chimes_calc_JS/serial_interface/examples/c'
+Compiling for API fortran
+
+make chimesFF.o
+make[1]: Entering directory '/g/g15/stimac1/chimes_calc_JS/serial_interface/examples/fortran'
+g++ -O3 -std=c++11 -fPIC -c /g/g15/stimac1/chimes_calc_JS/serial_interface/examples/fortran/../../../chimesFF/src/chimesFF.cpp -I /g/g15/stimac1/chimes_calc_JS/serial_interface/examples/fortran/../../../chimesFF/src
+make[1]: Leaving directory '/g/g15/stimac1/chimes_calc_JS/serial_interface/examples/fortran'
+make serial_chimes_interface.o 
+make[1]: Entering directory '/g/g15/stimac1/chimes_calc_JS/serial_interface/examples/fortran'
+g++ -O3 -std=c++11 -fPIC -c /g/g15/stimac1/chimes_calc_JS/serial_interface/examples/fortran/../../src/serial_chimes_interface.cpp -I /g/g15/stimac1/chimes_calc_JS/serial_interface/examples/fortran/../../src -I /g/g15/stimac1/chimes_calc_JS/serial_interface/examples/fortran/../../../chimesFF/src
+make[1]: Leaving directory '/g/g15/stimac1/chimes_calc_JS/serial_interface/examples/fortran'
+make chimescalc_serial_C.o
+make[1]: Entering directory '/g/g15/stimac1/chimes_calc_JS/serial_interface/examples/fortran'
+g++ -O3 -std=c++11 -fPIC -c /g/g15/stimac1/chimes_calc_JS/serial_interface/examples/fortran/../../api/chimescalc_serial_C.cpp -I /g/g15/stimac1/chimes_calc_JS/serial_interface/examples/fortran/../../api -I /g/g15/stimac1/chimes_calc_JS/serial_interface/examples/fortran/../../src -I /g/g15/stimac1/chimes_calc_JS/serial_interface/examples/fortran/../../../chimesFF/src
+make[1]: Leaving directory '/g/g15/stimac1/chimes_calc_JS/serial_interface/examples/fortran'
+make chimescalc_serial_F.o chimescalc_serial.mod
+make[1]: Entering directory '/g/g15/stimac1/chimes_calc_JS/serial_interface/examples/fortran'
+gfortran -O3 -fPIC -std=f2003 -cpp  -lstdc++ -c /g/g15/stimac1/chimes_calc_JS/serial_interface/examples/fortran/../../api/chimescalc_serial_F.f90 -o chimescalc_serial_F.o
+make[1]: 'chimescalc_serial.mod' is up to date.
+make[1]: Leaving directory '/g/g15/stimac1/chimes_calc_JS/serial_interface/examples/fortran'
+make main.o
+make[1]: Entering directory '/g/g15/stimac1/chimes_calc_JS/serial_interface/examples/fortran'
+gfortran -O3 -fPIC -std=f2003 -cpp  -lstdc++ -c main.F90 -o main.o  -DDEBUG=1
+make[1]: Leaving directory '/g/g15/stimac1/chimes_calc_JS/serial_interface/examples/fortran'
+make test-F
+make[1]: Entering directory '/g/g15/stimac1/chimes_calc_JS/serial_interface/examples/fortran'
+gfortran -O3 -fPIC -std=f2003 -cpp  -lstdc++ chimesFF.o serial_chimes_interface.o  chimescalc_serial_C.o chimescalc_serial_F.o main.o -o chimescalc-test_serial-F
+make[1]: Leaving directory '/g/g15/stimac1/chimes_calc_JS/serial_interface/examples/fortran'
+make lib
+make[1]: Entering directory '/g/g15/stimac1/chimes_calc_JS/serial_interface/examples/fortran'
+ar rcs libchimescalc-fortran.a chimesFF.o serial_chimes_interface.o chimescalc_serial_C.o
+make[1]: Leaving directory '/g/g15/stimac1/chimes_calc_JS/serial_interface/examples/fortran'
+make clean
+make[1]: Entering directory '/g/g15/stimac1/chimes_calc_JS/serial_interface/examples/fortran'
+rm -f *.o *.mod
+make[1]: Leaving directory '/g/g15/stimac1/chimes_calc_JS/serial_interface/examples/fortran'
+Compiling for API python
+
+make chimesFF.o
+make[1]: Entering directory '/g/g15/stimac1/chimes_calc_JS/serial_interface/examples/python'
+g++ -O3 -std=c++11 -fPIC -c /g/g15/stimac1/chimes_calc_JS/serial_interface/examples/python/../../../chimesFF/src/chimesFF.cpp -I /g/g15/stimac1/chimes_calc_JS/serial_interface/examples/python/../../../chimesFF/src
+make[1]: Leaving directory '/g/g15/stimac1/chimes_calc_JS/serial_interface/examples/python'
+make serial_chimes_interface.o
+make[1]: Entering directory '/g/g15/stimac1/chimes_calc_JS/serial_interface/examples/python'
+g++ -O3 -std=c++11 -fPIC -c /g/g15/stimac1/chimes_calc_JS/serial_interface/examples/python/../../src/serial_chimes_interface.cpp -I /g/g15/stimac1/chimes_calc_JS/serial_interface/examples/python/../../src -I /g/g15/stimac1/chimes_calc_JS/serial_interface/examples/python/../../../chimesFF/src 
+make[1]: Leaving directory '/g/g15/stimac1/chimes_calc_JS/serial_interface/examples/python'
+make chimescalc_serial_C.o
+make[1]: Entering directory '/g/g15/stimac1/chimes_calc_JS/serial_interface/examples/python'
+g++ -O3 -std=c++11 -fPIC -c /g/g15/stimac1/chimes_calc_JS/serial_interface/examples/python/../../api/chimescalc_serial_C.cpp -I /g/g15/stimac1/chimes_calc_JS/serial_interface/examples/python/../../api -I /g/g15/stimac1/chimes_calc_JS/serial_interface/examples/python/../../src -I /g/g15/stimac1/chimes_calc_JS/serial_interface/examples/python/../../../chimesFF/src	
+make[1]: Leaving directory '/g/g15/stimac1/chimes_calc_JS/serial_interface/examples/python'
+make chimescalc_serial_C.so
+make[1]: Entering directory '/g/g15/stimac1/chimes_calc_JS/serial_interface/examples/python'
+g++ -O3 -std=c++11 -fPIC -shared -o libchimescalc-serial_dl.so chimescalc_serial_C.o serial_chimes_interface.o chimesFF.o
+make[1]: Leaving directory '/g/g15/stimac1/chimes_calc_JS/serial_interface/examples/python'
+make clean
+make[1]: Entering directory '/g/g15/stimac1/chimes_calc_JS/serial_interface/examples/python'
+rm -f *.o
+make[1]: Leaving directory '/g/g15/stimac1/chimes_calc_JS/serial_interface/examples/python'
+Compiling for API fortran08
+
+make chimesFF.o
+make[1]: Entering directory '/g/g15/stimac1/chimes_calc_JS/serial_interface/examples/fortran08'
+g++      -std=c++11 -O2 -fPIC       -c /g/g15/stimac1/chimes_calc_JS/serial_interface/examples/fortran08/../../../chimesFF/src/chimesFF.cpp -I /g/g15/stimac1/chimes_calc_JS/serial_interface/examples/fortran08/../../../chimesFF/src
+make[1]: Leaving directory '/g/g15/stimac1/chimes_calc_JS/serial_interface/examples/fortran08'
+make serial_chimes_interface.o 
+make[1]: Entering directory '/g/g15/stimac1/chimes_calc_JS/serial_interface/examples/fortran08'
+g++      -std=c++11 -O2 -fPIC       -c /g/g15/stimac1/chimes_calc_JS/serial_interface/examples/fortran08/../../src/serial_chimes_interface.cpp -I /g/g15/stimac1/chimes_calc_JS/serial_interface/examples/fortran08/../../src -I /g/g15/stimac1/chimes_calc_JS/serial_interface/examples/fortran08/../../../chimesFF/src 
+make[1]: Leaving directory '/g/g15/stimac1/chimes_calc_JS/serial_interface/examples/fortran08'
+make chimescalc_serial_C.o
+make[1]: Entering directory '/g/g15/stimac1/chimes_calc_JS/serial_interface/examples/fortran08'
+g++      -std=c++11 -O2 -fPIC       -c /g/g15/stimac1/chimes_calc_JS/serial_interface/examples/fortran08/../../api/chimescalc_serial_C.cpp -I /g/g15/stimac1/chimes_calc_JS/serial_interface/examples/fortran08/../../api -I /g/g15/stimac1/chimes_calc_JS/serial_interface/examples/fortran08/../../src -I /g/g15/stimac1/chimes_calc_JS/serial_interface/examples/fortran08/../../../chimesFF/src	
+make[1]: Leaving directory '/g/g15/stimac1/chimes_calc_JS/serial_interface/examples/fortran08'
+make chimescalc_serial_F.o chimescalc_serial.mod
+make[1]: Entering directory '/g/g15/stimac1/chimes_calc_JS/serial_interface/examples/fortran08'
+gfortran -std=f2008 -O2 -fPIC -cpp  -lstdc++ -c /g/g15/stimac1/chimes_calc_JS/serial_interface/examples/fortran08/../../api/chimescalc_serial_F.f90 -o chimescalc_serial_F.o
+make[1]: Nothing to be done for 'chimescalc_serial.mod'.
+make[1]: Leaving directory '/g/g15/stimac1/chimes_calc_JS/serial_interface/examples/fortran08'
+make chimescalc_serial_F08.o chimes_serial08.mod
+make[1]: Entering directory '/g/g15/stimac1/chimes_calc_JS/serial_interface/examples/fortran08'
+gfortran -std=f2008 -O2 -fPIC -cpp  -lstdc++ -c /g/g15/stimac1/chimes_calc_JS/serial_interface/examples/fortran08/../../api/chimescalc_serial_F08.f90 -o chimescalc_serial_F08.o
+gfortran -std=f2008 -O2 -fPIC -cpp  -lstdc++ -c /g/g15/stimac1/chimes_calc_JS/serial_interface/examples/fortran08/../../api/chimescalc_serial_F08.f90 -o chimescalc_serial_F08.o
+make[1]: Leaving directory '/g/g15/stimac1/chimes_calc_JS/serial_interface/examples/fortran08'
+make main.o
+make[1]: Entering directory '/g/g15/stimac1/chimes_calc_JS/serial_interface/examples/fortran08'
+gfortran -std=f2008 -O2 -fPIC -cpp  -lstdc++ -c main.F90 -o main.o  -DDEBUG=1
+make[1]: Leaving directory '/g/g15/stimac1/chimes_calc_JS/serial_interface/examples/fortran08'
+make test-F
+make[1]: Entering directory '/g/g15/stimac1/chimes_calc_JS/serial_interface/examples/fortran08'
+gfortran -std=f2008 -O2 -fPIC -cpp  -lstdc++ chimesFF.o serial_chimes_interface.o  chimescalc_serial_C.o chimescalc_serial_F.o chimescalc_serial_F08.o main.o -o chimescalc-test_serial-F08
+make[1]: Leaving directory '/g/g15/stimac1/chimes_calc_JS/serial_interface/examples/fortran08'
+make lib
+make[1]: Entering directory '/g/g15/stimac1/chimes_calc_JS/serial_interface/examples/fortran08'
+ar rcs libchimescalc-fortran08.a chimesFF.o serial_chimes_interface.o chimescalc_serial_C.o
+make[1]: Leaving directory '/g/g15/stimac1/chimes_calc_JS/serial_interface/examples/fortran08'
+make clean
+make[1]: Entering directory '/g/g15/stimac1/chimes_calc_JS/serial_interface/examples/fortran08'
+rm -f *.o *.mod
+make[1]: Leaving directory '/g/g15/stimac1/chimes_calc_JS/serial_interface/examples/fortran08'
+Compiling for API fortran_instance
+
+make chimesFF.o
+make[1]: Entering directory '/g/g15/stimac1/chimes_calc_JS/serial_interface/examples/fortran_instance'
+g++ -O3 -std=c++11 -fPIC -c /g/g15/stimac1/chimes_calc_JS/serial_interface/examples/fortran_instance/../../../chimesFF/src/chimesFF.cpp -I /g/g15/stimac1/chimes_calc_JS/serial_interface/examples/fortran_instance/../../../chimesFF/src
+make[1]: Leaving directory '/g/g15/stimac1/chimes_calc_JS/serial_interface/examples/fortran_instance'
+make serial_chimes_interface.o 
+make[1]: Entering directory '/g/g15/stimac1/chimes_calc_JS/serial_interface/examples/fortran_instance'
+g++ -O3 -std=c++11 -fPIC -c /g/g15/stimac1/chimes_calc_JS/serial_interface/examples/fortran_instance/../../src/serial_chimes_interface.cpp -I /g/g15/stimac1/chimes_calc_JS/serial_interface/examples/fortran_instance/../../src -I /g/g15/stimac1/chimes_calc_JS/serial_interface/examples/fortran_instance/../../../chimesFF/src
+make[1]: Leaving directory '/g/g15/stimac1/chimes_calc_JS/serial_interface/examples/fortran_instance'
+make chimescalc_serial_C.o
+make[1]: Entering directory '/g/g15/stimac1/chimes_calc_JS/serial_interface/examples/fortran_instance'
+g++ -O3 -std=c++11 -fPIC -c /g/g15/stimac1/chimes_calc_JS/serial_interface/examples/fortran_instance/../../api/chimescalc_serial_C.cpp -I /g/g15/stimac1/chimes_calc_JS/serial_interface/examples/fortran_instance/../../api -I /g/g15/stimac1/chimes_calc_JS/serial_interface/examples/fortran_instance/../../src -I /g/g15/stimac1/chimes_calc_JS/serial_interface/examples/fortran_instance/../../../chimesFF/src
+make[1]: Leaving directory '/g/g15/stimac1/chimes_calc_JS/serial_interface/examples/fortran_instance'
+make chimescalc_serial_F.o chimescalc_serial.mod
+make[1]: Entering directory '/g/g15/stimac1/chimes_calc_JS/serial_interface/examples/fortran_instance'
+gfortran -O3 -fPIC -std=f2003 -cpp  -lstdc++ -c /g/g15/stimac1/chimes_calc_JS/serial_interface/examples/fortran_instance/../../api/chimescalc_serial_F.f90 -o chimescalc_serial_F.o
+make[1]: 'chimescalc_serial.mod' is up to date.
+make[1]: Leaving directory '/g/g15/stimac1/chimes_calc_JS/serial_interface/examples/fortran_instance'
+make main.o
+make[1]: Entering directory '/g/g15/stimac1/chimes_calc_JS/serial_interface/examples/fortran_instance'
+gfortran -O3 -fPIC -std=f2003 -cpp  -lstdc++ -c main.F90 -o main.o  -DDEBUG=1
+make[1]: Leaving directory '/g/g15/stimac1/chimes_calc_JS/serial_interface/examples/fortran_instance'
+make test-F
+make[1]: Entering directory '/g/g15/stimac1/chimes_calc_JS/serial_interface/examples/fortran_instance'
+gfortran -O3 -fPIC -std=f2003 -cpp  -lstdc++ chimesFF.o serial_chimes_interface.o  chimescalc_serial_C.o chimescalc_serial_F.o main.o -o chimescalc-test_serial-F_instance
+make[1]: Leaving directory '/g/g15/stimac1/chimes_calc_JS/serial_interface/examples/fortran_instance'
+make lib
+make[1]: Entering directory '/g/g15/stimac1/chimes_calc_JS/serial_interface/examples/fortran_instance'
+ar rcs libchimescalc-fortran.a chimesFF.o serial_chimes_interface.o chimescalc_serial_C.o
+make[1]: Leaving directory '/g/g15/stimac1/chimes_calc_JS/serial_interface/examples/fortran_instance'
+make clean
+make[1]: Entering directory '/g/g15/stimac1/chimes_calc_JS/serial_interface/examples/fortran_instance'
+rm -f *.o *.mod
+make[1]: Leaving directory '/g/g15/stimac1/chimes_calc_JS/serial_interface/examples/fortran_instance'
+Compiling for API c_instance
+
+make chimesFF.o
+make[1]: Entering directory '/g/g15/stimac1/chimes_calc_JS/serial_interface/examples/c_instance'
+g++ -O3 -std=c++11  -c /g/g15/stimac1/chimes_calc_JS/serial_interface/examples/c_instance/../../../chimesFF/src/chimesFF.cpp -I /g/g15/stimac1/chimes_calc_JS/serial_interface/examples/c_instance/../../../chimesFF/src
+make[1]: Leaving directory '/g/g15/stimac1/chimes_calc_JS/serial_interface/examples/c_instance'
+make serial_chimes_interface.o
+make[1]: Entering directory '/g/g15/stimac1/chimes_calc_JS/serial_interface/examples/c_instance'
+g++ -O3 -std=c++11  -c /g/g15/stimac1/chimes_calc_JS/serial_interface/examples/c_instance/../../src/serial_chimes_interface.cpp -I /g/g15/stimac1/chimes_calc_JS/serial_interface/examples/c_instance/../../src -I /g/g15/stimac1/chimes_calc_JS/serial_interface/examples/c_instance/../../../chimesFF/src 
+make[1]: Leaving directory '/g/g15/stimac1/chimes_calc_JS/serial_interface/examples/c_instance'
+make chimescalc_serial_C.o
+make[1]: Entering directory '/g/g15/stimac1/chimes_calc_JS/serial_interface/examples/c_instance'
+g++ -O3 -std=c++11  -c /g/g15/stimac1/chimes_calc_JS/serial_interface/examples/c_instance/../../api/chimescalc_serial_C.cpp -I /g/g15/stimac1/chimes_calc_JS/serial_interface/examples/c_instance/../../api -I /g/g15/stimac1/chimes_calc_JS/serial_interface/examples/c_instance/../../src -I /g/g15/stimac1/chimes_calc_JS/serial_interface/examples/c_instance/../../../chimesFF/src
+make[1]: Leaving directory '/g/g15/stimac1/chimes_calc_JS/serial_interface/examples/c_instance'
+make main.o
+make[1]: Entering directory '/g/g15/stimac1/chimes_calc_JS/serial_interface/examples/c_instance'
+gcc -O3 -c /g/g15/stimac1/chimes_calc_JS/serial_interface/examples/c_instance/main.c -DDEBUG=1  -I /g/g15/stimac1/chimes_calc_JS/serial_interface/examples/c_instance/../../api -I /g/g15/stimac1/chimes_calc_JS/serial_interface/examples/c_instance/../../src -I /g/g15/stimac1/chimes_calc_JS/serial_interface/examples/c_instance/../../../chimesFF/src
+make[1]: Leaving directory '/g/g15/stimac1/chimes_calc_JS/serial_interface/examples/c_instance'
+make test-C
+make[1]: Entering directory '/g/g15/stimac1/chimes_calc_JS/serial_interface/examples/c_instance'
+g++ -O3 -std=c++11  chimesFF.o serial_chimes_interface.o chimescalc_serial_C.o main.o -o chimescalc-test_serial-C_instance
+make[1]: Leaving directory '/g/g15/stimac1/chimes_calc_JS/serial_interface/examples/c_instance'
+make clean
+make[1]: Entering directory '/g/g15/stimac1/chimes_calc_JS/serial_interface/examples/c_instance'
+rm -f *.o 
+make[1]: Leaving directory '/g/g15/stimac1/chimes_calc_JS/serial_interface/examples/c_instance'
+Compiling for API python_instance
+
+make chimesFF.o
+make[1]: Entering directory '/g/g15/stimac1/chimes_calc_JS/serial_interface/examples/python_instance'
+g++ -O3 -std=c++11 -fPIC -c /g/g15/stimac1/chimes_calc_JS/serial_interface/examples/python_instance/../../../chimesFF/src/chimesFF.cpp -I /g/g15/stimac1/chimes_calc_JS/serial_interface/examples/python_instance/../../../chimesFF/src
+make[1]: Leaving directory '/g/g15/stimac1/chimes_calc_JS/serial_interface/examples/python_instance'
+make serial_chimes_interface.o
+make[1]: Entering directory '/g/g15/stimac1/chimes_calc_JS/serial_interface/examples/python_instance'
+g++ -O3 -std=c++11 -fPIC -c /g/g15/stimac1/chimes_calc_JS/serial_interface/examples/python_instance/../../src/serial_chimes_interface.cpp -I /g/g15/stimac1/chimes_calc_JS/serial_interface/examples/python_instance/../../src -I /g/g15/stimac1/chimes_calc_JS/serial_interface/examples/python_instance/../../../chimesFF/src 
+make[1]: Leaving directory '/g/g15/stimac1/chimes_calc_JS/serial_interface/examples/python_instance'
+make chimescalc_serial_C.o
+make[1]: Entering directory '/g/g15/stimac1/chimes_calc_JS/serial_interface/examples/python_instance'
+g++ -O3 -std=c++11 -fPIC -c /g/g15/stimac1/chimes_calc_JS/serial_interface/examples/python_instance/../../api/chimescalc_serial_C.cpp -I /g/g15/stimac1/chimes_calc_JS/serial_interface/examples/python_instance/../../api -I /g/g15/stimac1/chimes_calc_JS/serial_interface/examples/python_instance/../../src -I /g/g15/stimac1/chimes_calc_JS/serial_interface/examples/python_instance/../../../chimesFF/src	
+make[1]: Leaving directory '/g/g15/stimac1/chimes_calc_JS/serial_interface/examples/python_instance'
+make chimescalc_serial_C.so
+make[1]: Entering directory '/g/g15/stimac1/chimes_calc_JS/serial_interface/examples/python_instance'
+g++ -O3 -std=c++11 -fPIC -shared -o libchimescalc-serial_dl.so chimescalc_serial_C.o serial_chimes_interface.o chimesFF.o
+make[1]: Leaving directory '/g/g15/stimac1/chimes_calc_JS/serial_interface/examples/python_instance'
+make clean
+make[1]: Entering directory '/g/g15/stimac1/chimes_calc_JS/serial_interface/examples/python_instance'
+rm -f *.o
+make[1]: Leaving directory '/g/g15/stimac1/chimes_calc_JS/serial_interface/examples/python_instance'
+Working on Test 1 of 14 for API cpp
+		...Running liqC.2.5gcc_6000K.OUTCAR_#000.xyz
+		...Running liqC.2.5gcc_6000K.OUTCAR_#001.xyz
+		...Running liqC.2.5gcc_6000K.OUTCAR_#002.xyz
+		...Running liqC.2.5gcc_6000K.OUTCAR_#003.xyz
+		...Running liqC.2.5gcc_6000K.OUTCAR_#004.xyz
+		...Running liqC.2.5gcc_6000K.OUTCAR_#005.xyz
+		...Running liqC.2.5gcc_6000K.OUTCAR_#006.xyz
+		...Running liqC.2.5gcc_6000K.OUTCAR_#007.xyz
+		...Running liqC.2.5gcc_6000K.OUTCAR_#008.xyz
+		...Running liqC.2.5gcc_6000K.OUTCAR_#009.xyz
+	Test 1 of 14 for API cpp complete
+Working on Test 2 of 14 for API cpp
+		...Running liqC.2.5gcc_6000K.OUTCAR_#000.xyz
+		...Running liqC.2.5gcc_6000K.OUTCAR_#001.xyz
+		...Running liqC.2.5gcc_6000K.OUTCAR_#002.xyz
+		...Running liqC.2.5gcc_6000K.OUTCAR_#003.xyz
+		...Running liqC.2.5gcc_6000K.OUTCAR_#004.xyz
+		...Running liqC.2.5gcc_6000K.OUTCAR_#005.xyz
+		...Running liqC.2.5gcc_6000K.OUTCAR_#006.xyz
+		...Running liqC.2.5gcc_6000K.OUTCAR_#007.xyz
+		...Running liqC.2.5gcc_6000K.OUTCAR_#008.xyz
+		...Running liqC.2.5gcc_6000K.OUTCAR_#009.xyz
+	Test 2 of 14 for API cpp complete
+Working on Test 3 of 14 for API cpp
+		...Running CO.2.5gcc_6500K.OUTCAR_#000.xyz
+		...Running CO.2.5gcc_6500K.OUTCAR_#001.xyz
+		...Running CO.2.5gcc_6500K.OUTCAR_#002.xyz
+		...Running CO.2.5gcc_6500K.OUTCAR_#003.xyz
+		...Running CO.2.5gcc_6500K.OUTCAR_#004.xyz
+		...Running CO.2.5gcc_6500K.OUTCAR_#005.xyz
+		...Running CO.2.5gcc_6500K.OUTCAR_#006.xyz
+		...Running CO.2.5gcc_6500K.OUTCAR_#007.xyz
+		...Running CO.2.5gcc_6500K.OUTCAR_#008.xyz
+		...Running CO.2.5gcc_6500K.OUTCAR_#009.xyz
+	Test 3 of 14 for API cpp complete
+Working on Test 4 of 14 for API cpp
+		...Running CO.2.5gcc_6500K.OUTCAR_#000.relabel.xyz
+	Test 4 of 14 for API cpp complete
+Working on Test 5 of 14 for API cpp
+		...Running CO.2.5gcc_6500K.OUTCAR_#000.scramble.xyz
+	Test 5 of 14 for API cpp complete
+Working on Test 6 of 14 for API cpp
+		...Running CO.2.5gcc_6500K.OUTCAR_#000.translate.xyz
+	Test 6 of 14 for API cpp complete
+Working on Test 7 of 14 for API cpp
+		...Running HN3.2gcc_3000K.OUTCAR_#000.xyz
+		...Running HN3.2gcc_3000K.OUTCAR_#001.xyz
+		...Running HN3.2gcc_3000K.OUTCAR_#002.xyz
+		...Running HN3.2gcc_3000K.OUTCAR_#003.xyz
+		...Running HN3.2gcc_3000K.OUTCAR_#004.xyz
+		...Running HN3.2gcc_3000K.OUTCAR_#005.xyz
+		...Running HN3.2gcc_3000K.OUTCAR_#006.xyz
+		...Running HN3.2gcc_3000K.OUTCAR_#007.xyz
+		...Running HN3.2gcc_3000K.OUTCAR_#008.xyz
+		...Running HN3.2gcc_3000K.OUTCAR_#009.xyz
+	Test 7 of 14 for API cpp complete
+Working on Test 8 of 14 for API cpp
+		...Running TiO2.unitcell_arbrot_#000.xyz
+		...Running TiO2.unitcell_arbrot_#001.xyz
+	Test 8 of 14 for API cpp complete
+Working on Test 9 of 14 for API cpp
+		...Running CHON.testfile_#000.xyz
+	Test 9 of 14 for API cpp complete
+Working on Test 10 of 14 for API cpp
+		...Running diam.64_#000.xyz
+	Test 10 of 14 for API cpp complete
+Working on Test 11 of 14 for API cpp
+		...Running diam.16_#000.xyz
+	Test 11 of 14 for API cpp complete
+Working on Test 12 of 14 for API cpp
+		...Running diam.8_#000.xyz
+	Test 12 of 14 for API cpp complete
+Working on Test 13 of 14 for API cpp
+		...Running diam.2_#000.xyz
+	Test 13 of 14 for API cpp complete
+Working on Test 14 of 14 for API cpp
+		...Running CO.9GPa_2400K.OUTCAR_#000.xyz
+	Test 14 of 14 for API cpp complete
+Working on Test 1 of 14 for API c
+		...Running liqC.2.5gcc_6000K.OUTCAR_#000.xyz
+		...Running liqC.2.5gcc_6000K.OUTCAR_#001.xyz
+		...Running liqC.2.5gcc_6000K.OUTCAR_#002.xyz
+		...Running liqC.2.5gcc_6000K.OUTCAR_#003.xyz
+		...Running liqC.2.5gcc_6000K.OUTCAR_#004.xyz
+		...Running liqC.2.5gcc_6000K.OUTCAR_#005.xyz
+		...Running liqC.2.5gcc_6000K.OUTCAR_#006.xyz
+		...Running liqC.2.5gcc_6000K.OUTCAR_#007.xyz
+		...Running liqC.2.5gcc_6000K.OUTCAR_#008.xyz
+		...Running liqC.2.5gcc_6000K.OUTCAR_#009.xyz
+	Test 1 of 14 for API c complete
+Working on Test 2 of 14 for API c
+		...Running liqC.2.5gcc_6000K.OUTCAR_#000.xyz
+		...Running liqC.2.5gcc_6000K.OUTCAR_#001.xyz
+		...Running liqC.2.5gcc_6000K.OUTCAR_#002.xyz
+		...Running liqC.2.5gcc_6000K.OUTCAR_#003.xyz
+		...Running liqC.2.5gcc_6000K.OUTCAR_#004.xyz
+		...Running liqC.2.5gcc_6000K.OUTCAR_#005.xyz
+		...Running liqC.2.5gcc_6000K.OUTCAR_#006.xyz
+		...Running liqC.2.5gcc_6000K.OUTCAR_#007.xyz
+		...Running liqC.2.5gcc_6000K.OUTCAR_#008.xyz
+		...Running liqC.2.5gcc_6000K.OUTCAR_#009.xyz
+	Test 2 of 14 for API c complete
+Working on Test 3 of 14 for API c
+		...Running CO.2.5gcc_6500K.OUTCAR_#000.xyz
+		...Running CO.2.5gcc_6500K.OUTCAR_#001.xyz
+		...Running CO.2.5gcc_6500K.OUTCAR_#002.xyz
+		...Running CO.2.5gcc_6500K.OUTCAR_#003.xyz
+		...Running CO.2.5gcc_6500K.OUTCAR_#004.xyz
+		...Running CO.2.5gcc_6500K.OUTCAR_#005.xyz
+		...Running CO.2.5gcc_6500K.OUTCAR_#006.xyz
+		...Running CO.2.5gcc_6500K.OUTCAR_#007.xyz
+		...Running CO.2.5gcc_6500K.OUTCAR_#008.xyz
+		...Running CO.2.5gcc_6500K.OUTCAR_#009.xyz
+	Test 3 of 14 for API c complete
+Working on Test 4 of 14 for API c
+		...Running CO.2.5gcc_6500K.OUTCAR_#000.relabel.xyz
+	Test 4 of 14 for API c complete
+Working on Test 5 of 14 for API c
+		...Running CO.2.5gcc_6500K.OUTCAR_#000.scramble.xyz
+	Test 5 of 14 for API c complete
+Working on Test 6 of 14 for API c
+		...Running CO.2.5gcc_6500K.OUTCAR_#000.translate.xyz
+	Test 6 of 14 for API c complete
+Working on Test 7 of 14 for API c
+		...Running HN3.2gcc_3000K.OUTCAR_#000.xyz
+		...Running HN3.2gcc_3000K.OUTCAR_#001.xyz
+		...Running HN3.2gcc_3000K.OUTCAR_#002.xyz
+		...Running HN3.2gcc_3000K.OUTCAR_#003.xyz
+		...Running HN3.2gcc_3000K.OUTCAR_#004.xyz
+		...Running HN3.2gcc_3000K.OUTCAR_#005.xyz
+		...Running HN3.2gcc_3000K.OUTCAR_#006.xyz
+		...Running HN3.2gcc_3000K.OUTCAR_#007.xyz
+		...Running HN3.2gcc_3000K.OUTCAR_#008.xyz
+		...Running HN3.2gcc_3000K.OUTCAR_#009.xyz
+	Test 7 of 14 for API c complete
+Working on Test 8 of 14 for API c
+		...Running TiO2.unitcell_arbrot_#000.xyz
+		...Running TiO2.unitcell_arbrot_#001.xyz
+	Test 8 of 14 for API c complete
+Working on Test 9 of 14 for API c
+		...Running CHON.testfile_#000.xyz
+	Test 9 of 14 for API c complete
+Working on Test 10 of 14 for API c
+		...Running diam.64_#000.xyz
+	Test 10 of 14 for API c complete
+Working on Test 11 of 14 for API c
+		...Running diam.16_#000.xyz
+	Test 11 of 14 for API c complete
+Working on Test 12 of 14 for API c
+		...Running diam.8_#000.xyz
+	Test 12 of 14 for API c complete
+Working on Test 13 of 14 for API c
+		...Running diam.2_#000.xyz
+	Test 13 of 14 for API c complete
+Working on Test 14 of 14 for API c
+		...Running CO.9GPa_2400K.OUTCAR_#000.xyz
+	Test 14 of 14 for API c complete
+Working on Test 1 of 14 for API fortran
+		...Running liqC.2.5gcc_6000K.OUTCAR_#000.xyz
+		...Running liqC.2.5gcc_6000K.OUTCAR_#001.xyz
+		...Running liqC.2.5gcc_6000K.OUTCAR_#002.xyz
+		...Running liqC.2.5gcc_6000K.OUTCAR_#003.xyz
+		...Running liqC.2.5gcc_6000K.OUTCAR_#004.xyz
+		...Running liqC.2.5gcc_6000K.OUTCAR_#005.xyz
+		...Running liqC.2.5gcc_6000K.OUTCAR_#006.xyz
+		...Running liqC.2.5gcc_6000K.OUTCAR_#007.xyz
+		...Running liqC.2.5gcc_6000K.OUTCAR_#008.xyz
+		...Running liqC.2.5gcc_6000K.OUTCAR_#009.xyz
+	Test 1 of 14 for API fortran complete
+Working on Test 2 of 14 for API fortran
+		...Running liqC.2.5gcc_6000K.OUTCAR_#000.xyz
+		...Running liqC.2.5gcc_6000K.OUTCAR_#001.xyz
+		...Running liqC.2.5gcc_6000K.OUTCAR_#002.xyz
+		...Running liqC.2.5gcc_6000K.OUTCAR_#003.xyz
+		...Running liqC.2.5gcc_6000K.OUTCAR_#004.xyz
+		...Running liqC.2.5gcc_6000K.OUTCAR_#005.xyz
+		...Running liqC.2.5gcc_6000K.OUTCAR_#006.xyz
+		...Running liqC.2.5gcc_6000K.OUTCAR_#007.xyz
+		...Running liqC.2.5gcc_6000K.OUTCAR_#008.xyz
+		...Running liqC.2.5gcc_6000K.OUTCAR_#009.xyz
+	Test 2 of 14 for API fortran complete
+Working on Test 3 of 14 for API fortran
+		...Running CO.2.5gcc_6500K.OUTCAR_#000.xyz
+		...Running CO.2.5gcc_6500K.OUTCAR_#001.xyz
+		...Running CO.2.5gcc_6500K.OUTCAR_#002.xyz
+		...Running CO.2.5gcc_6500K.OUTCAR_#003.xyz
+		...Running CO.2.5gcc_6500K.OUTCAR_#004.xyz
+		...Running CO.2.5gcc_6500K.OUTCAR_#005.xyz
+		...Running CO.2.5gcc_6500K.OUTCAR_#006.xyz
+		...Running CO.2.5gcc_6500K.OUTCAR_#007.xyz
+		...Running CO.2.5gcc_6500K.OUTCAR_#008.xyz
+		...Running CO.2.5gcc_6500K.OUTCAR_#009.xyz
+	Test 3 of 14 for API fortran complete
+Working on Test 4 of 14 for API fortran
+		...Running CO.2.5gcc_6500K.OUTCAR_#000.relabel.xyz
+	Test 4 of 14 for API fortran complete
+Working on Test 5 of 14 for API fortran
+		...Running CO.2.5gcc_6500K.OUTCAR_#000.scramble.xyz
+	Test 5 of 14 for API fortran complete
+Working on Test 6 of 14 for API fortran
+		...Running CO.2.5gcc_6500K.OUTCAR_#000.translate.xyz
+	Test 6 of 14 for API fortran complete
+Working on Test 7 of 14 for API fortran
+		...Running HN3.2gcc_3000K.OUTCAR_#000.xyz
+		...Running HN3.2gcc_3000K.OUTCAR_#001.xyz
+		...Running HN3.2gcc_3000K.OUTCAR_#002.xyz
+		...Running HN3.2gcc_3000K.OUTCAR_#003.xyz
+		...Running HN3.2gcc_3000K.OUTCAR_#004.xyz
+		...Running HN3.2gcc_3000K.OUTCAR_#005.xyz
+		...Running HN3.2gcc_3000K.OUTCAR_#006.xyz
+		...Running HN3.2gcc_3000K.OUTCAR_#007.xyz
+		...Running HN3.2gcc_3000K.OUTCAR_#008.xyz
+		...Running HN3.2gcc_3000K.OUTCAR_#009.xyz
+	Test 7 of 14 for API fortran complete
+Working on Test 8 of 14 for API fortran
+		...Running TiO2.unitcell_arbrot_#000.xyz
+		...Running TiO2.unitcell_arbrot_#001.xyz
+	Test 8 of 14 for API fortran complete
+Working on Test 9 of 14 for API fortran
+		...Running CHON.testfile_#000.xyz
+	Test 9 of 14 for API fortran complete
+Working on Test 10 of 14 for API fortran
+		...Running diam.64_#000.xyz
+	Test 10 of 14 for API fortran complete
+Working on Test 11 of 14 for API fortran
+		...Running diam.16_#000.xyz
+	Test 11 of 14 for API fortran complete
+Working on Test 12 of 14 for API fortran
+		...Running diam.8_#000.xyz
+	Test 12 of 14 for API fortran complete
+Working on Test 13 of 14 for API fortran
+		...Running diam.2_#000.xyz
+	Test 13 of 14 for API fortran complete
+Working on Test 14 of 14 for API fortran
+		...Running CO.9GPa_2400K.OUTCAR_#000.xyz
+	Test 14 of 14 for API fortran complete
+Working on Test 1 of 14 for API python
+		...Running liqC.2.5gcc_6000K.OUTCAR_#000.xyz
+		...Running liqC.2.5gcc_6000K.OUTCAR_#001.xyz
+		...Running liqC.2.5gcc_6000K.OUTCAR_#002.xyz
+		...Running liqC.2.5gcc_6000K.OUTCAR_#003.xyz
+		...Running liqC.2.5gcc_6000K.OUTCAR_#004.xyz
+		...Running liqC.2.5gcc_6000K.OUTCAR_#005.xyz
+		...Running liqC.2.5gcc_6000K.OUTCAR_#006.xyz
+		...Running liqC.2.5gcc_6000K.OUTCAR_#007.xyz
+		...Running liqC.2.5gcc_6000K.OUTCAR_#008.xyz
+		...Running liqC.2.5gcc_6000K.OUTCAR_#009.xyz
+	Test 1 of 14 for API python complete
+Working on Test 2 of 14 for API python
+		...Running liqC.2.5gcc_6000K.OUTCAR_#000.xyz
+		...Running liqC.2.5gcc_6000K.OUTCAR_#001.xyz
+		...Running liqC.2.5gcc_6000K.OUTCAR_#002.xyz
+		...Running liqC.2.5gcc_6000K.OUTCAR_#003.xyz
+		...Running liqC.2.5gcc_6000K.OUTCAR_#004.xyz
+		...Running liqC.2.5gcc_6000K.OUTCAR_#005.xyz
+		...Running liqC.2.5gcc_6000K.OUTCAR_#006.xyz
+		...Running liqC.2.5gcc_6000K.OUTCAR_#007.xyz
+		...Running liqC.2.5gcc_6000K.OUTCAR_#008.xyz
+		...Running liqC.2.5gcc_6000K.OUTCAR_#009.xyz
+	Test 2 of 14 for API python complete
+Working on Test 3 of 14 for API python
+		...Running CO.2.5gcc_6500K.OUTCAR_#000.xyz
+		...Running CO.2.5gcc_6500K.OUTCAR_#001.xyz
+		...Running CO.2.5gcc_6500K.OUTCAR_#002.xyz
+		...Running CO.2.5gcc_6500K.OUTCAR_#003.xyz
+		...Running CO.2.5gcc_6500K.OUTCAR_#004.xyz
+		...Running CO.2.5gcc_6500K.OUTCAR_#005.xyz
+		...Running CO.2.5gcc_6500K.OUTCAR_#006.xyz
+		...Running CO.2.5gcc_6500K.OUTCAR_#007.xyz
+		...Running CO.2.5gcc_6500K.OUTCAR_#008.xyz
+		...Running CO.2.5gcc_6500K.OUTCAR_#009.xyz
+	Test 3 of 14 for API python complete
+Working on Test 4 of 14 for API python
+		...Running CO.2.5gcc_6500K.OUTCAR_#000.relabel.xyz
+	Test 4 of 14 for API python complete
+Working on Test 5 of 14 for API python
+		...Running CO.2.5gcc_6500K.OUTCAR_#000.scramble.xyz
+	Test 5 of 14 for API python complete
+Working on Test 6 of 14 for API python
+		...Running CO.2.5gcc_6500K.OUTCAR_#000.translate.xyz
+	Test 6 of 14 for API python complete
+Working on Test 7 of 14 for API python
+		...Running HN3.2gcc_3000K.OUTCAR_#000.xyz
+		...Running HN3.2gcc_3000K.OUTCAR_#001.xyz
+		...Running HN3.2gcc_3000K.OUTCAR_#002.xyz
+		...Running HN3.2gcc_3000K.OUTCAR_#003.xyz
+		...Running HN3.2gcc_3000K.OUTCAR_#004.xyz
+		...Running HN3.2gcc_3000K.OUTCAR_#005.xyz
+		...Running HN3.2gcc_3000K.OUTCAR_#006.xyz
+		...Running HN3.2gcc_3000K.OUTCAR_#007.xyz
+		...Running HN3.2gcc_3000K.OUTCAR_#008.xyz
+		...Running HN3.2gcc_3000K.OUTCAR_#009.xyz
+	Test 7 of 14 for API python complete
+Working on Test 8 of 14 for API python
+		...Running TiO2.unitcell_arbrot_#000.xyz
+		...Running TiO2.unitcell_arbrot_#001.xyz
+	Test 8 of 14 for API python complete
+Working on Test 9 of 14 for API python
+		...Running CHON.testfile_#000.xyz
+	Test 9 of 14 for API python complete
+Working on Test 10 of 14 for API python
+		...Running diam.64_#000.xyz
+	Test 10 of 14 for API python complete
+Working on Test 11 of 14 for API python
+		...Running diam.16_#000.xyz
+	Test 11 of 14 for API python complete
+Working on Test 12 of 14 for API python
+		...Running diam.8_#000.xyz
+	Test 12 of 14 for API python complete
+Working on Test 13 of 14 for API python
+		...Running diam.2_#000.xyz
+	Test 13 of 14 for API python complete
+Working on Test 14 of 14 for API python
+		...Running CO.9GPa_2400K.OUTCAR_#000.xyz
+	Test 14 of 14 for API python complete
+Working on Test 1 of 14 for API fortran08
+		...Running liqC.2.5gcc_6000K.OUTCAR_#000.xyz
+		...Running liqC.2.5gcc_6000K.OUTCAR_#001.xyz
+		...Running liqC.2.5gcc_6000K.OUTCAR_#002.xyz
+		...Running liqC.2.5gcc_6000K.OUTCAR_#003.xyz
+		...Running liqC.2.5gcc_6000K.OUTCAR_#004.xyz
+		...Running liqC.2.5gcc_6000K.OUTCAR_#005.xyz
+		...Running liqC.2.5gcc_6000K.OUTCAR_#006.xyz
+		...Running liqC.2.5gcc_6000K.OUTCAR_#007.xyz
+		...Running liqC.2.5gcc_6000K.OUTCAR_#008.xyz
+		...Running liqC.2.5gcc_6000K.OUTCAR_#009.xyz
+	Test 1 of 14 for API fortran08 complete
+Working on Test 2 of 14 for API fortran08
+		...Running liqC.2.5gcc_6000K.OUTCAR_#000.xyz
+		...Running liqC.2.5gcc_6000K.OUTCAR_#001.xyz
+		...Running liqC.2.5gcc_6000K.OUTCAR_#002.xyz
+		...Running liqC.2.5gcc_6000K.OUTCAR_#003.xyz
+		...Running liqC.2.5gcc_6000K.OUTCAR_#004.xyz
+		...Running liqC.2.5gcc_6000K.OUTCAR_#005.xyz
+		...Running liqC.2.5gcc_6000K.OUTCAR_#006.xyz
+		...Running liqC.2.5gcc_6000K.OUTCAR_#007.xyz
+		...Running liqC.2.5gcc_6000K.OUTCAR_#008.xyz
+		...Running liqC.2.5gcc_6000K.OUTCAR_#009.xyz
+	Test 2 of 14 for API fortran08 complete
+Working on Test 3 of 14 for API fortran08
+		...Running CO.2.5gcc_6500K.OUTCAR_#000.xyz
+		...Running CO.2.5gcc_6500K.OUTCAR_#001.xyz
+		...Running CO.2.5gcc_6500K.OUTCAR_#002.xyz
+		...Running CO.2.5gcc_6500K.OUTCAR_#003.xyz
+		...Running CO.2.5gcc_6500K.OUTCAR_#004.xyz
+		...Running CO.2.5gcc_6500K.OUTCAR_#005.xyz
+		...Running CO.2.5gcc_6500K.OUTCAR_#006.xyz
+		...Running CO.2.5gcc_6500K.OUTCAR_#007.xyz
+		...Running CO.2.5gcc_6500K.OUTCAR_#008.xyz
+		...Running CO.2.5gcc_6500K.OUTCAR_#009.xyz
+	Test 3 of 14 for API fortran08 complete
+Working on Test 4 of 14 for API fortran08
+		...Running CO.2.5gcc_6500K.OUTCAR_#000.relabel.xyz
+	Test 4 of 14 for API fortran08 complete
+Working on Test 5 of 14 for API fortran08
+		...Running CO.2.5gcc_6500K.OUTCAR_#000.scramble.xyz
+	Test 5 of 14 for API fortran08 complete
+Working on Test 6 of 14 for API fortran08
+		...Running CO.2.5gcc_6500K.OUTCAR_#000.translate.xyz
+	Test 6 of 14 for API fortran08 complete
+Working on Test 7 of 14 for API fortran08
+		...Running HN3.2gcc_3000K.OUTCAR_#000.xyz
+		...Running HN3.2gcc_3000K.OUTCAR_#001.xyz
+		...Running HN3.2gcc_3000K.OUTCAR_#002.xyz
+		...Running HN3.2gcc_3000K.OUTCAR_#003.xyz
+		...Running HN3.2gcc_3000K.OUTCAR_#004.xyz
+		...Running HN3.2gcc_3000K.OUTCAR_#005.xyz
+		...Running HN3.2gcc_3000K.OUTCAR_#006.xyz
+		...Running HN3.2gcc_3000K.OUTCAR_#007.xyz
+		...Running HN3.2gcc_3000K.OUTCAR_#008.xyz
+		...Running HN3.2gcc_3000K.OUTCAR_#009.xyz
+	Test 7 of 14 for API fortran08 complete
+Working on Test 8 of 14 for API fortran08
+		...Running TiO2.unitcell_arbrot_#000.xyz
+		...Running TiO2.unitcell_arbrot_#001.xyz
+	Test 8 of 14 for API fortran08 complete
+Working on Test 9 of 14 for API fortran08
+		...Running CHON.testfile_#000.xyz
+	Test 9 of 14 for API fortran08 complete
+Working on Test 10 of 14 for API fortran08
+		...Running diam.64_#000.xyz
+	Test 10 of 14 for API fortran08 complete
+Working on Test 11 of 14 for API fortran08
+		...Running diam.16_#000.xyz
+	Test 11 of 14 for API fortran08 complete
+Working on Test 12 of 14 for API fortran08
+		...Running diam.8_#000.xyz
+	Test 12 of 14 for API fortran08 complete
+Working on Test 13 of 14 for API fortran08
+		...Running diam.2_#000.xyz
+	Test 13 of 14 for API fortran08 complete
+Working on Test 14 of 14 for API fortran08
+		...Running CO.9GPa_2400K.OUTCAR_#000.xyz
+	Test 14 of 14 for API fortran08 complete
+Working on Test 1 of 14 for API fortran_instance
+		...Running liqC.2.5gcc_6000K.OUTCAR_#000.xyz
+		...Running liqC.2.5gcc_6000K.OUTCAR_#001.xyz
+		...Running liqC.2.5gcc_6000K.OUTCAR_#002.xyz
+		...Running liqC.2.5gcc_6000K.OUTCAR_#003.xyz
+		...Running liqC.2.5gcc_6000K.OUTCAR_#004.xyz
+		...Running liqC.2.5gcc_6000K.OUTCAR_#005.xyz
+		...Running liqC.2.5gcc_6000K.OUTCAR_#006.xyz
+		...Running liqC.2.5gcc_6000K.OUTCAR_#007.xyz
+		...Running liqC.2.5gcc_6000K.OUTCAR_#008.xyz
+		...Running liqC.2.5gcc_6000K.OUTCAR_#009.xyz
+	Test 1 of 14 for API fortran_instance complete
+Working on Test 2 of 14 for API fortran_instance
+		...Running liqC.2.5gcc_6000K.OUTCAR_#000.xyz
+		...Running liqC.2.5gcc_6000K.OUTCAR_#001.xyz
+		...Running liqC.2.5gcc_6000K.OUTCAR_#002.xyz
+		...Running liqC.2.5gcc_6000K.OUTCAR_#003.xyz
+		...Running liqC.2.5gcc_6000K.OUTCAR_#004.xyz
+		...Running liqC.2.5gcc_6000K.OUTCAR_#005.xyz
+		...Running liqC.2.5gcc_6000K.OUTCAR_#006.xyz
+		...Running liqC.2.5gcc_6000K.OUTCAR_#007.xyz
+		...Running liqC.2.5gcc_6000K.OUTCAR_#008.xyz
+		...Running liqC.2.5gcc_6000K.OUTCAR_#009.xyz
+	Test 2 of 14 for API fortran_instance complete
+Working on Test 3 of 14 for API fortran_instance
+		...Running CO.2.5gcc_6500K.OUTCAR_#000.xyz
+		...Running CO.2.5gcc_6500K.OUTCAR_#001.xyz
+		...Running CO.2.5gcc_6500K.OUTCAR_#002.xyz
+		...Running CO.2.5gcc_6500K.OUTCAR_#003.xyz
+		...Running CO.2.5gcc_6500K.OUTCAR_#004.xyz
+		...Running CO.2.5gcc_6500K.OUTCAR_#005.xyz
+		...Running CO.2.5gcc_6500K.OUTCAR_#006.xyz
+		...Running CO.2.5gcc_6500K.OUTCAR_#007.xyz
+		...Running CO.2.5gcc_6500K.OUTCAR_#008.xyz
+		...Running CO.2.5gcc_6500K.OUTCAR_#009.xyz
+	Test 3 of 14 for API fortran_instance complete
+Working on Test 4 of 14 for API fortran_instance
+		...Running CO.2.5gcc_6500K.OUTCAR_#000.relabel.xyz
+	Test 4 of 14 for API fortran_instance complete
+Working on Test 5 of 14 for API fortran_instance
+		...Running CO.2.5gcc_6500K.OUTCAR_#000.scramble.xyz
+	Test 5 of 14 for API fortran_instance complete
+Working on Test 6 of 14 for API fortran_instance
+		...Running CO.2.5gcc_6500K.OUTCAR_#000.translate.xyz
+	Test 6 of 14 for API fortran_instance complete
+Working on Test 7 of 14 for API fortran_instance
+		...Running HN3.2gcc_3000K.OUTCAR_#000.xyz
+		...Running HN3.2gcc_3000K.OUTCAR_#001.xyz
+		...Running HN3.2gcc_3000K.OUTCAR_#002.xyz
+		...Running HN3.2gcc_3000K.OUTCAR_#003.xyz
+		...Running HN3.2gcc_3000K.OUTCAR_#004.xyz
+		...Running HN3.2gcc_3000K.OUTCAR_#005.xyz
+		...Running HN3.2gcc_3000K.OUTCAR_#006.xyz
+		...Running HN3.2gcc_3000K.OUTCAR_#007.xyz
+		...Running HN3.2gcc_3000K.OUTCAR_#008.xyz
+		...Running HN3.2gcc_3000K.OUTCAR_#009.xyz
+	Test 7 of 14 for API fortran_instance complete
+Working on Test 8 of 14 for API fortran_instance
+		...Running TiO2.unitcell_arbrot_#000.xyz
+		...Running TiO2.unitcell_arbrot_#001.xyz
+	Test 8 of 14 for API fortran_instance complete
+Working on Test 9 of 14 for API fortran_instance
+		...Running CHON.testfile_#000.xyz
+	Test 9 of 14 for API fortran_instance complete
+Working on Test 10 of 14 for API fortran_instance
+		...Running diam.64_#000.xyz
+	Test 10 of 14 for API fortran_instance complete
+Working on Test 11 of 14 for API fortran_instance
+		...Running diam.16_#000.xyz
+	Test 11 of 14 for API fortran_instance complete
+Working on Test 12 of 14 for API fortran_instance
+		...Running diam.8_#000.xyz
+	Test 12 of 14 for API fortran_instance complete
+Working on Test 13 of 14 for API fortran_instance
+		...Running diam.2_#000.xyz
+	Test 13 of 14 for API fortran_instance complete
+Working on Test 14 of 14 for API fortran_instance
+		...Running CO.9GPa_2400K.OUTCAR_#000.xyz
+	Test 14 of 14 for API fortran_instance complete
+Working on Test 1 of 14 for API c_instance
+		...Running liqC.2.5gcc_6000K.OUTCAR_#000.xyz
+		...Running liqC.2.5gcc_6000K.OUTCAR_#001.xyz
+		...Running liqC.2.5gcc_6000K.OUTCAR_#002.xyz
+		...Running liqC.2.5gcc_6000K.OUTCAR_#003.xyz
+		...Running liqC.2.5gcc_6000K.OUTCAR_#004.xyz
+		...Running liqC.2.5gcc_6000K.OUTCAR_#005.xyz
+		...Running liqC.2.5gcc_6000K.OUTCAR_#006.xyz
+		...Running liqC.2.5gcc_6000K.OUTCAR_#007.xyz
+		...Running liqC.2.5gcc_6000K.OUTCAR_#008.xyz
+		...Running liqC.2.5gcc_6000K.OUTCAR_#009.xyz
+	Test 1 of 14 for API c_instance complete
+Working on Test 2 of 14 for API c_instance
+		...Running liqC.2.5gcc_6000K.OUTCAR_#000.xyz
+		...Running liqC.2.5gcc_6000K.OUTCAR_#001.xyz
+		...Running liqC.2.5gcc_6000K.OUTCAR_#002.xyz
+		...Running liqC.2.5gcc_6000K.OUTCAR_#003.xyz
+		...Running liqC.2.5gcc_6000K.OUTCAR_#004.xyz
+		...Running liqC.2.5gcc_6000K.OUTCAR_#005.xyz
+		...Running liqC.2.5gcc_6000K.OUTCAR_#006.xyz
+		...Running liqC.2.5gcc_6000K.OUTCAR_#007.xyz
+		...Running liqC.2.5gcc_6000K.OUTCAR_#008.xyz
+		...Running liqC.2.5gcc_6000K.OUTCAR_#009.xyz
+	Test 2 of 14 for API c_instance complete
+Working on Test 3 of 14 for API c_instance
+		...Running CO.2.5gcc_6500K.OUTCAR_#000.xyz
+		...Running CO.2.5gcc_6500K.OUTCAR_#001.xyz
+		...Running CO.2.5gcc_6500K.OUTCAR_#002.xyz
+		...Running CO.2.5gcc_6500K.OUTCAR_#003.xyz
+		...Running CO.2.5gcc_6500K.OUTCAR_#004.xyz
+		...Running CO.2.5gcc_6500K.OUTCAR_#005.xyz
+		...Running CO.2.5gcc_6500K.OUTCAR_#006.xyz
+		...Running CO.2.5gcc_6500K.OUTCAR_#007.xyz
+		...Running CO.2.5gcc_6500K.OUTCAR_#008.xyz
+		...Running CO.2.5gcc_6500K.OUTCAR_#009.xyz
+	Test 3 of 14 for API c_instance complete
+Working on Test 4 of 14 for API c_instance
+		...Running CO.2.5gcc_6500K.OUTCAR_#000.relabel.xyz
+	Test 4 of 14 for API c_instance complete
+Working on Test 5 of 14 for API c_instance
+		...Running CO.2.5gcc_6500K.OUTCAR_#000.scramble.xyz
+	Test 5 of 14 for API c_instance complete
+Working on Test 6 of 14 for API c_instance
+		...Running CO.2.5gcc_6500K.OUTCAR_#000.translate.xyz
+	Test 6 of 14 for API c_instance complete
+Working on Test 7 of 14 for API c_instance
+		...Running HN3.2gcc_3000K.OUTCAR_#000.xyz
+		...Running HN3.2gcc_3000K.OUTCAR_#001.xyz
+		...Running HN3.2gcc_3000K.OUTCAR_#002.xyz
+		...Running HN3.2gcc_3000K.OUTCAR_#003.xyz
+		...Running HN3.2gcc_3000K.OUTCAR_#004.xyz
+		...Running HN3.2gcc_3000K.OUTCAR_#005.xyz
+		...Running HN3.2gcc_3000K.OUTCAR_#006.xyz
+		...Running HN3.2gcc_3000K.OUTCAR_#007.xyz
+		...Running HN3.2gcc_3000K.OUTCAR_#008.xyz
+		...Running HN3.2gcc_3000K.OUTCAR_#009.xyz
+	Test 7 of 14 for API c_instance complete
+Working on Test 8 of 14 for API c_instance
+		...Running TiO2.unitcell_arbrot_#000.xyz
+		...Running TiO2.unitcell_arbrot_#001.xyz
+	Test 8 of 14 for API c_instance complete
+Working on Test 9 of 14 for API c_instance
+		...Running CHON.testfile_#000.xyz
+	Test 9 of 14 for API c_instance complete
+Working on Test 10 of 14 for API c_instance
+		...Running diam.64_#000.xyz
+	Test 10 of 14 for API c_instance complete
+Working on Test 11 of 14 for API c_instance
+		...Running diam.16_#000.xyz
+	Test 11 of 14 for API c_instance complete
+Working on Test 12 of 14 for API c_instance
+		...Running diam.8_#000.xyz
+	Test 12 of 14 for API c_instance complete
+Working on Test 13 of 14 for API c_instance
+		...Running diam.2_#000.xyz
+	Test 13 of 14 for API c_instance complete
+Working on Test 14 of 14 for API c_instance
+		...Running CO.9GPa_2400K.OUTCAR_#000.xyz
+	Test 14 of 14 for API c_instance complete
+Working on Test 1 of 14 for API python_instance
+		...Running liqC.2.5gcc_6000K.OUTCAR_#000.xyz
+		...Running liqC.2.5gcc_6000K.OUTCAR_#001.xyz
+		...Running liqC.2.5gcc_6000K.OUTCAR_#002.xyz
+		...Running liqC.2.5gcc_6000K.OUTCAR_#003.xyz
+		...Running liqC.2.5gcc_6000K.OUTCAR_#004.xyz
+		...Running liqC.2.5gcc_6000K.OUTCAR_#005.xyz
+		...Running liqC.2.5gcc_6000K.OUTCAR_#006.xyz
+		...Running liqC.2.5gcc_6000K.OUTCAR_#007.xyz
+		...Running liqC.2.5gcc_6000K.OUTCAR_#008.xyz
+		...Running liqC.2.5gcc_6000K.OUTCAR_#009.xyz
+	Test 1 of 14 for API python_instance complete
+Working on Test 2 of 14 for API python_instance
+		...Running liqC.2.5gcc_6000K.OUTCAR_#000.xyz
+		...Running liqC.2.5gcc_6000K.OUTCAR_#001.xyz
+		...Running liqC.2.5gcc_6000K.OUTCAR_#002.xyz
+		...Running liqC.2.5gcc_6000K.OUTCAR_#003.xyz
+		...Running liqC.2.5gcc_6000K.OUTCAR_#004.xyz
+		...Running liqC.2.5gcc_6000K.OUTCAR_#005.xyz
+		...Running liqC.2.5gcc_6000K.OUTCAR_#006.xyz
+		...Running liqC.2.5gcc_6000K.OUTCAR_#007.xyz
+		...Running liqC.2.5gcc_6000K.OUTCAR_#008.xyz
+		...Running liqC.2.5gcc_6000K.OUTCAR_#009.xyz
+	Test 2 of 14 for API python_instance complete
+Working on Test 3 of 14 for API python_instance
+		...Running CO.2.5gcc_6500K.OUTCAR_#000.xyz
+		...Running CO.2.5gcc_6500K.OUTCAR_#001.xyz
+		...Running CO.2.5gcc_6500K.OUTCAR_#002.xyz
+		...Running CO.2.5gcc_6500K.OUTCAR_#003.xyz
+		...Running CO.2.5gcc_6500K.OUTCAR_#004.xyz
+		...Running CO.2.5gcc_6500K.OUTCAR_#005.xyz
+		...Running CO.2.5gcc_6500K.OUTCAR_#006.xyz
+		...Running CO.2.5gcc_6500K.OUTCAR_#007.xyz
+		...Running CO.2.5gcc_6500K.OUTCAR_#008.xyz
+		...Running CO.2.5gcc_6500K.OUTCAR_#009.xyz
+	Test 3 of 14 for API python_instance complete
+Working on Test 4 of 14 for API python_instance
+		...Running CO.2.5gcc_6500K.OUTCAR_#000.relabel.xyz
+	Test 4 of 14 for API python_instance complete
+Working on Test 5 of 14 for API python_instance
+		...Running CO.2.5gcc_6500K.OUTCAR_#000.scramble.xyz
+	Test 5 of 14 for API python_instance complete
+Working on Test 6 of 14 for API python_instance
+		...Running CO.2.5gcc_6500K.OUTCAR_#000.translate.xyz
+	Test 6 of 14 for API python_instance complete
+Working on Test 7 of 14 for API python_instance
+		...Running HN3.2gcc_3000K.OUTCAR_#000.xyz
+		...Running HN3.2gcc_3000K.OUTCAR_#001.xyz
+		...Running HN3.2gcc_3000K.OUTCAR_#002.xyz
+		...Running HN3.2gcc_3000K.OUTCAR_#003.xyz
+		...Running HN3.2gcc_3000K.OUTCAR_#004.xyz
+		...Running HN3.2gcc_3000K.OUTCAR_#005.xyz
+		...Running HN3.2gcc_3000K.OUTCAR_#006.xyz
+		...Running HN3.2gcc_3000K.OUTCAR_#007.xyz
+		...Running HN3.2gcc_3000K.OUTCAR_#008.xyz
+		...Running HN3.2gcc_3000K.OUTCAR_#009.xyz
+	Test 7 of 14 for API python_instance complete
+Working on Test 8 of 14 for API python_instance
+		...Running TiO2.unitcell_arbrot_#000.xyz
+		...Running TiO2.unitcell_arbrot_#001.xyz
+	Test 8 of 14 for API python_instance complete
+Working on Test 9 of 14 for API python_instance
+		...Running CHON.testfile_#000.xyz
+	Test 9 of 14 for API python_instance complete
+Working on Test 10 of 14 for API python_instance
+		...Running diam.64_#000.xyz
+	Test 10 of 14 for API python_instance complete
+Working on Test 11 of 14 for API python_instance
+		...Running diam.16_#000.xyz
+	Test 11 of 14 for API python_instance complete
+Working on Test 12 of 14 for API python_instance
+		...Running diam.8_#000.xyz
+	Test 12 of 14 for API python_instance complete
+Working on Test 13 of 14 for API python_instance
+		...Running diam.2_#000.xyz
+	Test 13 of 14 for API python_instance complete
+Working on Test 14 of 14 for API python_instance
+		...Running CO.9GPa_2400K.OUTCAR_#000.xyz
+	Test 14 of 14 for API python_instance complete
+rm -f chimescalc
+/g/g15/stimac1/chimes_calc_JS/serial_interface/tests
+make clean
+make[1]: Entering directory '/g/g15/stimac1/chimes_calc_JS/serial_interface/examples/c'
+rm -f *.o 
+make[1]: Leaving directory '/g/g15/stimac1/chimes_calc_JS/serial_interface/examples/c'
+rm -f chimescalc-test_serial-C
+/g/g15/stimac1/chimes_calc_JS/serial_interface/tests
+make clean
+make[1]: Entering directory '/g/g15/stimac1/chimes_calc_JS/serial_interface/examples/fortran'
+rm -f *.o *.mod
+make[1]: Leaving directory '/g/g15/stimac1/chimes_calc_JS/serial_interface/examples/fortran'
+rm -f chimescalc-test_serial-F
+rm -f libchimescalc-fortran.a
+/g/g15/stimac1/chimes_calc_JS/serial_interface/tests
+make clean
+make[1]: Entering directory '/g/g15/stimac1/chimes_calc_JS/serial_interface/examples/python'
+rm -f *.o
+make[1]: Leaving directory '/g/g15/stimac1/chimes_calc_JS/serial_interface/examples/python'
+rm -f *.so
+/g/g15/stimac1/chimes_calc_JS/serial_interface/tests
+make clean
+make[1]: Entering directory '/g/g15/stimac1/chimes_calc_JS/serial_interface/examples/fortran08'
+rm -f *.o *.mod
+make[1]: Leaving directory '/g/g15/stimac1/chimes_calc_JS/serial_interface/examples/fortran08'
+rm -f chimescalc-test_serial-F08
+rm -f libchimescalc-fortran08.a
+/g/g15/stimac1/chimes_calc_JS/serial_interface/tests
+make clean
+make[1]: Entering directory '/g/g15/stimac1/chimes_calc_JS/serial_interface/examples/fortran_instance'
+rm -f *.o *.mod
+make[1]: Leaving directory '/g/g15/stimac1/chimes_calc_JS/serial_interface/examples/fortran_instance'
+rm -f chimescalc-test_serial-F_instance
+rm -f libchimescalc-fortran.a
+/g/g15/stimac1/chimes_calc_JS/serial_interface/tests
+make clean
+make[1]: Entering directory '/g/g15/stimac1/chimes_calc_JS/serial_interface/examples/c_instance'
+rm -f *.o 
+make[1]: Leaving directory '/g/g15/stimac1/chimes_calc_JS/serial_interface/examples/c_instance'
+rm -f chimescalc-test_serial-C_instance
+/g/g15/stimac1/chimes_calc_JS/serial_interface/tests
+make clean
+make[1]: Entering directory '/g/g15/stimac1/chimes_calc_JS/serial_interface/examples/python_instance'
+rm -f *.o
+make[1]: Leaving directory '/g/g15/stimac1/chimes_calc_JS/serial_interface/examples/python_instance'
+rm -f *.so
+/g/g15/stimac1/chimes_calc_JS/serial_interface/tests
+Removing directory build
