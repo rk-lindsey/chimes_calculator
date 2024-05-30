@@ -587,6 +587,28 @@ void simulation_system::build_layered_system(vector<string> & atmtyps, vector<in
 }
 void simulation_system::build_neigh_lists(vector<int> & poly_orders, vector<vector<int> > & neighlist_2b, vector<vector<int> > & neighlist_3b, vector<vector<int> > & neighlist_4b, double max_2b_cut, double max_3b_cut, double max_4b_cut)
 {
+    vector<double> maxpos(3, -1.0e100) ;
+    vector<double> minpos(3, +1.0e100) ;
+
+    // Determine limits on position of all particles.
+    for(int i=0; i<n_ghost; i++)
+    {
+        if ( sys_x[i] > maxpos[0] )
+            maxpos[0] = sys_x[i] ;
+        if ( sys_y[i] > maxpos[1] )
+            maxpos[1] = sys_y[i] ;
+        if ( sys_z[i] > maxpos[2] )
+            maxpos[2] = sys_z[i] ;
+
+        if ( sys_x[i] < minpos[0] )
+            minpos[0] = sys_x[i] ;
+        if ( sys_y[i] < minpos[1] )
+            minpos[1] = sys_y[i] ;
+        if ( sys_z[i] < minpos[2] )
+            minpos[2] = sys_z[i] ;
+
+    }
+
     // Make the 2b neighbor lists
     
     neighlist_2b.resize(n_ghost);
@@ -607,10 +629,15 @@ void simulation_system::build_neigh_lists(vector<int> & poly_orders, vector<vect
         search_dist = max_4b_cut;    
     
     // Prepare bins
-    
-    int nbins_x = ceil((2 * n_layers+1) * extent_x/search_dist) + 2;
-    int nbins_y = ceil((2 * n_layers+1) * extent_y/search_dist) + 2;
-    int nbins_z = ceil((2 * n_layers+1) * extent_z/search_dist) + 2;     
+
+    int nbins_x = ceil((maxpos[0]-minpos[0])/search_dist) ;
+    int nbins_y = ceil((maxpos[1]-minpos[1])/search_dist) ;
+    int nbins_z = ceil((maxpos[2]-minpos[2])/search_dist) ;
+    if ( (nbins_x < 3) || (nbins_y < 3) || (nbins_z < 3) )
+    {
+       cout << "Error: require at least 3 neighbor bins in all directions.\n" ;
+       cout << "The number of layers is not correct\n" ;
+    }
     
     int total_bins = nbins_x * nbins_y * nbins_z;
     
@@ -625,9 +652,9 @@ void simulation_system::build_neigh_lists(vector<int> & poly_orders, vector<vect
 
     for(int i=0; i<n_ghost; i++)
     {
-        bin_x_idx = floor( (sys_x[i] + extent_x * n_layers) / search_dist ) + 1;
-        bin_y_idx = floor( (sys_y[i] + extent_y * n_layers) / search_dist ) + 1;
-        bin_z_idx = floor( (sys_z[i] + extent_z * n_layers) / search_dist ) + 1;
+        bin_x_idx = floor( (sys_x[i] - minpos[0] ) / search_dist );
+        bin_y_idx = floor( (sys_y[i] - minpos[1] ) / search_dist );
+        bin_z_idx = floor( (sys_z[i] - minpos[2] ) / search_dist );
         
         if ( bin_x_idx < 0 || bin_y_idx < 0 || bin_z_idx < 0 ) 
         {
@@ -654,9 +681,9 @@ void simulation_system::build_neigh_lists(vector<int> & poly_orders, vector<vect
     
     for(int ai=0; ai<n_atoms; ai++)
     {
-        bin_x_idx = floor( (sys_x[ai] + extent_x * n_layers) / search_dist ) + 1;
-        bin_y_idx = floor( (sys_y[ai] + extent_y * n_layers) / search_dist ) + 1;
-        bin_z_idx = floor( (sys_z[ai] + extent_z * n_layers) / search_dist ) + 1;
+        bin_x_idx = floor( (sys_x[ai] - minpos[0]) / search_dist ) ;
+        bin_y_idx = floor( (sys_y[ai] - minpos[1]) / search_dist ) ;
+        bin_z_idx = floor( (sys_z[ai] - minpos[2]) / search_dist ) ;
 
         if ( bin_x_idx < 1 || bin_y_idx < 1 || bin_z_idx < 1 ) 
         {
