@@ -1849,7 +1849,7 @@ void chimesFF::compute_4B(const vector<double> & dx, const vector<double> & dr, 
 
     }
     
-    #pragma omp parallel for
+    // #pragma omp parallel for
     for(int coeffs=0; coeffs<variablecoeff; coeffs++)
     {
         coeff = chimes_4b_params[quadidx][coeffs];
