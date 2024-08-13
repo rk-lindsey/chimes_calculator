@@ -14,13 +14,12 @@
 #include<algorithm>
 #include<cmath>
 #include<map>
+#include "<omp.h>"
 
 using namespace std;
 
 #include "chimesFF.h"    
-#include "<omp.h>"
 
-#define NX 102400
 
 template <typename T>
 int get_index(const vector<T>  & vec, const T  & element)
