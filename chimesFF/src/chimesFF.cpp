@@ -14,13 +14,14 @@
 #include<algorithm>
 #include<cmath>
 #include<map>
-#include "<omp.h>"
+#include "omp.h"
+
+omp_set_num_threads(16);
 
 using namespace std;
 
 #include "chimesFF.h"    
 
-omp_set_num_threads(16);
 
 
 template <typename T>
