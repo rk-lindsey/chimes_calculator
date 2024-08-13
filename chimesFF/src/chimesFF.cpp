@@ -16,7 +16,6 @@
 #include<map>
 #include "omp.h"
 
-omp_set_num_threads(16);
 
 using namespace std;
 
@@ -1731,6 +1730,7 @@ void chimesFF::compute_4B(const vector<double> & dx, const vector<double> & dr, 
 }
 void chimesFF::compute_4B(const vector<double> & dx, const vector<double> & dr, const vector<int> & typ_idxs, vector<double> & force, vector<double> & stress, double & energy, chimes4BTmp &tmp, vector<double> & force_scalar_in)
 {
+    omp_set_num_threads(16);
     // Compute 3b (input: 3 atoms or distances, corresponding types... outputs (updates) force, acceleration, energy, stress
     //
     // Input parameters:
