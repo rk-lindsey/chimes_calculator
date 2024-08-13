@@ -1851,6 +1851,8 @@ void chimesFF::compute_4B(const vector<double> & dx, const vector<double> & dr, 
         double Tn_jk_jl    =  Tn_jk[ powers[coeffs][3] ] * Tn_jl[ powers[coeffs][4] ] ;
         double Tn_kl_5     =  Tn_kl[ powers[coeffs][5] ] ;
 
+        coeff = chimes_4b_params[quadidx][coeffs];
+        
         energy += coeff * fcut_all * Tn_ij_ik_il * Tn_jk_jl * Tn_kl_5 ;        
 
 
