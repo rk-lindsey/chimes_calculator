@@ -1838,8 +1838,7 @@ void chimesFF::compute_4B(const vector<double> & dx, const vector<double> & dr, 
     
     
     omp_set_num_threads(16);
-    #pragma omp target
-
+    #pragma omp target teams distribute parallel for
     for(int coeffs=0; coeffs<variablecoeff; coeffs++)
     {
         // openacc for parallel 
