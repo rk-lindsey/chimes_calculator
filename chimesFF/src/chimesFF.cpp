@@ -1849,7 +1849,7 @@ void chimesFF::compute_4B(const vector<double> & dx, const vector<double> & dr, 
 
     }
     
-    #pragma omp parallel for
+    // #pragma omp parallel for
     for(int coeffs=0; coeffs<variablecoeff; coeffs++)
     {
         coeff = chimes_4b_params[quadidx][coeffs];
@@ -1858,7 +1858,7 @@ void chimesFF::compute_4B(const vector<double> & dx, const vector<double> & dr, 
         double Tn_jk_jl    =  Tn_jk[ powers[coeffs][3] ] * Tn_jl[ powers[coeffs][4] ] ;
         double Tn_kl_5     =  Tn_kl[ powers[coeffs][5] ] ;
 
-        // energy += coeff * fcut_all * Tn_ij_ik_il * Tn_jk_jl * Tn_kl_5 ;        
+        energy += coeff * fcut_all * Tn_ij_ik_il * Tn_jk_jl * Tn_kl_5 ;        
 
         deriv[0] = fcut[0] * Tnd_ij[ powers[coeffs][0] ] + fcutderiv[0] * Tn_ij[ powers[coeffs][0] ];
         deriv[1] = fcut[1] * Tnd_ik[ powers[coeffs][1] ] + fcutderiv[1] * Tn_ik[ powers[coeffs][1] ];
@@ -1874,11 +1874,8 @@ void chimesFF::compute_4B(const vector<double> & dx, const vector<double> & dr, 
         force_scalar[4]  = coeff * deriv[4] * fcut_5[4] * Tn_ij_ik_il  * Tn_jk[powers[coeffs][3]] * Tn_kl_5 ;
         force_scalar[5]  = coeff * deriv[5] * fcut_5[5] * Tn_ij_ik_il * Tn_jk_jl ;
 
-    }
 
-    // Accumulate forces/stresses on/from the ij pair
-    for(int coeffs=0; coeffs<variablecoeff; coeffs++)
-    {
+        // Accumulate forces/stresses on/from the ij pair
         force[0*CHDIM+0] += force_scalar[0] * dr[0*CHDIM+0];
         force[0*CHDIM+1] += force_scalar[0] * dr[0*CHDIM+1];
         force[0*CHDIM+2] += force_scalar[0] * dr[0*CHDIM+2];
