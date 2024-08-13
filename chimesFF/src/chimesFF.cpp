@@ -1841,7 +1841,7 @@ void chimesFF::compute_4B(const vector<double> & dx, const vector<double> & dr, 
     
     
     
-    #pragma omp target
+    #pragma omp parallel for
     for(int coeffs=0; coeffs<variablecoeff; coeffs++)
     {
         // openacc for parallel 
