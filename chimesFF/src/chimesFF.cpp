@@ -1841,15 +1841,15 @@ void chimesFF::compute_4B(const vector<double> & dx, const vector<double> & dr, 
     
     
     
-    #pragma omp parallel for
+    #pragma omp parallel for collapse(2)
     for(int coeffs=0; coeffs<variablecoeff; coeffs++)
     {
-        // openacc for parallel 
         for (int i=0; i<npairs; i++)
             powers[coeffs][i] = chimes_4b_powers[quadidx][coeffs][mapped_pair_idx[i]];
 
     }
     
+    #pragma omp parallel for
     for(int coeffs=0; coeffs<variablecoeff; coeffs++)
     {
         coeff = chimes_4b_params[quadidx][coeffs];
