@@ -20,6 +20,8 @@ using namespace std;
 
 #include "chimesFF.h"    
 
+omp_set_num_threads(16);
+
 
 template <typename T>
 int get_index(const vector<T>  & vec, const T  & element)
@@ -1837,8 +1839,8 @@ void chimesFF::compute_4B(const vector<double> & dx, const vector<double> & dr, 
     double force_scalar[npairs] ;
     
     
-    omp_set_num_threads(16);
-    #pragma omp target teams distribute parallel for
+    
+    #pragma omp target
     for(int coeffs=0; coeffs<variablecoeff; coeffs++)
     {
         // openacc for parallel 
