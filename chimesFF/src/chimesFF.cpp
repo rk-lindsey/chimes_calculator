@@ -248,12 +248,12 @@ void chimesFF::read_parameters(string paramfile)
             while (poly_orders.size() < 3)
                 poly_orders.push_back(0);
             
-            if (rank == 0)
-            {
-                cout << "chimesFF: " << "Using respective 2, 3, and 4-body orders of: " << poly_orders[0] << " " << poly_orders[1] << " " << poly_orders[2] << endl;
+            // if (rank == 0)
+            // {
+            //     cout << "chimesFF: " << "Using respective 2, 3, and 4-body orders of: " << poly_orders[0] << " " << poly_orders[1] << " " << poly_orders[2] << endl;
             
-                cout << "chimesFF: " << "Note: Ignoring polynomial domain; assuming [-1,1]" << endl;    
-            }
+            //     cout << "chimesFF: " << "Note: Ignoring polynomial domain; assuming [-1,1]" << endl;    
+            // }
             
             break;    
         }
@@ -278,8 +278,8 @@ void chimesFF::read_parameters(string paramfile)
         
             natmtyps = stoi(tmp_str_items[2]);
         
-            if (rank == 0)
-                cout << "chimesFF: " << "Will consider " << natmtyps << " atom types:" << endl;
+            // if (rank == 0)
+            //     cout << "chimesFF: " << "Will consider " << natmtyps << " atom types:" << endl;
                 
             energy_offsets.resize(natmtyps);
             
@@ -298,8 +298,8 @@ void chimesFF::read_parameters(string paramfile)
                 atmtyps[i] = tmp_str_items[1];
 				masses[i]  = stod(tmp_str_items[3]);
                 
-                if (rank == 0)
-                    cout << "chimesFF: " << "\t" << i << " " << atmtyps[i] << endl;
+                // if (rank == 0)
+                //     cout << "chimesFF: " << "\t" << i << " " << atmtyps[i] << endl;
             }
             
         }
@@ -310,8 +310,8 @@ void chimesFF::read_parameters(string paramfile)
         
             no_pairs = stoi(tmp_str_items[2]);
         
-            if (rank == 0)
-                cout << "chimesFF: " << "Will consider " << no_pairs << " atom pair types" << endl;        
+            // if (rank == 0)
+            //     cout << "chimesFF: " << "Will consider " << no_pairs << " atom pair types" << endl;        
         }    
         
         if(line.find("# PAIRIDX #") != string::npos)
@@ -362,8 +362,8 @@ void chimesFF::read_parameters(string paramfile)
                 pair_params_atm_chem_1[i] = tmp_str_items[1];
                 pair_params_atm_chem_2[i] = tmp_str_items[2];
                 
-                if (rank == 0)
-                    cout << "chimesFF: " << "\t" << i << " " << pair_params_atm_chem_1[i] << " " << pair_params_atm_chem_2[i]<< endl;
+                // if (rank == 0)
+                //     cout << "chimesFF: " << "\t" << i << " " << pair_params_atm_chem_1[i] << " " << pair_params_atm_chem_2[i]<< endl;
                 
                 chimes_2b_cutoff[i].push_back(stod(tmp_str_items[3])); // Inner cutoff    
                 chimes_2b_cutoff[i].push_back(stod(tmp_str_items[4])); // Outer cutoff
@@ -411,13 +411,13 @@ void chimesFF::read_parameters(string paramfile)
                 
             xform_style = tmp_xform_style;
             
-            if (rank == 0)
-                cout << "chimesFF: " << "Read the following pair type information:" << endl;
+            // if (rank == 0)
+            //     cout << "chimesFF: " << "Read the following pair type information:" << endl;
             
             for (int i=0; i<no_pairs; i++)
             {
-				if (rank == 0)
-					cout << "chimesFF: " << "\t" << pair_params_atm_chem_1[i] << " " << pair_params_atm_chem_2[i] << " r_cut_in: " << fixed << right << setprecision(5) << chimes_2b_cutoff[i][0] << " r_cut_out: " << chimes_2b_cutoff[i][1] << " " <<  xform_style;
+				// if (rank == 0)
+				// 	cout << "chimesFF: " << "\t" << pair_params_atm_chem_1[i] << " " << pair_params_atm_chem_2[i] << " r_cut_in: " << fixed << right << setprecision(5) << chimes_2b_cutoff[i][0] << " r_cut_out: " << chimes_2b_cutoff[i][1] << " " <<  xform_style;
                 
 				if (xform_style == "MORSE")
 				{
@@ -466,8 +466,8 @@ void chimesFF::read_parameters(string paramfile)
             
             penalty_params[0] = stod(tmp_str_items[4]);
             
-            if (rank == 0)
-                cout << "chimesFF: " << "Will use penalty distance: " << penalty_params[0] << endl;
+            // if (rank == 0)
+            //     cout << "chimesFF: " << "Will use penalty distance: " << penalty_params[0] << endl;
         }
         
         if(line.find("PAIR CHEBYSHEV PENALTY SCALING:") != string::npos)
@@ -476,8 +476,8 @@ void chimesFF::read_parameters(string paramfile)
             
             penalty_params[1] = stod(tmp_str_items[4]);
             
-            if (rank == 0)
-                cout << "chimesFF: " << "Will use penalty scaling: " << penalty_params[1] << endl;
+            // if (rank == 0)
+            //     cout << "chimesFF: " << "Will use penalty scaling: " << penalty_params[1] << endl;
         }
         
         if(line.find("NO ENERGY OFFSETS:") != string::npos)
@@ -492,8 +492,8 @@ void chimesFF::read_parameters(string paramfile)
 
             // Expects atom offsets in the same order as atom types were provided originally
             
-            if (rank == 0)
-                cout << "chimesFF: " << "Will use single atom energy offsets: "<< endl;
+            // if (rank == 0)
+            //     cout << "chimesFF: " << "Will use single atom energy offsets: "<< endl;
             
             int tmp_idx;
             
@@ -505,8 +505,8 @@ void chimesFF::read_parameters(string paramfile)
                 
                 energy_offsets[tmp_idx-1] = stod(tmp_str_items[3]);
                 
-                if (rank == 0)
-                    cout << "chimesFF: " << "\t" << tmp_idx << " " << atmtyps[tmp_idx-1] << " " << energy_offsets[tmp_idx-1] << endl;
+                // if (rank == 0)
+                //     cout << "chimesFF: " << "\t" << tmp_idx << " " << atmtyps[tmp_idx-1] << " " << energy_offsets[tmp_idx-1] << endl;
             }
             
         }                
@@ -531,8 +531,8 @@ void chimesFF::read_parameters(string paramfile)
             
             tmp_int = stoi(tmp_str_items[2]);
             
-            if (rank == 0)
-                cout << "chimesFF: " << "Read 2B parameters for pair: " << tmp_int << " " << tmp_str_items[3] << " " << tmp_str_items[4] << endl;
+            // if (rank == 0)
+            //     cout << "chimesFF: " << "Read 2B parameters for pair: " << tmp_int << " " << tmp_str_items[3] << " " << tmp_str_items[4] << endl;
             
             line = get_next_line(param_file);
             
@@ -548,8 +548,8 @@ void chimesFF::read_parameters(string paramfile)
                 chimes_2b_pows  [tmp_int].push_back(stoi(tmp_str_items[0]));                
                 chimes_2b_params[tmp_int].push_back(stod(tmp_str_items[1]));
                 
-                if (rank == 0)
-                    cout << "chimesFF: " << "\t" << chimes_2b_pows[tmp_int][i] << " " << chimes_2b_params[tmp_int][i] << endl;
+                // if (rank == 0)
+                //     cout << "chimesFF: " << "\t" << chimes_2b_pows[tmp_int][i] << " " << chimes_2b_params[tmp_int][i] << endl;
             }
         }
         
@@ -566,8 +566,8 @@ void chimesFF::read_parameters(string paramfile)
             
             atom_int_prpr_map.resize(n_pair_maps);
             
-            if (rank == 0)
-                cout << "chimesFF: " << "Built the following 2-body pair \"slow\" map:" << endl;
+            // if (rank == 0)
+            //     cout << "chimesFF: " << "Built the following 2-body pair \"slow\" map:" << endl;
             
             for(int i=0; i<n_pair_maps; i++)
             {
@@ -577,13 +577,13 @@ void chimesFF::read_parameters(string paramfile)
                 atom_idx_pair_map[i] = stoi(tmp_str_items[0]);
                 atom_typ_pair_map[i] =      tmp_str_items[1];
                 
-                if (rank == 0)
-                    cout << "chimesFF: " << "\t" << atom_idx_pair_map[i] << " " << atom_typ_pair_map[i] << "(i: " << i << ")" << endl;
+                // if (rank == 0)
+                //     cout << "chimesFF: " << "\t" << atom_idx_pair_map[i] << " " << atom_typ_pair_map[i] << "(i: " << i << ")" << endl;
 
             }
 
-            if (rank == 0)
-                cout << "chimesFF: " << "Built the following 2-body pair \"fast\" map:" << endl;
+            // if (rank == 0)
+            //     cout << "chimesFF: " << "Built the following 2-body pair \"fast\" map:" << endl;
             
             atom_int_pair_map.resize((natmtyps-1)*natmtyps + (natmtyps-1) + 1); // Maximum possible pair value + a small buffer
             
@@ -606,8 +606,8 @@ void chimesFF::read_parameters(string paramfile)
                     atom_int_prpr_map [ i*natmtyps + j ] = pair_params_atm_chem_1[tmp_int] + pair_params_atm_chem_2[tmp_int];
 
                     
-                    if (rank == 0)
-                        cout << "chimesFF: " << "\t" << tmp_str << ": " << i*natmtyps + j << " " << atom_int_pair_map[ i*natmtyps + j ] << endl;
+                    // if (rank == 0)
+                    //     cout << "chimesFF: " << "\t" << tmp_str << ": " << i*natmtyps + j << " " << atom_int_pair_map[ i*natmtyps + j ] << endl;
 
                 }
             }                        
@@ -664,8 +664,8 @@ void chimesFF::read_parameters(string paramfile)
                 trip_params_atm_chems[tmp_int].push_back(tmp_str_items[4]);
                 trip_params_atm_chems[tmp_int].push_back(tmp_str_items[5]);
 
-                if (rank == 0)
-                    cout << "chimesFF: " << "Read 3B parameters for triplet: " << tmp_int << " " << trip_params_atm_chems[tmp_int][0] << " " << trip_params_atm_chems[tmp_int][1] << " " << trip_params_atm_chems[tmp_int][2] << endl;
+                // if (rank == 0)
+                //     cout << "chimesFF: " << "Read 3B parameters for triplet: " << tmp_int << " " << trip_params_atm_chems[tmp_int][0] << " " << trip_params_atm_chems[tmp_int][1] << " " << trip_params_atm_chems[tmp_int][2] << endl;
                 
                 line = get_next_line(param_file);
                 
@@ -696,8 +696,8 @@ void chimesFF::read_parameters(string paramfile)
         	            chimes_3b_powers[tmp_int].push_back(tmp_int_vec);                    
         	            chimes_3b_params[tmp_int].push_back(stod(tmp_str_items[6]));
                 
-        	            if (rank == 0)
-        	                cout << "chimesFF: " << "\t" << chimes_3b_powers[tmp_int][i][0] << " " << chimes_3b_powers[tmp_int][i][1] << " " << chimes_3b_powers[tmp_int][i][2] << " " << chimes_3b_params[tmp_int][i] << endl;
+        	            // if (rank == 0)
+        	            //     cout << "chimesFF: " << "\t" << chimes_3b_powers[tmp_int][i][0] << " " << chimes_3b_powers[tmp_int][i][1] << " " << chimes_3b_powers[tmp_int][i][2] << " " << chimes_3b_params[tmp_int][i] << endl;
         	        }
 		}
 		else
@@ -715,8 +715,8 @@ void chimesFF::read_parameters(string paramfile)
                 atom_idx_trip_map.resize(n_trip_maps);
                 atom_typ_trip_map.resize(n_trip_maps);
                 
-                if (rank == 0)                
-                    cout << "chimesFF: " << "Built the following 3-body pair \"slow\" map:" << endl;
+                // if (rank == 0)                
+                //     cout << "chimesFF: " << "Built the following 3-body pair \"slow\" map:" << endl;
             
                 for(int i=0; i<n_trip_maps; i++)
                 {
@@ -726,12 +726,12 @@ void chimesFF::read_parameters(string paramfile)
                     atom_idx_trip_map[i] = stoi(tmp_str_items[0]);
                     atom_typ_trip_map[i] =      tmp_str_items[1];
                 
-                    if (rank == 0)
-                        cout << "chimesFF: " << "\t" << atom_idx_trip_map[i] << " " << atom_typ_trip_map[i] << endl;
+                    // if (rank == 0)
+                    //     cout << "chimesFF: " << "\t" << atom_idx_trip_map[i] << " " << atom_typ_trip_map[i] << endl;
                 }        
                 
-                if (rank == 0)
-                    cout << "chimesFF: " << "Built the following 3-body pair \"fast\" map:" << endl;
+                // if (rank == 0)
+                //     cout << "chimesFF: " << "Built the following 3-body pair \"fast\" map:" << endl;
 
                 atom_int_trip_map.resize(natmtyps*natmtyps*natmtyps);
                 
@@ -760,8 +760,8 @@ void chimesFF::read_parameters(string paramfile)
 
                             atom_int_trip_map[ tmp_idx ] = atom_idx_trip_map[tmp_int];
                                                         
-                            if (rank == 0)
-                                cout << "chimesFF: " << "\t" << tmp_idx << " " << atom_int_trip_map[ tmp_idx  ]  << endl;
+                            // if (rank == 0)
+                            //     cout << "chimesFF: " << "\t" << tmp_idx << " " << atom_int_trip_map[ tmp_idx  ]  << endl;
                         }
                     }
                 }
@@ -818,8 +818,8 @@ void chimesFF::read_parameters(string paramfile)
             {
                 split_line(line, tmp_str_items);
                 
-                if (rank == 0)
-                    cout << "chimesFF: " << "Set the following special 3-body outer cutoffs: " << endl;
+                // if (rank == 0)
+                //     cout << "chimesFF: " << "Set the following special 3-body outer cutoffs: " << endl;
                 
                 if(tmp_str_items[3] == "ALL")
                 {
@@ -865,9 +865,9 @@ void chimesFF::read_parameters(string paramfile)
                     }
                 }
                 
-                for(int i=0; i<ntrips; i++)
-                    if (rank == 0)
-                        cout << "chimesFF: " << "\t" << i << " " << chimes_3b_cutoff[i][1][0] << " " << chimes_3b_cutoff[i][1][1] << " " << chimes_3b_cutoff[i][1][2] << endl;
+                // for(int i=0; i<ntrips; i++)
+                    // if (rank == 0)
+                    //     cout << "chimesFF: " << "\t" << i << " " << chimes_3b_cutoff[i][1][0] << " " << chimes_3b_cutoff[i][1][1] << " " << chimes_3b_cutoff[i][1][2] << endl;
                 
             }
 
@@ -875,8 +875,8 @@ void chimesFF::read_parameters(string paramfile)
             {
                 split_line(line, tmp_str_items);
                 
-                if (rank == 0)
-                    cout << "chimesFF: " << "Set the following special 3-body inner cutoffs: " << endl;
+                // if (rank == 0)
+                //     cout << "chimesFF: " << "Set the following special 3-body inner cutoffs: " << endl;
                 
                 if(tmp_str_items[3] == "ALL")
                 {
@@ -923,9 +923,9 @@ void chimesFF::read_parameters(string paramfile)
                     }
                 }
                 
-                for(int i=0; i<ntrips; i++)
-                    if (rank == 0)
-                        cout << "chimesFF: " << "\t" << i << " " << chimes_3b_cutoff[i][0][0] << " " << chimes_3b_cutoff[i][0][1] << " " << chimes_3b_cutoff[i][0][2] << endl;
+                // for(int i=0; i<ntrips; i++)
+                    // if (rank == 0)
+                    //     cout << "chimesFF: " << "\t" << i << " " << chimes_3b_cutoff[i][0][0] << " " << chimes_3b_cutoff[i][0][1] << " " << chimes_3b_cutoff[i][0][2] << endl;
             }            
         }    
     }
@@ -978,8 +978,8 @@ void chimesFF::read_parameters(string paramfile)
                 quad_params_atm_chems[tmp_int].push_back(tmp_str_items[5]);
                 quad_params_atm_chems[tmp_int].push_back(tmp_str_items[6]);
 
-                if (rank == 0)
-                    cout << "chimesFF: " << "Read 4B parameters for quadruplets: " << tmp_int << " " << quad_params_atm_chems[tmp_int][0] << " " << quad_params_atm_chems[tmp_int][1] << " " << quad_params_atm_chems[tmp_int][2] << " " << quad_params_atm_chems[tmp_int][3]<< endl;
+                // if (rank == 0)
+                //     cout << "chimesFF: " << "Read 4B parameters for quadruplets: " << tmp_int << " " << quad_params_atm_chems[tmp_int][0] << " " << quad_params_atm_chems[tmp_int][1] << " " << quad_params_atm_chems[tmp_int][2] << " " << quad_params_atm_chems[tmp_int][3]<< endl;
                 
                 line = get_next_line(param_file);
                 
@@ -1019,15 +1019,15 @@ void chimesFF::read_parameters(string paramfile)
                     
 	                    chimes_4b_params[tmp_int].push_back(stod(tmp_str_items[9]));
                 
-	                    if (rank == 0)
-                        	cout << "chimesFF: " << "\t" << 
-                        	chimes_4b_powers[tmp_int][i][0] << " " << 
-                	        chimes_4b_powers[tmp_int][i][1] << " " << 
-                	        chimes_4b_powers[tmp_int][i][2] << " " << 
-                	        chimes_4b_powers[tmp_int][i][3] << " " << 
-                	        chimes_4b_powers[tmp_int][i][4] << " " << 
-                	        chimes_4b_powers[tmp_int][i][5] << " " <<                                
-                	        chimes_4b_params[tmp_int][i] << endl;
+	                    // if (rank == 0)
+                        // 	cout << "chimesFF: " << "\t" << 
+                        // 	chimes_4b_powers[tmp_int][i][0] << " " << 
+                	    //     chimes_4b_powers[tmp_int][i][1] << " " << 
+                	    //     chimes_4b_powers[tmp_int][i][2] << " " << 
+                	    //     chimes_4b_powers[tmp_int][i][3] << " " << 
+                	    //     chimes_4b_powers[tmp_int][i][4] << " " << 
+                	    //     chimes_4b_powers[tmp_int][i][5] << " " <<                                
+                	    //     chimes_4b_params[tmp_int][i] << endl;
                 	}
 		}
 		else
@@ -1045,8 +1045,8 @@ void chimesFF::read_parameters(string paramfile)
                 atom_idx_quad_map.resize(n_quad_maps);
                 atom_typ_quad_map.resize(n_quad_maps);
                     
-                if (rank == 0)            
-                    cout << "chimesFF: " << "Built the following 4-body pair \"slow\" map:" << endl;
+                // if (rank == 0)            
+                //     cout << "chimesFF: " << "Built the following 4-body pair \"slow\" map:" << endl;
             
                 for(int i=0; i<n_quad_maps; i++)
                 {
@@ -1056,12 +1056,12 @@ void chimesFF::read_parameters(string paramfile)
                     atom_idx_quad_map[i] = stoi(tmp_str_items[0]);
                     atom_typ_quad_map[i] =      tmp_str_items[1];
                 
-                    if (rank == 0)
-                        cout << "chimesFF: " << "\t" << atom_idx_quad_map[i] << " " << atom_typ_quad_map[i] << endl;
+                    // if (rank == 0)
+                    //     cout << "chimesFF: " << "\t" << atom_idx_quad_map[i] << " " << atom_typ_quad_map[i] << endl;
                 }        
                 
-                if (rank == 0)
-                    cout << "chimesFF: " << "Built the following 4-body pair \"fast\" map:" << endl;
+                // if (rank == 0)
+                //     cout << "chimesFF: " << "Built the following 4-body pair \"fast\" map:" << endl;
 
                 atom_int_quad_map.resize(natmtyps*natmtyps*natmtyps*natmtyps);
                 
@@ -1102,8 +1102,8 @@ void chimesFF::read_parameters(string paramfile)
 
                                 atom_int_quad_map[ tmp_idx ] = atom_idx_quad_map[tmp_int];
 
-                                if (rank == 0)
-                                    cout << "chimesFF: " << "\t" << tmp_idx << " " << atom_int_quad_map[ tmp_idx  ]  << endl;
+                                // if (rank == 0)
+                                //     cout << "chimesFF: " << "\t" << tmp_idx << " " << atom_int_quad_map[ tmp_idx  ]  << endl;
                             }
                         }
                     }
@@ -1171,8 +1171,8 @@ void chimesFF::read_parameters(string paramfile)
             {
                 split_line(line, tmp_str_items);
                 
-                if (rank == 0)
-                    cout << "chimesFF: " << "Set the following special 4-body outer cutoffs: " << endl;
+                // if (rank == 0)
+                //     cout << "chimesFF: " << "Set the following special 4-body outer cutoffs: " << endl;
                 
                 if(tmp_str_items[3] == "ALL")
                 {
@@ -1228,17 +1228,17 @@ void chimesFF::read_parameters(string paramfile)
 					}
                 }
                 
-                for(int i=0; i<nquads; i++)
-                {                
-                    if (rank == 0)
-                        cout << "chimesFF: " << "\t" << i << " " 
-                        << chimes_4b_cutoff[i][1][0] << " " 
-                        << chimes_4b_cutoff[i][1][1] << " " 
-                        << chimes_4b_cutoff[i][1][2] << " " 
-                        << chimes_4b_cutoff[i][1][3] << " " 
-                        << chimes_4b_cutoff[i][1][4] << " " 
-                        << chimes_4b_cutoff[i][1][5] << endl;
-                }                
+                // for(int i=0; i<nquads; i++)
+                // {                
+                //     if (rank == 0)
+                //         cout << "chimesFF: " << "\t" << i << " " 
+                //         << chimes_4b_cutoff[i][1][0] << " " 
+                //         << chimes_4b_cutoff[i][1][1] << " " 
+                //         << chimes_4b_cutoff[i][1][2] << " " 
+                //         << chimes_4b_cutoff[i][1][3] << " " 
+                //         << chimes_4b_cutoff[i][1][4] << " " 
+                //         << chimes_4b_cutoff[i][1][5] << endl;
+                // }                
             }
 
             if(line.find("SPECIAL 4B S_MINIM:") != string::npos)
@@ -1312,17 +1312,17 @@ void chimesFF::read_parameters(string paramfile)
                     }
                 }
                 
-                for(int i=0; i<nquads; i++)
-                {                
-                    if (rank == 0)
-                        cout << "chimesFF: " << "\t" << i << " " 
-                        << chimes_4b_cutoff[i][1][0] << " " 
-                        << chimes_4b_cutoff[i][1][1] << " " 
-                        << chimes_4b_cutoff[i][1][2] << " " 
-                        << chimes_4b_cutoff[i][1][3] << " " 
-                        << chimes_4b_cutoff[i][1][4] << " " 
-                        << chimes_4b_cutoff[i][1][5] << endl;
-                }                
+                // for(int i=0; i<nquads; i++)
+                // {                
+                //     if (rank == 0)
+                //         cout << "chimesFF: " << "\t" << i << " " 
+                //         << chimes_4b_cutoff[i][1][0] << " " 
+                //         << chimes_4b_cutoff[i][1][1] << " " 
+                //         << chimes_4b_cutoff[i][1][2] << " " 
+                //         << chimes_4b_cutoff[i][1][3] << " " 
+                //         << chimes_4b_cutoff[i][1][4] << " " 
+                //         << chimes_4b_cutoff[i][1][5] << endl;
+                // }                
             }            
         }    
     }

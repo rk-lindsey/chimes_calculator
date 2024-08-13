@@ -160,9 +160,9 @@ int main(int argc, char **argv)
     cout << "\ts_xz: " << stress[2]*6.9479 << endl;
     cout << "\ts_yz: " << stress[5]*6.9479 << endl;
 
-    cout << "Forces (kcal/mol/A): " << endl;
-    for(int i=0; i<natoms; i++)
-        cout << "\t" << force[i][0] << "\t" << force[i][1] << "\t" << force[i][2] << endl;
+    // cout << "Forces (kcal/mol/A): " << endl;
+    // for(int i=0; i<natoms; i++)
+    //     cout << "\t" << force[i][0] << "\t" << force[i][1] << "\t" << force[i][2] << endl;
 
     cout << endl;
 }

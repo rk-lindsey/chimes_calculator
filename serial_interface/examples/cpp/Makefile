@@ -1,5 +1,5 @@
 
-CXX   = g++ -O3 -std=c++11
+CXX   = nvc++ -O3 -std=c++17
 DEBUG = 1
 
 CXX_LOC = $(realpath .)
