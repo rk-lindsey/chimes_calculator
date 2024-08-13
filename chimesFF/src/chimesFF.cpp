@@ -1841,7 +1841,7 @@ void chimesFF::compute_4B(const vector<double> & dx, const vector<double> & dr, 
     
     
     
-    #pragma omp parallel for collapse(2)
+    #pragma omp parallel for
     for(int coeffs=0; coeffs<variablecoeff; coeffs++)
     {
         for (int i=0; i<npairs; i++)
@@ -1849,7 +1849,7 @@ void chimesFF::compute_4B(const vector<double> & dx, const vector<double> & dr, 
 
     }
     
-    // #pragma omp parallel for
+    #pragma omp parallel for
     for(int coeffs=0; coeffs<variablecoeff; coeffs++)
     {
         coeff = chimes_4b_params[quadidx][coeffs];
@@ -1874,8 +1874,11 @@ void chimesFF::compute_4B(const vector<double> & dx, const vector<double> & dr, 
         force_scalar[4]  = coeff * deriv[4] * fcut_5[4] * Tn_ij_ik_il  * Tn_jk[powers[coeffs][3]] * Tn_kl_5 ;
         force_scalar[5]  = coeff * deriv[5] * fcut_5[5] * Tn_ij_ik_il * Tn_jk_jl ;
 
-        // Accumulate forces/stresses on/from the ij pair
-        
+    }
+    
+    // Accumulate forces/stresses on/from the ij pair
+    for(int coeffs=0; coeffs<variablecoeff; coeffs++)
+    {
         force[0*CHDIM+0] += force_scalar[0] * dr[0*CHDIM+0];
         force[0*CHDIM+1] += force_scalar[0] * dr[0*CHDIM+1];
         force[0*CHDIM+2] += force_scalar[0] * dr[0*CHDIM+2];
