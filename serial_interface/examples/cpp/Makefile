@@ -1,5 +1,5 @@
 
-CXX   = nvc++ -O3 -std=c++17
+CXX   = nvc++  -fopenmp -O2 -std=c++17
 DEBUG = 1
 
 CXX_LOC = $(realpath .)
