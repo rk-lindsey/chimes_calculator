@@ -20,6 +20,8 @@ using namespace std;
 #include "chimesFF.h"    
 #include "omp.h"
 
+#define NX 102400
+
 template <typename T>
 int get_index(const vector<T>  & vec, const T  & element)
 {
@@ -1838,6 +1840,7 @@ void chimesFF::compute_4B(const vector<double> & dx, const vector<double> & dr, 
     
     omp_set_num_threads(16)
     #pragma omp target
+
     for(int coeffs=0; coeffs<variablecoeff; coeffs++)
     {
         // openacc for parallel 
