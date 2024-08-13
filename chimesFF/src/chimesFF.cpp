@@ -1847,9 +1847,9 @@ void chimesFF::compute_4B(const vector<double> & dx, const vector<double> & dr, 
         for (int i=0; i<npairs; i++)
             powers[coeffs][i] = chimes_4b_powers[quadidx][coeffs][mapped_pair_idx[i]];
 
-        // double Tn_ij_ik_il =  Tn_ij[ powers[coeffs][0] ] * Tn_ik[ powers[coeffs][1] ] * Tn_il[ powers[coeffs][2] ] ;
-        // double Tn_jk_jl    =  Tn_jk[ powers[coeffs][3] ] * Tn_jl[ powers[coeffs][4] ] ;
-        // double Tn_kl_5     =  Tn_kl[ powers[coeffs][5] ] ;
+        double Tn_ij_ik_il =  Tn_ij[ powers[coeffs][0] ] * Tn_ik[ powers[coeffs][1] ] * Tn_il[ powers[coeffs][2] ] ;
+        double Tn_jk_jl    =  Tn_jk[ powers[coeffs][3] ] * Tn_jl[ powers[coeffs][4] ] ;
+        double Tn_kl_5     =  Tn_kl[ powers[coeffs][5] ] ;
 
         // coeff = chimes_4b_params[quadidx][coeffs];
 
