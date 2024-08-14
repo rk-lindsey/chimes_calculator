@@ -1860,15 +1860,18 @@ void chimesFF::compute_4B(const vector<double> & dx, const vector<double> & dr, 
         // deriv[4] = fcut[4] * Tnd_jl[ powers[coeffs][4] ] + fcutderiv[4] * Tn_jl[ powers[coeffs][4] ];
         // deriv[5] = fcut[5] * Tnd_kl[ powers[coeffs][5] ] + fcutderiv[5] * Tn_kl[ powers[coeffs][5] ];        
 
-        // force_scalar[0]  = coeff * deriv[0] * fcut_5[0] * Tn_ik[powers[coeffs][1]]  * Tn_il[powers[coeffs][2]] * Tn_jk_jl * Tn_kl_5 ;
-        // force_scalar[1]  = coeff * deriv[1] * fcut_5[1] * Tn_ij[powers[coeffs][0]]  * Tn_il[powers[coeffs][2]] * Tn_jk_jl * Tn_kl_5 ;
-        // force_scalar[2]  = coeff * deriv[2] * fcut_5[2] * Tn_ij[powers[coeffs][0]]  * Tn_ik[powers[coeffs][1]] * Tn_jk_jl * Tn_kl_5 ;
-        // force_scalar[3]  = coeff * deriv[3] * fcut_5[3] * Tn_ij_ik_il  * Tn_jl[powers[coeffs][4]] * Tn_kl_5 ;
-        // force_scalar[4]  = coeff * deriv[4] * fcut_5[4] * Tn_ij_ik_il  * Tn_jk[powers[coeffs][3]] * Tn_kl_5 ;
-        // force_scalar[5]  = coeff * deriv[5] * fcut_5[5] * Tn_ij_ik_il * Tn_jk_jl ;
+        // force_scalar[0]  = chimes_4b_params[quadidx][coeffs] * deriv[0] * fcut_5[0] * Tn_ik[powers[coeffs][1]]  * Tn_il[powers[coeffs][2]] * Tn_jk_jl * Tn_kl_5 ;
+        // force_scalar[1]  = chimes_4b_params[quadidx][coeffs] * deriv[1] * fcut_5[1] * Tn_ij[powers[coeffs][0]]  * Tn_il[powers[coeffs][2]] * Tn_jk_jl * Tn_kl_5 ;
+        // force_scalar[2]  = chimes_4b_params[quadidx][coeffs] * deriv[2] * fcut_5[2] * Tn_ij[powers[coeffs][0]]  * Tn_ik[powers[coeffs][1]] * Tn_jk_jl * Tn_kl_5 ;
+        // force_scalar[3]  = chimes_4b_params[quadidx][coeffs] * deriv[3] * fcut_5[3] * Tn_ij_ik_il  * Tn_jl[powers[coeffs][4]] * Tn_kl_5 ;
+        // force_scalar[4]  = chimes_4b_params[quadidx][coeffs] * deriv[4] * fcut_5[4] * Tn_ij_ik_il  * Tn_jk[powers[coeffs][3]] * Tn_kl_5 ;
+        // force_scalar[5]  = chimes_4b_params[quadidx][coeffs] * deriv[5] * fcut_5[5] * Tn_ij_ik_il * Tn_jk_jl ;
 
 
     }
+
+    // update the deriv and force_scaler from 1D to 2D array and seperate their population
+
     
     for(int coeffs=0; coeffs<variablecoeff; coeffs++)
     {
@@ -2049,13 +2052,16 @@ void chimesFF::compute_4B(const vector<double> & dx, const vector<double> & dr, 
 #endif      
     }
     
-	force_scalar_in[0] = force_scalar[0];
-	force_scalar_in[1] = force_scalar[1];
-	force_scalar_in[2] = force_scalar[2];
-	force_scalar_in[3] = force_scalar[3];
-	force_scalar_in[4] = force_scalar[4];
-	force_scalar_in[5] = force_scalar[5];
 
+    #pragma omp parallel 
+    {
+        force_scalar_in[0] = force_scalar[0];
+        force_scalar_in[1] = force_scalar[1];
+        force_scalar_in[2] = force_scalar[2];
+        force_scalar_in[3] = force_scalar[3];
+        force_scalar_in[4] = force_scalar[4];
+        force_scalar_in[5] = force_scalar[5];
+    }
     return;
 }
 
