@@ -2053,15 +2053,15 @@ void chimesFF::compute_4B(const vector<double> & dx, const vector<double> & dr, 
     }
     
 
-    #pragma omp parallel 
-    {
+    // #pragma omp parallel 
+    // {
         force_scalar_in[0] = force_scalar[0];
         force_scalar_in[1] = force_scalar[1];
         force_scalar_in[2] = force_scalar[2];
         force_scalar_in[3] = force_scalar[3];
         force_scalar_in[4] = force_scalar[4];
         force_scalar_in[5] = force_scalar[5];
-    }
+    // }
     return;
 }
 
