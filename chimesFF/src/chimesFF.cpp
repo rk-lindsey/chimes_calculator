@@ -1540,7 +1540,7 @@ void chimesFF::compute_3B(const vector<double> & dx, const vector<double> & dr, 
     // Assumes distances are atom_2 - atom_1
     //
     // *note: force and dr are packed vectors of coordinates.
-    
+
     const int natoms = 3;                   // Number of atoms in an interaction set
     const int npairs = natoms*(natoms-1)/2; // Number of pairs in an interaction set
     
@@ -1623,7 +1623,8 @@ void chimesFF::compute_3B(const vector<double> & dx, const vector<double> & dr, 
 
     double force_scalar[npairs] ;
 
-    #pragma omp parallel for schedule(dynamic, 128) 
+    // Note parallizing below loop will not improve performance as the overhead to spun new threads is more than the computation itself
+    // #pragma omp parallel for reduction(+:energy) schedule(dynamic, 140)
     for(int coeffs=0; coeffs<variablecoeff; coeffs++)
     {
                 
@@ -1631,13 +1632,17 @@ void chimesFF::compute_3B(const vector<double> & dx, const vector<double> & dr, 
         powers[coeffs][1] = chimes_3b_powers[tripidx][coeffs][mapped_pair_idx[1]];
         powers[coeffs][2] = chimes_3b_powers[tripidx][coeffs][mapped_pair_idx[2]];
         
+        coeff = chimes_3b_params[tripidx][coeffs];
+        
+        energy += coeff * fcut_all * Tn_ij[ powers[coeffs][0] ] * Tn_ik[ powers[coeffs][1] ] * Tn_jk[ powers[coeffs][2] ];    
+
     }
 
     for(int coeffs=0; coeffs<ncoeffs_3b[tripidx]; coeffs++)
     {
         coeff = chimes_3b_params[tripidx][coeffs];
         
-        energy += coeff * fcut_all * Tn_ij[ powers[coeffs][0] ] * Tn_ik[ powers[coeffs][1] ] * Tn_jk[ powers[coeffs][2] ];    
+        // energy += coeff * fcut_all * Tn_ij[ powers[coeffs][0] ] * Tn_ik[ powers[coeffs][1] ] * Tn_jk[ powers[coeffs][2] ];    
 
         deriv[0] = fcut[0] * Tnd_ij[ powers[coeffs][0] ] + fcutderiv[0] * Tn_ij[ powers[coeffs][0] ];
         deriv[1] = fcut[1] * Tnd_ik[ powers[coeffs][1] ] + fcutderiv[1] * Tn_ik[ powers[coeffs][1] ];
