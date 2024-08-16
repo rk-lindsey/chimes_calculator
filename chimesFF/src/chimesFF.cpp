@@ -1411,6 +1411,7 @@ void chimesFF::compute_2B(const double dx, const vector<double> & dr, const vect
     double dummy_force_scalar;
     compute_2B(dx, dr, typ_idxs, force, stress, energy, tmp, dummy_force_scalar);                                                               
 }
+
 void chimesFF::compute_2B(const double dx, const vector<double> & dr, const vector<int> typ_idxs, vector<double> & force, vector<double> & stress, double & energy, chimes2BTmp &tmp, double & force_scalar_in)
 {
     // Compute 2b (input: 2 atoms or distances, corresponding types... outputs (updates) force, acceleration, energy, stress
@@ -1614,26 +1615,37 @@ void chimesFF::compute_3B(const vector<double> & dx, const vector<double> & dr, 
 
     // Start the force/stress/energy calculation
     double coeff;
-    int powers[npairs] ;
+
+    // Changed powers to a 2D array to prevent re-initialization thus, enable parallelization
+    int ncoeffs_3b_tripidx = *max_element(ncoeffs_3b.begin(), ncoeffs_3b.end());
+    int variablecoeff = ncoeffs_3b[tripidx];
+    int powers[ncoeffs_3b_tripidx][npairs] ;
+
     double force_scalar[npairs] ;
+
+    #pragma omp parallel for schedule(dynamic, 128) 
+    for(int coeffs=0; coeffs<variablecoeff; coeffs++)
+    {
+                
+        powers[coeffs][0] = chimes_3b_powers[tripidx][coeffs][mapped_pair_idx[0]];
+        powers[coeffs][1] = chimes_3b_powers[tripidx][coeffs][mapped_pair_idx[1]];
+        powers[coeffs][2] = chimes_3b_powers[tripidx][coeffs][mapped_pair_idx[2]];
+        
+    }
 
     for(int coeffs=0; coeffs<ncoeffs_3b[tripidx]; coeffs++)
     {
         coeff = chimes_3b_params[tripidx][coeffs];
         
-        powers[0] = chimes_3b_powers[tripidx][coeffs][mapped_pair_idx[0]];
-        powers[1] = chimes_3b_powers[tripidx][coeffs][mapped_pair_idx[1]];
-        powers[2] = chimes_3b_powers[tripidx][coeffs][mapped_pair_idx[2]];
-        
-        energy += coeff * fcut_all * Tn_ij[ powers[0] ] * Tn_ik[ powers[1] ] * Tn_jk[ powers[2] ];    
+        energy += coeff * fcut_all * Tn_ij[ powers[coeffs][0] ] * Tn_ik[ powers[coeffs][1] ] * Tn_jk[ powers[coeffs][2] ];    
 
-        deriv[0] = fcut[0] * Tnd_ij[ powers[0] ] + fcutderiv[0] * Tn_ij[ powers[0] ];
-        deriv[1] = fcut[1] * Tnd_ik[ powers[1] ] + fcutderiv[1] * Tn_ik[ powers[1] ];
-        deriv[2] = fcut[2] * Tnd_jk[ powers[2] ] + fcutderiv[2] * Tn_jk[ powers[2] ];
+        deriv[0] = fcut[0] * Tnd_ij[ powers[coeffs][0] ] + fcutderiv[0] * Tn_ij[ powers[coeffs][0] ];
+        deriv[1] = fcut[1] * Tnd_ik[ powers[coeffs][1] ] + fcutderiv[1] * Tn_ik[ powers[coeffs][1] ];
+        deriv[2] = fcut[2] * Tnd_jk[ powers[coeffs][2] ] + fcutderiv[2] * Tn_jk[ powers[coeffs][2] ];
 
-        force_scalar[0]  = coeff * deriv[0] * fcut_2[0] * Tn_ik[powers[1]]  * Tn_jk[powers[2]] ;
-        force_scalar[1]  = coeff * deriv[1] * fcut_2[1] * Tn_ij[powers[0]]  * Tn_jk[powers[2]] ;
-        force_scalar[2]  = coeff * deriv[2] * fcut_2[2] * Tn_ij[powers[0]]  * Tn_ik[powers[1]] ;
+        force_scalar[0]  = coeff * deriv[0] * fcut_2[0] * Tn_ik[powers[coeffs][1]]  * Tn_jk[powers[coeffs][2]] ;
+        force_scalar[1]  = coeff * deriv[1] * fcut_2[1] * Tn_ij[powers[coeffs][0]]  * Tn_jk[powers[coeffs][2]] ;
+        force_scalar[2]  = coeff * deriv[2] * fcut_2[2] * Tn_ij[powers[coeffs][0]]  * Tn_ik[powers[coeffs][1]] ;
         
         // Accumulate forces/stresses on/from the ij pair
         
