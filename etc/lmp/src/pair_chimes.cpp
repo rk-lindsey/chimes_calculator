@@ -50,7 +50,7 @@ using namespace LAMMPS_NS;
 
 settings 	(done)		reads the input script line with arguments defined here
 coeff		(done)		set coefficients for one i,j pair type
-compute		(done)		workhorse routine that computes pairwise interactions
+compute		(todo)		workhorse routine that computes pairwise interactions
 init_one	(done)		perform initalization for one i,j type pair
 init_style 	(done)		initialization specific to this pair style
 
@@ -64,7 +64,11 @@ single				    force and energy fo a single pairwise interaction between two atom
 
 PairCHIMES::PairCHIMES(LAMMPS *lmp) : Pair(lmp)
 {
+	// Ref: https://docs.lammps.org/Developer_write_pair.html#constructor
+	single_enable = 0;
 	restartinfo = 0;
+	one_coeff = 1;
+	manybody_flag = 1;
 
 	int me = comm->me;
 	MPI_Comm_rank(world,&me);
@@ -118,6 +122,10 @@ PairCHIMES::~PairCHIMES()
         badness_stream.close();
 }	
 
+/* ----------------------------------------------------------------------
+   global settings
+------------------------------------------------------------------------- */
+
 void PairCHIMES::settings(int narg, char **arg)
 {
 	if (narg > 1) 
@@ -159,7 +167,7 @@ void PairCHIMES::coeff(int narg, char **arg)
 	if (!allocated)
 		allocate();
 		
-	vector<vector<double> > cutoff_2b;
+	vector<vector<double>> cutoff_2b;
 	chimes_calculator.get_cutoff_2B(cutoff_2b);
 
 	for(int i=1; i<=atom->ntypes; i++)
@@ -187,15 +195,20 @@ void PairCHIMES::coeff(int narg, char **arg)
 void PairCHIMES::allocate()
 {
 	allocated = 1;
+	int np1 = atom->ntypes + 1;
 	
-	memory->create(setflag,atom->ntypes+1,atom->ntypes+1,"pair:setflag");
+	memory->create(setflag,np1,np1,"pair:setflag");
 	
-	for(int i=1; i<=atom->ntypes; i++)
-		for(int j=i; j<=atom->ntypes; j++)
+	for(int i=1; i<np1; i++)
+		for(int j=i; j<np1; j++)
 			setflag[i][j] = 0;
 
-	memory->create(cutsq,atom->ntypes+1,atom->ntypes+1,"pair:cutsq");
+	memory->create(cutsq,np1,np1,"pair:cutsq");
 }	
+
+/* ----------------------------------------------------------------------
+   init specific to this pair style
+------------------------------------------------------------------------- */
 
 void PairCHIMES::init_style()
 {
@@ -207,11 +220,8 @@ void PairCHIMES::init_style()
 	
 	// Set up neighbor lists... borrowing this from pair_airebo:
 	// need a full neighbor list, including neighbors of ghosts
-
-	int irequest = neighbor->request(this,instance_me);
-	neighbor->requests[irequest]->half = 0;
-	neighbor->requests[irequest]->full = 1;
-	neighbor->requests[irequest]->ghost = 1;
+	
+	neighbor->add_request(this, NeighConst::REQ_FULL | NeighConst::REQ_GHOST);
 }
 
 double PairCHIMES::init_one(int i, int j)
@@ -220,7 +230,7 @@ double PairCHIMES::init_one(int i, int j)
 	// The maximum of the returned values are used to set outer cutoff for neighbor lists
 	// WARNING: This means linking won't work properly if 2-b interactions do not have larger cutoffs than all other
 	// higher bodied interactions!!
-	
+	// 2B interactions calculated only once, check coeff function
 	if (setflag[i][j] == 0) 
 		error->all(FLERR,"All pair coeffs are not set");
 	
@@ -235,6 +245,7 @@ inline double PairCHIMES::get_dist(int i, int j, double *dr)
 	dr[1] = x[j][1] - x[i][1];
 	dr[2] = x[j][2] - x[i][2];
 
+	// TODO: For efficiency reasons, the square root can only taken after the check for the cutoff is done
 	return sqrt(dr[0]*dr[0] + dr[1]*dr[1] + dr[2]*dr[2]);
 }
 
@@ -424,6 +435,7 @@ void PairCHIMES::compute(int eflag, int vflag)
 	int 	newton_pair = force -> newton_pair;	// Should f_j be automatically set to -f_i (true) or manually calculated (false)
 	double  energy;				        // pair energy 
 
+	// TODO: https://docs.lammps.org/Developer_updating.html#simplified-function-names-for-forward-and-reverse-communication
 	int me = comm->me;
 	MPI_Comm_rank(world,&me);	
 	
