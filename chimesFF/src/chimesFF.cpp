@@ -15,7 +15,7 @@
 #include<cmath>
 #include<map>
 #include "omp.h"
-
+#include "nvtx3/nvToolsExt.h"
 
 using namespace std;
 
@@ -1525,6 +1525,7 @@ void chimesFF::compute_3B(const vector<double> & dx, const vector<double> & dr, 
 }
 void chimesFF::compute_3B(const vector<double> & dx, const vector<double> & dr, const vector<int> & typ_idxs, vector<double> & force, vector<double> & stress, double & energy, chimes3BTmp &tmp, vector<double> & force_scalar_in)
 {
+    nvtxRangePushA("Compute 3B");
     // Compute 3b (input: 3 atoms or distances, corresponding types... outputs (updates) force, acceleration, energy, stress
     //
     // Input parameters:
@@ -1736,7 +1737,7 @@ void chimesFF::compute_3B(const vector<double> & dx, const vector<double> & dr, 
     force_scalar_in[0] = force_scalar[0];
     force_scalar_in[1] = force_scalar[1];
     force_scalar_in[2] = force_scalar[2];
-
+    nvtxRangePop();
     return;    
 }
 
@@ -1747,6 +1748,7 @@ void chimesFF::compute_4B(const vector<double> & dx, const vector<double> & dr, 
 }
 void chimesFF::compute_4B(const vector<double> & dx, const vector<double> & dr, const vector<int> & typ_idxs, vector<double> & force, vector<double> & stress, double & energy, chimes4BTmp &tmp, vector<double> & force_scalar_in)
 {
+    nvtxRangePushA("Compute 4B");
     omp_set_num_threads(16);
     // Compute 3b (input: 3 atoms or distances, corresponding types... outputs (updates) force, acceleration, energy, stress
     //
@@ -1857,10 +1859,12 @@ void chimesFF::compute_4B(const vector<double> & dx, const vector<double> & dr, 
     double force_scalar[npairs] ;
     
     
-    
+    nvtxRangePushA("Powers Loop 4B");
     #pragma omp parallel for
     for(int coeffs=0; coeffs<variablecoeff; coeffs++)
     {
+        
+        // nvtx3::scoped_range loop{"Powers Loop 4B"};
         for (int i=0; i<npairs; i++)
             powers[coeffs][i] = chimes_4b_powers[quadidx][coeffs][mapped_pair_idx[i]];
 
@@ -1886,12 +1890,15 @@ void chimesFF::compute_4B(const vector<double> & dx, const vector<double> & dr, 
 
 
     }
+    nvtxRangePop();
 
     // update the deriv and force_scaler from 1D to 2D array and seperate their population
 
-    
+    nvtxRangePushA("Coeff Loop 4B");
     for(int coeffs=0; coeffs<variablecoeff; coeffs++)
     {
+        
+        // nvtx3::scoped_range loop{"Coeff Loop 4B"};
         coeff = chimes_4b_params[quadidx][coeffs];
 
         double Tn_ij_ik_il =  Tn_ij[ powers[coeffs][0] ] * Tn_ik[ powers[coeffs][1] ] * Tn_il[ powers[coeffs][2] ] ;
@@ -2068,6 +2075,7 @@ void chimesFF::compute_4B(const vector<double> & dx, const vector<double> & dr, 
         stress[5] -= force_scalar[5]  * dr[5*CHDIM+2] * dr[5*CHDIM+2]; // zz tensor component
 #endif      
     }
+    nvtxRangePop();
     
 
     // #pragma omp parallel 
@@ -2079,6 +2087,8 @@ void chimesFF::compute_4B(const vector<double> & dx, const vector<double> & dr, 
         force_scalar_in[4] = force_scalar[4];
         force_scalar_in[5] = force_scalar[5];
     // }
+
+    nvtxRangePop();
     return;
 }
 
