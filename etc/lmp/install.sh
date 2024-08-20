@@ -1,9 +1,10 @@
 #!/bin/bash
 
+
 echo ""
 echo "Note: This install script assumes: "
-echo "1. Availibility of Intel C++ compilers with c++11 support"
-echo "2. Availability of Intel MPI compilers"
+echo "1. Availibility of cray-mpich/8.1.28 on perlmutter"
+echo "2. Availability of cpu/1.0 on perlmutter"
 echo "...Intel oneapi compilers are now freely available"
 echo ""
 
@@ -14,19 +15,22 @@ echo ""
 
 # Grab the specific stable branch of LAMMPS compaitbility has been tested for
 
-mkdir -p build/lammps_stable_29Oct2020
+mkdir -p build/lammps_stable_27Jun2024
 
 
-git clone --depth 1 --branch stable_29Oct2020 https://github.com/lammps/lammps.git build/lammps_stable_29Oct2020
+git clone --depth 1 --branch patch_27Jun2024 https://github.com/lammps/lammps.git build/lammps_stable_27Jun2024
 
+echo "LAMMPS stable branch 27Jun2024 cloned"
 
 # Copy ChIMES files to correct locations
 
-cp ../../chimesFF/src/chimesFF.{h,cpp}	build/lammps_stable_29Oct2020/src/MANYBODY/
-cp src/pair_chimes.{h,cpp} 		build/lammps_stable_29Oct2020/src/MANYBODY/
-cp etc/pair.{h,cpp} 			build/lammps_stable_29Oct2020/src
-cp etc/Makefile.mpi_chimes 		build/lammps_stable_29Oct2020/src/MAKE
+# TODO - merge the chimesFF and pair_chimes files for LAMMPS PR
+# TODO - pair.{h,cpp} need to be updated in LAMMPS PR
+cp ../../chimesFF/src/chimesFF.{h,cpp}	build/lammps_stable_27Jun2024/src/MANYBODY/
+cp src/pair_chimes.{h,cpp} 		build/lammps_stable_27Jun2024/src/MANYBODY/
+cp etc/pair.{h,cpp} 			build/lammps_stable_27Jun2024/src
 
+echo "ChIMES files copied to LAMMPS source"
 
 # Load module files and configure compilers
 # Note: If using intel compilers from after Jan. 2021 (e.g.,) have access to oneapi
@@ -34,61 +38,36 @@ cp etc/Makefile.mpi_chimes 		build/lammps_stable_29Oct2020/src/MAKE
 #       load the intel (e.g., icc) module and run the the setvars.sh command, e.g. located at 
 #       /sw/pkgs/arc/intel/2022.1.2/setvars.sh --also avail for free
 
-if [ -z "$hosttype" ] ; then
-    echo ""
-    echo "WARNING: No hosttype specified"
-    echo "Be sure to load modules/configure compilers by hand before running this script!"
-    echo ""
-elif [[ "$hosttype" == "LLNL-LC" ]] ; then
-    source modfiles/LLNL-LC.mod
-elif [[ "$hosttype" == "UM-ARC" ]] ; then
-    source modfiles/UM-ARC.mod
-elif [[ "$hosttype" == "JHU-ARCH" ]] ; then
-    source modfiles/JHU-ARCH.mod
-    ICC=`which icc`
-    MPI=`which mpicxx`    
-elif [[ "$hosttype" == "UT-TACC" ]] ; then
-    source modfiles/UT-TACC.mod
-    cp etc/Makefile.mpi_chimes.UT-TACC build/lammps_stable_29Oct2020/src/MAKE/Makefile.mpi_chimes
-
-else
-    echo ""
-    echo "ERROR: Unknown hosttype ($hosttype) specified"
-    echo ""
-
-    echo "Valid options are:"
-    for i in `ls modfiles`; do echo "   ${i%.mod}"; done
-    echo ""
-    echo "Please run again with: export hosttype=<host type>; ./install.sh"
-    echo "Or manually load modules and run with: ./install.sh"
-    exit 0
-fi
-
-
-echo "Detected hosttype: $hosttype"
-if [ ! -z "$hasmod" ] ; then
-    module list
-fi
-
 
 # Compile
+# For GPU build on perlmutter add: -D PKG_KOKKOS=yes -D Kokkos_ARCH_AMPERE80=ON -D Kokkos_ENABLE_CUDA=yes
 
-cd build/lammps_stable_29Oct2020/src
-make yes-manybody
-make -j 4 mpi_chimes
-cd -
+cd build/lammps_stable_27Jun2024/
+mkdir build
+cd build
+cmake -DCMAKE_INSTALL_PREFIX=$PWD/../install_pm -D CMAKE_BUILD_TYPE=Release \
+            -D CMAKE_Fortran_COMPILER=ftn -D CMAKE_C_COMPILER=cc -D CMAKE_CXX_COMPILER=CC \
+            -D MPI_C_COMPILER=cc -D MPI_CXX_COMPILER=CC -D LAMMPS_EXCEPTIONS=ON \
+            -D BUILD_SHARED_LIBS=ON -D PKG_MANYBODY=ON -D PKG_MOLECULE=ON -D PKG_KSPACE=ON -D PKG_REPLICA=ON -D PKG_ASPHERE=ON \
+            -D PKG_RIGID=ON -D PKG_MPIIO=ON \
+            -D CMAKE_POSITION_INDEPENDENT_CODE=ON -D CMAKE_EXE_FLAGS="-dynamic" ../cmake
 
+echo "Compiling LAMMPS with ChIMES support"
+
+make -j16
 
 # Finish
 
-mkdir exe
-mv build/lammps_stable_29Oct2020/src/lmp_mpi_chimes exe
+mkdir ../../../exe
+mv ./lmp ../../../exe/
+
+cd ../../../
 
 loc=`pwd`
 echo ""
 echo "Compilation complete. "
 echo "Generated the following LAMMPS executable with ChIMES support:"
-echo "${loc}/exe/lmp_mpi_chimes"
+echo "${loc}/exe/lmp"
 echo "See ${loc}/tests for usage examples"
 echo ""
 
