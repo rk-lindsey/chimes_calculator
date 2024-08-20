@@ -11,7 +11,7 @@
 #include<algorithm>
 #include<fstream>
 #include <chrono>  // For timer
-
+#include "nvtx3/nvToolsExt.h" // for nvtx
 using namespace std;
 
 #include "serial_chimes_interface.h"
@@ -1032,7 +1032,7 @@ void serial_chimes_interface::calculate(vector<double> & x_in, vector<double> & 
     {
 
         auto start = chrono::high_resolution_clock::now();
-
+        nvtxRangePushA("Compute 3B Total");
         for(int i=0; i<neighlist_3b.size(); i++)
         {
             ii = neighlist_3b[i][0];
@@ -1063,7 +1063,7 @@ void serial_chimes_interface::calculate(vector<double> & x_in, vector<double> & 
 
         auto end = chrono::high_resolution_clock::now();
         chrono::duration<double> elapsed = end - start;
-
+        nvtxRangePop();
         cout << "Overall time elapsed for compute_3B: " << elapsed.count() << " seconds" << endl;
     }
 
@@ -1074,6 +1074,7 @@ void serial_chimes_interface::calculate(vector<double> & x_in, vector<double> & 
     if (poly_orders[2] > 0 )
     {
         auto start = chrono::high_resolution_clock::now();
+        nvtxRangePushA("Compute 4B Total");
 
         for(int i=0; i<neighlist_4b.size(); i++)
         {
@@ -1112,7 +1113,7 @@ void serial_chimes_interface::calculate(vector<double> & x_in, vector<double> & 
 
         auto end = chrono::high_resolution_clock::now();
         chrono::duration<double> elapsed = end - start;
-
+        nvtxRangePop();
         cout << "Overall time elapsed for compute_4B: " << elapsed.count() << " seconds" << endl;
     }
 
