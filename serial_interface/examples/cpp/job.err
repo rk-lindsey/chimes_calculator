@@ -1,0 +1,15 @@
+Importer error status: Importation failed.
+Import Failed with unexpected exception: /dvs/p4/build/sw/devtools/Agora/Rel/QuadD_Main/QuadD/Common/StreamSections/FileStream.cpp(274): Throw in function void QuadDCommon::FileStream::openFile(bool, bool, bool)
+Dynamic exception type: boost::wrapexcept<QuadDCommon::CreateFileException>
+std::exception::what: CreateFileException
+[QuadDCommon::tag_report_file_name*] = "/global/u2/s/sausiva/Chimes/chimes_calculator/serial_interface/examples/cpp/openMP_code.nsys-rep"
+[boost::errinfo_errno_*] = 524, "Unknown error 524"
+[boost::errinfo_file_name_*] = /global/u2/s/sausiva/Chimes/chimes_calculator/serial_interface/examples/cpp/openMP_code.nsys-rep
+rm: cannot remove 'original_code.nsys-rep': No such file or directory
+Import Failed with unexpected exception: /dvs/p4/build/sw/devtools/Agora/Rel/QuadD_Main/QuadD/Common/StreamSections/FileStream.cpp(274): Throw in function void QuadDCommon::FileStream::openFile(bool, bool, bool)
+Dynamic exception type: boost::wrapexcept<QuadDCommon::CreateFileException>
+std::exception::what: CreateFileException
+[QuadDCommon::tag_report_file_name*] = "/global/u2/s/sausiva/Chimes/chimes_calculator/serial_interface/examples/cpp/openMP_code.nsys-rep"
+[boost::errinfo_errno_*] = 524, "Unknown error 524"
+[boost::errinfo_file_name_*] = /global/u2/s/sausiva/Chimes/chimes_calculator/serial_interface/examples/cpp/openMP_code.nsys-rep
+
