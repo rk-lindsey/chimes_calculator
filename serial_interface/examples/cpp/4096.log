@@ -1,0 +1,40 @@
+Read args:
+1 ../../../serial_interface/tests/force_fields/published_params.HN3.2+3+4b.Tersoff.special.offsets.txt
+2 ../../../serial_interface/tests/configurations/hackathon/HN3.2gcc_3000K.4096.xyz
+chimesFF: 
+chimesFF: 01000011011010001001001010011010100010101010011 0100010101101110110011101101001011011101100101  
+chimesFF: 
+chimesFF:       _____  _      _____  __  __  ______   _____   ______                _                      
+chimesFF:      / ____|| |    |_   _||  \/  ||  ____| / ____| |  ____|              (_)                    
+chimesFF:     | |     | |__    | |  | \  / || |__   | (___   | |__    _ __    __ _  _  _ __    ___        
+chimesFF:     | |     | '_ \   | |  | |\/| ||  __|   \___ \  |  __|  | '_ \  / _` || || '_ \  / _ \ 
+chimesFF:     | |____ | | | | _| |_ | |  | || |____  ____) | | |____ | | | || (_| || || | | ||  __/        
+chimesFF:      \_____||_| |_||_____||_|  |_||______||_____/  |______||_| |_| \__, ||_||_| |_| \___|     
+chimesFF:                                                                     __/ |                        
+chimesFF:                                                                    |___/                         
+chimesFF: 
+chimesFF:                      Copyright (C) 2020 R.K. Lindsey, L.E. Fried, N. Goldman                     
+chimesFF: 
+chimesFF: 01000011011010001001001010011010100010101010011 0100010101101110110011101101001011011101100101   
+chimesFF: 
+chimesFF: Reading parameters from file: ../../../serial_interface/tests/force_fields/published_params.HN3.2+3+4b.Tersoff.special.offsets.txt
+chimesFF: Detected version 1 pair specification (with S_DELTA)
+ 1.15
+ 0.8
+ 1
+chimesFF: Will use cutoff style TERSOFF
+ 0.5
+Overall time elapsed for compute_3B: 5.31189 seconds
+Overall time elapsed for compute_4B: 27.4375 seconds
+
+Success! 
+Energy (kcal/mol):    
+	-614164
+Stress tensors (GPa): 
+	s_xx: 22.61
+	s_yy: 21.2207
+	s_zz: 22.361
+	s_xy: -2.0985
+	s_xz: -0.188887
+	s_yz: -1.38322
+
