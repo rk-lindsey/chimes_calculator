@@ -1857,6 +1857,7 @@ void chimesFF::compute_4B(const vector<double> & dx, const vector<double> & dr, 
     double coeff;
     int ncoeffs_4b_quadidx = *max_element(ncoeffs_4b.begin(), ncoeffs_4b.end());
     int variablecoeff = ncoeffs_4b[quadidx];
+    int chimes_4b_powers_arr[variablecoeff][npairs] = chimes_4b_powers[quadidx];
 
     // why do we need below size of ncoeffs_4b_quadidx x npairs?
     // why cant we use variablecoeff x npairs?
@@ -1864,19 +1865,18 @@ void chimesFF::compute_4B(const vector<double> & dx, const vector<double> & dr, 
     int powers[ncoeffs_4b_quadidx][npairs] ;
     double force_scalar[npairs] ;
     
-    
     nvtxRangePushA("Powers Loop 4B");
     //#pragma acc kernels
     //{
     #pragma acc parallel loop collapse(2)
-    #pragma data copyin(chimes_4b_powers[0:quadidx][0:variablecoeff][0:npairs]) \
+    #pragma data copyin(chimes_4b_powers_arr[0:variablecoeff][0:npairs]) \
                  copyout(powers[0:variablecoeff][0:npairs])
     for(int coeffs=0; coeffs<variablecoeff; coeffs++)
     {
         
         // nvtx3::scoped_range loop{"Powers Loop 4B"};
         for (int i=0; i<npairs; i++)
-            powers[coeffs][i] = chimes_4b_powers[quadidx][coeffs][mapped_pair_idx[i]];
+            powers[coeffs][i] = chimes_4b_powers_arr[coeffs][mapped_pair_idx[i]];
     
     }
     //}

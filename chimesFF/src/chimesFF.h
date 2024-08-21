@@ -248,13 +248,16 @@ private:
     vector<vector<double> > chimes_2b_cutoff;    // [npairs][2] inner and outer cutoff for pair
 
     vector<int>                      ncoeffs_3b;          // [ntrips]
-    vector<vector<vector<int> > >    chimes_3b_powers;    // [ntrips][nparams][constit. pair]
+    vector<vector<vector<int>>>    chimes_3b_powers;    // [ntrips][nparams][constit. pair]
     vector<vector<double> >          chimes_3b_params;    // [ntrips][nparams]    
     vector<vector<vector<double> > > chimes_3b_cutoff;    // [ntrips][2][constit. pair] inner and outer cutoff for pair 1
 
-        
+
+    // max nquads = 5
+    // max nparams = ~3500 (maximum seen in the training data)
+    // max: constit. pair = 6
     vector<int>                      ncoeffs_4b;          // [nquads]
-    vector<vector<vector<int> > >    chimes_4b_powers;    // [nquads][nparams][constit. pair]
+    vector<vector<vector<int>>>    chimes_4b_powers;    // [nquads][nparams][constit. pair]
     vector<vector<double> >          chimes_4b_params;    // [nquads][nparams]    
     vector<vector<vector<double> > > chimes_4b_cutoff;    // [nquads][2][constit. pair] inner and outer cutoff for pair 1
 
