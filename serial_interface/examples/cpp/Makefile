@@ -1,5 +1,5 @@
 
-CXX   = nvc++  -fopenmp -O2 -std=c++17 --diag_suppress declared_but_not_referenced
+CXX   = nvc++  -acc=gpu -gpu=managed -Minfo=accel -O2 -std=c++17 --diag_suppress declared_but_not_referenced 
 DEBUG = 1
 
 CXX_LOC = $(realpath .)
@@ -12,4 +12,4 @@ clean-all:
 	rm -f chimescalc
 
 all: $(CXX_SRC) $(CXX_HDR)
-	$(CXX) $(CXX_SRC)  -o chimescalc -I $(CXX_LOC)/../../src -I $(CXX_LOC)/../../../chimesFF/src/ -DDEBUG=${DEBUG}
+	$(CXX) $(CXX_SRC)  -o chimescalc -I $(CXX_LOC)/../../src -I $(CXX_LOC)/../../../chimesFF/src/ -DDEBUG=${DEBUG} &> minfo.txt

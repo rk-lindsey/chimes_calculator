@@ -1,0 +1,104 @@
+main.cpp:
+/global/u2/s/sausiva/Chimes/chimes_calculator/serial_interface/examples/cpp/../../src/serial_chimes_interface.cpp:
+/global/u2/s/sausiva/Chimes/chimes_calculator/serial_interface/examples/cpp/../../../chimesFF/src/chimesFF.cpp:
+chimesFF::compute_4B(std::vector<double, std::allocator<double>> const&, std::vector<double, std::allocator<double>> const&, std::vector<int, std::allocator<int>> const&, std::vector<double, std::allocator<double>>&, std::vector<double, std::allocator<double>>&, double&, chimes4BTmp&, std::vector<double, std::allocator<double>>&):
+   1868, Generating implicit firstprivate(variablecoeff)
+         Generating NVIDIA GPU code
+       1874, #pragma acc loop gang, vector(128) collapse(2) /* blockIdx.x threadIdx.x */
+       1878,   /* blockIdx.x threadIdx.x collapsed */
+   1868, Generating implicit copyin(mapped_pair_idx,this[:]) [if not already present]
+         Generating implicit copyout(powers[:variablecoeff][:]) [if not already present]
+   1878, Generating implicit firstprivate(quadidx)
+chimesFF::dr2_3B(double const*, int, int, int, int):
+   1382, Generating implicit acc routine seq
+         Generating acc routine seq
+         Generating NVIDIA GPU code
+chimesFF::dr2_4B(double const*, int, int, int, int):
+   1388, Generating implicit acc routine seq
+         Generating acc routine seq
+         Generating NVIDIA GPU code
+std::vector<double, std::allocator<double>>::operator[](unsigned long):
+      7, include "vector"
+          64, include "stl_vector.h"
+              796, Generating implicit acc routine seq
+                   Generating acc routine seq
+                   Generating NVIDIA GPU code
+std::vector<double, std::allocator<double>>::operator[](unsigned long) const:
+      7, include "vector"
+          64, include "stl_vector.h"
+              814, Generating implicit acc routine seq
+                   Generating acc routine seq
+                   Generating NVIDIA GPU code
+std::vector<double, std::allocator<double>>::back():
+      7, include "vector"
+          64, include "stl_vector.h"
+std::vector<int, std::allocator<int>>::vector(std::vector<int, std::allocator<int>> const&):
+      7, include "vector"
+          64, include "stl_vector.h"
+std::vector<int, std::allocator<int>>::operator[](unsigned long):
+      7, include "vector"
+          64, include "stl_vector.h"
+              796, Generating implicit acc routine seq
+                   Generating acc routine seq
+                   Generating NVIDIA GPU code
+std::vector<int, std::allocator<int>>::back():
+      7, include "vector"
+          64, include "stl_vector.h"
+std::vector<int, std::allocator<int>>::_M_move_assign(std::vector<int, std::allocator<int>>&&, std::integral_constant<bool, true>):
+      7, include "vector"
+          64, include "stl_vector.h"
+void std::vector<std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char>>, std::allocator<std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char>>>>::_M_realloc_insert<std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char>> const&>(__gnu_cxx::__normal_iterator<std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char>>*, std::vector<std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char>>, std::allocator<std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char>>>>>, std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char>> const&):
+      7, include "vector"
+std::vector<std::vector<int, std::allocator<int>>, std::allocator<std::vector<int, std::allocator<int>>>>::operator[](unsigned long):
+      7, include "vector"
+          64, include "stl_vector.h"
+              796, Generating implicit acc routine seq
+                   Generating acc routine seq
+                   Generating NVIDIA GPU code
+std::vector<std::vector<double, std::allocator<double>>, std::allocator<std::vector<double, std::allocator<double>>>>::operator[](unsigned long):
+      7, include "vector"
+          64, include "stl_vector.h"
+              796, Generating implicit acc routine seq
+                   Generating acc routine seq
+                   Generating NVIDIA GPU code
+std::vector<std::vector<std::vector<int, std::allocator<int>>, std::allocator<std::vector<int, std::allocator<int>>>>, std::allocator<std::vector<std::vector<int, std::allocator<int>>, std::allocator<std::vector<int, std::allocator<int>>>>>>::operator[](unsigned long):
+      7, include "vector"
+          64, include "stl_vector.h"
+              796, Generating implicit acc routine seq
+                   Generating acc routine seq
+                   Generating NVIDIA GPU code
+void std::_Destroy_aux<false>::__destroy<std::vector<std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char>>, std::allocator<std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char>>>>*>(std::vector<std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char>>, std::allocator<std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char>>>>*, std::vector<std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char>>, std::allocator<std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char>>>>*):
+      7, include "vector"
+          64, include "stl_vector.h"
+void std::_Destroy_aux<false>::__destroy<std::vector<int, std::allocator<int>>*>(std::vector<int, std::allocator<int>>*, std::vector<int, std::allocator<int>>*):
+      7, include "vector"
+          64, include "stl_vector.h"
+void std::_Destroy_aux<false>::__destroy<std::vector<double, std::allocator<double>>*>(std::vector<double, std::allocator<double>>*, std::vector<double, std::allocator<double>>*):
+      7, include "vector"
+          64, include "stl_vector.h"
+void std::_Destroy_aux<false>::__destroy<std::vector<std::vector<int, std::allocator<int>>, std::allocator<std::vector<int, std::allocator<int>>>>*>(std::vector<std::vector<int, std::allocator<int>>, std::allocator<std::vector<int, std::allocator<int>>>>*, std::vector<std::vector<int, std::allocator<int>>, std::allocator<std::vector<int, std::allocator<int>>>>*):
+      7, include "vector"
+          64, include "stl_vector.h"
+void std::_Destroy_aux<false>::__destroy<std::vector<std::vector<double, std::allocator<double>>, std::allocator<std::vector<double, std::allocator<double>>>>*>(std::vector<std::vector<double, std::allocator<double>>, std::allocator<std::vector<double, std::allocator<double>>>>*, std::vector<std::vector<double, std::allocator<double>>, std::allocator<std::vector<double, std::allocator<double>>>>*):
+      7, include "vector"
+          64, include "stl_vector.h"
+__gnu_cxx::__normal_iterator<int*, std::vector<int, std::allocator<int>>> std::__max_element<__gnu_cxx::__normal_iterator<int*, std::vector<int, std::allocator<int>>>, __gnu_cxx::__ops::_Iter_less_iter>(__gnu_cxx::__normal_iterator<int*, std::vector<int, std::allocator<int>>>, __gnu_cxx::__normal_iterator<int*, std::vector<int, std::allocator<int>>>, __gnu_cxx::__ops::_Iter_less_iter):
+      7, include "vector"
+          64, include "stl_vector.h"
+_ZSt8__fill_aIPmiEN9__gnu_cxx11__enable_ifIXsrSt11__is_scalarIT0_E7__valueEvE6__typeET_S8_RKS4_:
+      7, include "vector"
+          64, include "stl_vector.h"
+_ZSt10__fill_n_aIPdmdEN9__gnu_cxx11__enable_ifIXsrSt11__is_scalarIT1_E7__valueET_E6__typeES6_T0_RKS4_:
+      7, include "vector"
+          64, include "stl_vector.h"
+_ZSt10__fill_n_aIPimiEN9__gnu_cxx11__enable_ifIXsrSt11__is_scalarIT1_E7__valueET_E6__typeES6_T0_RKS4_:
+      7, include "vector"
+          64, include "stl_vector.h"
+__gnu_cxx::__normal_iterator<int*, std::vector<int, std::allocator<int>>> std::__copy_move_a2<false, __gnu_cxx::__normal_iterator<int const*, std::vector<int, std::allocator<int>>>, __gnu_cxx::__normal_iterator<int*, std::vector<int, std::allocator<int>>>>(__gnu_cxx::__normal_iterator<int const*, std::vector<int, std::allocator<int>>>, __gnu_cxx::__normal_iterator<int const*, std::vector<int, std::allocator<int>>>, __gnu_cxx::__normal_iterator<int*, std::vector<int, std::allocator<int>>>):
+      7, include "vector"
+          64, include "stl_vector.h"
+_ZSt8__fill_aIPSt6vectorIiSaIiEES2_EN9__gnu_cxx11__enable_ifIXntsrSt11__is_scalarIT0_E7__valueEvE6__typeET_SB_RKS7_:
+      7, include "vector"
+          64, include "stl_vector.h"
+/usr/bin/ld: warning: /tmp/pgcudafatQvoMc_uFeP_9C.o: missing .note.GNU-stack section implies executable stack
+/usr/bin/ld: NOTE: This behaviour is deprecated and will be removed in a future version of the linker

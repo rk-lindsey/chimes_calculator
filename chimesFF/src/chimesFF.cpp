@@ -16,6 +16,7 @@
 #include<map>
 #include "omp.h"
 #include "nvtx3/nvToolsExt.h"
+#include "openacc.h"
 
 using namespace std;
 
@@ -1525,6 +1526,7 @@ void chimesFF::compute_3B(const vector<double> & dx, const vector<double> & dr, 
 }
 void chimesFF::compute_3B(const vector<double> & dx, const vector<double> & dr, const vector<int> & typ_idxs, vector<double> & force, vector<double> & stress, double & energy, chimes3BTmp &tmp, vector<double> & force_scalar_in)
 {
+    // omp_set_num_threads(128);
     nvtxRangePushA("Compute 3B");
     // Compute 3b (input: 3 atoms or distances, corresponding types... outputs (updates) force, acceleration, energy, stress
     //
@@ -1626,6 +1628,8 @@ void chimesFF::compute_3B(const vector<double> & dx, const vector<double> & dr, 
 
     // Note parallizing below loop will not improve performance as the overhead to spun new threads is more than the computation itself
     // #pragma omp parallel for reduction(+:energy) schedule(dynamic, 140)
+    #pragma acc loop
+    #pragma data copyin(chimes_3b_powers, chimes_3b_params) copyout(powers)
     for(int coeffs=0; coeffs<variablecoeff; coeffs++)
     {
                 
@@ -1638,7 +1642,8 @@ void chimesFF::compute_3B(const vector<double> & dx, const vector<double> & dr, 
         energy += coeff * fcut_all * Tn_ij[ powers[coeffs][0] ] * Tn_ik[ powers[coeffs][1] ] * Tn_jk[ powers[coeffs][2] ];    
 
     }
-
+    #pragma acc loop
+    #pragma data copyin(chimes_3b_powers, chimes_3b_params) copyout(force_scalar)
     for(int coeffs=0; coeffs<ncoeffs_3b[tripidx]; coeffs++)
     {
         coeff = chimes_3b_params[tripidx][coeffs];
@@ -1748,8 +1753,9 @@ void chimesFF::compute_4B(const vector<double> & dx, const vector<double> & dr, 
 }
 void chimesFF::compute_4B(const vector<double> & dx, const vector<double> & dr, const vector<int> & typ_idxs, vector<double> & force, vector<double> & stress, double & energy, chimes4BTmp &tmp, vector<double> & force_scalar_in)
 {
+    // omp_set_num_threads(128);
     nvtxRangePushA("Compute 4B");
-    omp_set_num_threads(16);
+    
     // Compute 3b (input: 3 atoms or distances, corresponding types... outputs (updates) force, acceleration, energy, stress
     //
     // Input parameters:
@@ -1860,41 +1866,29 @@ void chimesFF::compute_4B(const vector<double> & dx, const vector<double> & dr, 
     
     
     nvtxRangePushA("Powers Loop 4B");
-    #pragma omp parallel for
+    //#pragma acc kernels
+    //{
+    #pragma acc parallel loop collapse(2)
+    #pragma data copyin(chimes_4b_powers[0:quadidx][0:variablecoeff][0:npairs]) \
+                 copyout(powers[0:variablecoeff][0:npairs])
     for(int coeffs=0; coeffs<variablecoeff; coeffs++)
     {
         
         // nvtx3::scoped_range loop{"Powers Loop 4B"};
         for (int i=0; i<npairs; i++)
             powers[coeffs][i] = chimes_4b_powers[quadidx][coeffs][mapped_pair_idx[i]];
-
-        double Tn_ij_ik_il =  Tn_ij[ powers[coeffs][0] ] * Tn_ik[ powers[coeffs][1] ] * Tn_il[ powers[coeffs][2] ] ;
-        double Tn_jk_jl    =  Tn_jk[ powers[coeffs][3] ] * Tn_jl[ powers[coeffs][4] ] ;
-        double Tn_kl_5     =  Tn_kl[ powers[coeffs][5] ] ;
-
-        // coeff = chimes_4b_params[quadidx][coeffs];
-
-        // deriv[0] = fcut[0] * Tnd_ij[ powers[coeffs][0] ] + fcutderiv[0] * Tn_ij[ powers[coeffs][0] ];
-        // deriv[1] = fcut[1] * Tnd_ik[ powers[coeffs][1] ] + fcutderiv[1] * Tn_ik[ powers[coeffs][1] ];
-        // deriv[2] = fcut[2] * Tnd_il[ powers[coeffs][2] ] + fcutderiv[2] * Tn_il[ powers[coeffs][2] ];
-        // deriv[3] = fcut[3] * Tnd_jk[ powers[coeffs][3] ] + fcutderiv[3] * Tn_jk[ powers[coeffs][3] ];
-        // deriv[4] = fcut[4] * Tnd_jl[ powers[coeffs][4] ] + fcutderiv[4] * Tn_jl[ powers[coeffs][4] ];
-        // deriv[5] = fcut[5] * Tnd_kl[ powers[coeffs][5] ] + fcutderiv[5] * Tn_kl[ powers[coeffs][5] ];        
-
-        // force_scalar[0]  = chimes_4b_params[quadidx][coeffs] * deriv[0] * fcut_5[0] * Tn_ik[powers[coeffs][1]]  * Tn_il[powers[coeffs][2]] * Tn_jk_jl * Tn_kl_5 ;
-        // force_scalar[1]  = chimes_4b_params[quadidx][coeffs] * deriv[1] * fcut_5[1] * Tn_ij[powers[coeffs][0]]  * Tn_il[powers[coeffs][2]] * Tn_jk_jl * Tn_kl_5 ;
-        // force_scalar[2]  = chimes_4b_params[quadidx][coeffs] * deriv[2] * fcut_5[2] * Tn_ij[powers[coeffs][0]]  * Tn_ik[powers[coeffs][1]] * Tn_jk_jl * Tn_kl_5 ;
-        // force_scalar[3]  = chimes_4b_params[quadidx][coeffs] * deriv[3] * fcut_5[3] * Tn_ij_ik_il  * Tn_jl[powers[coeffs][4]] * Tn_kl_5 ;
-        // force_scalar[4]  = chimes_4b_params[quadidx][coeffs] * deriv[4] * fcut_5[4] * Tn_ij_ik_il  * Tn_jk[powers[coeffs][3]] * Tn_kl_5 ;
-        // force_scalar[5]  = chimes_4b_params[quadidx][coeffs] * deriv[5] * fcut_5[5] * Tn_ij_ik_il * Tn_jk_jl ;
-
-
+    
     }
+    //}
     nvtxRangePop();
 
     // update the deriv and force_scaler from 1D to 2D array and seperate their population
 
     nvtxRangePushA("Coeff Loop 4B");
+    // #pragma acc parallel loop takes a long time to spin up threads
+    #pragma acc loop
+    #pragma data copyin(fcut[0:npairs], fcutderiv[0:npairs], Tn_ij[0:poly_orders[2]], Tn_ik[0:poly_orders[2]], Tn_il[0:poly_orders[2]], Tn_jk[0:poly_orders[2]], Tn_jl[0:poly_orders[2]], Tn_kl[0:poly_orders[2]], powers[0:variablecoeff][0:npairs]) \
+                 copyout(deriv[0:npairs], force_scalar[0:npairs])
     for(int coeffs=0; coeffs<variablecoeff; coeffs++)
     {
         
