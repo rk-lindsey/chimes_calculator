@@ -1,3 +1,8 @@
+! ChIMES Carbon 2.0 - **Large** parameters
+!
+! These parameters correspond to PBE+D2 DFT and are intended to be used directly
+!
+!-------------------------------------------------------------------------------
 ! Date  2022-03-19
 !
 ! Number of variables =  487
