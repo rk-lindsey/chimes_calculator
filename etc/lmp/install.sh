@@ -75,6 +75,7 @@ fi
 
 cd build/lammps_stable_29Oct2020/src
 make yes-manybody
+make yes-user-misc
 make -j 4 mpi_chimes
 cd -
 
