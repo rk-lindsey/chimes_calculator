@@ -1,3 +1,3 @@
-module load cmake/3.22.2  
-module load intel/18.0.5
-module load impi/2018.4.274
+module load cmake/3.22.2
+module load intel/2022.1.2
+module load impi/2021.5.1
