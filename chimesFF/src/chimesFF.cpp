@@ -1065,7 +1065,6 @@ void chimesFF::read_parameters(string paramfile)
 
             if(line.find("SPECIAL 3B S_MINIM:") != string::npos)
             {
-                    cout << "1086" << endl;
                 split_line(line, tmp_str_items);
                 
                 if (rank == 0)
@@ -1073,7 +1072,6 @@ void chimesFF::read_parameters(string paramfile)
                 
                 if(tmp_str_items[3] == "ALL")
                 {
-                    cout << "1094" << endl;
                     cutval = stod(tmp_str_items[4]);
                     
                     for(int i=0; i<ntrips; i++)
@@ -1086,7 +1084,6 @@ void chimesFF::read_parameters(string paramfile)
                 }
                 else
                 {
-                    cout << "1107" << endl;
                     nentries = stoi(tmp_str_items[4]);
                     
                     vector<string> pair_name(3);
@@ -2138,10 +2135,10 @@ void chimesFF::compute_3B_tab(const vector<double> & dx, const vector<double> & 
 
 
     // Look up/interpolate for energy and force scalar .... this can likely be done MUCH more efficiently by integrating force/energy interpolation more completely
-    //  get_tab_3B(tripidx, trip_params_pair_typs[tripidx][mapped_pair_idx[0]], trip_params_pair_typs[tripidx][mapped_pair_idx[1]], trip_params_pair_typs[tripidx][mapped_pair_idx[2]], dx[0], dx[1], dx[2]); // Function is overloaded. No final argument == this is for an energy calculation.
+    energy += get_tab_3B(tripidx, trip_params_pair_typs[tripidx][mapped_pair_idx[0]], trip_params_pair_typs[tripidx][mapped_pair_idx[1]], trip_params_pair_typs[tripidx][mapped_pair_idx[2]], dx[0], dx[1], dx[2]); // Function is overloaded. No final argument == this is for an energy calculation.
 
     double force_scalar[npairs];
-    energy += get_tab_3B(tripidx, trip_params_pair_typs[tripidx][mapped_pair_idx[0]], trip_params_pair_typs[tripidx][mapped_pair_idx[1]], trip_params_pair_typs[tripidx][mapped_pair_idx[2]], dx[0], dx[1], dx[2],  force_scalar);   
+    get_tab_3B(tripidx, trip_params_pair_typs[tripidx][mapped_pair_idx[0]], trip_params_pair_typs[tripidx][mapped_pair_idx[1]], trip_params_pair_typs[tripidx][mapped_pair_idx[2]], dx[0], dx[1], dx[2],  force_scalar);   
 
     // Accumulate forces/stresses on/from the ij pair
     
