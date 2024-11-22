@@ -179,6 +179,44 @@ public:
     inline int  get_badness();
     inline void reset_badness();
     
+    
+    // New for tabulation -- 2b
+
+    bool                    tabulate_2B;          
+    vector<string>          tab_param_files;    // tab_param_files[pair type index]
+    vector<vector<double> > tab_r;              // tab_r[pair type index][rij]
+    vector<vector<double> > tab_e;              // tab_e[pair type index][energy]
+    vector<vector<double> > tab_f;              // tab_f[pair type index][force]
+    
+    void   read_2B_tab(string tab_file, bool energy=true);
+    void   compute_2B_tab(const double dx, const vector<double> & dr, const vector<int> typ_idxs, vector<double> & force, vector<double> & stress, double & energy, chimes2BTmp &tmp);   
+    void   compute_2B_tab(const double dx, const vector<double> & dr, const vector<int> typ_idxs, vector<double> & force, vector<double> & stress, double & energy, chimes2BTmp &tmp, double & force_scalar_in);     
+    double get_tab_2B(int pair_idx, double rij, bool for_energy);
+    
+    
+    // New for tabulation -- 3b
+    
+    bool                    tabulate_3B;        
+    vector<string>          tab_param_files_3B;     // tab_param_files[trip type index]
+    vector<int> tab_index_3B;             // tab_rij_3B[pair type index][rij]
+    vector<vector<double> > tab_rij_3B;             // tab_rij_3B[pair type index][rij]
+    vector<vector<double> > tab_rik_3B;             // tab_rik_3B[pair type index][rik]
+    vector<vector<double> > tab_rjk_3B;             // tab_rjk_3B[pair type index][rjk]
+    vector<vector<double> > tab_e_3B;               // tab_e_3B[pair type index][energy]
+    vector<vector<double> > tab_f_ij_3B;             // tab_f_ij_3B[pair type index][force ij]
+    vector<vector<double> > tab_f_ik_3B;             // tab_f_ik_3B[pair type index][force ik]
+    vector<vector<double> > tab_f_jk_3B;             // tab_f_jk_3B[pair type index][force jk]
+    
+    // FUNCTIONS WRITTEN BUT NOT YET TESTED:
+    double interpolateTricubic(int tripidx, double rij, double rik, double rjk, const vector<double>& y);
+    void   read_3B_tab(string tab_file, bool energy=true);
+    void   compute_3B_tab(const vector<double> & dx, const vector<double> & dr, const vector<int> & typ_idxs, vector<double> & force, vector<double> & stress, double & energy, chimes3BTmp &tmp); 
+    void   compute_3B_tab(const vector<double> & dx, const vector<double> & dr, const vector<int> & typ_idxs, vector<double> & force, vector<double> & stress, double & energy, chimes3BTmp &tmp, vector<double> & force_scalar_in);     
+    double get_tab_3B(int tripidx, string pairtyp_ij, string pairtyp_ik, string pairtyp_jk, double rij, double rik, double rjk);
+    double get_tab_3B(int tripidx, string pairtyp_ij, string pairtyp_ik, string pairtyp_jk, double rij, double rik, double rjk, double (&force_scalar)[3]);
+    double get_tab_3B_general(int tripidx, string pairtyp_ij, string pairtyp_ik, string pairtyp_jk, double rij, double rik, double rjk, bool for_energy, double (&force_scalar)[3]);
+    
+    
 private:
         
     string            xform_style;    //  Morse, direct, inverse, etc...

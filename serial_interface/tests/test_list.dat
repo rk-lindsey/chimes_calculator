@@ -60,4 +60,8 @@ published_params.liqCO.2+3b.cubic.txt;  diam.8_#000.xyz;   1;  short
 
 published_params.liqCO.2+3b.cubic.txt;  diam.2_#000.xyz;   1;  short
 
+test_params.CO.table.txt; CO.2.5gcc_6500K.OUTCAR_#000.xyz;  1;  short
+test_params.liqC.table.txt; liqC.2.5gcc_6000K.OUTCAR_#000.xyz; 1; short
+
 published_params.CO2400K.2+3+4b.Tersoff.special.offsets.txt;  CO.9GPa_2400K.OUTCAR_#000.xyz;  1;  short
+

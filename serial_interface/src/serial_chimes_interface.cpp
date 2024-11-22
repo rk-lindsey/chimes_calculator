@@ -965,12 +965,13 @@ void serial_chimes_interface::calculate(vector<double> & x_in, vector<double> & 
 
     // Initialize private members (LEF)
     max_2b_cut = max_cutoff_2B(true) ;
+
     max_3b_cut = max_cutoff_3B(true) ;
     max_4b_cut = max_cutoff_4B(true) ;
 
     vector<double> stress_chimes(6,0.0) ; // Switch Chimes to a packed stressed tensor.
     
-    sys.init(atmtyps, x_in, y_in, z_in, cella_in, cellb_in, cellc_in, max_2b_cut, allow_replication);   
+    sys.init(atmtyps, x_in, y_in, z_in, cella_in, cellb_in, cellc_in, max_2b_cut, allow_replication);  
     
     sys.build_layered_system(atmtyps,poly_orders, max_2b_cut, max_3b_cut, max_4b_cut);
 
@@ -990,7 +991,7 @@ void serial_chimes_interface::calculate(vector<double> & x_in, vector<double> & 
     vector<double> force_2b(2*CHDIM) ;
     chimes2BTmp chimes_2btmp(poly_orders[0]) ;
     chimes3BTmp chimes_3btmp(poly_orders[1]) ;
-    chimes4BTmp chimes_4btmp(poly_orders[2]) ;      
+    chimes4BTmp chimes_4btmp(poly_orders[2]) ;    
     
     ////////////////////////
     // interate over 1- and 2b's 
@@ -1012,8 +1013,11 @@ void serial_chimes_interface::calculate(vector<double> & x_in, vector<double> & 
             for (int idx=0; idx<2*CHDIM; idx++) {
                 force_2b[idx] = 0.0 ;
             }
-            
-            compute_2B(dist, dr, typ_idxs_2b, force_2b, stress_chimes, energy, chimes_2btmp);
+
+            if (tabulate_2B){
+                compute_2B_tab(dist, dr, typ_idxs_2b, force_2b, stress_chimes, energy, chimes_2btmp);}
+            else
+                compute_2B    (dist, dr, typ_idxs_2b, force_2b, stress_chimes, energy, chimes_2btmp);
 
             for (int idx=0; idx<3; idx++)
             {
@@ -1026,7 +1030,7 @@ void serial_chimes_interface::calculate(vector<double> & x_in, vector<double> & 
     ////////////////////////
     // interate over 3b's 
     ////////////////////////
-    
+
     if (poly_orders[1] > 0 )
     {
         for(int i=0; i<neighlist_3b.size(); i++)
@@ -1047,8 +1051,11 @@ void serial_chimes_interface::calculate(vector<double> & x_in, vector<double> & 
             {
                 force_3b[idx] = 0.0 ;               
             }    
-        
-            compute_3B(dist_3b, dr_3b, typ_idxs_3b, force_3b, stress_chimes, energy, chimes_3btmp);
+            if (tabulate_3B){
+                compute_3B_tab(dist_3b, dr_3b, typ_idxs_3b, force_3b, stress_chimes, energy, chimes_3btmp);}
+            else
+                compute_3B(dist_3b, dr_3b, typ_idxs_3b, force_3b, stress_chimes, energy, chimes_3btmp);
+            
 
             for (int idx=0; idx<3; idx++) {
                 force[sys.sys_rep_parent[sys.sys_parent[ii]]][idx] += force_3b[0*CHDIM+idx] ;
@@ -1057,7 +1064,6 @@ void serial_chimes_interface::calculate(vector<double> & x_in, vector<double> & 
             }
         }
     }
-
     ////////////////////////
     // interate over 4b's 
     ////////////////////////
