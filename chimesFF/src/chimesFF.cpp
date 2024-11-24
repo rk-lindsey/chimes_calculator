@@ -82,6 +82,16 @@ int chimesFF::get_proper_pair(string ty1, string ty2)
     exit(0);
 }
 
+string get_directory_path(const string& file_path) 
+{
+    size_t pos = file_path.find_last_of("/\\");
+    
+    if (pos != string::npos) 
+        return file_path.substr(0, pos);
+    else 
+        return ""; // If no directory path is available
+}
+
 chimesFF::chimesFF()
 {
     natmtyps = 0;
@@ -343,6 +353,8 @@ void chimesFF::read_parameters(string paramfile)
     ifstream param_file;
     param_file.open(paramfile.data());
     
+    string param_file_path = get_directory_path(paramfile);
+
     if (rank == 0)
         cout << "chimesFF: " << "Reading parameters from file: " << paramfile << endl;
     
@@ -602,7 +614,7 @@ void chimesFF::read_parameters(string paramfile)
             }
                     
             if (rank == 0)
-                cout << "chimesFF: " << "Will use cutoff style " << tmp_str_items[2] << endl ;
+                cout << "chimesFF: " << "Will use cutoff style " << tmp_str_items[2];
             
             if (fcut_type == fcutType::TERSOFF )
             {
@@ -687,7 +699,7 @@ void chimesFF::read_parameters(string paramfile)
             
             if (tmp_no_items == 7) // Then these 2B parameters are tabulated
             {
-                tab_param_files.push_back(param_file_path +'/'+ tmp_str_items[6]);
+                tab_param_files.push_back(param_file_path + tmp_str_items[6]);
                 
                 if (rank == 0)
                 {
@@ -729,6 +741,7 @@ void chimesFF::read_parameters(string paramfile)
                 
                 if (rank == 0)
                     cout << "chimesFF: " << "\t" << chimes_2b_pows[tmp_int][i] << " " << chimes_2b_params[tmp_int][i] << endl;
+            }
             }
         }
         
@@ -843,7 +856,7 @@ void chimesFF::read_parameters(string paramfile)
 
                 if (tmp_no_items == 8){  // 3B are tabulated
 
-                    tab_param_files.push_back(param_file_path + '/' + tmp_str_items[7]);
+                    tab_param_files.push_back(param_file_path  + tmp_str_items[7]);
                     
                     if (rank == 0)
                     {
@@ -926,7 +939,7 @@ void chimesFF::read_parameters(string paramfile)
                     cout << "chimesFF: " << "Built the following 3-body pair \"fast\" map:" << endl;
 
                 atom_int_trip_map.resize(natmtyps*natmtyps*natmtyps);
-                
+
                 for(int i=0; i<natmtyps; i++)
                 {
                     for (int j=0; j<natmtyps; j++)
@@ -971,7 +984,7 @@ void chimesFF::read_parameters(string paramfile)
                         
             atmtyp_1 = distance(atmtyps.begin(), find(atmtyps.begin(), atmtyps.end(), trip_params_atm_chems[i][0]));   
             atmtyp_2 = distance(atmtyps.begin(), find(atmtyps.begin(), atmtyps.end(), trip_params_atm_chems[i][1]));   
-            atmtyp_3 = distance(atmtyps.begin(), find(atmtyps.begin(), atmtyps.end(), trip_params_atm_chems[i][2]));    
+            atmtyp_3 = distance(atmtyps.begin(), find(atmtyps.begin(), atmtyps.end(), trip_params_atm_chems[i][2]));  
                         
             // Figure out the corresponding 2-body pair type
             
@@ -989,7 +1002,7 @@ void chimesFF::read_parameters(string paramfile)
             
             chimes_3b_cutoff[i][1].push_back(chimes_2b_cutoff[pairtyp_1][1]);
             chimes_3b_cutoff[i][1].push_back(chimes_2b_cutoff[pairtyp_2][1]);
-            chimes_3b_cutoff[i][1].push_back(chimes_2b_cutoff[pairtyp_3][1]);              
+            chimes_3b_cutoff[i][1].push_back(chimes_2b_cutoff[pairtyp_3][1]);   
         }
         
         param_file.seekg(0);
@@ -1763,7 +1776,7 @@ void chimesFF::compute_2B_tab(const double dx, const vector<double> & dr, const 
     stress[5] -= force_scalar * dr[2] * dr[2]; // zz tensor component
 
     double E_penalty = 0.0;
-    get_penalty(dx, pair_idx, E_penalty , force_scalar, true); // true: just check, don't modify energy or force 
+    get_penalty(dx, pair_idx, E_penalty , force_scalar); // true: just check, don't modify energy or force 
     /*
     if ( E_penalty > 0.0 ) 
     {
@@ -2139,7 +2152,6 @@ void chimesFF::compute_3B_tab(const vector<double> & dx, const vector<double> & 
 
     double force_scalar[npairs];
     get_tab_3B(tripidx, trip_params_pair_typs[tripidx][mapped_pair_idx[0]], trip_params_pair_typs[tripidx][mapped_pair_idx[1]], trip_params_pair_typs[tripidx][mapped_pair_idx[2]], dx[0], dx[1], dx[2],  force_scalar);   
-
     // Accumulate forces/stresses on/from the ij pair
     
     force[0*CHDIM+0] += force_scalar[0] * dr[0*CHDIM+0];
