@@ -3,7 +3,7 @@
     Copyright (C) 2020 Rebecca K. Lindsey, Nir Goldman, and Laurence E. Fried
     Contributing Author:  Rebecca K. Lindsey (2020) 
 */
-
+#include<array>
 #include<vector>
 #include<iostream>
 #include<iomanip>
@@ -14,6 +14,7 @@
 #include<algorithm>
 #include<cmath>
 #include<map>
+// #include<chrono>
 
 using namespace std;
 
@@ -1903,7 +1904,7 @@ void chimesFF::compute_3B(const vector<double> & dx, const vector<double> & dr, 
     vector<double> &Tnd_ik = tmp.Tnd_ik ;
     vector<double> &Tnd_jk = tmp.Tnd_jk ;  // The Chebyshev polymonial derivatives
 
-    // Avoid allocating std::vector quantities.  Heap memory allocation is slow on the GPU.
+    // Avoid allocating vector quantities.  Heap memory allocation is slow on the GPU.
     // fixed-length C arrays are allocated on the stack.
     double fcut[npairs] ;
     double fcutderiv[npairs] ;
@@ -2108,7 +2109,7 @@ void chimesFF::compute_3B_tab(const vector<double> & dx, const vector<double> & 
     const int natoms = 3;                   // Number of atoms in an interaction set
     const int npairs = natoms*(natoms-1)/2; // Number of pairs in an interaction set
     
-    // Avoid allocating std::vector quantities.  Heap memory allocation is slow on the GPU.
+    // Avoid allocating vector quantities.  Heap memory allocation is slow on the GPU.
     // fixed-length C arrays are allocated on the stack.
     double fcut[npairs] ;
     double fcutderiv[npairs] ;
@@ -2146,12 +2147,13 @@ void chimesFF::compute_3B_tab(const vector<double> & dx, const vector<double> & 
     init_distance_tensor(dr2, dr, npairs) ;
 #endif
 
-
     // Look up/interpolate for energy and force scalar .... this can likely be done MUCH more efficiently by integrating force/energy interpolation more completely
-    energy += get_tab_3B(tripidx, trip_params_pair_typs[tripidx][mapped_pair_idx[0]], trip_params_pair_typs[tripidx][mapped_pair_idx[1]], trip_params_pair_typs[tripidx][mapped_pair_idx[2]], dx[0], dx[1], dx[2]); // Function is overloaded. No final argument == this is for an energy calculation.
-
+    // energy += get_tab_3B(tripidx, trip_params_pair_typs[tripidx][mapped_pair_idx[0]], trip_params_pair_typs[tripidx][mapped_pair_idx[1]], trip_params_pair_typs[tripidx][mapped_pair_idx[2]], dx[0], dx[1], dx[2]); // Function is overloaded. No final argument == this is for an energy calculation.
+    // auto t1 = chrono::high_resolution_clock::now();
     double force_scalar[npairs];
-    get_tab_3B(tripidx, trip_params_pair_typs[tripidx][mapped_pair_idx[0]], trip_params_pair_typs[tripidx][mapped_pair_idx[1]], trip_params_pair_typs[tripidx][mapped_pair_idx[2]], dx[0], dx[1], dx[2],  force_scalar);   
+    energy += get_tab_3B(tripidx, trip_params_pair_typs[tripidx][mapped_pair_idx[0]], trip_params_pair_typs[tripidx][mapped_pair_idx[1]], trip_params_pair_typs[tripidx][mapped_pair_idx[2]], dx[0], dx[1], dx[2],  force_scalar);   
+    // auto t2 = chrono::high_resolution_clock::now();
+    // cout << chrono::duration_cast<chrono::nanoseconds>(t2-t1).count() << " ns \n";
     // Accumulate forces/stresses on/from the ij pair
     
     force[0*CHDIM+0] += force_scalar[0] * dr[0*CHDIM+0];
@@ -2264,7 +2266,7 @@ double bicubicInterpolate(const vector<double>& p, double x, double y)
     return cubicInterpolate(arr[0], arr[1], arr[2], arr[3], y);
 }
 
-double tricubicInterpolate(const vector<double>& p, double x, double y, double z) 
+double tricubicInterpolate(const array<double, 64>& p, double x, double y, double z)
 {
     static double arr[4]; // Fixed-size array
     
@@ -2275,124 +2277,113 @@ double tricubicInterpolate(const vector<double>& p, double x, double y, double z
 }
 
 // Perform the tricubic interpolation
-double chimesFF::interpolateTricubic(int tripidx, double rij, double rik, double rjk, const vector<double>& y)
-{
-    vector<double> * tab_rij_3B_ptr = &tab_rij_3B[tripidx];
-    vector<double> * tab_rik_3B_ptr = &tab_rik_3B[tripidx];
-    vector<double> * tab_rjk_3B_ptr = &tab_rjk_3B[tripidx];
-    // cout << "rij: " << rij << endl;
-    // cout << rik << endl;
-    // cout << rjk << endl;
-  
-    int size_ik = static_cast<int>(cbrt((*tab_rik_3B_ptr).size()));  // The total number of rows before the second column changes
+vector<double> chimesFF::interpolateTricubic(int tripidx, double rij, double rik, double rjk,const vector<double>& y, const vector<double>& y1, const vector<double>& y2, const vector<double>& y3) {
+    // Use a reference to make it quicker
+    const auto& tab_rij = tab_rij_3B[tripidx];
+    const auto& tab_rik = tab_rik_3B[tripidx];
+    const auto& tab_rjk = tab_rjk_3B[tripidx];
+
+    // The size before the second column resest
+    int size_ik = static_cast<int>(cbrt(tab_rik.size()));  // The total number of rows before the second column changes
     int size_ij = size_ik * size_ik; // Number of rows before the first column changes
-    int size_jk = 1; // Number of rows before the last column changes
-    double dr = ((*tab_rjk_3B_ptr)[size_ij+size_ik+1] - (*tab_rjk_3B_ptr)[0]);
-   
+    double dr = (tab_rjk[size_ij + size_ik + 1] - tab_rjk[0]); // only works for constant length vectors
+
     // find the first occurance of the ij, ik jk, distance
     // This method is better for non-even spacing but more annoying for different element types
-    int i = (rij - (*tab_rij_3B_ptr)[0])/dr; // This calculation method only works for even spacing
-    int j = (rik - (*tab_rik_3B_ptr)[0])/dr;
-    int k = (rjk - (*tab_rjk_3B_ptr)[0])/dr;
+    // int i = std::lower_bound((*tab_rjk_3B_ptr).begin(), (*tab_rjk_3B_ptr).begin() + size_ik, rij) - (*tab_rjk_3B_ptr).begin() -1;  
+    // int j = std::lower_bound((*tab_rjk_3B_ptr).begin(), (*tab_rjk_3B_ptr).begin() + size_ik, rik) - (*tab_rjk_3B_ptr).begin() -1;
+    // int k = std::lower_bound((*tab_rjk_3B_ptr).begin(), (*tab_rjk_3B_ptr).begin() + size_ik, rjk) - (*tab_rjk_3B_ptr).begin() -1;
+
+    // Compute indices with the closed form solution
+    int i = static_cast<int>((rij - tab_rij[0]) / dr);
+    int j = static_cast<int>((rik - tab_rik[0]) / dr);
+    int k = static_cast<int>((rjk - tab_rjk[0]) / dr);
 
     i = max(1, i);
     j = max(1, j);
     k = max(1, k);
-    
-  
-    // Collect the 64 function values to form a 4x4x4 grid cube
 
-    vector<double> values(64, 0.0);
-    for (int di = -1; di <= 2; ++di) 
-    {
-        for (int dj = -1; dj <= 2; ++dj) 
-        {
-            for (int dk = -1; dk <= 2; ++dk) 
-            {
-                // int index = (i + di) * size_ik * size_jk + (j + dj) * size_jk + (k + dk);
-                if ((i+di) < size_ik && (j+dj) < size_ik && (k+dk) < size_ik) 
-                {
-                    int index = size_ij*(i+di)+size_ik*(j+dj)+(k+dk);
-                    values[(di + 1) * 16 + (dj + 1) * 4 + (dk + 1)] = y[index];
-                } 
-                
+    array<double, 64> values{}, values1{}, values2{}, values3{};
+    for (int di = -1; di <= 2; ++di) {
+        for (int dj = -1; dj <= 2; ++dj) {
+            for (int dk = -1; dk <= 2; ++dk) {
+                int temp_i = i + di;
+                int temp_j = j + dj;
+                int temp_k = k + dk;
+
+                if (temp_i < size_ik && temp_j < size_ik && temp_k < size_ik) {  // applies outer cutoff
+                    int index = size_ij * temp_i + size_ik * temp_j + temp_k;
+                    int idx = (di + 1) * 16 + (dj + 1) * 4 + (dk + 1);
+                    values[idx] = y[index];
+                    values1[idx] = y1[index];
+                    values2[idx] = y2[index];
+                    values3[idx] = y3[index];
+                }
             }
         }
     }
-    double xi = (rij - (*tab_rij_3B_ptr)[i*size_ij+j*size_ik+k]) / dr;
-    double yi = (rik - (*tab_rik_3B_ptr)[j*size_ik+k]) / dr;
-    double zi = (rjk - (*tab_rjk_3B_ptr)[k]) / dr;
 
-    return tricubicInterpolate(values, zi, yi, xi);     
+    // these are the fraction of between the previous and next index
+    double xi = (rij - tab_rij[i * size_ij + j * size_ik + k]) / dr;
+    double yi = (rik - tab_rik[j * size_ik + k]) / dr;
+    double zi = (rjk - tab_rjk[k]) / dr;
+
+    // Return vector of the results
+    return {
+        tricubicInterpolate(values, zi, yi, xi),
+        tricubicInterpolate(values1, zi, yi, xi),
+        tricubicInterpolate(values2, zi, yi, xi),
+        tricubicInterpolate(values3, zi, yi, xi)
+    };
 }
 
 // Generic version
-double chimesFF::get_tab_3B_general(int tripidx, string pairtyp_ij, string pairtyp_ik, string pairtyp_jk, double rij, double rik, double rjk, bool for_energy, double (&force_scalar)[3])
+
+double chimesFF::get_tab_3B(int tripidx, const string& pairtyp_ij, const string& pairtyp_ik, const string& pairtyp_jk,  double rij, double rik, double rjk, double (&force_scalar)[3]) 
 {
 
     // Determine the pair types (e.g., CO, CO, CC)
-    
-    static vector<string> pair_types(3);
-    
-    pair_types[0] = pairtyp_ij;
-    pair_types[1] = pairtyp_ik;
-    pair_types[2] = pairtyp_jk;
+
+    array<string, 3> pair_types = {pairtyp_ij, pairtyp_ik, pairtyp_jk};
     
     // Store the corresponding distances
     
-    static vector<double> pair_dists(3);
-        
-    pair_dists[0] = rij;
-    pair_dists[1] = rik;
-    pair_dists[2] = rjk;    
+    array<double, 3> pair_dists = {rij, rik, rjk};
     
     // Sort these two items together so they match the ordering of the table:
     // Pairs are sorted alphabetically, and within a given set of identical pairs, 
     // distances are sorted in descending order
     
     // Create a vector of pairs
-    vector< pair<string, double> > pairs(3);    
+    array<pair<string, double>, 3> pairs;
+    for (int i = 0; i < 3; ++i) {
+        pairs[i] = {pair_types[i], pair_dists[i]};
+    }
     
-    for (int i = 0; i < 3; ++i) 
-        pairs[i] = make_pair(pair_types[i], pair_dists[i]);
-
     // Sort the vector of pairs using the custom comparator
 
     // Extract the sorted pair_type and pair_dist vectors
-    for (int i = 0; i < 3; ++i) 
-    {
+    for (int i = 0; i < 3; ++i) {
         pair_types[i] = pairs[i].first;
         pair_dists[i] = pairs[i].second;
     }
-    
-    // Do the interpolation
-    
-    if (for_energy)
-    {
-    return interpolateTricubic(tripidx, pair_dists[0], pair_dists[1], pair_dists[2], tab_e_3B[tripidx]);
-    }
-    else
-    {
-        force_scalar[0] =  interpolateTricubic(tripidx, pair_dists[0], pair_dists[1], pair_dists[2], tab_f_ij_3B[tripidx]);
-        force_scalar[1] =  interpolateTricubic(tripidx, pair_dists[0], pair_dists[1], pair_dists[2], tab_f_ik_3B[tripidx]);
-        force_scalar[2] =  interpolateTricubic(tripidx, pair_dists[0], pair_dists[1], pair_dists[2], tab_f_jk_3B[tripidx]);
 
-        return 0;
-    }
+    // coupled interpolation code
+    auto results = interpolateTricubic(tripidx, pair_dists[0], pair_dists[1], pair_dists[2], tab_e_3B[tripidx], tab_f_ij_3B[tripidx], tab_f_ik_3B[tripidx], tab_f_jk_3B[tripidx]);
+
+    force_scalar[0] = results[1];
+    force_scalar[1] = results[2];
+    force_scalar[2] = results[3];
+    return results[0]; // output energy
 }
 // energy version
-double chimesFF::get_tab_3B(int tripidx, string pairtyp_ij, string pairtyp_ik, string pairtyp_jk, double rij, double rik, double rjk)
-{  
-    double dummy[3];
-    return get_tab_3B_general(tripidx, pairtyp_ij, pairtyp_ik, pairtyp_jk, rij, rik, rjk, true, dummy); 
-}
+// double chimesFF::get_tab_3B(int tripidx, string pairtyp_ij, string pairtyp_ik, string pairtyp_jk, double rij, double rik, double rjk, double (&force_scalar)[3])
+// {  
+//     // double dummy[3];
+//     return get_tab_3B_general(tripidx, pairtyp_ij, pairtyp_ik, pairtyp_jk, rij, rik, rjk, true, force_scalar); 
+// }
 
-// Force version
-double chimesFF::get_tab_3B(int tripidx, string pairtyp_ij, string pairtyp_ik, string pairtyp_jk, double rij, double rik, double rjk, double (&force_scalar)[3])
-{
-    get_tab_3B_general(tripidx, pairtyp_ij, pairtyp_ik, pairtyp_jk, rij, rik, rjk, false, force_scalar);
-    return 0;
-}
+
 
 
 void chimesFF::compute_4B(const vector<double> & dx, const vector<double> & dr, const vector<int> & typ_idxs, vector<double> & force, vector<double> & stress, double & energy, chimes4BTmp &tmp)
