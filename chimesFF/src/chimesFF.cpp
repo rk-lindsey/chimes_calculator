@@ -2303,7 +2303,6 @@ vector<double> chimesFF::interpolateTricubic(int tripidx, double rij, double rik
     int i = static_cast<int>((rij - tab_rij[0]) * dr);
     int j = static_cast<int>((rik - tab_rik[0]) * dr);
     int k = static_cast<int>((rjk - tab_rjk[0]) * dr);
-    cout << i << endl;
 
     i = max(1, i);
     j = max(1, j);
