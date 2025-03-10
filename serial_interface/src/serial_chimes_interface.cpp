@@ -39,6 +39,27 @@ void   unit_a   (const vector<double> & a, vector<double> & unit)
     
     return;
 }
+void writeClusterDataComp(const string& filename, const vector<vector<double>>& data) 
+{
+    ofstream ofs(filename);
+    if (!ofs) {
+        cerr << "Error: Could not open file " << filename << endl;
+        return;
+    }
+    
+    ostringstream buffer;
+    
+    for (const auto& row : data) {
+        for (size_t j = 0; j < row.size(); j++) {
+            buffer << row[j];
+            if (j < row.size() - 1) buffer << " ";  // Add space between elements
+        }
+        buffer << "\n";
+    }
+
+    ofs << buffer.str(); // Single large write operation
+    ofs.close();
+}
 double a_dot_b  (const vector<double> & a, const vector<double> & b)
 {
     double dot = 0;
@@ -988,6 +1009,9 @@ void serial_chimes_interface::calculate(vector<double> & x_in, vector<double> & 
     vector<double> force_4b(4*CHDIM) ;
     vector<double> force_3b(3*CHDIM) ;
     vector<double> force_2b(2*CHDIM) ;
+    vector<vector<double > > tmp_dist_2b;
+    vector<vector<double > > tmp_dist_3b;
+    vector<vector<double > > tmp_dist_4b;
     chimes2BTmp chimes_2btmp(poly_orders[0]) ;
     chimes3BTmp chimes_3btmp(poly_orders[1]) ;
     chimes4BTmp chimes_4btmp(poly_orders[2]) ;      
@@ -1013,7 +1037,7 @@ void serial_chimes_interface::calculate(vector<double> & x_in, vector<double> & 
                 force_2b[idx] = 0.0 ;
             }
             
-            compute_2B(dist, dr, typ_idxs_2b, force_2b, stress_chimes, energy, chimes_2btmp);
+            compute_2B( dist, dr, typ_idxs_2b, force_2b, stress_chimes, energy, chimes_2btmp, tmp_dist_2b);
 
             for (int idx=0; idx<3; idx++)
             {
@@ -1023,6 +1047,10 @@ void serial_chimes_interface::calculate(vector<double> & x_in, vector<double> & 
         }
     }
     
+    std::string ts = std::to_string(0);
+    std::stringstream filename;
+    filename << ts << "." << std::to_string(0) << ".2b_clusters.txt";
+    writeClusterDataComp(filename.str(), tmp_dist_2b);
     ////////////////////////
     // interate over 3b's 
     ////////////////////////
@@ -1048,7 +1076,7 @@ void serial_chimes_interface::calculate(vector<double> & x_in, vector<double> & 
                 force_3b[idx] = 0.0 ;               
             }    
         
-            compute_3B(dist_3b, dr_3b, typ_idxs_3b, force_3b, stress_chimes, energy, chimes_3btmp);
+            compute_3B(dist_3b, dr_3b, typ_idxs_3b, force_3b, stress_chimes, energy, chimes_3btmp, tmp_dist_3b);
 
             for (int idx=0; idx<3; idx++) {
                 force[sys.sys_rep_parent[sys.sys_parent[ii]]][idx] += force_3b[0*CHDIM+idx] ;
@@ -1057,6 +1085,9 @@ void serial_chimes_interface::calculate(vector<double> & x_in, vector<double> & 
             }
         }
     }
+    std::stringstream filename_3b;
+    filename_3b << ts << "." << std::to_string(0) << ".3b_clusters.txt";
+    writeClusterDataComp(filename_3b.str(), tmp_dist_3b);
 
     ////////////////////////
     // interate over 4b's 
@@ -1088,7 +1119,7 @@ void serial_chimes_interface::calculate(vector<double> & x_in, vector<double> & 
                 force_4b[idx] = 0.0 ;
             }    
         
-            compute_4B(dist_4b, dr_4b, typ_idxs_4b, force_4b, stress_chimes, energy, chimes_4btmp);
+            compute_4B(dist_4b, dr_4b, typ_idxs_4b, force_4b, stress_chimes, energy, chimes_4btmp, tmp_dist_4b);
 
             for (int idx=0; idx<3; idx++)
             {
@@ -1099,6 +1130,9 @@ void serial_chimes_interface::calculate(vector<double> & x_in, vector<double> & 
             }    
         }    
     }
+    std::stringstream filename_4b;
+    filename_4b << ts << "." << std::to_string(0) << ".4b_clusters.txt";
+    writeClusterDataComp(filename_4b.str(), tmp_dist_4b);
 
     // Correct for use of replicates, if applicable
     

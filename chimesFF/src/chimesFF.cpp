@@ -1402,12 +1402,12 @@ void chimesFF::compute_1B(const int typ_idx, double & energy )
 }
 
 // Overload for calls from LAMMPS                 
-void chimesFF::compute_2B(const double dx, const vector<double> & dr, const vector<int> typ_idxs, vector<double> & force, vector<double> & stress, double & energy, chimes2BTmp &tmp)
+void chimesFF::compute_2B(const double dx, const vector<double> & dr, const vector<int> typ_idxs, vector<double> & force, vector<double> & stress, double & energy, chimes2BTmp &tmp, vector<vector<double > > & clusters_2b, bool fingerprint)
 {              
     double dummy_force_scalar;
-    compute_2B(dx, dr, typ_idxs, force, stress, energy, tmp, dummy_force_scalar);                                                               
+    compute_2B(dx, dr, typ_idxs, force, stress, energy, tmp, dummy_force_scalar, clusters_2b, fingerprint);                                                               
 }
-void chimesFF::compute_2B(const double dx, const vector<double> & dr, const vector<int> typ_idxs, vector<double> & force, vector<double> & stress, double & energy, chimes2BTmp &tmp, double & force_scalar_in)
+void chimesFF::compute_2B(const double dx, const vector<double> & dr, const vector<int> typ_idxs, vector<double> & force, vector<double> & stress, double & energy, chimes2BTmp &tmp, double & force_scalar_in, vector<vector<double > > & clusters_2b, bool fingerprint)
 {
     // Compute 2b (input: 2 atoms or distances, corresponding types... outputs (updates) force, acceleration, energy, stress
     //
@@ -1439,7 +1439,10 @@ void chimesFF::compute_2B(const double dx, const vector<double> & dr, const vect
 
     if (dx >= chimes_2b_cutoff[pair_idx][1])
         return;    
-
+    if(fingerprint){
+    vector<double> dist_2b;
+    dist_2b.push_back(dx);
+    clusters_2b.push_back(dist_2b);}
     set_cheby_polys(Tn, Tnd, dx, morse_var[pair_idx], chimes_2b_cutoff[pair_idx][0], chimes_2b_cutoff[pair_idx][1], poly_orders[0]);  
 
     get_fcut(dx, chimes_2b_cutoff[pair_idx][1], fcut, fcutderiv);
@@ -1513,12 +1516,12 @@ void chimesFF::compute_2B(const double dx, const vector<double> & dr, const vect
 }
 
 // Overload for calls from LAMMPS  
-void chimesFF::compute_3B(const vector<double> & dx, const vector<double> & dr, const vector<int> & typ_idxs, vector<double> & force, vector<double> & stress, double & energy, chimes3BTmp &tmp)
+void chimesFF::compute_3B(const vector<double> & dx, const vector<double> & dr, const vector<int> & typ_idxs, vector<double> & force, vector<double> & stress, double & energy, chimes3BTmp &tmp, vector<vector<double > > & clusters_3b, bool fingerprint)
 {
 	vector<double> dummy_force_scalar(3);
-	compute_3B(dx, dr, typ_idxs, force, stress, energy, tmp, dummy_force_scalar);
+	compute_3B(dx, dr, typ_idxs, force, stress, energy, tmp, dummy_force_scalar,clusters_3b,  fingerprint);
 }
-void chimesFF::compute_3B(const vector<double> & dx, const vector<double> & dr, const vector<int> & typ_idxs, vector<double> & force, vector<double> & stress, double & energy, chimes3BTmp &tmp, vector<double> & force_scalar_in)
+void chimesFF::compute_3B(const vector<double> & dx, const vector<double> & dr, const vector<int> & typ_idxs, vector<double> & force, vector<double> & stress, double & energy, chimes3BTmp &tmp, vector<double> & force_scalar_in, vector<vector<double>> & clusters_3b, bool fingerprint)
 {
     // Compute 3b (input: 3 atoms or distances, corresponding types... outputs (updates) force, acceleration, energy, stress
     //
@@ -1583,8 +1586,11 @@ void chimesFF::compute_3B(const vector<double> & dx, const vector<double> & dr, 
      double cutoff_02 = chimes_3b_cutoff[ tripidx ][0][mapped_pair_idx[2]];
     if (dx[2] >= cutoff_2)    // jk
         return;    
-     
- int pair_type_1 = atom_int_pair_map[ typ_idxs[0]*natmtyps + typ_idxs[1] ];;
+    if (fingerprint){
+    clusters_3b.push_back(dx);
+}
+
+ int pair_type_1 = atom_int_pair_map[ typ_idxs[0]*natmtyps + typ_idxs[1] ];
  int pair_type_2 = atom_int_pair_map[ typ_idxs[0]*natmtyps + typ_idxs[2] ];
  int pair_type_3 = atom_int_pair_map[ typ_idxs[1]*natmtyps + typ_idxs[2] ];
  int order       = poly_orders[1];
@@ -1738,12 +1744,12 @@ void chimesFF::compute_3B(const vector<double> & dx, const vector<double> & dr, 
     return;    
 }
 
-void chimesFF::compute_4B(const vector<double> & dx, const vector<double> & dr, const vector<int> & typ_idxs, vector<double> & force, vector<double> & stress, double & energy, chimes4BTmp &tmp)
+void chimesFF::compute_4B(const vector<double> & dx, const vector<double> & dr, const vector<int> & typ_idxs, vector<double> & force, vector<double> & stress, double & energy, chimes4BTmp &tmp, vector<vector<double>> & clusters_4b, bool fingerprint)
 {              
         vector<double> dummy_force_scalar(6);
-        compute_4B(dx, dr, typ_idxs, force, stress, energy, tmp, dummy_force_scalar);                                                               
+        compute_4B(dx, dr, typ_idxs, force, stress, energy, tmp, dummy_force_scalar, clusters_4b,  fingerprint);                                                               
 }
-void chimesFF::compute_4B(const vector<double> & dx, const vector<double> & dr, const vector<int> & typ_idxs, vector<double> & force, vector<double> & stress, double & energy, chimes4BTmp &tmp, vector<double> & force_scalar_in)
+void chimesFF::compute_4B(const vector<double> & dx, const vector<double> & dr, const vector<int> & typ_idxs, vector<double> & force, vector<double> & stress, double & energy, chimes4BTmp &tmp, vector<double> & force_scalar_in, vector<vector<double>> & clusters_4b, bool fingerprint)
 {
     // Compute 3b (input: 3 atoms or distances, corresponding types... outputs (updates) force, acceleration, energy, stress
     //
@@ -1832,7 +1838,9 @@ void chimesFF::compute_4B(const vector<double> & dx, const vector<double> & dr, 
      double cutoff_05 = chimes_4b_cutoff[ quadidx ][0][mapped_pair_idx[5]];
     if (dx[5] >= cutoff_5)    // kl
         return;
-
+    if (fingerprint){
+    clusters_4b.push_back(dx);
+}
 
     // At this point, all distances are within allowed ranges. We can now proceed to the force/stress/energy calculation
     

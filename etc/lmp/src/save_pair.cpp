@@ -463,8 +463,6 @@ void PairCHIMES::compute(int eflag, int vflag)
     vector<vector<double > > tmp_dist_2b;
     vector<vector<double > > tmp_dist_3b;
     vector<vector<double > > tmp_dist_4b;
-	bool 				 tmp_FP;
-	bool 				 valid_order;
     int                  atmidxlst[6][2];
 	
 	// General LAMMPS compute vars
@@ -498,10 +496,6 @@ void PairCHIMES::compute(int eflag, int vflag)
 		vflag_fdotr = 0;
   		vflag_atom  = 0;
 	}
-
-	if (fingerprint)
-		if(update->ntimestep % IO_freq == 0){tmp_FP = true;}
-	else{tmp_FP = false;}
 
 	////////////////////////////////////////
 	// Access to (2-body) neighbor list vars
@@ -584,8 +578,8 @@ void PairCHIMES::compute(int eflag, int vflag)
 			std::fill(stensor.begin(), stensor.end(), 0.0) ;
 
 			energy = 0.0;	
-			valid_order = (i < j);
-			chimes_calculator.compute_2B( dist, dr, typ_idxs_2b, force_2b, stensor, energy, chimes_2btmp, tmp_dist_2b, tmp_FP && valid_order);	// Auto-updates badness		
+		
+			chimes_calculator.compute_2B( dist, dr, typ_idxs_2b, force_2b, stensor, energy, chimes_2btmp, tmp_dist_2b);	// Auto-updates badness		
 
 			for (idx=0; idx<3; idx++)
 			{
@@ -608,12 +602,9 @@ void PairCHIMES::compute(int eflag, int vflag)
 		}
 	}
 	std::string ts = std::to_string(update->ntimestep);
-	if (tmp_FP)
-	{
-		std::stringstream filename;
-		filename << ts << "." << std::to_string(chimes_calculator.rank) <<".2b_clusters.txt";
-		writeClusterDataComp(filename.str(), tmp_dist_2b);
-	}
+	std::stringstream filename;
+	filename << ts << "." << std::to_string(chimes_calculator.rank) <<".2b_clusters.txt";
+    writeClusterDataComp(filename.str(), tmp_dist_2b);
     // Document badness for configuration: current timestep, current rank, worst badness seen by rank
     if (for_fitting)
         if(update->ntimestep % output->every_dump[0] == 0)
@@ -643,9 +634,8 @@ void PairCHIMES::compute(int eflag, int vflag)
 			std::fill(stensor.begin(), stensor.end(), 0.0) ;
 				
 			energy = 0.0 ;
-			valid_order = (i < j && j < k);
 			
-			chimes_calculator.compute_3B( dist_3b, dr_3b, typ_idxs_3b, force_3b, stensor, energy, chimes_3btmp, tmp_dist_3b, tmp_FP && valid_order);
+			chimes_calculator.compute_3B( dist_3b, dr_3b, typ_idxs_3b, force_3b, stensor, energy, chimes_3btmp, tmp_dist_3b);
 
 			for (idx=0; idx<3; idx++)
 			{
@@ -668,12 +658,9 @@ void PairCHIMES::compute(int eflag, int vflag)
 				ev_tally_mb(3, atmidxlst, energy, fscalar, dist_3b, dr_3b);		            
 		}		
 	}
-	if (tmp_FP)
-	{
-		std::stringstream filename_3b;
-		filename_3b << ts << "." << std::to_string(chimes_calculator.rank) <<".3b_clusters.txt";
-		writeClusterDataComp(filename_3b.str(), tmp_dist_3b);
-	}
+	std::stringstream filename_3b;
+	filename_3b << ts << "." << std::to_string(chimes_calculator.rank) <<".3b_clusters.txt";
+    writeClusterDataComp(filename_3b.str(), tmp_dist_3b);
 
 	if (chimes_calculator.poly_orders[2] > 0)
 	{
@@ -704,9 +691,8 @@ void PairCHIMES::compute(int eflag, int vflag)
 			std::fill(stensor.begin(), stensor.end(), 0.0) ;
 
 			energy = 0.0 ;	
-			valid_order = (i < j && j < k && k < l);
 			
-			chimes_calculator.compute_4B( dist_4b, dr_4b, typ_idxs_4b, force_4b, stensor, energy, chimes_4btmp, tmp_dist_4b, tmp_FP && valid_order);
+			chimes_calculator.compute_4B( dist_4b, dr_4b, typ_idxs_4b, force_4b, stensor, energy, chimes_4btmp, tmp_dist_4b);
 
 			for (idx=0; idx<3; idx++)
 			{
@@ -737,12 +723,9 @@ void PairCHIMES::compute(int eflag, int vflag)
             
 		}
 	}
-	if (tmp_FP)
-	{
-		std::stringstream filename_4b;
-		filename_4b << ts << "." << std::to_string(chimes_calculator.rank) <<".4b_clusters.txt";
-		writeClusterDataComp(filename_4b.str(), tmp_dist_4b);
-	}
+	std::stringstream filename_4b;
+	filename_4b << ts << "." << std::to_string(chimes_calculator.rank) <<".4b_clusters.txt";
+    writeClusterDataComp(filename_4b.str(), tmp_dist_4b);
 
 if (vflag_fdotr) 
         virial_fdotr_compute();
