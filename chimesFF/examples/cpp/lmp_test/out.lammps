@@ -6,7 +6,7 @@ Reading data file ...
   216 atoms
   reading velocities ...
   216 velocities
-  read_data CPU = 0.006 seconds
+  read_data CPU = 0.005 seconds
 chimesFF: 
 chimesFF: 01000011011010001001001010011010100010101010011 0100010101101110110011101101001011011101100101  
 chimesFF: 
@@ -28,6 +28,97 @@ chimesFF:
 Assuming n-body interactions have longer cutoffs than all (n+1)-body interactions
 ************************* WARNING (pair_style chimesFF) ************************
 
+chimesFF: 	Type is excluded... skipping.
+chimesFF: 	Type is excluded... skipping.
+chimesFF: 	Type is excluded... skipping.
+chimesFF: 	Type is excluded... skipping.
+chimesFF: 	Type is excluded... skipping.
+chimesFF: 	Type is excluded... skipping.
+Warning: Did not initialize pair_int_quad_map for excluded entry 7
+Warning: Did not initialize pair_int_quad_map for excluded entry 11
+Warning: Did not initialize pair_int_quad_map for excluded entry 13
+Warning: Did not initialize pair_int_quad_map for excluded entry 14
+Warning: Did not initialize pair_int_quad_map for excluded entry 15
+Warning: Did not initialize pair_int_quad_map for excluded entry 7
+Warning: Did not initialize pair_int_quad_map for excluded entry 11
+Warning: Did not initialize pair_int_quad_map for excluded entry 13
+Warning: Did not initialize pair_int_quad_map for excluded entry 14
+Warning: Did not initialize pair_int_quad_map for excluded entry 15
+Warning: Did not initialize pair_int_quad_map for excluded entry 7
+Warning: Did not initialize pair_int_quad_map for excluded entry 11
+Warning: Did not initialize pair_int_quad_map for excluded entry 13
+Warning: Did not initialize pair_int_quad_map for excluded entry 14
+Warning: Did not initialize pair_int_quad_map for excluded entry 15
+chimesFF: 	Type is excluded... skipping.
+chimesFF: 	Type is excluded... skipping.
+Warning: Did not initialize pair_int_quad_map for excluded entry 7
+Warning: Did not initialize pair_int_quad_map for excluded entry 11
+Warning: Did not initialize pair_int_quad_map for excluded entry 13
+Warning: Did not initialize pair_int_quad_map for excluded entry 14
+Warning: Did not initialize pair_int_quad_map for excluded entry 15
+chimesFF: 	Type is excluded... skipping.
+chimesFF: 	Type is excluded... skipping.
+Warning: Did not initialize pair_int_quad_map for excluded entry 7
+Warning: Did not initialize pair_int_quad_map for excluded entry 11
+Warning: Did not initialize pair_int_quad_map for excluded entry 13
+Warning: Did not initialize pair_int_quad_map for excluded entry 14
+Warning: Did not initialize pair_int_quad_map for excluded entry 15
+chimesFF: 	Type is excluded... skipping.
+chimesFF: 	Type is excluded... skipping.
+Warning: Did not initialize pair_int_quad_map for excluded entry 7
+Warning: Did not initialize pair_int_quad_map for excluded entry 11
+Warning: Did not initialize pair_int_quad_map for excluded entry 13
+Warning: Did not initialize pair_int_quad_map for excluded entry 14
+Warning: Did not initialize pair_int_quad_map for excluded entry 15
+chimesFF: 	Type is excluded... skipping.
+chimesFF: 	Type is excluded... skipping.
+Warning: Did not initialize pair_int_quad_map for excluded entry 7
+Warning: Did not initialize pair_int_quad_map for excluded entry 11
+Warning: Did not initialize pair_int_quad_map for excluded entry 13
+Warning: Did not initialize pair_int_quad_map for excluded entry 14
+Warning: Did not initialize pair_int_quad_map for excluded entry 15
+chimesFF: 	Type is excluded... skipping.
+chimesFF: 	Type is excluded... skipping.
+Warning: Did not initialize pair_int_quad_map for excluded entry 7
+Warning: Did not initialize pair_int_quad_map for excluded entry 11
+Warning: Did not initialize pair_int_quad_map for excluded entry 13
+Warning: Did not initialize pair_int_quad_map for excluded entry 14
+Warning: Did not initialize pair_int_quad_map for excluded entry 15
+chimesFF: 	Type is excluded... skipping.
+chimesFF: 	Type is excluded... skipping.
+Warning: Did not initialize pair_int_quad_map for excluded entry 7
+Warning: Did not initialize pair_int_quad_map for excluded entry 11
+Warning: Did not initialize pair_int_quad_map for excluded entry 13
+Warning: Did not initialize pair_int_quad_map for excluded entry 14
+Warning: Did not initialize pair_int_quad_map for excluded entry 15
+chimesFF: 	Type is excluded... skipping.
+chimesFF: 	Type is excluded... skipping.
+Warning: Did not initialize pair_int_quad_map for excluded entry 7
+Warning: Did not initialize pair_int_quad_map for excluded entry 11
+Warning: Did not initialize pair_int_quad_map for excluded entry 13
+Warning: Did not initialize pair_int_quad_map for excluded entry 14
+Warning: Did not initialize pair_int_quad_map for excluded entry 15
+chimesFF: 	Type is excluded... skipping.
+chimesFF: 	Type is excluded... skipping.
+Warning: Did not initialize pair_int_quad_map for excluded entry 7
+Warning: Did not initialize pair_int_quad_map for excluded entry 11
+Warning: Did not initialize pair_int_quad_map for excluded entry 13
+Warning: Did not initialize pair_int_quad_map for excluded entry 14
+Warning: Did not initialize pair_int_quad_map for excluded entry 15
+chimesFF: 	Type is excluded... skipping.
+chimesFF: 	Type is excluded... skipping.
+Warning: Did not initialize pair_int_quad_map for excluded entry 7
+Warning: Did not initialize pair_int_quad_map for excluded entry 11
+Warning: Did not initialize pair_int_quad_map for excluded entry 13
+Warning: Did not initialize pair_int_quad_map for excluded entry 14
+Warning: Did not initialize pair_int_quad_map for excluded entry 15
+chimesFF: 	Type is excluded... skipping.
+chimesFF: 	Type is excluded... skipping.
+Warning: Did not initialize pair_int_quad_map for excluded entry 7
+Warning: Did not initialize pair_int_quad_map for excluded entry 11
+Warning: Did not initialize pair_int_quad_map for excluded entry 13
+Warning: Did not initialize pair_int_quad_map for excluded entry 14
+Warning: Did not initialize pair_int_quad_map for excluded entry 15
 chimesFF: Reading parameters from file: params.txt.reduced
 chimesFF: Using respective 2, 3, and 4-body orders of: 20 10 3
 chimesFF: Note: Ignoring polynomial domain; assuming [-1,1]
@@ -50,6 +141,8 @@ chimesFF: 	1 C -79.12004
 chimesFF: 	2 Si -94.74612
 chimesFF: Read 2B parameters for pair: 0 C C
 chimesFF: 	0 -1.09635
+chimesFF: 	Type is excluded... skipping.
+chimesFF: 	Type is excluded... skipping.
 chimesFF: 	1 70.75095
 chimesFF: 	2 53.91732
 chimesFF: 	3 54.12522
@@ -111,6 +204,11 @@ chimesFF: 	16 0.19417
 chimesFF: 	17 -0.05219
 chimesFF: 	18 0.04992
 chimesFF: 	19 0.00838
+Warning: Did not initialize pair_int_quad_map for excluded entry 7
+Warning: Did not initialize pair_int_quad_map for excluded entry 11
+Warning: Did not initialize pair_int_quad_map for excluded entry 13
+Warning: Did not initialize pair_int_quad_map for excluded entry 14
+Warning: Did not initialize pair_int_quad_map for excluded entry 15
 chimesFF: Built the following 2-body pair "slow" map:
 chimesFF: 	0 CC(i: 0)
 chimesFF: 	2 CSi(i: 1)
@@ -166,6 +264,8 @@ chimesFF: 	1 0 9 -1.81994
 chimesFF: 	0 9 1 -1.81994
 chimesFF: 	9 0 1 -1.81994
 chimesFF: 	1 9 0 -1.81994
+chimesFF: 	Type is excluded... skipping.
+chimesFF: 	Type is excluded... skipping.
 chimesFF: 	9 1 0 -1.81994
 chimesFF: 	0 2 2 8.71326
 chimesFF: 	2 0 2 8.71326
@@ -227,6 +327,11 @@ chimesFF: 	0 5 3 -16.70220
 chimesFF: 	5 0 3 -16.70220
 chimesFF: 	3 5 0 -16.70220
 chimesFF: 	5 3 0 -16.70220
+Warning: Did not initialize pair_int_quad_map for excluded entry 7
+Warning: Did not initialize pair_int_quad_map for excluded entry 11
+Warning: Did not initialize pair_int_quad_map for excluded entry 13
+Warning: Did not initialize pair_int_quad_map for excluded entry 14
+Warning: Did not initialize pair_int_quad_map for excluded entry 15
 chimesFF: 	0 3 7 -2.89080
 chimesFF: 	3 0 7 -2.89080
 chimesFF: 	0 7 3 -2.89080
@@ -316,6 +421,8 @@ chimesFF: 	6 9 0 1.72727
 chimesFF: 	9 6 0 1.72727
 chimesFF: 	0 7 7 -0.33090
 chimesFF: 	7 0 7 -0.33090
+chimesFF: 	Type is excluded... skipping.
+chimesFF: 	Type is excluded... skipping.
 chimesFF: 	7 7 0 -0.33090
 chimesFF: 	0 7 8 0.89564
 chimesFF: 	7 0 8 0.89564
@@ -381,6 +488,11 @@ chimesFF: 	5 2 1 27.23775
 chimesFF: 	1 2 6 10.98328
 chimesFF: 	2 1 6 10.98328
 chimesFF: 	1 6 2 10.98328
+Warning: Did not initialize pair_int_quad_map for excluded entry 7
+Warning: Did not initialize pair_int_quad_map for excluded entry 11
+Warning: Did not initialize pair_int_quad_map for excluded entry 13
+Warning: Did not initialize pair_int_quad_map for excluded entry 14
+Warning: Did not initialize pair_int_quad_map for excluded entry 15
 chimesFF: 	6 1 2 10.98328
 chimesFF: 	2 6 1 10.98328
 chimesFF: 	6 2 1 10.98328
@@ -468,6 +580,8 @@ chimesFF: 	7 5 1 -8.85890
 chimesFF: 	1 5 8 -2.87148
 chimesFF: 	5 1 8 -2.87148
 chimesFF: 	1 8 5 -2.87148
+chimesFF: 	Type is excluded... skipping.
+chimesFF: 	Type is excluded... skipping.
 chimesFF: 	8 1 5 -2.87148
 chimesFF: 	5 8 1 -2.87148
 chimesFF: 	8 5 1 -2.87148
@@ -530,6 +644,11 @@ chimesFF: 	2 2 4 -18.05808
 chimesFF: 	2 4 2 -18.05808
 chimesFF: 	4 2 2 -18.05808
 chimesFF: 	2 2 5 -58.32017
+Warning: Did not initialize pair_int_quad_map for excluded entry 7
+Warning: Did not initialize pair_int_quad_map for excluded entry 11
+Warning: Did not initialize pair_int_quad_map for excluded entry 13
+Warning: Did not initialize pair_int_quad_map for excluded entry 14
+Warning: Did not initialize pair_int_quad_map for excluded entry 15
 chimesFF: 	2 5 2 -58.32017
 chimesFF: 	5 2 2 -58.32017
 chimesFF: 	2 2 6 -8.50692
@@ -547,6 +666,8 @@ chimesFF: 	3 3 2 30.13446
 chimesFF: 	2 3 4 6.48922
 chimesFF: 	3 2 4 6.48922
 chimesFF: 	2 4 3 6.48922
+chimesFF: 	Type is excluded... skipping.
+chimesFF: 	Type is excluded... skipping.
 chimesFF: 	4 2 3 6.48922
 chimesFF: 	3 4 2 6.48922
 chimesFF: 	4 3 2 6.48922
@@ -603,6 +724,11 @@ chimesFF: 	4 2 9 -7.05152
 chimesFF: 	2 9 4 -7.05152
 chimesFF: 	9 2 4 -7.05152
 chimesFF: 	4 9 2 -7.05152
+Warning: Did not initialize pair_int_quad_map for excluded entry 7
+Warning: Did not initialize pair_int_quad_map for excluded entry 11
+Warning: Did not initialize pair_int_quad_map for excluded entry 13
+Warning: Did not initialize pair_int_quad_map for excluded entry 14
+Warning: Did not initialize pair_int_quad_map for excluded entry 15
 chimesFF: 	9 4 2 -7.05152
 chimesFF: 	2 5 6 -5.51696
 chimesFF: 	5 2 6 -5.51696
@@ -719,6 +845,10 @@ chimesFF: 	9 4 3 -0.51285
 chimesFF: 	3 5 6 2.31658
 chimesFF: 	5 3 6 2.31658
 chimesFF: 	3 6 5 2.31658
+chimesFF: 	Type is excluded... skipping.
+chimesFF: 	Type is excluded... skipping.
+chimesFF: 	Type is excluded... skipping.
+chimesFF: 	Type is excluded... skipping.
 chimesFF: 	6 3 5 2.31658
 chimesFF: 	5 6 3 2.31658
 chimesFF: 	6 5 3 2.31658
@@ -741,6 +871,12 @@ chimesFF: 	9 3 5 3.42331
 chimesFF: 	5 9 3 3.42331
 chimesFF: 	9 5 3 3.42331
 chimesFF: 	3 6 6 6.51210
+chimesFF: 	Type is excluded... skipping.
+chimesFF: 	Type is excluded... skipping.
+chimesFF: 	Type is excluded... skipping.
+chimesFF: 	Type is excluded... skipping.
+chimesFF: 	Type is excluded... skipping.
+chimesFF: 	Type is excluded... skipping.
 chimesFF: 	6 3 6 6.51210
 chimesFF: 	6 6 3 6.51210
 chimesFF: 	3 6 7 -1.71194
@@ -754,6 +890,10 @@ chimesFF: 	6 3 9 -1.38820
 chimesFF: 	3 9 6 -1.38820
 chimesFF: 	9 3 6 -1.38820
 chimesFF: 	6 9 3 -1.38820
+chimesFF: 	Type is excluded... skipping.
+chimesFF: 	Type is excluded... skipping.
+chimesFF: 	Type is excluded... skipping.
+chimesFF: 	Type is excluded... skipping.
 chimesFF: 	9 6 3 -1.38820
 chimesFF: 	3 7 7 1.48201
 chimesFF: 	7 3 7 1.48201
@@ -765,6 +905,8 @@ chimesFF: 	8 3 7 4.41352
 chimesFF: 	7 8 3 4.41352
 chimesFF: 	8 7 3 4.41352
 chimesFF: 	3 7 9 -0.44911
+chimesFF: 	Type is excluded... skipping.
+chimesFF: 	Type is excluded... skipping.
 chimesFF: 	7 3 9 -0.44911
 chimesFF: 	3 9 7 -0.44911
 chimesFF: 	9 3 7 -0.44911
@@ -773,6 +915,12 @@ chimesFF: 	9 7 3 -0.44911
 chimesFF: 	3 8 8 -0.77696
 chimesFF: 	8 3 8 -0.77696
 chimesFF: 	8 8 3 -0.77696
+chimesFF: 	Type is excluded... skipping.
+chimesFF: 	Type is excluded... skipping.
+chimesFF: 	Type is excluded... skipping.
+chimesFF: 	Type is excluded... skipping.
+chimesFF: 	Type is excluded... skipping.
+chimesFF: 	Type is excluded... skipping.
 chimesFF: 	3 8 9 0.45323
 chimesFF: 	8 3 9 0.45323
 chimesFF: 	3 9 8 0.45323
@@ -786,6 +934,16 @@ chimesFF: 	4 4 4 39.79820
 chimesFF: 	4 4 5 -29.22421
 chimesFF: 	4 5 4 -29.22421
 chimesFF: 	5 4 4 -29.22421
+Warning: Did not initialize pair_int_quad_map for excluded entry 7
+Warning: Did not initialize pair_int_quad_map for excluded entry 11
+Warning: Did not initialize pair_int_quad_map for excluded entry 13
+Warning: Did not initialize pair_int_quad_map for excluded entry 14
+Warning: Did not initialize pair_int_quad_map for excluded entry 15
+Warning: Did not initialize pair_int_quad_map for excluded entry 7
+Warning: Did not initialize pair_int_quad_map for excluded entry 11
+Warning: Did not initialize pair_int_quad_map for excluded entry 13
+Warning: Did not initialize pair_int_quad_map for excluded entry 14
+Warning: Did not initialize pair_int_quad_map for excluded entry 15
 chimesFF: 	4 4 6 13.92957
 chimesFF: 	4 6 4 13.92957
 chimesFF: 	6 4 4 13.92957
@@ -797,6 +955,16 @@ chimesFF: 	4 8 4 -3.11148
 chimesFF: 	8 4 4 -3.11148
 chimesFF: 	4 4 9 -6.58384
 chimesFF: 	4 9 4 -6.58384
+Warning: Did not initialize pair_int_quad_map for excluded entry 7
+Warning: Did not initialize pair_int_quad_map for excluded entry 11
+Warning: Did not initialize pair_int_quad_map for excluded entry 13
+Warning: Did not initialize pair_int_quad_map for excluded entry 14
+Warning: Did not initialize pair_int_quad_map for excluded entry 15
+Warning: Did not initialize pair_int_quad_map for excluded entry 7
+Warning: Did not initialize pair_int_quad_map for excluded entry 11
+Warning: Did not initialize pair_int_quad_map for excluded entry 13
+Warning: Did not initialize pair_int_quad_map for excluded entry 14
+Warning: Did not initialize pair_int_quad_map for excluded entry 15
 chimesFF: 	9 4 4 -6.58384
 chimesFF: 	4 5 5 -3.89877
 chimesFF: 	5 4 5 -3.89877
@@ -808,6 +976,47 @@ chimesFF: 	6 4 5 -0.26450
 chimesFF: 	5 6 4 -0.26450
 chimesFF: 	6 5 4 -0.26450
 chimesFF: 	4 5 7 -4.71755
+chimesFF: 	Type is excluded... skipping.
+chimesFF: 	Type is excluded... skipping.
+chimesFF: 	Type is excluded... skipping.
+chimesFF: 	Type is excluded... skipping.
+chimesFF: 	Type is excluded... skipping.
+chimesFF: 	Type is excluded... skipping.
+chimesFF: 	Type is excluded... skipping.
+chimesFF: 	Type is excluded... skipping.
+chimesFF: 	Type is excluded... skipping.
+chimesFF: 	Type is excluded... skipping.
+chimesFF: 	Type is excluded... skipping.
+chimesFF: 	Type is excluded... skipping.
+chimesFF: 	Type is excluded... skipping.
+chimesFF: 	Type is excluded... skipping.
+Warning: Did not initialize pair_int_quad_map for excluded entry 7
+Warning: Did not initialize pair_int_quad_map for excluded entry 11
+Warning: Did not initialize pair_int_quad_map for excluded entry 13
+Warning: Did not initialize pair_int_quad_map for excluded entry 14
+Warning: Did not initialize pair_int_quad_map for excluded entry 15
+Warning: Did not initialize pair_int_quad_map for excluded entry 7
+Warning: Did not initialize pair_int_quad_map for excluded entry 11
+Warning: Did not initialize pair_int_quad_map for excluded entry 13
+Warning: Did not initialize pair_int_quad_map for excluded entry 14
+Warning: Did not initialize pair_int_quad_map for excluded entry 15
+chimesFF: 	Type is excluded... skipping.
+chimesFF: 	Type is excluded... skipping.
+chimesFF: 	Type is excluded... skipping.
+chimesFF: 	Type is excluded... skipping.
+chimesFF: 	Type is excluded... skipping.
+chimesFF: 	Type is excluded... skipping.
+chimesFF: 	Type is excluded... skipping.
+chimesFF: 	Type is excluded... skipping.
+Warning: Did not initialize pair_int_quad_map for excluded entry 7
+Warning: Did not initialize pair_int_quad_map for excluded entry 11
+Warning: Did not initialize pair_int_quad_map for excluded entry 13
+Warning: Did not initialize pair_int_quad_map for excluded entry 14
+Warning: Did not initialize pair_int_quad_map for excluded entry 15
+chimesFF: 	Type is excluded... skipping.
+chimesFF: 	Type is excluded... skipping.
+chimesFF: 	Type is excluded... skipping.
+chimesFF: 	Type is excluded... skipping.
 chimesFF: 	5 4 7 -4.71755
 chimesFF: 	4 7 5 -4.71755
 chimesFF: 	7 4 5 -4.71755
@@ -855,6 +1064,53 @@ chimesFF: 	9 7 4 -1.30158
 chimesFF: 	4 8 8 -0.48738
 chimesFF: 	8 4 8 -0.48738
 chimesFF: 	8 8 4 -0.48738
+chimesFF: 	Type is excluded... skipping.
+chimesFF: 	Type is excluded... skipping.
+chimesFF: 	Type is excluded... skipping.
+chimesFF: 	Type is excluded... skipping.
+Warning: Did not initialize pair_int_quad_map for excluded entry 7
+Warning: Did not initialize pair_int_quad_map for excluded entry 11
+Warning: Did not initialize pair_int_quad_map for excluded entry 13
+Warning: Did not initialize pair_int_quad_map for excluded entry 14
+Warning: Did not initialize pair_int_quad_map for excluded entry 15
+chimesFF: 	Type is excluded... skipping.
+chimesFF: 	Type is excluded... skipping.
+Warning: Did not initialize pair_int_quad_map for excluded entry 7
+Warning: Did not initialize pair_int_quad_map for excluded entry 11
+Warning: Did not initialize pair_int_quad_map for excluded entry 13
+Warning: Did not initialize pair_int_quad_map for excluded entry 14
+Warning: Did not initialize pair_int_quad_map for excluded entry 15
+Warning: Did not initialize pair_int_quad_map for excluded entry 7
+Warning: Did not initialize pair_int_quad_map for excluded entry 11
+Warning: Did not initialize pair_int_quad_map for excluded entry 13
+Warning: Did not initialize pair_int_quad_map for excluded entry 14
+Warning: Did not initialize pair_int_quad_map for excluded entry 15
+Warning: Did not initialize pair_int_quad_map for excluded entry 7
+Warning: Did not initialize pair_int_quad_map for excluded entry 11
+Warning: Did not initialize pair_int_quad_map for excluded entry 13
+Warning: Did not initialize pair_int_quad_map for excluded entry 14
+Warning: Did not initialize pair_int_quad_map for excluded entry 15
+chimesFF: 	Type is excluded... skipping.
+chimesFF: 	Type is excluded... skipping.
+Warning: Did not initialize pair_int_quad_map for excluded entry 7
+Warning: Did not initialize pair_int_quad_map for excluded entry 11
+Warning: Did not initialize pair_int_quad_map for excluded entry 13
+Warning: Did not initialize pair_int_quad_map for excluded entry 14
+Warning: Did not initialize pair_int_quad_map for excluded entry 15
+chimesFF: 	Type is excluded... skipping.
+chimesFF: 	Type is excluded... skipping.
+Warning: Did not initialize pair_int_quad_map for excluded entry 7
+Warning: Did not initialize pair_int_quad_map for excluded entry 11
+Warning: Did not initialize pair_int_quad_map for excluded entry 13
+Warning: Did not initialize pair_int_quad_map for excluded entry 14
+Warning: Did not initialize pair_int_quad_map for excluded entry 15
+chimesFF: 	Type is excluded... skipping.
+chimesFF: 	Type is excluded... skipping.
+Warning: Did not initialize pair_int_quad_map for excluded entry 7
+Warning: Did not initialize pair_int_quad_map for excluded entry 11
+Warning: Did not initialize pair_int_quad_map for excluded entry 13
+Warning: Did not initialize pair_int_quad_map for excluded entry 14
+Warning: Did not initialize pair_int_quad_map for excluded entry 15
 chimesFF: 	4 8 9 0.63578
 chimesFF: 	8 4 9 0.63578
 chimesFF: 	4 9 8 0.63578
@@ -890,6 +1146,91 @@ chimesFF: 	6 8 5 1.81646
 chimesFF: 	8 6 5 1.81646
 chimesFF: 	5 6 9 -1.53654
 chimesFF: 	6 5 9 -1.53654
+Warning: Did not initialize pair_int_quad_map for excluded entry 7
+Warning: Did not initialize pair_int_quad_map for excluded entry 11
+Warning: Did not initialize pair_int_quad_map for excluded entry 13
+Warning: Did not initialize pair_int_quad_map for excluded entry 14
+Warning: Did not initialize pair_int_quad_map for excluded entry 15
+chimesFF: 	Type is excluded... skipping.
+chimesFF: 	Type is excluded... skipping.
+chimesFF: 	Type is excluded... skipping.
+chimesFF: 	Type is excluded... skipping.
+Warning: Did not initialize pair_int_quad_map for excluded entry 7
+Warning: Did not initialize pair_int_quad_map for excluded entry 11
+Warning: Did not initialize pair_int_quad_map for excluded entry 13
+Warning: Did not initialize pair_int_quad_map for excluded entry 14
+Warning: Did not initialize pair_int_quad_map for excluded entry 15
+Warning: Did not initialize pair_int_quad_map for excluded entry 7
+Warning: Did not initialize pair_int_quad_map for excluded entry 11
+Warning: Did not initialize pair_int_quad_map for excluded entry 13
+Warning: Did not initialize pair_int_quad_map for excluded entry 14
+Warning: Did not initialize pair_int_quad_map for excluded entry 15
+Warning: Did not initialize pair_int_quad_map for excluded entry 7
+Warning: Did not initialize pair_int_quad_map for excluded entry 11
+Warning: Did not initialize pair_int_quad_map for excluded entry 13
+Warning: Did not initialize pair_int_quad_map for excluded entry 14
+Warning: Did not initialize pair_int_quad_map for excluded entry 15
+Warning: Did not initialize pair_int_quad_map for excluded entry 7
+Warning: Did not initialize pair_int_quad_map for excluded entry 11
+Warning: Did not initialize pair_int_quad_map for excluded entry 13
+Warning: Did not initialize pair_int_quad_map for excluded entry 14
+Warning: Did not initialize pair_int_quad_map for excluded entry 15
+Warning: Did not initialize pair_int_quad_map for excluded entry 7
+Warning: Did not initialize pair_int_quad_map for excluded entry 11
+Warning: Did not initialize pair_int_quad_map for excluded entry 13
+Warning: Did not initialize pair_int_quad_map for excluded entry 14
+Warning: Did not initialize pair_int_quad_map for excluded entry 15
+Warning: Did not initialize pair_int_quad_map for excluded entry 7
+Warning: Did not initialize pair_int_quad_map for excluded entry 11
+Warning: Did not initialize pair_int_quad_map for excluded entry 13
+Warning: Did not initialize pair_int_quad_map for excluded entry 14
+Warning: Did not initialize pair_int_quad_map for excluded entry 15
+Warning: Did not initialize pair_int_quad_map for excluded entry 7
+Warning: Did not initialize pair_int_quad_map for excluded entry 11
+Warning: Did not initialize pair_int_quad_map for excluded entry 13
+Warning: Did not initialize pair_int_quad_map for excluded entry 14
+Warning: Did not initialize pair_int_quad_map for excluded entry 15
+Warning: Did not initialize pair_int_quad_map for excluded entry 7
+Warning: Did not initialize pair_int_quad_map for excluded entry 11
+Warning: Did not initialize pair_int_quad_map for excluded entry 13
+Warning: Did not initialize pair_int_quad_map for excluded entry 14
+Warning: Did not initialize pair_int_quad_map for excluded entry 15
+chimesFF: 	Type is excluded... skipping.
+chimesFF: 	Type is excluded... skipping.
+chimesFF: 	Type is excluded... skipping.
+chimesFF: 	Type is excluded... skipping.
+Warning: Did not initialize pair_int_quad_map for excluded entry 7
+Warning: Did not initialize pair_int_quad_map for excluded entry 11
+Warning: Did not initialize pair_int_quad_map for excluded entry 13
+Warning: Did not initialize pair_int_quad_map for excluded entry 14
+Warning: Did not initialize pair_int_quad_map for excluded entry 15
+Warning: Did not initialize pair_int_quad_map for excluded entry 7
+Warning: Did not initialize pair_int_quad_map for excluded entry 11
+Warning: Did not initialize pair_int_quad_map for excluded entry 13
+Warning: Did not initialize pair_int_quad_map for excluded entry 14
+Warning: Did not initialize pair_int_quad_map for excluded entry 15
+Warning: Did not initialize pair_int_quad_map for excluded entry 7
+Warning: Did not initialize pair_int_quad_map for excluded entry 11
+Warning: Did not initialize pair_int_quad_map for excluded entry 13
+Warning: Did not initialize pair_int_quad_map for excluded entry 14
+Warning: Did not initialize pair_int_quad_map for excluded entry 15
+chimesFF: 	Type is excluded... skipping.
+chimesFF: 	Type is excluded... skipping.
+Warning: Did not initialize pair_int_quad_map for excluded entry 7
+Warning: Did not initialize pair_int_quad_map for excluded entry 11
+Warning: Did not initialize pair_int_quad_map for excluded entry 13
+Warning: Did not initialize pair_int_quad_map for excluded entry 14
+Warning: Did not initialize pair_int_quad_map for excluded entry 15
+Warning: Did not initialize pair_int_quad_map for excluded entry 7
+Warning: Did not initialize pair_int_quad_map for excluded entry 11
+Warning: Did not initialize pair_int_quad_map for excluded entry 13
+Warning: Did not initialize pair_int_quad_map for excluded entry 14
+Warning: Did not initialize pair_int_quad_map for excluded entry 15
+Warning: Did not initialize pair_int_quad_map for excluded entry 7
+Warning: Did not initialize pair_int_quad_map for excluded entry 11
+Warning: Did not initialize pair_int_quad_map for excluded entry 13
+Warning: Did not initialize pair_int_quad_map for excluded entry 14
+Warning: Did not initialize pair_int_quad_map for excluded entry 15
 chimesFF: 	5 9 6 -1.53654
 chimesFF: 	9 5 6 -1.53654
 chimesFF: 	6 9 5 -1.53654
@@ -907,30 +1248,6 @@ chimesFF: 	5 7 9 -1.77194
 chimesFF: 	7 5 9 -1.77194
 chimesFF: 	5 9 7 -1.77194
 chimesFF: 	9 5 7 -1.77194
-chimesFF: 	Type is excluded... skipping.
-chimesFF: 	Type is excluded... skipping.
-chimesFF: 	Type is excluded... skipping.
-chimesFF: 	Type is excluded... skipping.
-chimesFF: 	Type is excluded... skipping.
-chimesFF: 	Type is excluded... skipping.
-chimesFF: 	Type is excluded... skipping.
-chimesFF: 	Type is excluded... skipping.
-chimesFF: 	Type is excluded... skipping.
-chimesFF: 	Type is excluded... skipping.
-chimesFF: 	Type is excluded... skipping.
-chimesFF: 	Type is excluded... skipping.
-chimesFF: 	Type is excluded... skipping.
-chimesFF: 	Type is excluded... skipping.
-chimesFF: 	Type is excluded... skipping.
-chimesFF: 	Type is excluded... skipping.
-chimesFF: 	Type is excluded... skipping.
-chimesFF: 	Type is excluded... skipping.
-chimesFF: 	Type is excluded... skipping.
-chimesFF: 	Type is excluded... skipping.
-chimesFF: 	Type is excluded... skipping.
-chimesFF: 	Type is excluded... skipping.
-chimesFF: 	Type is excluded... skipping.
-chimesFF: 	Type is excluded... skipping.
 chimesFF: 	7 9 5 -1.77194
 chimesFF: 	9 7 5 -1.77194
 chimesFF: 	5 8 8 1.18061
@@ -964,192 +1281,35 @@ chimesFF: 	6 8 7 0.71829
 chimesFF: 	8 6 7 0.71829
 chimesFF: 	7 8 6 0.71829
 chimesFF: 	8 7 6 0.71829
-chimesFF: 	Type is excluded... skipping.
-chimesFF: 	Type is excluded... skipping.
-chimesFF: 	Type is excluded... skipping.
-chimesFF: 	Type is excluded... skipping.
-chimesFF: 	Type is excluded... skipping.
-chimesFF: 	Type is excluded... skipping.
-chimesFF: 	Type is excluded... skipping.
-chimesFF: 	Type is excluded... skipping.
-chimesFF: 	Type is excluded... skipping.
-chimesFF: 	Type is excluded... skipping.
-chimesFF: 	Type is excluded... skipping.
-chimesFF: 	Type is excluded... skipping.
-chimesFF: 	Type is excluded... skipping.
-chimesFF: 	Type is excluded... skipping.
-chimesFF: 	Type is excluded... skipping.
-chimesFF: 	Type is excluded... skipping.
-chimesFF: 	Type is excluded... skipping.
-chimesFF: 	Type is excluded... skipping.
-chimesFF: 	Type is excluded... skipping.
-chimesFF: 	Type is excluded... skipping.
-chimesFF: 	Type is excluded... skipping.
-chimesFF: 	Type is excluded... skipping.
-chimesFF: 	Type is excluded... skipping.
-chimesFF: 	Type is excluded... skipping.
-chimesFF: 	Type is excluded... skipping.
-chimesFF: 	Type is excluded... skipping.
-chimesFF: 	Type is excluded... skipping.
-chimesFF: 	Type is excluded... skipping.
-chimesFF: 	Type is excluded... skipping.
-chimesFF: 	Type is excluded... skipping.
-chimesFF: 	Type is excluded... skipping.
-chimesFF: 	Type is excluded... skipping.
-chimesFF: 	Type is excluded... skipping.
-chimesFF: 	Type is excluded... skipping.
-chimesFF: 	Type is excluded... skipping.
-chimesFF: 	Type is excluded... skipping.
-chimesFF: 	Type is excluded... skipping.
-chimesFF: 	Type is excluded... skipping.
-chimesFF: 	Type is excluded... skipping.
-chimesFF: 	Type is excluded... skipping.
-chimesFF: 	Type is excluded... skipping.
-chimesFF: 	Type is excluded... skipping.
-chimesFF: 	Type is excluded... skipping.
-chimesFF: 	Type is excluded... skipping.
-Warning: Did not initialize pair_int_quad_map for excluded entry 7
-Warning: Did not initialize pair_int_quad_map for excluded entry 11
-Warning: Did not initialize pair_int_quad_map for excluded entry 13
-Warning: Did not initialize pair_int_quad_map for excluded entry 14
-Warning: Did not initialize pair_int_quad_map for excluded entry 15
-chimesFF: 	Type is excluded... skipping.
-chimesFF: 	Type is excluded... skipping.
-Warning: Did not initialize pair_int_quad_map for excluded entry 7
-Warning: Did not initialize pair_int_quad_map for excluded entry 11
-Warning: Did not initialize pair_int_quad_map for excluded entry 13
-Warning: Did not initialize pair_int_quad_map for excluded entry 14
-Warning: Did not initialize pair_int_quad_map for excluded entry 15
-chimesFF: 	Type is excluded... skipping.
-chimesFF: 	Type is excluded... skipping.
-Warning: Did not initialize pair_int_quad_map for excluded entry 7
-Warning: Did not initialize pair_int_quad_map for excluded entry 11
-Warning: Did not initialize pair_int_quad_map for excluded entry 13
-Warning: Did not initialize pair_int_quad_map for excluded entry 14
-Warning: Did not initialize pair_int_quad_map for excluded entry 15
-chimesFF: 	Type is excluded... skipping.
-chimesFF: 	Type is excluded... skipping.
-Warning: Did not initialize pair_int_quad_map for excluded entry 7
-Warning: Did not initialize pair_int_quad_map for excluded entry 11
-Warning: Did not initialize pair_int_quad_map for excluded entry 13
-Warning: Did not initialize pair_int_quad_map for excluded entry 14
-Warning: Did not initialize pair_int_quad_map for excluded entry 15
-chimesFF: 	Type is excluded... skipping.
-chimesFF: 	Type is excluded... skipping.
-Warning: Did not initialize pair_int_quad_map for excluded entry 7
-Warning: Did not initialize pair_int_quad_map for excluded entry 11
-Warning: Did not initialize pair_int_quad_map for excluded entry 13
-Warning: Did not initialize pair_int_quad_map for excluded entry 14
-Warning: Did not initialize pair_int_quad_map for excluded entry 15
-chimesFF: 	Type is excluded... skipping.
-chimesFF: 	Type is excluded... skipping.
-Warning: Did not initialize pair_int_quad_map for excluded entry 7
-Warning: Did not initialize pair_int_quad_map for excluded entry 11
-Warning: Did not initialize pair_int_quad_map for excluded entry 13
-Warning: Did not initialize pair_int_quad_map for excluded entry 14
-Warning: Did not initialize pair_int_quad_map for excluded entry 15
-chimesFF: 	Type is excluded... skipping.
-chimesFF: 	Type is excluded... skipping.
-Warning: Did not initialize pair_int_quad_map for excluded entry 7
-Warning: Did not initialize pair_int_quad_map for excluded entry 11
-Warning: Did not initialize pair_int_quad_map for excluded entry 13
-Warning: Did not initialize pair_int_quad_map for excluded entry 14
-Warning: Did not initialize pair_int_quad_map for excluded entry 15
-chimesFF: 	Type is excluded... skipping.
-chimesFF: 	Type is excluded... skipping.
-Warning: Did not initialize pair_int_quad_map for excluded entry 7
-Warning: Did not initialize pair_int_quad_map for excluded entry 11
-Warning: Did not initialize pair_int_quad_map for excluded entry 13
-Warning: Did not initialize pair_int_quad_map for excluded entry 14
-Warning: Did not initialize pair_int_quad_map for excluded entry 15
-chimesFF: 	Type is excluded... skipping.
-chimesFF: 	Type is excluded... skipping.
-Warning: Did not initialize pair_int_quad_map for excluded entry 7
-Warning: Did not initialize pair_int_quad_map for excluded entry 11
-Warning: Did not initialize pair_int_quad_map for excluded entry 13
-Warning: Did not initialize pair_int_quad_map for excluded entry 14
-Warning: Did not initialize pair_int_quad_map for excluded entry 15
-chimesFF: 	Type is excluded... skipping.
-chimesFF: 	Type is excluded... skipping.
-Warning: Did not initialize pair_int_quad_map for excluded entry 7
-Warning: Did not initialize pair_int_quad_map for excluded entry 11
-Warning: Did not initialize pair_int_quad_map for excluded entry 13
-Warning: Did not initialize pair_int_quad_map for excluded entry 14
-Warning: Did not initialize pair_int_quad_map for excluded entry 15
-chimesFF: 	Type is excluded... skipping.
-chimesFF: 	Type is excluded... skipping.
-Warning: Did not initialize pair_int_quad_map for excluded entry 7
-Warning: Did not initialize pair_int_quad_map for excluded entry 11
-Warning: Did not initialize pair_int_quad_map for excluded entry 13
-Warning: Did not initialize pair_int_quad_map for excluded entry 14
-Warning: Did not initialize pair_int_quad_map for excluded entry 15
-chimesFF: 	Type is excluded... skipping.
-chimesFF: 	Type is excluded... skipping.
-Warning: Did not initialize pair_int_quad_map for excluded entry 7
-Warning: Did not initialize pair_int_quad_map for excluded entry 11
-Warning: Did not initialize pair_int_quad_map for excluded entry 13
-Warning: Did not initialize pair_int_quad_map for excluded entry 14
-Warning: Did not initialize pair_int_quad_map for excluded entry 15
-chimesFF: 	Type is excluded... skipping.
-chimesFF: 	Type is excluded... skipping.
-Warning: Did not initialize pair_int_quad_map for excluded entry 7
-Warning: Did not initialize pair_int_quad_map for excluded entry 11
-Warning: Did not initialize pair_int_quad_map for excluded entry 13
-Warning: Did not initialize pair_int_quad_map for excluded entry 14
-Warning: Did not initialize pair_int_quad_map for excluded entry 15
-chimesFF: 	Type is excluded... skipping.
-chimesFF: 	Type is excluded... skipping.
-Warning: Did not initialize pair_int_quad_map for excluded entry 7
-Warning: Did not initialize pair_int_quad_map for excluded entry 11
-Warning: Did not initialize pair_int_quad_map for excluded entry 13
-Warning: Did not initialize pair_int_quad_map for excluded entry 14
-Warning: Did not initialize pair_int_quad_map for excluded entry 15
-chimesFF: 	Type is excluded... skipping.
-chimesFF: 	Type is excluded... skipping.
-Warning: Did not initialize pair_int_quad_map for excluded entry 7
-Warning: Did not initialize pair_int_quad_map for excluded entry 11
-Warning: Did not initialize pair_int_quad_map for excluded entry 13
-Warning: Did not initialize pair_int_quad_map for excluded entry 14
-Warning: Did not initialize pair_int_quad_map for excluded entry 15
-chimesFF: 	Type is excluded... skipping.
-chimesFF: 	Type is excluded... skipping.
-Warning: Did not initialize pair_int_quad_map for excluded entry 7
-Warning: Did not initialize pair_int_quad_map for excluded entry 11
-Warning: Did not initialize pair_int_quad_map for excluded entry 13
-Warning: Did not initialize pair_int_quad_map for excluded entry 14
-Warning: Did not initialize pair_int_quad_map for excluded entry 15
-chimesFF: 	Type is excluded... skipping.
-chimesFF: 	Type is excluded... skipping.
-Warning: Did not initialize pair_int_quad_map for excluded entry 7
-Warning: Did not initialize pair_int_quad_map for excluded entry 11
-Warning: Did not initialize pair_int_quad_map for excluded entry 13
-Warning: Did not initialize pair_int_quad_map for excluded entry 14
-Warning: Did not initialize pair_int_quad_map for excluded entry 15
-chimesFF: 	Type is excluded... skipping.
-chimesFF: 	Type is excluded... skipping.
-Warning: Did not initialize pair_int_quad_map for excluded entry 7
-Warning: Did not initialize pair_int_quad_map for excluded entry 11
-Warning: Did not initialize pair_int_quad_map for excluded entry 13
-Warning: Did not initialize pair_int_quad_map for excluded entry 14
-Warning: Did not initialize pair_int_quad_map for excluded entry 15
-chimesFF: 	Type is excluded... skipping.
-chimesFF: 	Type is excluded... skipping.
-Warning: Did not initialize pair_int_quad_map for excluded entry 7
-Warning: Did not initialize pair_int_quad_map for excluded entry 11
-Warning: Did not initialize pair_int_quad_map for excluded entry 13
-Warning: Did not initialize pair_int_quad_map for excluded entry 14
-Warning: Did not initialize pair_int_quad_map for excluded entry 15
-chimesFF: 	Type is excluded... skipping.
-chimesFF: 	Type is excluded... skipping.
-Warning: Did not initialize pair_int_quad_map for excluded entry 7
-Warning: Did not initialize pair_int_quad_map for excluded entry 11
-Warning: Did not initialize pair_int_quad_map for excluded entry 13
-Warning: Did not initialize pair_int_quad_map for excluded entry 14
-Warning: Did not initialize pair_int_quad_map for excluded entry 15
 chimesFF: 	6 7 9 -1.78414
 chimesFF: 	7 6 9 -1.78414
 chimesFF: 	6 9 7 -1.78414
 chimesFF: 	9 6 7 -1.78414
+Warning: Did not initialize pair_int_quad_map for excluded entry 7
+Warning: Did not initialize pair_int_quad_map for excluded entry 11
+Warning: Did not initialize pair_int_quad_map for excluded entry 13
+Warning: Did not initialize pair_int_quad_map for excluded entry 14
+Warning: Did not initialize pair_int_quad_map for excluded entry 15
+Warning: Did not initialize pair_int_quad_map for excluded entry 7
+Warning: Did not initialize pair_int_quad_map for excluded entry 11
+Warning: Did not initialize pair_int_quad_map for excluded entry 13
+Warning: Did not initialize pair_int_quad_map for excluded entry 14
+Warning: Did not initialize pair_int_quad_map for excluded entry 15
+Warning: Did not initialize pair_int_quad_map for excluded entry 7
+Warning: Did not initialize pair_int_quad_map for excluded entry 11
+Warning: Did not initialize pair_int_quad_map for excluded entry 13
+Warning: Did not initialize pair_int_quad_map for excluded entry 14
+Warning: Did not initialize pair_int_quad_map for excluded entry 15
+Warning: Did not initialize pair_int_quad_map for excluded entry 7
+Warning: Did not initialize pair_int_quad_map for excluded entry 11
+Warning: Did not initialize pair_int_quad_map for excluded entry 13
+Warning: Did not initialize pair_int_quad_map for excluded entry 14
+Warning: Did not initialize pair_int_quad_map for excluded entry 15
+Warning: Did not initialize pair_int_quad_map for excluded entry 7
+Warning: Did not initialize pair_int_quad_map for excluded entry 11
+Warning: Did not initialize pair_int_quad_map for excluded entry 13
+Warning: Did not initialize pair_int_quad_map for excluded entry 14
+Warning: Did not initialize pair_int_quad_map for excluded entry 15
 chimesFF: 	7 9 6 -1.78414
 chimesFF: 	9 7 6 -1.78414
 chimesFF: 	6 8 8 2.66497
@@ -1169,6 +1329,11 @@ chimesFF: 	7 8 7 -1.57541
 chimesFF: 	8 7 7 -1.57541
 chimesFF: 	7 7 9 -1.24595
 chimesFF: 	7 9 7 -1.24595
+Warning: Did not initialize pair_int_quad_map for excluded entry 7
+Warning: Did not initialize pair_int_quad_map for excluded entry 11
+Warning: Did not initialize pair_int_quad_map for excluded entry 13
+Warning: Did not initialize pair_int_quad_map for excluded entry 14
+Warning: Did not initialize pair_int_quad_map for excluded entry 15
 chimesFF: 	9 7 7 -1.24595
 chimesFF: 	7 8 8 0.69247
 chimesFF: 	8 7 8 0.69247
@@ -1255,171 +1420,6 @@ chimesFF: 	1 5 0 2.54114
 chimesFF: 	1 0 6 9.90546
 chimesFF: 	1 6 0 9.90546
 chimesFF: 	1 0 7 -2.26285
-Warning: Did not initialize pair_int_quad_map for excluded entry 7
-Warning: Did not initialize pair_int_quad_map for excluded entry 11
-Warning: Did not initialize pair_int_quad_map for excluded entry 13
-Warning: Did not initialize pair_int_quad_map for excluded entry 14
-Warning: Did not initialize pair_int_quad_map for excluded entry 15
-Warning: Did not initialize pair_int_quad_map for excluded entry 7
-Warning: Did not initialize pair_int_quad_map for excluded entry 11
-Warning: Did not initialize pair_int_quad_map for excluded entry 13
-Warning: Did not initialize pair_int_quad_map for excluded entry 14
-Warning: Did not initialize pair_int_quad_map for excluded entry 15
-Warning: Did not initialize pair_int_quad_map for excluded entry 7
-Warning: Did not initialize pair_int_quad_map for excluded entry 11
-Warning: Did not initialize pair_int_quad_map for excluded entry 13
-Warning: Did not initialize pair_int_quad_map for excluded entry 14
-Warning: Did not initialize pair_int_quad_map for excluded entry 15
-Warning: Did not initialize pair_int_quad_map for excluded entry 7
-Warning: Did not initialize pair_int_quad_map for excluded entry 11
-Warning: Did not initialize pair_int_quad_map for excluded entry 13
-Warning: Did not initialize pair_int_quad_map for excluded entry 14
-Warning: Did not initialize pair_int_quad_map for excluded entry 15
-Warning: Did not initialize pair_int_quad_map for excluded entry 7
-Warning: Did not initialize pair_int_quad_map for excluded entry 11
-Warning: Did not initialize pair_int_quad_map for excluded entry 13
-Warning: Did not initialize pair_int_quad_map for excluded entry 14
-Warning: Did not initialize pair_int_quad_map for excluded entry 15
-Warning: Did not initialize pair_int_quad_map for excluded entry 7
-Warning: Did not initialize pair_int_quad_map for excluded entry 11
-Warning: Did not initialize pair_int_quad_map for excluded entry 13
-Warning: Did not initialize pair_int_quad_map for excluded entry 14
-Warning: Did not initialize pair_int_quad_map for excluded entry 15
-Warning: Did not initialize pair_int_quad_map for excluded entry 7
-Warning: Did not initialize pair_int_quad_map for excluded entry 11
-Warning: Did not initialize pair_int_quad_map for excluded entry 13
-Warning: Did not initialize pair_int_quad_map for excluded entry 14
-Warning: Did not initialize pair_int_quad_map for excluded entry 15
-Warning: Did not initialize pair_int_quad_map for excluded entry 7
-Warning: Did not initialize pair_int_quad_map for excluded entry 11
-Warning: Did not initialize pair_int_quad_map for excluded entry 13
-Warning: Did not initialize pair_int_quad_map for excluded entry 14
-Warning: Did not initialize pair_int_quad_map for excluded entry 15
-Warning: Did not initialize pair_int_quad_map for excluded entry 7
-Warning: Did not initialize pair_int_quad_map for excluded entry 11
-Warning: Did not initialize pair_int_quad_map for excluded entry 13
-Warning: Did not initialize pair_int_quad_map for excluded entry 14
-Warning: Did not initialize pair_int_quad_map for excluded entry 15
-Warning: Did not initialize pair_int_quad_map for excluded entry 7
-Warning: Did not initialize pair_int_quad_map for excluded entry 11
-Warning: Did not initialize pair_int_quad_map for excluded entry 13
-Warning: Did not initialize pair_int_quad_map for excluded entry 14
-Warning: Did not initialize pair_int_quad_map for excluded entry 15
-Warning: Did not initialize pair_int_quad_map for excluded entry 7
-Warning: Did not initialize pair_int_quad_map for excluded entry 11
-Warning: Did not initialize pair_int_quad_map for excluded entry 13
-Warning: Did not initialize pair_int_quad_map for excluded entry 14
-Warning: Did not initialize pair_int_quad_map for excluded entry 15
-Warning: Did not initialize pair_int_quad_map for excluded entry 7
-Warning: Did not initialize pair_int_quad_map for excluded entry 11
-Warning: Did not initialize pair_int_quad_map for excluded entry 13
-Warning: Did not initialize pair_int_quad_map for excluded entry 14
-Warning: Did not initialize pair_int_quad_map for excluded entry 15
-Warning: Did not initialize pair_int_quad_map for excluded entry 7
-Warning: Did not initialize pair_int_quad_map for excluded entry 11
-Warning: Did not initialize pair_int_quad_map for excluded entry 13
-Warning: Did not initialize pair_int_quad_map for excluded entry 14
-Warning: Did not initialize pair_int_quad_map for excluded entry 15
-Warning: Did not initialize pair_int_quad_map for excluded entry 7
-Warning: Did not initialize pair_int_quad_map for excluded entry 11
-Warning: Did not initialize pair_int_quad_map for excluded entry 13
-Warning: Did not initialize pair_int_quad_map for excluded entry 14
-Warning: Did not initialize pair_int_quad_map for excluded entry 15
-Warning: Did not initialize pair_int_quad_map for excluded entry 7
-Warning: Did not initialize pair_int_quad_map for excluded entry 11
-Warning: Did not initialize pair_int_quad_map for excluded entry 13
-Warning: Did not initialize pair_int_quad_map for excluded entry 14
-Warning: Did not initialize pair_int_quad_map for excluded entry 15
-Warning: Did not initialize pair_int_quad_map for excluded entry 7
-Warning: Did not initialize pair_int_quad_map for excluded entry 11
-Warning: Did not initialize pair_int_quad_map for excluded entry 13
-Warning: Did not initialize pair_int_quad_map for excluded entry 14
-Warning: Did not initialize pair_int_quad_map for excluded entry 15
-Warning: Did not initialize pair_int_quad_map for excluded entry 7
-Warning: Did not initialize pair_int_quad_map for excluded entry 11
-Warning: Did not initialize pair_int_quad_map for excluded entry 13
-Warning: Did not initialize pair_int_quad_map for excluded entry 14
-Warning: Did not initialize pair_int_quad_map for excluded entry 15
-Warning: Did not initialize pair_int_quad_map for excluded entry 7
-Warning: Did not initialize pair_int_quad_map for excluded entry 11
-Warning: Did not initialize pair_int_quad_map for excluded entry 13
-Warning: Did not initialize pair_int_quad_map for excluded entry 14
-Warning: Did not initialize pair_int_quad_map for excluded entry 15
-Warning: Did not initialize pair_int_quad_map for excluded entry 7
-Warning: Did not initialize pair_int_quad_map for excluded entry 11
-Warning: Did not initialize pair_int_quad_map for excluded entry 13
-Warning: Did not initialize pair_int_quad_map for excluded entry 14
-Warning: Did not initialize pair_int_quad_map for excluded entry 15
-Warning: Did not initialize pair_int_quad_map for excluded entry 7
-Warning: Did not initialize pair_int_quad_map for excluded entry 11
-Warning: Did not initialize pair_int_quad_map for excluded entry 13
-Warning: Did not initialize pair_int_quad_map for excluded entry 14
-Warning: Did not initialize pair_int_quad_map for excluded entry 15
-Warning: Did not initialize pair_int_quad_map for excluded entry 7
-Warning: Did not initialize pair_int_quad_map for excluded entry 11
-Warning: Did not initialize pair_int_quad_map for excluded entry 13
-Warning: Did not initialize pair_int_quad_map for excluded entry 14
-Warning: Did not initialize pair_int_quad_map for excluded entry 15
-Warning: Did not initialize pair_int_quad_map for excluded entry 7
-Warning: Did not initialize pair_int_quad_map for excluded entry 11
-Warning: Did not initialize pair_int_quad_map for excluded entry 13
-Warning: Did not initialize pair_int_quad_map for excluded entry 14
-Warning: Did not initialize pair_int_quad_map for excluded entry 15
-Warning: Did not initialize pair_int_quad_map for excluded entry 7
-Warning: Did not initialize pair_int_quad_map for excluded entry 11
-Warning: Did not initialize pair_int_quad_map for excluded entry 13
-Warning: Did not initialize pair_int_quad_map for excluded entry 14
-Warning: Did not initialize pair_int_quad_map for excluded entry 15
-Warning: Did not initialize pair_int_quad_map for excluded entry 7
-Warning: Did not initialize pair_int_quad_map for excluded entry 11
-Warning: Did not initialize pair_int_quad_map for excluded entry 13
-Warning: Did not initialize pair_int_quad_map for excluded entry 14
-Warning: Did not initialize pair_int_quad_map for excluded entry 15
-Warning: Did not initialize pair_int_quad_map for excluded entry 7
-Warning: Did not initialize pair_int_quad_map for excluded entry 11
-Warning: Did not initialize pair_int_quad_map for excluded entry 13
-Warning: Did not initialize pair_int_quad_map for excluded entry 14
-Warning: Did not initialize pair_int_quad_map for excluded entry 15
-Warning: Did not initialize pair_int_quad_map for excluded entry 7
-Warning: Did not initialize pair_int_quad_map for excluded entry 11
-Warning: Did not initialize pair_int_quad_map for excluded entry 13
-Warning: Did not initialize pair_int_quad_map for excluded entry 14
-Warning: Did not initialize pair_int_quad_map for excluded entry 15
-Warning: Did not initialize pair_int_quad_map for excluded entry 7
-Warning: Did not initialize pair_int_quad_map for excluded entry 11
-Warning: Did not initialize pair_int_quad_map for excluded entry 13
-Warning: Did not initialize pair_int_quad_map for excluded entry 14
-Warning: Did not initialize pair_int_quad_map for excluded entry 15
-Warning: Did not initialize pair_int_quad_map for excluded entry 7
-Warning: Did not initialize pair_int_quad_map for excluded entry 11
-Warning: Did not initialize pair_int_quad_map for excluded entry 13
-Warning: Did not initialize pair_int_quad_map for excluded entry 14
-Warning: Did not initialize pair_int_quad_map for excluded entry 15
-Warning: Did not initialize pair_int_quad_map for excluded entry 7
-Warning: Did not initialize pair_int_quad_map for excluded entry 11
-Warning: Did not initialize pair_int_quad_map for excluded entry 13
-Warning: Did not initialize pair_int_quad_map for excluded entry 14
-Warning: Did not initialize pair_int_quad_map for excluded entry 15
-Warning: Did not initialize pair_int_quad_map for excluded entry 7
-Warning: Did not initialize pair_int_quad_map for excluded entry 11
-Warning: Did not initialize pair_int_quad_map for excluded entry 13
-Warning: Did not initialize pair_int_quad_map for excluded entry 14
-Warning: Did not initialize pair_int_quad_map for excluded entry 15
-Warning: Did not initialize pair_int_quad_map for excluded entry 7
-Warning: Did not initialize pair_int_quad_map for excluded entry 11
-Warning: Did not initialize pair_int_quad_map for excluded entry 13
-Warning: Did not initialize pair_int_quad_map for excluded entry 14
-Warning: Did not initialize pair_int_quad_map for excluded entry 15
-Warning: Did not initialize pair_int_quad_map for excluded entry 7
-Warning: Did not initialize pair_int_quad_map for excluded entry 11
-Warning: Did not initialize pair_int_quad_map for excluded entry 13
-Warning: Did not initialize pair_int_quad_map for excluded entry 14
-Warning: Did not initialize pair_int_quad_map for excluded entry 15
-Warning: Did not initialize pair_int_quad_map for excluded entry 7
-Warning: Did not initialize pair_int_quad_map for excluded entry 11
-Warning: Did not initialize pair_int_quad_map for excluded entry 13
-Warning: Did not initialize pair_int_quad_map for excluded entry 14
-Warning: Did not initialize pair_int_quad_map for excluded entry 15
 chimesFF: 	1 7 0 -2.26285
 chimesFF: 	1 0 8 -2.81431
 chimesFF: 	1 8 0 -2.81431
@@ -1574,6 +1574,8 @@ chimesFF: 	3 3 2 9.93012
 chimesFF: 	3 2 4 12.40808
 chimesFF: 	3 4 2 12.40808
 chimesFF: 	3 2 6 -2.39757
+chimesFF: 	Type is excluded... skipping.
+chimesFF: 	Type is excluded... skipping.
 chimesFF: 	3 6 2 -2.39757
 chimesFF: 	3 2 7 1.99154
 chimesFF: 	3 7 2 1.99154
@@ -1591,8 +1593,6 @@ chimesFF: 	3 7 3 -1.54157
 chimesFF: 	3 3 8 -0.90052
 chimesFF: 	3 8 3 -0.90052
 chimesFF: 	3 3 9 2.72559
-chimesFF: 	Type is excluded... skipping.
-chimesFF: 	Type is excluded... skipping.
 chimesFF: 	3 9 3 2.72559
 chimesFF: 	3 4 4 20.43548
 chimesFF: 	3 4 5 -8.69685
@@ -1657,6 +1657,11 @@ chimesFF: 	4 2 9 -1.53939
 chimesFF: 	4 9 2 -1.53939
 chimesFF: 	4 3 3 -17.96896
 chimesFF: 	4 3 4 1.17300
+Warning: Did not initialize pair_int_quad_map for excluded entry 7
+Warning: Did not initialize pair_int_quad_map for excluded entry 11
+Warning: Did not initialize pair_int_quad_map for excluded entry 13
+Warning: Did not initialize pair_int_quad_map for excluded entry 14
+Warning: Did not initialize pair_int_quad_map for excluded entry 15
 chimesFF: 	4 4 3 1.17300
 chimesFF: 	4 3 5 -9.63351
 chimesFF: 	4 5 3 -9.63351
@@ -1667,11 +1672,6 @@ chimesFF: 	4 7 3 -2.06080
 chimesFF: 	4 3 8 2.66021
 chimesFF: 	4 8 3 2.66021
 chimesFF: 	4 3 9 -0.34326
-Warning: Did not initialize pair_int_quad_map for excluded entry 7
-Warning: Did not initialize pair_int_quad_map for excluded entry 11
-Warning: Did not initialize pair_int_quad_map for excluded entry 13
-Warning: Did not initialize pair_int_quad_map for excluded entry 14
-Warning: Did not initialize pair_int_quad_map for excluded entry 15
 chimesFF: 	4 9 3 -0.34326
 chimesFF: 	4 4 4 0.69120
 chimesFF: 	4 4 7 0.28859
@@ -1910,6 +1910,8 @@ chimesFF: 	7 5 7 -1.85136
 chimesFF: 	7 7 5 -1.85136
 chimesFF: 	7 5 8 0.20672
 chimesFF: 	7 8 5 0.20672
+chimesFF: 	Type is excluded... skipping.
+chimesFF: 	Type is excluded... skipping.
 chimesFF: 	7 6 7 0.17548
 chimesFF: 	7 7 6 0.17548
 chimesFF: 	7 6 8 0.35333
@@ -1917,8 +1919,6 @@ chimesFF: 	7 8 6 0.35333
 chimesFF: 	7 6 9 0.31109
 chimesFF: 	7 9 6 0.31109
 chimesFF: 	7 7 7 -0.36726
-chimesFF: 	Type is excluded... skipping.
-chimesFF: 	Type is excluded... skipping.
 chimesFF: 	7 7 8 -0.31925
 chimesFF: 	7 8 7 -0.31925
 chimesFF: 	7 7 9 -0.08863
@@ -2001,16 +2001,16 @@ chimesFF: 	8 6 9 -0.09291
 chimesFF: 	8 9 6 -0.09291
 chimesFF: 	8 7 8 -0.46747
 chimesFF: 	8 8 7 -0.46747
-chimesFF: 	8 7 9 0.07923
-chimesFF: 	8 9 7 0.07923
-chimesFF: 	8 8 8 -0.03122
-chimesFF: 	8 8 9 -0.19586
-chimesFF: 	8 9 8 -0.19586
 Warning: Did not initialize pair_int_quad_map for excluded entry 7
 Warning: Did not initialize pair_int_quad_map for excluded entry 11
 Warning: Did not initialize pair_int_quad_map for excluded entry 13
 Warning: Did not initialize pair_int_quad_map for excluded entry 14
 Warning: Did not initialize pair_int_quad_map for excluded entry 15
+chimesFF: 	8 7 9 0.07923
+chimesFF: 	8 9 7 0.07923
+chimesFF: 	8 8 8 -0.03122
+chimesFF: 	8 8 9 -0.19586
+chimesFF: 	8 9 8 -0.19586
 chimesFF: 	8 9 9 0.00120
 chimesFF: 	9 0 2 1.37239
 chimesFF: 	9 2 0 1.37239
@@ -4154,9 +4154,9 @@ Updating chimesFF neighbor lists...
 Per MPI rank memory allocation (min/avg/max) = 9.532 | 9.752 | 9.916 Mbytes
 Step Time KinEng PotEng TotEng Temp Press Pxx Pyy Pzz Pxy Pxz Pyz Volume c_ke_tensor[1] c_ke_tensor[2] c_ke_tensor[3] c_ke_tensor[4] c_ke_tensor[5] c_ke_tensor[6] 
        0              0.00000            640.87416         -38020.51440         -37379.64024           1000.00000          62589.54878          64511.76089          62444.70672          60812.17872           5125.96741          13358.43393           -951.78145           2228.57379            394.41993            459.00322            428.32517             -3.37339            -12.84335             12.43011 
-Loop time of 2.1926e-06 on 56 procs for 0 steps with 216 atoms
+Loop time of 8.22118e-06 on 56 procs for 0 steps with 216 atoms
 
-131.1% CPU use with 56 MPI tasks x no OpenMP threads
+80.8% CPU use with 56 MPI tasks x no OpenMP threads
 
 MPI task timing breakdown:
 Section |  min time  |  avg time  |  max time  |%varavg| %total
@@ -4166,7 +4166,7 @@ Neigh   | 0          | 0          | 0          |   0.0 |  0.00
 Comm    | 0          | 0          | 0          |   0.0 |  0.00
 Output  | 0          | 0          | 0          |   0.0 |  0.00
 Modify  | 0          | 0          | 0          |   0.0 |  0.00
-Other   |            | 2.193e-06  |            |       |100.00
+Other   |            | 8.221e-06  |            |       |100.00
 
 Nlocal:        3.85714 ave           6 max           1 min
 Histogram: 1 0 6 0 14 0 18 0 13 4
@@ -4184,4 +4184,4 @@ Dangerous builds = 0
 
 Please see the log.cite file for references relevant to this simulation
 
-Total wall time: 0:00:01
+Total wall time: 0:00:00

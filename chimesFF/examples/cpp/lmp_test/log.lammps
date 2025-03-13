@@ -21,7 +21,7 @@ Reading data file ...
   216 atoms
   reading velocities ...
   216 velocities
-  read_data CPU = 0.006 seconds
+  read_data CPU = 0.005 seconds
 pair_style hybrid/overlay chimesFF fingerprint 1 for_fitting momb 12.0 0.75 20.0
 pair_coeff  * * chimesFF params.txt.reduced
 pair_coeff 1 1  momb 0.0 1.0 1.0 418.2600153 2.904
@@ -70,9 +70,9 @@ Neighbor list info ...
 Per MPI rank memory allocation (min/avg/max) = 9.532 | 9.752 | 9.916 Mbytes
 Step Time KinEng PotEng TotEng Temp Press Pxx Pyy Pzz Pxy Pxz Pyz Volume c_ke_tensor[1] c_ke_tensor[2] c_ke_tensor[3] c_ke_tensor[4] c_ke_tensor[5] c_ke_tensor[6] 
        0              0.00000            640.87416         -38020.51440         -37379.64024           1000.00000          62589.54878          64511.76089          62444.70672          60812.17872           5125.96741          13358.43393           -951.78145           2228.57379            394.41993            459.00322            428.32517             -3.37339            -12.84335             12.43011 
-Loop time of 2.1926e-06 on 56 procs for 0 steps with 216 atoms
+Loop time of 8.22118e-06 on 56 procs for 0 steps with 216 atoms
 
-131.1% CPU use with 56 MPI tasks x no OpenMP threads
+80.8% CPU use with 56 MPI tasks x no OpenMP threads
 
 MPI task timing breakdown:
 Section |  min time  |  avg time  |  max time  |%varavg| %total
@@ -82,7 +82,7 @@ Neigh   | 0          | 0          | 0          |   0.0 |  0.00
 Comm    | 0          | 0          | 0          |   0.0 |  0.00
 Output  | 0          | 0          | 0          |   0.0 |  0.00
 Modify  | 0          | 0          | 0          |   0.0 |  0.00
-Other   |            | 2.193e-06  |            |       |100.00
+Other   |            | 8.221e-06  |            |       |100.00
 
 Nlocal:        3.85714 ave           6 max           1 min
 Histogram: 1 0 6 0 14 0 18 0 13 4
@@ -104,4 +104,4 @@ Dangerous builds = 0
 
 Please see the log.cite file for references relevant to this simulation
 
-Total wall time: 0:00:01
+Total wall time: 0:00:00
