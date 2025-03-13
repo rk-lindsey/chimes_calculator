@@ -216,7 +216,7 @@ void PairCHIMES::coeff(int narg, char **arg)
 	maxcut_3b = chimes_calculator.max_cutoff_3B();
 	maxcut_4b = chimes_calculator.max_cutoff_4B();
 }
-void writeClusterDataComp(const string& filename, const vector<vector<double>>& data) 
+void writeClusterDataComp(const string& filename, const vector<vector<auto>>& data) 
 {
     ofstream ofs(filename);
     if (!ofs) {
@@ -463,6 +463,12 @@ void PairCHIMES::compute(int eflag, int vflag)
     vector<vector<double > > tmp_dist_2b;
     vector<vector<double > > tmp_dist_3b;
     vector<vector<double > > tmp_dist_4b;
+    vector<vector<int > > tmp_tag_2b;
+    vector<int > tmp_2b_list(2);
+    vector<vector<int > > tmp_tag_3b;
+    vector<int > tmp_3b_list(3);
+    vector<vector<int > > tmp_tag_4b;
+    vector<int > tmp_4b_list(4);
 	bool 				 tmp_FP;
 	bool 				 valid_order;
     int                  atmidxlst[6][2];
@@ -586,7 +592,10 @@ void PairCHIMES::compute(int eflag, int vflag)
 			energy = 0.0;	
 			valid_order = (i < j);
 			chimes_calculator.compute_2B( dist, dr, typ_idxs_2b, force_2b, stensor, energy, chimes_2btmp, tmp_dist_2b, tmp_FP && valid_order);	// Auto-updates badness		
-
+			if(tmp_FP && valid_order){
+			tmp_2b_list[0] = itag;
+			tmp_2b_list[1] = jtag;
+			tmp_tag_2b.push_back(tmp_2b_list);}
 			for (idx=0; idx<3; idx++)
 			{
 				f[i][idx] += force_2b[0*CHDIM+idx] ;
@@ -613,6 +622,12 @@ void PairCHIMES::compute(int eflag, int vflag)
 		std::stringstream filename;
 		filename << ts << "." << std::to_string(chimes_calculator.rank) <<".2b_clusters.txt";
 		writeClusterDataComp(filename.str(), tmp_dist_2b);
+	}
+	if (tmp_FP)
+	{
+		std::stringstream filename;
+		filename << ts << "." << std::to_string(chimes_calculator.rank) <<".2b_list.txt";
+		writeClusterDataComp(filename.str(), tmp_tag_2b);
 	}
     // Document badness for configuration: current timestep, current rank, worst badness seen by rank
     if (for_fitting)
@@ -643,10 +658,14 @@ void PairCHIMES::compute(int eflag, int vflag)
 			std::fill(stensor.begin(), stensor.end(), 0.0) ;
 				
 			energy = 0.0 ;
-			valid_order = (i < j && j < k);
+			valid_order = (tag[i] < tag[j] && tag[i] < tag[k] && tag[j] < tag[k]);
 			
 			chimes_calculator.compute_3B( dist_3b, dr_3b, typ_idxs_3b, force_3b, stensor, energy, chimes_3btmp, tmp_dist_3b, tmp_FP && valid_order);
-
+			if(tmp_FP && valid_order){
+				tmp_3b_list[0] = tag[i];
+				tmp_3b_list[1] = tag[j];
+				tmp_3b_list[2] = tag[k];
+				tmp_tag_3b.push_back(tmp_3b_list);}
 			for (idx=0; idx<3; idx++)
 			{
 				f[i][idx] += force_3b[0*CHDIM+idx] ;
@@ -673,6 +692,12 @@ void PairCHIMES::compute(int eflag, int vflag)
 		std::stringstream filename_3b;
 		filename_3b << ts << "." << std::to_string(chimes_calculator.rank) <<".3b_clusters.txt";
 		writeClusterDataComp(filename_3b.str(), tmp_dist_3b);
+	}
+	if (tmp_FP)
+	{
+		std::stringstream filename;
+		filename << ts << "." << std::to_string(chimes_calculator.rank) <<".3b_list.txt";
+		writeClusterDataComp(filename.str(), tmp_tag_3b);
 	}
 
 	if (chimes_calculator.poly_orders[2] > 0)
@@ -704,10 +729,15 @@ void PairCHIMES::compute(int eflag, int vflag)
 			std::fill(stensor.begin(), stensor.end(), 0.0) ;
 
 			energy = 0.0 ;	
-			valid_order = (i < j && j < k && k < l);
+			valid_order = (tag[i] < tag[j] && tag[j] < tag[k] && tag[k] < tag[l]);
 			
 			chimes_calculator.compute_4B( dist_4b, dr_4b, typ_idxs_4b, force_4b, stensor, energy, chimes_4btmp, tmp_dist_4b, tmp_FP && valid_order);
-
+			if(tmp_FP && valid_order){
+				tmp_4b_list[0] = tag[i];
+				tmp_4b_list[1] = tag[j];
+				tmp_4b_list[2] = tag[k];
+				tmp_4b_list[3] = tag[l];
+				tmp_tag_4b.push_back(tmp_4b_list);}
 			for (idx=0; idx<3; idx++)
 			{
 				f[i][idx] += force_4b[0*CHDIM+idx] ;
@@ -742,6 +772,12 @@ void PairCHIMES::compute(int eflag, int vflag)
 		std::stringstream filename_4b;
 		filename_4b << ts << "." << std::to_string(chimes_calculator.rank) <<".4b_clusters.txt";
 		writeClusterDataComp(filename_4b.str(), tmp_dist_4b);
+	}
+	if (tmp_FP)
+	{
+		std::stringstream filename;
+		filename << ts << "." << std::to_string(chimes_calculator.rank) <<".4b_list.txt";
+		writeClusterDataComp(filename.str(), tmp_tag_4b);
 	}
 
 if (vflag_fdotr) 
