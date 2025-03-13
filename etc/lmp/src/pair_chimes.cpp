@@ -216,7 +216,28 @@ void PairCHIMES::coeff(int narg, char **arg)
 	maxcut_3b = chimes_calculator.max_cutoff_3B();
 	maxcut_4b = chimes_calculator.max_cutoff_4B();
 }
-void writeClusterDataComp(const string& filename, const vector<vector<auto>>& data) 
+void writeClusterDataComp(const string& filename, const vector<vector<double>>& data) 
+{
+    ofstream ofs(filename);
+    if (!ofs) {
+        cerr << "Error: Could not open file " << filename << endl;
+        return;
+    }
+    
+    ostringstream buffer;
+    
+    for (const auto& row : data) {
+        for (size_t j = 0; j < row.size(); j++) {
+            buffer << row[j];
+            if (j < row.size() - 1) buffer << " ";  // Add space between elements
+        }
+        buffer << "\n";
+    }
+
+    ofs << buffer.str(); // Single large write operation
+    ofs.close();
+}
+void writeClusterDataComp_Int(const string& filename, const vector<vector<int>>& data) 
 {
     ofstream ofs(filename);
     if (!ofs) {
@@ -627,7 +648,7 @@ void PairCHIMES::compute(int eflag, int vflag)
 	{
 		std::stringstream filename;
 		filename << ts << "." << std::to_string(chimes_calculator.rank) <<".2b_list.txt";
-		writeClusterDataComp(filename.str(), tmp_tag_2b);
+		writeClusterDataComp_Int(filename.str(), tmp_tag_2b);
 	}
     // Document badness for configuration: current timestep, current rank, worst badness seen by rank
     if (for_fitting)
@@ -697,7 +718,7 @@ void PairCHIMES::compute(int eflag, int vflag)
 	{
 		std::stringstream filename;
 		filename << ts << "." << std::to_string(chimes_calculator.rank) <<".3b_list.txt";
-		writeClusterDataComp(filename.str(), tmp_tag_3b);
+		writeClusterDataComp_Int(filename.str(), tmp_tag_3b);
 	}
 
 	if (chimes_calculator.poly_orders[2] > 0)
@@ -777,7 +798,7 @@ void PairCHIMES::compute(int eflag, int vflag)
 	{
 		std::stringstream filename;
 		filename << ts << "." << std::to_string(chimes_calculator.rank) <<".4b_list.txt";
-		writeClusterDataComp(filename.str(), tmp_tag_4b);
+		writeClusterDataComp_Int(filename.str(), tmp_tag_4b);
 	}
 
 if (vflag_fdotr) 
