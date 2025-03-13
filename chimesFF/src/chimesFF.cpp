@@ -1434,15 +1434,24 @@ void chimesFF::compute_2B(const double dx, const vector<double> & dr, const vect
     // Use references for readability.
     vector<double> &Tn = tmp.Tn ;
     vector<double> &Tnd = tmp.Tnd ;
+
+    vector<double> cluster_typ_idxs_2b(2);
     
     pair_idx = atom_int_pair_map[ typ_idxs[0]*natmtyps + typ_idxs[1] ];
 
     if (dx >= chimes_2b_cutoff[pair_idx][1])
         return;    
     if(fingerprint){
-    vector<double> dist_2b;
-    dist_2b.push_back(dx);
-    clusters_2b.push_back(dist_2b);}
+        vector<double> dist_2b;
+        dist_2b.push_back(dx);
+        cluster_typ_idxs_2b[0] = 1.0*typ_idxs[0];
+        cluster_typ_idxs_2b[1] = 1.0*typ_idxs[1];
+        vector<double> combinedVec;
+        combinedVec.reserve(dist_2b.size() + cluster_typ_idxs_2b.size());
+        combinedVec.insert(combinedVec.end(), dist_2b.begin(), dist_2b.end());
+        combinedVec.insert(combinedVec.end(), cluster_typ_idxs_2b.begin(), cluster_typ_idxs_2b.end());
+        clusters_2b.push_back(combinedVec);
+    }
     set_cheby_polys(Tn, Tnd, dx, morse_var[pair_idx], chimes_2b_cutoff[pair_idx][0], chimes_2b_cutoff[pair_idx][1], poly_orders[0]);  
 
     get_fcut(dx, chimes_2b_cutoff[pair_idx][1], fcut, fcutderiv);
@@ -1567,6 +1576,7 @@ void chimesFF::compute_3B(const vector<double> & dx, const vector<double> & dr, 
 
     int type_idx =  typ_idxs[0]*natmtyps*natmtyps + typ_idxs[1]*natmtyps + typ_idxs[2] ;
     int tripidx = atom_int_trip_map[type_idx];
+    vector<double> cluster_typ_idxs_3b(3);
 
     if(tripidx < 0)    // Skipping an excluded interaction
         return;
@@ -1587,8 +1597,15 @@ void chimesFF::compute_3B(const vector<double> & dx, const vector<double> & dr, 
     if (dx[2] >= cutoff_2)    // jk
         return;    
     if (fingerprint){
-    clusters_3b.push_back(dx);
-}
+        cluster_typ_idxs_3b[0] = 1.0*typ_idxs[0];
+        cluster_typ_idxs_3b[1] = 1.0*typ_idxs[1];
+        cluster_typ_idxs_3b[2] = 1.0*typ_idxs[2];
+        vector<double> combinedVec;
+        combinedVec.reserve(dx.size() + cluster_typ_idxs_3b.size());
+        combinedVec.insert(combinedVec.end(), dx.begin(), dx.end());
+        combinedVec.insert(combinedVec.end(), cluster_typ_idxs_3b.begin(), cluster_typ_idxs_3b.end());
+        clusters_3b.push_back(combinedVec);
+    }
 
  int pair_type_1 = atom_int_pair_map[ typ_idxs[0]*natmtyps + typ_idxs[1] ];
  int pair_type_2 = atom_int_pair_map[ typ_idxs[0]*natmtyps + typ_idxs[2] ];
@@ -1794,7 +1811,9 @@ void chimesFF::compute_4B(const vector<double> & dx, const vector<double> & dr, 
     vector<double> &Tnd_il  = tmp.Tnd_il ;  
     vector<double> &Tnd_jk  = tmp.Tnd_jk ;
     vector<double> &Tnd_jl  = tmp.Tnd_jl ;
-    vector<double> &Tnd_kl  = tmp.Tnd_kl ;              
+    vector<double> &Tnd_kl  = tmp.Tnd_kl ;    
+
+    vector<double> cluster_typ_idxs_4b(4);          
 
     int idx = typ_idxs[0]*natmtyps*natmtyps*natmtyps
         + typ_idxs[1]*natmtyps*natmtyps + typ_idxs[2]*natmtyps + typ_idxs[3] ;
@@ -1839,8 +1858,16 @@ void chimesFF::compute_4B(const vector<double> & dx, const vector<double> & dr, 
     if (dx[5] >= cutoff_5)    // kl
         return;
     if (fingerprint){
-    clusters_4b.push_back(dx);
-}
+        cluster_typ_idxs_4b[0] = 1.0*typ_idxs[0];
+        cluster_typ_idxs_4b[1] = 1.0*typ_idxs[1];
+        cluster_typ_idxs_4b[2] = 1.0*typ_idxs[2];
+        cluster_typ_idxs_4b[3] = 1.0*typ_idxs[3];
+        vector<double> combinedVec;
+        combinedVec.reserve(dx.size() + cluster_typ_idxs_4b.size());
+        combinedVec.insert(combinedVec.end(), dx.begin(), dx.end());
+        combinedVec.insert(combinedVec.end(), cluster_typ_idxs_4b.begin(), cluster_typ_idxs_4b.end());
+        clusters_4b.push_back(combinedVec);
+    }
 
     // At this point, all distances are within allowed ranges. We can now proceed to the force/stress/energy calculation
     
