@@ -60,12 +60,16 @@ bool get_next_line(istream& str, string & line)
     return true;
 }
 
-// Function to print the adjacency matrix
-void print_adjacency_matrix(const vector<vector<double>>& adjacency_matrix) {
+// Function to print the adjacency matrix with atom types
+void print_adjacency_matrix(const vector<vector<double>>& adjacency_matrix, const vector<int>& atom_types) {
     int n = adjacency_matrix.size();
     for (int i = 0; i < n; i++) {
+        // Print atom type first
+        cout << setw(4) << atom_types[i] << " |";
+        // Print adjacency information
         for (int j = 0; j < n; j++) {
-            cout << setw(10) << fixed << setprecision(4) << adjacency_matrix[i][j] << " ";
+            if(i == j) cout << setw(10) << "N/A" << " ";  // Diagonal is atom type
+            else cout << setw(10) << fixed << setprecision(4) << adjacency_matrix[i][j] << " ";
         }
         cout << endl;
     }
@@ -73,7 +77,7 @@ void print_adjacency_matrix(const vector<vector<double>>& adjacency_matrix) {
 }
 
 // Function to read the clusters and construct adjacency matrices
-void read_flat_clusters(string clufile, int npairs_per_cluster, vector<vector<vector<double>>> &adjacency_matrices, const int body_cnt) {
+void read_flat_clusters(string clufile, int npairs_per_cluster, vector<pair<vector<vector<double>>, vector<int>>> &adjacency_data, const int body_cnt) {
     ifstream clustream(clufile);
     if (!clustream.is_open()) {
         cerr << "ERROR: Could not open file " << clufile << endl;
@@ -120,12 +124,14 @@ void read_flat_clusters(string clufile, int npairs_per_cluster, vector<vector<ve
             }
         }
 
-        // Print the adjacency matrix
-        cout << "Adjacency Matrix:" << endl;
-        print_adjacency_matrix(adjacency_matrix);
-
-        // Store the adjacency matrix
-        adjacency_matrices.push_back(adjacency_matrix);
+        // Print with atom types
+        cout << "Adjacency Matrix (Atom Types: ";
+        for (auto at : atom_types) cout << at << " ";
+        cout << "):" << endl;
+        print_adjacency_matrix(adjacency_matrix, atom_types);
+        
+        // Store both matrix and types as a pair
+        adjacency_data.push_back(make_pair(adjacency_matrix, atom_types));
     }
 
     clustream.close();
@@ -340,8 +346,8 @@ int main(int argc, char *argv[])
     string f2_2b = f2_idx + ".all-2b-clusters.txt";
 
     
-    vector<vector<vector<double>>> f1_2b_flat_clusters;
-    vector<vector<vector<double>>> f2_2b_flat_clusters;
+    vector<pair<vector<vector<double>>, vector<int>>> f1_2b_flat_clusters;
+    vector<pair<vector<vector<double>>, vector<int>>> f2_2b_flat_clusters;
     
     int npairs_2b = 1;
     
@@ -358,8 +364,8 @@ int main(int argc, char *argv[])
     
     // vector<double> f1_3b_flat_clusters;
     // vector<double> f2_3b_flat_clusters;
-    vector<vector<vector<double>>> f1_3b_flat_clusters;
-    vector<vector<vector<double>>> f2_3b_flat_clusters;
+    vector<pair<vector<vector<double>>, vector<int>>> f1_3b_flat_clusters;
+    vector<pair<vector<vector<double>>, vector<int>>> f2_3b_flat_clusters;
     
     int npairs_3b = 3;
     
@@ -373,8 +379,8 @@ int main(int argc, char *argv[])
     string f1_4b = f1_idx + ".all-4b-clusters.txt"; 
     string f2_4b = f2_idx + ".all-4b-clusters.txt";   
     
-    vector<vector<vector<double>>> f1_4b_flat_clusters;
-    vector<vector<vector<double>>> f2_4b_flat_clusters;    
+    vector<pair<vector<vector<double>>, vector<int>>> f1_4b_flat_clusters;
+    vector<pair<vector<vector<double>>, vector<int>>> f2_4b_flat_clusters;    
     
     int npairs_4b = 6;
     
