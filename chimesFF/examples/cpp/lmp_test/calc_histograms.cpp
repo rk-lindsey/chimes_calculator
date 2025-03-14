@@ -87,6 +87,41 @@ int get_index_if(const vector<T>  & vec, const T  & element, vector<bool> & disq
     exit(0);
 }
 
+template <typename T>
+int get_index(const vector<T>  & vec, const T  & element)
+{
+    auto it = find(vec.begin(), vec.end(), element);
+ 
+    if (it != vec.end())
+    {
+        return distance(vec.begin(), it);
+    }
+    else
+    {
+        cout << "chimesFF: " << "ERROR: Could not find element in vector" << endl;
+        exit(0);
+    }
+}
+
+
+int chimesFF::get_proper_pair(string ty1, string ty2)
+{
+
+    for(int i=0; i<pair_params_atm_chem_1.size(); i++)
+    {
+        if (ty1 == pair_params_atm_chem_1[i])
+            if (ty2 == pair_params_atm_chem_2[i])
+                return i;
+        
+        if (ty2 == pair_params_atm_chem_1[i])
+            if (ty1 == pair_params_atm_chem_2[i])
+                return i;
+    }
+            
+    cout << "chimesFF: " << "ERROR: No proper pair name found for atom types" << ty1 << ", " << ty2 << endl;
+    exit(0);
+}
+
 int chimesFF::split_line(string line, vector<string> & items)
 {
     // Break a line up into tokens based on space separators.
@@ -137,6 +172,8 @@ string chimesFF::get_next_line(istream& str)
 
     return line;
 }
+
+
 
 void chimesFF::read_parameters(string paramfile)
 {
