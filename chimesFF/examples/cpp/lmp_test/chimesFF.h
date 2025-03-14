@@ -33,6 +33,15 @@ using namespace std;
 #define CHDIM 3 // The number of spatial dimensions.
 #define USE_DISTANCE_TENSOR 1 // Use tensor of distances in computing stresses.
 
+// In your header file (e.g., chimesFF.h)
+namespace GlobalParams {
+    vector<double> rcin;
+    vector<double> rcout_2b;
+    vector<double> rcout_3b;
+    vector<double> rcout_4b;
+    vector<double> morse_lambda;
+}
+
 // Temporary storage for ChIMES interaction.
 class chimes2BTmp
 {

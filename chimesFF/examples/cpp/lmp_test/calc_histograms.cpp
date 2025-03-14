@@ -13,9 +13,17 @@
 
 using namespace std;
 
-
 int nprocs;
 int my_rank;
+
+// In .cpp file
+namespace GlobalParams {
+    vector<double> rcin_list;
+    vector<double> rcout_2b_list;
+    vector<double> rcout_3b_list;
+    vector<double> rcout_4b_list;
+    vector<double> morse_lambda_list;
+}
 
 int split_lines(string line, vector<string> & items)
 {
@@ -300,7 +308,11 @@ void chimesFF::read_parameters(string paramfile)
     }
     
     // Rewind and read the 2-body Chebyshev pair parameters
-    
+    GlobalParams::rcin;
+    GlobalParams::rcout_2b;
+    GlobalParams::rcout_3b;
+    GlobalParams::rcout_4b;
+    GlobalParams::morse_lambda = morse_var;
     param_file.close();    
 }
 
@@ -332,8 +344,21 @@ void print_adjacency_matrix(const vector<vector<double>>& adjacency_matrix, cons
     cout << endl;
 }
 
+double transform(double rcin, double rcout, double lambda, double rij)
+{
+    double x_min = exp(-1*rcin/lambda);
+    double x_max = exp(-1*rcout/lambda);
+
+    double x_avg   = 0.5 * (x_max + x_min);
+    double x_diff  = 0.5 * (x_max - x_min);
+
+    x_diff *= -1.0; // Special for Morse style
+    
+    return (exp(-1*rij/lambda) - x_avg)/x_diff;
+}
+
 // Function to read the clusters and construct adjacency matrices
-void read_flat_clusters(string clufile, int npairs_per_cluster, vector<pair<vector<vector<double>>, vector<int>>> &adjacency_data, const int body_cnt) {
+void read_flat_clusters(string clufile, int npairs_per_cluster, vector<pair<vector<vector<double>>, vector<int>>> &adjacency_data, const int body_cnt, bool print = false) {
     ifstream clustream(clufile);
     if (!clustream.is_open()) {
         cerr << "ERROR: Could not open file " << clufile << endl;
@@ -359,6 +384,7 @@ void read_flat_clusters(string clufile, int npairs_per_cluster, vector<pair<vect
         vector<int> atom_types(body_cnt);
 
         for (int i = 0; i < npairs_per_cluster; i++) {
+            // edge_lengths[i] = transform(rcin, rcout, lambda, stod(line_contents[i]));
             edge_lengths[i] = stod(line_contents[i]);
         }
 
@@ -381,10 +407,12 @@ void read_flat_clusters(string clufile, int npairs_per_cluster, vector<pair<vect
         }
 
         // Print with atom types
-        cout << "Adjacency Matrix (Atom Types: ";
-        for (auto at : atom_types) cout << at << " ";
-        cout << "):" << endl;
-        print_adjacency_matrix(adjacency_matrix, atom_types);
+        if (print == true){
+            cout << "Adjacency Matrix (Atom Types: ";
+            for (auto at : atom_types) cout << at << " ";
+            cout << "):" << endl;
+            print_adjacency_matrix(adjacency_matrix, atom_types);
+        }
         
         // Store both matrix and types as a pair
         adjacency_data.push_back(make_pair(adjacency_matrix, atom_types));
