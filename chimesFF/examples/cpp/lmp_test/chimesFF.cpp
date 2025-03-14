@@ -19,6 +19,7 @@ using namespace std;
 
 #include "chimesFF.h"    
 namespace GlobalParams {
+    int atom_typ_cnt;
     vector<vector<double>> rcut_2b_list;
     vector<vector<vector<double>>> rcut_3b_list;
     vector<vector<vector<double>>> rcut_4b_list;
@@ -283,6 +284,7 @@ void chimesFF::read_parameters(string paramfile)
             tmp_no_items = split_line(line, tmp_str_items);
         
             natmtyps = stoi(tmp_str_items[2]);
+            GlobalParams::atom_typ_cnt = natmtyps;
         
             if (rank == 0)
                 cout << "chimesFF: " << "Will consider " << natmtyps << " atom types:" << endl;
