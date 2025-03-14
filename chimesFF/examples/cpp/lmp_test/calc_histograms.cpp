@@ -58,6 +58,35 @@ int split_lines(string line, vector<string> & items)
     return items.size();
 }
 
+template <typename T>
+int get_index_if(const vector<T>  & vec, const T  & element, vector<bool> & disqualified)
+{
+
+    if (disqualified.size() != vec.size())
+    {
+        cout << "chimesFF: " << "ERROR: get_index_if(...): Qualification criteria does not match vector length" << endl;
+        cout << "chimesFF: " << "vec.size(): " << vec.size() << endl;
+        cout << "chimesFF: " << "disqualified.size(): " << disqualified.size() << endl;
+        exit(0);
+    }
+
+    for(int i=0; i<vec.size(); i++)
+    {
+        if ((vec[i]==element) && (!disqualified[i]))
+        {
+            disqualified[i] = true;
+            return i;
+        }
+    }
+
+    cout << "chimesFF: " << "ERROR: Could not find element in vector: " << element << endl;
+    
+    for(int i=0; i<vec.size(); i++)
+        cout << "chimesFF: " << "\t" << vec[i] << " " << disqualified[i] << endl;
+    
+    exit(0);
+}
+
 int chimesFF::split_line(string line, vector<string> & items)
 {
     // Break a line up into tokens based on space separators.
@@ -108,40 +137,48 @@ string chimesFF::get_next_line(istream& str)
 
     return line;
 }
-
 void chimesFF::read_parameters(string paramfile)
 {
-    // Open the parameter file, run sanity checks
-    
     ifstream param_file;
     param_file.open(paramfile.data());
     
-    if (my_rank == 0)
+    if (rank == 0)
         cout << "chimesFF: " << "Reading parameters from file: " << paramfile << endl;
     
     if(!param_file.is_open())
     {
-        if (my_rank == 0)
+        if (rank == 0)
             cout << "chimesFF: " << "ERROR: Cannot open parameter file: " << paramfile << endl;
         exit(0);
     }
-    
-    // Declare parsing variables
-    
     
     bool           found_end = false;
     string         line;
     string         tmp_str;
     vector<string> tmp_str_items;
     int            tmp_no_items;
-    int            tmp_int;
     int            no_pairs;
     
-    // Check that this is actually a chebyshev parameter set
+    while (!found_end)
+    {
+        line = get_next_line(param_file);
 
-    
-    // If we've made it to here, then this should contain Chebyshev params. Rewind and start looking for general information
+        if(line.find("ENDFILE") != string::npos)
+        {
+            if (rank == 0)
+            {
+                cout << "chimesFF: " << "ERROR: Could not find line containing: \" PAIRTYP: CHEBYSHEV\" " << endl;
+                cout << "chimesFF: " << "       ...Is this a ChIMES force field parameter file?" << endl;
+            }
+            exit(0);
+        }
         
+        if(line.find("PAIRTYP: CHEBYSHEV") != string::npos)
+        {
+            break;    
+        }
+    }
+    
     param_file.seekg(0);
     
     found_end = false;
@@ -150,43 +187,16 @@ void chimesFF::read_parameters(string paramfile)
     {
         line = get_next_line(param_file);
         
-           if(line.find("ENDFILE") != string::npos)
+        if(line.find("ENDFILE") != string::npos)
             break;        
     
-        if(line.find("ATOM TYPES:") != string::npos)
-        {
-            tmp_no_items = split_line(line, tmp_str_items);
-        
-            natmtyps = stoi(tmp_str_items[2]);
-        
-            if (my_rank == 0)
-                cout << "chimesFF: " << "Will consider " << natmtyps << " atom types:" << endl;
-        }
-        
-        if(line.find("# TYPEIDX #") != string::npos)
-        {
-            atmtyps.resize(natmtyps);
-			masses.resize(natmtyps);
-            for (int i=0; i<natmtyps; i++)
-            {
-                line = get_next_line(param_file);
-                split_line(line, tmp_str_items);
-                atmtyps[i] = tmp_str_items[1];
-				masses[i]  = stod(tmp_str_items[3]);
-                
-                if (my_rank == 0)
-                    cout << "chimesFF: " << "\t" << i << " " << atmtyps[i] << endl;
-            }
-            
-        }
-            
         if(line.find("ATOM PAIRS:") != string::npos)
         {
             tmp_no_items = split_line(line, tmp_str_items);
         
             no_pairs = stoi(tmp_str_items[2]);
         
-            if (my_rank == 0)
+            if (rank == 0)
                 cout << "chimesFF: " << "Will consider " << no_pairs << " atom pair types" << endl;        
         }    
         
@@ -197,13 +207,8 @@ void chimesFF::read_parameters(string paramfile)
         
             pair_params_atm_chem_1.resize(no_pairs);
             pair_params_atm_chem_2.resize(no_pairs);
-            chimes_2b_cutoff      .resize(no_pairs);
-            morse_var             .resize(no_pairs);
-            
-            ncoeffs_2b            .resize(no_pairs);
-            chimes_2b_pows        .resize(no_pairs);
-            chimes_2b_params      .resize(no_pairs);
-            chimes_2b_cutoff      .resize(no_pairs);
+            chimes_2b_cutoff.resize(no_pairs);
+            morse_var.resize(no_pairs);
 
             string tmp_xform_style;
             
@@ -217,17 +222,17 @@ void chimesFF::read_parameters(string paramfile)
 				
                 if ( tmp_no_items == 8 )
                 {
-					if ( my_rank == 0 && i == 0 ) cout << "chimesFF: Detected version 1 pair specification (with S_DELTA)\n";
+					if ( rank == 0 && i == 0 ) cout << "chimesFF: Detected version 1 pair specification (with S_DELTA)\n";
 					pair_input_version = 1;
                 }
                 else if ( tmp_no_items == 7 )
                 {
-					if ( my_rank == 0 && i == 0 ) cout << "chimesFF: Detected version 2 pair specification (no S_DELTA)\n";
+					if ( rank == 0 && i == 0 ) cout << "chimesFF: Detected version 2 pair specification (no S_DELTA)\n";
 					pair_input_version = 2;
                 }
                 else
                 {
-					if ( my_rank == 0 )
+					if ( rank == 0 )
 					{
 						cout << "Incorrect input in line: " << line << endl;
 						cout << "Expect 7 or 8 entries\n";
@@ -238,7 +243,7 @@ void chimesFF::read_parameters(string paramfile)
                 pair_params_atm_chem_1[i] = tmp_str_items[1];
                 pair_params_atm_chem_2[i] = tmp_str_items[2];
                 
-                if (my_rank == 0)
+                if (rank == 0)
                     cout << "chimesFF: " << "\t" << i << " " << pair_params_atm_chem_1[i] << " " << pair_params_atm_chem_2[i]<< endl;
                 
                 chimes_2b_cutoff[i].push_back(stod(tmp_str_items[3])); // Inner cutoff    
@@ -258,7 +263,7 @@ void chimesFF::read_parameters(string paramfile)
                 } 
                 else
                 {
-					if ( my_rank == 0 ) cout << "Bad pair input version\n";
+					if ( rank == 0 ) cout << "Bad pair input version\n";
 					exit(0);
                 }
                     
@@ -268,7 +273,7 @@ void chimesFF::read_parameters(string paramfile)
                 }
                 else if ( tmp_str_items[xform_style_idx] != tmp_xform_style)    
                 {
-					if (my_rank == 0)
+					if (rank == 0)
 						cout << "chimesFF: " << "Distance transformation style must be the same for all pair types" << endl;
 					exit(0);
                 }
@@ -278,7 +283,7 @@ void chimesFF::read_parameters(string paramfile)
 					if ( tmp_no_items > morse_idx )
 						morse_var[i] = stod(tmp_str_items[morse_idx]);
 					else {
-						if ( my_rank == 0 )
+						if ( rank == 0 )
 							cout << "chimesFF: Missing morse lambda value in line: \n" << line << endl;
 						exit(0);
 					}
@@ -287,32 +292,26 @@ void chimesFF::read_parameters(string paramfile)
                 
             xform_style = tmp_xform_style;
             
-            if (my_rank == 0)
+            if (rank == 0)
                 cout << "chimesFF: " << "Read the following pair type information:" << endl;
             
             for (int i=0; i<no_pairs; i++)
             {
-				if (my_rank == 0)
+				if (rank == 0)
 					cout << "chimesFF: " << "\t" << pair_params_atm_chem_1[i] << " " << pair_params_atm_chem_2[i] << " r_cut_in: " << fixed << right << setprecision(5) << chimes_2b_cutoff[i][0] << " r_cut_out: " << chimes_2b_cutoff[i][1] << " " <<  xform_style;
                 
 				if (xform_style == "MORSE")
 				{
-					if (my_rank == 0)
+					if (rank == 0)
 						cout << " " << morse_var[i] << endl;
 				}
 				else
-					if (my_rank == 0)
+					if (rank == 0)
 						cout << endl;
 			}
-        }              
+        }
     }
     
-    // Rewind and read the 2-body Chebyshev pair parameters
-    GlobalParams::rcin;
-    GlobalParams::rcout_2b;
-    GlobalParams::rcout_3b;
-    GlobalParams::rcout_4b;
-    GlobalParams::morse_lambda = morse_var;
     param_file.close();    
 }
 
