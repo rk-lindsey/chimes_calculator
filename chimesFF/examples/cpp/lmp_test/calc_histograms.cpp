@@ -7,6 +7,7 @@
 #include<vector>
 #include<cmath>
 #include<algorithm> // For sort
+#include <iomanip>
 
 using namespace std;
 
@@ -59,39 +60,74 @@ bool get_next_line(istream& str, string & line)
     return true;
 }
 
+// Function to print the adjacency matrix
+void print_adjacency_matrix(const vector<vector<double>>& adjacency_matrix) {
+    int n = adjacency_matrix.size();
+    for (int i = 0; i < n; i++) {
+        for (int j = 0; j < n; j++) {
+            cout << setw(10) << fixed << setprecision(4) << adjacency_matrix[i][j] << " ";
+        }
+        cout << endl;
+    }
+    cout << endl;
+}
 
-void read_flat_clusters(string clufile, int npairs_per_cluster, vector<double > & clusters)
-{
-    ifstream clustream;
-    clustream.open(clufile); 
+// Function to read the clusters and construct adjacency matrices
+void read_flat_clusters(string clufile, int npairs_per_cluster, vector<vector<vector<double>>> &adjacency_matrices, const int body_cnt) {
+    ifstream clustream(clufile);
+    if (!clustream.is_open()) {
+        cerr << "ERROR: Could not open file " << clufile << endl;
+        exit(1);
+    }
 
-    string                  line;
-    vector<string>          line_contents;
-    int                     n_contents;
-    vector<double>          one_cluster(npairs_per_cluster);
+    string line;
+    vector<string> line_contents;
+    int n_contents;
 
-    while (get_next_line(clustream, line))
-    {
+    while (get_next_line(clustream, line)) {
         n_contents = split_line(line, line_contents);
-        
-        if (n_contents != npairs_per_cluster)
-        {
+
+        if (n_contents != npairs_per_cluster + body_cnt) { // 4 additional columns for atom types
             cout << "ERROR: Read the wrong number of clusters!" << endl;
-            cout << "n_contents: " <<  n_contents << endl;
-            cout << "npairs_per_cluster: " <<  npairs_per_cluster << endl;
+            cout << "n_contents: " << n_contents << endl;
+            cout << "Expected: " << npairs_per_cluster + 4 << endl;
             exit(0);
         }
 
-        for (int i=0; i<npairs_per_cluster; i++)
-            one_cluster[i] = stod(line_contents[i]);
-    
-        sort(one_cluster.begin(), one_cluster.end());
-    
-        // Tack one_cluster on the end of clusters
+        // Extract edge lengths and atom types
+        vector<double> edge_lengths(npairs_per_cluster);
+        vector<int> atom_types(body_cnt);
 
-        clusters.insert(clusters.end(), one_cluster.begin(), one_cluster.end());
+        for (int i = 0; i < npairs_per_cluster; i++) {
+            edge_lengths[i] = stod(line_contents[i]);
+        }
+
+        for (int i = 0; i < body_cnt; i++) {
+            atom_types[i] = stoi(line_contents[npairs_per_cluster + i]);
+        }
+
+        // Construct the adjacency matrix
+        // Assuming a fully connected graphlet with {body_cnt} atoms
+        vector<vector<double>> adjacency_matrix(body_cnt, vector<double>(body_cnt, 0.0));
+
+        // Fill the adjacency matrix
+        int edge_index = 0;
+        for (int i = 0; i < body_cnt; i++) {
+            for (int j = i + 1; j < body_cnt; j++) {
+                adjacency_matrix[i][j] = edge_lengths[edge_index];
+                adjacency_matrix[j][i] = edge_lengths[edge_index]; // Symmetric matrix
+                edge_index++;
+            }
+        }
+
+        // Print the adjacency matrix
+        cout << "Adjacency Matrix:" << endl;
+        print_adjacency_matrix(adjacency_matrix);
+
+        // Store the adjacency matrix
+        adjacency_matrices.push_back(adjacency_matrix);
     }
-    
+
     clustream.close();
 }
 
@@ -151,7 +187,10 @@ void divide_task(int & my_rank_start, int & my_rank_end, int tasks)
 void gen_flat_hists(vector<double > & clu1, vector<double > & clu2, int n_cluster_pairs, int nbin, double binw, double maxd, string histfile, double rcout, bool same = false)
 {
     int                     bin;
-    double                  dist;
+    double                  total_dist;
+    double                  dist_structure;
+    double                  dist_comp_1;
+    double                  dist_comp_2;
     vector<long long int>   my_hist(nbin,0);  
     vector<long long int>   hist(nbin,0);  
     long long int           my_nsamples = 0;
@@ -204,12 +243,13 @@ void gen_flat_hists(vector<double > & clu1, vector<double > & clu2, int n_cluste
         
         for (int j=looptwo_start; j<clu2.size()/n_cluster_pairs; j++)
         {
-            dist = 0;
+            total_dist = 0;
     
             for (int k=0; k<n_cluster_pairs; k++)
-                dist += pow(clu1[i*n_cluster_pairs+k] - clu2[j*n_cluster_pairs+k],2.0);
+                // Distance calculation between two clusters
+                total_dist += pow(clu1[i*n_cluster_pairs+k] - clu2[j*n_cluster_pairs+k],2.0);
 
-            bin  = get_bin(binw, maxd, sqrt(dist));
+            bin  = get_bin(binw, maxd, sqrt(total_dist));
             
             if (bin > nbin)
             {
@@ -220,7 +260,7 @@ void gen_flat_hists(vector<double > & clu1, vector<double > & clu2, int n_cluste
                 cout << "Rank: " << my_rank << " bin:  " << bin << endl;
                 cout << "Rank: " << my_rank << " binw: " << binw << endl;
                 cout << "Rank: " << my_rank << " maxd: " << maxd << endl;
-                cout << "Rank: " << my_rank << " dist: " << dist << endl;
+                cout << "Rank: " << my_rank << " dist: " << total_dist << endl;
                 cout << "Rank: " << my_rank << " clus: " << endl;
                 
                 for (int m=0;m<n_cluster_pairs; m++)
@@ -282,7 +322,7 @@ int main(int argc, char *argv[])
     string f1_idx = argv[1]; // "0050"; // Frame 1 of liquid carbon at 1000 K & 0.5 gcc // .2b_clu-r.txt;
     string f2_idx = argv[2]; //"0075"; // Frame 6 of liquid carbon at 1000 K & 0.5 gcc // .2b_clu-r.txt;
     
-    string style = argv[3]; // "s"; // Calc distances based on rij, not transformed sij
+    // string style = argv[3]; // "s"; // Calc distances based on rij, not transformed sij
          
     double rcout_2b = 5.0;
     double rcout_3b = 5.0;
@@ -293,83 +333,86 @@ int main(int argc, char *argv[])
     int nbin_4b = 100;
 
     /////////////////////////////////////////////
-    // Read in 2B clusters -- IN TERMS OF rij **OR** sij - determined by user
+    // Read in 2B clusters -- IN TERMS OF sij - determined by user
     /////////////////////////////////////////////
     
-    string f1_2b = f1_idx + ".2b_clu-" + style + ".txt"; 
-    string f2_2b = f2_idx + ".2b_clu-" + style + ".txt";
+    string f1_2b = f1_idx + ".all-2b-clusters.txt"; 
+    string f2_2b = f2_idx + ".all-2b-clusters.txt";
 
     
-    vector<double> f1_2b_flat_clusters;
-    vector<double> f2_2b_flat_clusters;
+    vector<vector<vector<double>>> f1_2b_flat_clusters;
+    vector<vector<vector<double>>> f2_2b_flat_clusters;
     
     int npairs_2b = 1;
     
-    read_flat_clusters(f1_2b, npairs_2b, f1_2b_flat_clusters);
-    read_flat_clusters(f2_2b, npairs_2b, f2_2b_flat_clusters);        
+    read_flat_clusters(f1_2b, npairs_2b, f1_2b_flat_clusters, 2);
+    read_flat_clusters(f2_2b, npairs_2b, f2_2b_flat_clusters, 2);        
     
 
     /////////////////////////////////////////////
     // Read in 3B clusters -- IN TERMS OF rij **OR** sij - determined by user
     /////////////////////////////////////////////
         
-    string f1_3b = f1_idx + ".3b_clu-" + style + ".txt"; 
-    string f2_3b = f2_idx + ".3b_clu-" + style + ".txt";
+    string f1_3b = f1_idx + ".all-3b-clusters.txt"; 
+    string f2_3b = f2_idx + ".all-3b-clusters.txt";
     
-    vector<double> f1_3b_flat_clusters;
-    vector<double> f2_3b_flat_clusters;
+    // vector<double> f1_3b_flat_clusters;
+    // vector<double> f2_3b_flat_clusters;
+    vector<vector<vector<double>>> f1_3b_flat_clusters;
+    vector<vector<vector<double>>> f2_3b_flat_clusters;
     
     int npairs_3b = 3;
     
-    read_flat_clusters(f1_3b, npairs_3b, f1_3b_flat_clusters);
-    read_flat_clusters(f2_3b, npairs_3b, f2_3b_flat_clusters);   
+    read_flat_clusters(f1_3b, npairs_3b, f1_3b_flat_clusters, 3);
+    read_flat_clusters(f2_3b, npairs_3b, f2_3b_flat_clusters, 3);   
   
     /////////////////////////////////////////////
     // Read in 4B clusters -- IN TERMS OF rij **OR** sij - determined by user
     /////////////////////////////////////////////  
     
-    string f1_4b = f1_idx + ".4b_clu-" + style + ".txt"; 
-    string f2_4b = f2_idx + ".4b_clu-" + style + ".txt";   
+    string f1_4b = f1_idx + ".all-4b-clusters.txt"; 
+    string f2_4b = f2_idx + ".all-4b-clusters.txt";   
     
-    vector<double> f1_4b_flat_clusters;
-    vector<double> f2_4b_flat_clusters;    
+    vector<vector<vector<double>>> f1_4b_flat_clusters;
+    vector<vector<vector<double>>> f2_4b_flat_clusters;    
     
     int npairs_4b = 6;
     
-    read_flat_clusters(f1_4b, npairs_4b, f1_4b_flat_clusters);
-    read_flat_clusters(f2_4b, npairs_4b, f2_4b_flat_clusters);       
+    read_flat_clusters(f1_4b, npairs_4b, f1_4b_flat_clusters, 4);
+    read_flat_clusters(f2_4b, npairs_4b, f2_4b_flat_clusters, 4);       
  
-
     /////////////////////////////////////////////
     // Determine the max possible distance between two clusters
-    /////////////////////////////////////////////
-    
-    double maxd_2b = rcout_2b;                      if (style == "s") maxd_2b = 2.0;
-    double maxd_3b = sqrt( 3.0*pow(rcout_3b,2.0) ); if (style == "s") maxd_3b = sqrt( 3.0*pow(2.0,2.0) );
-    double maxd_4b = sqrt( 6.0*pow(rcout_4b,2.0) ); if (style == "s") maxd_4b = sqrt( 6.0*pow(2.0,2.0) );
-    
-    if(my_rank==0)
-        cout << "Setting maximum histogram values: " << maxd_2b <<  " " << maxd_3b << " " << maxd_4b << endl;
-    
-
-    /////////////////////////////////////////////
-    // generate the cluster distance histogram
+    // Added 1.0 to each due to multi-element formulation
+    // Removed rij transformation since sij are already normalized
     /////////////////////////////////////////////
 
-    // set up the histograms
+    // double maxd_2b = 2.0 + 1.0;
+    // double maxd_3b = sqrt( 3.0*pow(2.0,2.0) ) + 1.0;
+    // double maxd_4b = sqrt( 6.0*pow(2.0,2.0) ) + 1.0;
     
-    double binw_2b = maxd_2b/nbin_2b; 
-    double binw_3b = maxd_3b/nbin_3b; 
-    double binw_4b = maxd_4b/nbin_4b; 
+    // if(my_rank==0)
+    //     cout << "Setting maximum histogram values: " << maxd_2b <<  " " << maxd_3b << " " << maxd_4b << endl;
     
-    bool same = false; if (f1_idx == f2_idx) same = true; 
+
+    // /////////////////////////////////////////////
+    // // generate the cluster distance histogram
+    // /////////////////////////////////////////////
+
+    // // set up the histograms
     
-    gen_flat_hists(f1_2b_flat_clusters, f2_2b_flat_clusters, npairs_2b, nbin_2b, binw_2b, maxd_2b, f1_idx + "-" + f2_idx + ".2b_clu-" + style + ".hist", rcout_2b, same);
-    gen_flat_hists(f1_3b_flat_clusters, f2_3b_flat_clusters, npairs_3b, nbin_3b, binw_3b, maxd_3b, f1_idx + "-" + f2_idx + ".3b_clu-" + style + ".hist", rcout_3b, same);
-    gen_flat_hists(f1_4b_flat_clusters, f2_4b_flat_clusters, npairs_4b, nbin_4b, binw_4b, maxd_4b, f1_idx + "-" + f2_idx + ".4b_clu-" + style + ".hist", rcout_4b, same);
+    // double binw_2b = maxd_2b/nbin_2b; 
+    // double binw_3b = maxd_3b/nbin_3b; 
+    // double binw_4b = maxd_4b/nbin_4b; 
+    
+    // bool same = false; if (f1_idx == f2_idx) same = true; 
+    
+    // gen_flat_hists(f1_2b_flat_clusters, f2_2b_flat_clusters, npairs_2b, nbin_2b, binw_2b, maxd_2b, f1_idx + "-" + f2_idx + ".2b_clu-" + style + ".hist", rcout_2b, same);
+    // gen_flat_hists(f1_3b_flat_clusters, f2_3b_flat_clusters, npairs_3b, nbin_3b, binw_3b, maxd_3b, f1_idx + "-" + f2_idx + ".3b_clu-" + style + ".hist", rcout_3b, same);
+    // gen_flat_hists(f1_4b_flat_clusters, f2_4b_flat_clusters, npairs_4b, nbin_4b, binw_4b, maxd_4b, f1_idx + "-" + f2_idx + ".4b_clu-" + style + ".hist", rcout_4b, same);
 
 
-    MPI_Finalize();
+    // MPI_Finalize();
      
 }
 
