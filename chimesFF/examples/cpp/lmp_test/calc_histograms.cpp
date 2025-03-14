@@ -12,9 +12,55 @@
 #include "chimesFF.h"    
 
 using namespace std;
+using namespace GlobalParams;
 
 int nprocs;
 int my_rank;
+
+#include <iostream>
+#include <iomanip>
+#include "chimesFF.h"  // Make sure this includes the GlobalParams namespace declaration
+
+void print_global_params() {
+    
+    // Print 2-body cutoffs
+    cout << "\n2-Body Cutoffs:\n";
+    for (size_t i = 0; i < rcut_2b_list.size(); ++i) {
+        cout << "Pair " << i << ": ";
+        cout << "Inner = " << fixed << setprecision(4) << rcut_2b_list[i][0];
+        cout << ", Outer = " << rcut_2b_list[i][1] << "\n";
+    }
+
+    // Print 3-body cutoffs
+    cout << "\n3-Body Cutoffs:\n";
+    for (size_t i = 0; i < rcut_3b_list.size(); ++i) {
+        cout << "Triplet " << i << ":\n";
+        for (size_t j = 0; j < rcut_3b_list[i].size(); ++j) {
+            cout << "  Pair " << j << ": ";
+            cout << "Inner = " << rcut_3b_list[i][j][0];
+            cout << ", Outer = " << rcut_3b_list[i][j][1] << "\n";
+        }
+    }
+
+    // Print 4-body cutoffs
+    cout << "\n4-Body Cutoffs:\n";
+    for (size_t i = 0; i < rcut_4b_list.size(); ++i) {
+        cout << "Quadruplet " << i << ":\n";
+        for (size_t j = 0; j < rcut_4b_list[i].size(); ++j) {
+            cout << "  Pair " << j << ": ";
+            cout << "Inner = " << rcut_4b_list[i][j][0];
+            cout << ", Outer = " << rcut_4b_list[i][j][1] << "\n";
+        }
+    }
+
+    // Print Morse lambda values
+    cout << "\nMorse Lambda Values:\n";
+    for (size_t i = 0; i < morse_lambda_list.size(); ++i) {
+        cout << "Pair " << i << ": λ = " 
+                  << fixed << setprecision(4) 
+                  << morse_lambda_list[i] << "\n";
+    }
+}
 
 int split_lines(string line, vector<string> & items)
 {
@@ -351,6 +397,8 @@ int main(int argc, char *argv[])
     // Read parameters FIRST
     ff.read_parameters("params.txt.reduced");  // Replace with actual parameter file
          
+    print_global_params();
+
     double rcout_2b = 5.0;
     double rcout_3b = 5.0;
     double rcout_4b = 4.5;
