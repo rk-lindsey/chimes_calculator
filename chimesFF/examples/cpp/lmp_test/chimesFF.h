@@ -34,6 +34,7 @@ using namespace std;
 #define USE_DISTANCE_TENSOR 1 // Use tensor of distances in computing stresses.
 
 namespace GlobalParams {
+    extern int atom_typ_cnt;
     extern vector<vector<double>> rcut_2b_list;
     extern vector<vector<vector<double>>> rcut_3b_list;
     extern vector<vector<vector<double>>> rcut_4b_list;
