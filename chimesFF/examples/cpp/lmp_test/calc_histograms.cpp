@@ -137,11 +137,11 @@ double transform(double rcin, double rcout, double lambda, double rij)
 }
 
 // Function to read the clusters and construct adjacency matrices
-void read_flat_clusters(string clufile, int npairs_per_cluster, vector<double > & clusters, const int body_cnt) {
+void read_flat_clusters(string clufile, int npairs_per_cluster, vector<double > & clusters, vector<int> & atom_types, const int body_cnt) {
     ifstream clustream(clufile);
     if (!clustream.is_open()) {
         cerr << "ERROR: Could not open file " << clufile << endl;
-        exit(1);
+        exit(0);
     }
 
     string line;
@@ -165,6 +165,7 @@ void read_flat_clusters(string clufile, int npairs_per_cluster, vector<double > 
         for (int i = 0; i < body_cnt; i++) {
             typ_idxs[i] = stoi(line_contents[npairs_per_cluster + i]);
         }
+        atom_types.insert(atom_types.end(), typ_idxs.begin(), typ_idxs.end());
 
         double cutoff_0, cutoff_00;
         double cutoff_1, cutoff_01;
@@ -183,21 +184,28 @@ void read_flat_clusters(string clufile, int npairs_per_cluster, vector<double > 
             morse_pair_1 = morse_lambda_list[atom_int_pair_mapping[ typ_idxs[0]*atom_typ_cnt + typ_idxs[1]]];
             edge_lengths[0] = transform(cutoff_00, cutoff_0, morse_pair_1, stod(line_contents[0]));
         } else if (body_cnt == 3){
+            cout << "Entered body_cnt 3 look" << endl;
             int type_idx =  typ_idxs[0]*atom_typ_cnt*atom_typ_cnt + typ_idxs[1]*atom_typ_cnt + typ_idxs[2];
             int tripidx = atom_int_trip_mapping[type_idx];
             vector<int> & mapped_pair_idx_3b = pair_int_trip_mapping[type_idx];
             // Get cutoffs
+            cout << "Getting cutoffs" << endl;
+            cout << type_idx << endl;
+            cout << mapped_pair_idx_3b[0] << endl;
             cutoff_0  = rcut_3b_list[ tripidx ][1][mapped_pair_idx_3b[0]]; // outer cutoff
+            cout << "got cutoff" << endl;
             cutoff_00 = rcut_3b_list[ tripidx ][0][mapped_pair_idx_3b[0]]; // inner cutoff
             cutoff_1  = rcut_3b_list[ tripidx ][1][mapped_pair_idx_3b[1]];
             cutoff_01 = rcut_3b_list[ tripidx ][0][mapped_pair_idx_3b[1]]; 
             cutoff_2  = rcut_3b_list[ tripidx ][1][mapped_pair_idx_3b[2]];
             cutoff_02 = rcut_3b_list[ tripidx ][0][mapped_pair_idx_3b[2]];
             // Get morse variables
+            cout << "Getting morse" << endl;
             morse_pair_1 = morse_lambda_list[atom_int_pair_mapping[ typ_idxs[0]*atom_typ_cnt + typ_idxs[1]]];
             morse_pair_2 = morse_lambda_list[atom_int_pair_mapping[ typ_idxs[0]*atom_typ_cnt + typ_idxs[2]]];
             morse_pair_3 = morse_lambda_list[atom_int_pair_mapping[ typ_idxs[1]*atom_typ_cnt + typ_idxs[2]]];
             // Assign edge lengths
+            cout << "Assigning edges" << endl;
             edge_lengths[0] = transform(cutoff_00, cutoff_0, morse_pair_1, stod(line_contents[0]));
             edge_lengths[1] = transform(cutoff_01, cutoff_1, morse_pair_2, stod(line_contents[1]));
             edge_lengths[2] = transform(cutoff_02, cutoff_2, morse_pair_3, stod(line_contents[2]));
@@ -291,7 +299,56 @@ void divide_task(int & my_rank_start, int & my_rank_end, int tasks)
 	}
 }
 
-void gen_flat_hists(vector<double > & clu1, vector<double > & clu2, int n_cluster_pairs, int nbin, double binw, double maxd, string histfile, bool same = false)
+double compute_composition_weight_2b(vector<double> edges, vector<int> atom_types){
+    double normalized_dist = (atom_types[0] + atom_types[1])/(2.0*atom_typ_cnt);
+    return normalized_dist;
+}
+
+double compute_composition_weight_3b(vector<double> edges, vector<int> atom_types){
+
+    vector<pair<int, double>> sum_edge_lengths(3);
+    sum_edge_lengths[0] = {0, edges[0] + edges[1]};
+    sum_edge_lengths[1] = {1, edges[0] + edges[2]};
+    sum_edge_lengths[2] = {2, edges[1] + edges[2]};
+
+    // Sort the vector by the summed values in ascending order
+    sort(sum_edge_lengths.begin(), sum_edge_lengths.end(),
+        [](const pair<int, double>& a, const pair<int, double>& b) {
+            return a.second < b.second;
+        });
+
+    double total_dist =   1.0*atom_types[sum_edge_lengths[0].first] 
+                        + 2.0*atom_types[sum_edge_lengths[1].first] 
+                        + 3.0*atom_types[sum_edge_lengths[2].first];
+    
+    double normalized_dist = total_dist / (6.0*atom_typ_cnt);
+    return normalized_dist;
+}
+
+double compute_composition_weight_4b(vector<double> edges, vector<int> atom_types){
+
+    vector<pair<int, double>> sum_edge_lengths(4);
+    sum_edge_lengths[0] = {0, edges[0] + edges[1] + edges[2]};
+    sum_edge_lengths[1] = {1, edges[0] + edges[3] + edges[4]};
+    sum_edge_lengths[2] = {2, edges[1] + edges[3] + edges[5]};
+    sum_edge_lengths[3] = {3, edges[2] + edges[4] + edges[5]};
+
+    // Sort the vector by the summed values in ascending order
+    sort(sum_edge_lengths.begin(), sum_edge_lengths.end(),
+        [](const pair<int, double>& a, const pair<int, double>& b) {
+            return a.second < b.second;
+        });
+
+    double total_dist =   1.0*atom_types[sum_edge_lengths[0].first] 
+                        + 2.0*atom_types[sum_edge_lengths[1].first] 
+                        + 3.0*atom_types[sum_edge_lengths[2].first] 
+                        + 4.0*atom_types[sum_edge_lengths[3].first]; 
+    
+    double normalized_dist = total_dist / (10.0*atom_typ_cnt);
+    return normalized_dist;
+}
+
+void gen_flat_hists(vector<double > & clu1, vector<double > & clu2, vector<int> & clu1_atm_types, vector<int> & clu2_atm_types, int n_cluster_pairs, int nbin, double binw, double maxd, string histfile, bool same = false, int body_cnt = 2)
 {
     int                     bin;
     double                  total_dist;
@@ -308,6 +365,9 @@ void gen_flat_hists(vector<double > & clu1, vector<double > & clu2, int n_cluste
     int                     total_tasks; 
     int                     status;
     int                     maxIntValue = numeric_limits<int>::max();
+    double                  dist_struct;
+    double                  d_comp1;
+    double                  d_comp2;
     
     // Distribute outer loop over processors
     
@@ -347,16 +407,42 @@ void gen_flat_hists(vector<double > & clu1, vector<double > & clu2, int n_cluste
         // Compute the distances
         // Need to determine the flat index for the item
         // Should be i*n_cluster_pairs
-        
+        cout << "Entering first loop generation" << endl;
         for (int j=looptwo_start; j<clu2.size()/n_cluster_pairs; j++)
         {
-            total_dist = 0;
+            dist_struct = 0;
+            vector<double> edge_length_1(n_cluster_pairs);
+            vector<double> edge_length_2(n_cluster_pairs);
+            vector<int>    atom_list_1(body_cnt);
+            vector<int>    atom_list_2(body_cnt);
     
-            for (int k=0; k<n_cluster_pairs; k++)
-                // Distance calculation between two clusters
-                total_dist += pow(clu1[i*n_cluster_pairs+k] - clu2[j*n_cluster_pairs+k],2.0);
+            for (int k=0; k<n_cluster_pairs; k++){   
+                // Distance calculation between two clusters             
+                edge_length_1.push_back(clu1[i*n_cluster_pairs+k]);
+                edge_length_2.push_back(clu2[j*n_cluster_pairs+k]);
+                dist_struct += pow(clu1[i*n_cluster_pairs+k] - clu2[j*n_cluster_pairs+k],2.0);
+                }
+            
+            for (int l=0; l<body_cnt; l++){
+                atom_list_1.push_back(clu1_atm_types[i*body_cnt+l]);
+                atom_list_2.push_back(clu2_atm_types[j*body_cnt+l]);
+            }
 
-            bin  = get_bin(binw, maxd, sqrt(total_dist));
+            if (body_cnt == 2){
+                d_comp1 = compute_composition_weight_2b(edge_length_1, atom_list_1);
+                d_comp2 = compute_composition_weight_2b(edge_length_2, atom_list_2);
+            } else if (body_cnt == 3){
+                d_comp1 = compute_composition_weight_3b(edge_length_1, atom_list_1);
+                d_comp2 = compute_composition_weight_3b(edge_length_2, atom_list_2);
+            } else if (body_cnt == 4){
+                d_comp1 = compute_composition_weight_4b(edge_length_1, atom_list_1);
+                d_comp2 = compute_composition_weight_4b(edge_length_2, atom_list_2);
+            } else {
+                cout << "Improper body count" << endl;
+                exit(1);
+            }
+            total_dist = sqrt(dist_struct) + d_comp1 - d_comp2;
+            bin  = get_bin(binw, maxd, total_dist);
             
             if (bin > nbin)
             {
@@ -434,11 +520,13 @@ int main(int argc, char *argv[])
     // Initialize ChIMES calculator
     chimesFF ff;
     ff.init(my_rank);
+    ff.build_pair_int_trip_map();
+    ff.build_pair_int_quad_map();
     
     // Read parameters FIRST
     ff.read_parameters("params.txt.reduced");  // Replace with actual parameter file
          
-    // print_global_params();
+    print_global_params();
     
     int nbin_2b = 100;
     int nbin_3b = 100;
@@ -454,12 +542,15 @@ int main(int argc, char *argv[])
     
     vector<double> f1_2b_flat_clusters;
     vector<double> f2_2b_flat_clusters;
+    vector<int>    f1_2b_atom_types;
+    vector<int>    f2_2b_atom_types;
     
     int npairs_2b = 1;
     
-    read_flat_clusters(f1_2b, npairs_2b, f1_2b_flat_clusters, 2);
-    read_flat_clusters(f2_2b, npairs_2b, f2_2b_flat_clusters, 2);        
-    
+    cout << "Entering read_flat_clusters" << endl;
+    read_flat_clusters(f1_2b, npairs_2b, f1_2b_flat_clusters, f1_2b_atom_types, 2);
+    read_flat_clusters(f2_2b, npairs_2b, f2_2b_flat_clusters, f2_2b_atom_types, 2);        
+    cout << "Finished read_flat_clusters" << endl;
 
     /////////////////////////////////////////////
     // Read in 3B clusters -- IN TERMS OF rij **OR** sij - determined by user
@@ -470,11 +561,13 @@ int main(int argc, char *argv[])
     
     vector<double> f1_3b_flat_clusters;
     vector<double> f2_3b_flat_clusters;
+    vector<int>    f1_3b_atom_types;
+    vector<int>    f2_3b_atom_types;
     
     int npairs_3b = 3;
-    
-    read_flat_clusters(f1_3b, npairs_3b, f1_3b_flat_clusters, 3);
-    read_flat_clusters(f2_3b, npairs_3b, f2_3b_flat_clusters, 3);   
+    cout << "Got to 3b calcs" << endl;
+    read_flat_clusters(f1_3b, npairs_3b, f1_3b_flat_clusters, f1_3b_atom_types, 3);
+    read_flat_clusters(f2_3b, npairs_3b, f2_3b_flat_clusters, f2_3b_atom_types, 3);   
   
     /////////////////////////////////////////////
     // Read in 4B clusters -- IN TERMS OF rij **OR** sij - determined by user
@@ -484,12 +577,14 @@ int main(int argc, char *argv[])
     string f2_4b = f2_idx + ".all-4b-clusters.txt";   
     
     vector<double> f1_4b_flat_clusters;
-    vector<double> f2_4b_flat_clusters;    
+    vector<double> f2_4b_flat_clusters;   
+    vector<int>    f1_4b_atom_types;
+    vector<int>    f2_4b_atom_types; 
     
     int npairs_4b = 6;
-    
-    read_flat_clusters(f1_4b, npairs_4b, f1_4b_flat_clusters, 4);
-    read_flat_clusters(f2_4b, npairs_4b, f2_4b_flat_clusters, 4);       
+    cout << "Got to 4b calcs" << endl;
+    read_flat_clusters(f1_4b, npairs_4b, f1_4b_flat_clusters, f1_4b_atom_types, 4);
+    read_flat_clusters(f2_4b, npairs_4b, f2_4b_flat_clusters, f2_4b_atom_types, 4);       
  
     /////////////////////////////////////////////
     // Determine the max possible distance between two clusters
@@ -500,7 +595,7 @@ int main(int argc, char *argv[])
     double maxd_2b = 2.0 + 1.0;
     double maxd_3b = sqrt( 3.0*pow(2.0,2.0) ) + 1.0;
     double maxd_4b = sqrt( 6.0*pow(2.0,2.0) ) + 1.0;
-    
+    cout << "Got to max calcs" << endl;
     if(my_rank==0)
         cout << "Setting maximum histogram values: " << maxd_2b <<  " " << maxd_3b << " " << maxd_4b << endl;
     
@@ -517,9 +612,10 @@ int main(int argc, char *argv[])
     
     bool same = false; if (f1_idx == f2_idx) same = true; 
     
-    gen_flat_hists(f1_2b_flat_clusters, f2_2b_flat_clusters, npairs_2b, nbin_2b, binw_2b, maxd_2b, f1_idx + "-" + f2_idx + ".2b_clu-" + style + ".hist", same);
-    gen_flat_hists(f1_3b_flat_clusters, f2_3b_flat_clusters, npairs_3b, nbin_3b, binw_3b, maxd_3b, f1_idx + "-" + f2_idx + ".3b_clu-" + style + ".hist", same);
-    gen_flat_hists(f1_4b_flat_clusters, f2_4b_flat_clusters, npairs_4b, nbin_4b, binw_4b, maxd_4b, f1_idx + "-" + f2_idx + ".4b_clu-" + style + ".hist", same);
+    cout << "Entering fingerprint generation" << endl;
+    gen_flat_hists(f1_2b_flat_clusters, f2_2b_flat_clusters, f1_2b_atom_types, f2_2b_atom_types, npairs_2b, nbin_2b, binw_2b, maxd_2b, f1_idx + "-" + f2_idx + ".2b_clu-" + style + ".hist", same, 2);
+    gen_flat_hists(f1_3b_flat_clusters, f2_3b_flat_clusters, f1_3b_atom_types, f2_3b_atom_types, npairs_3b, nbin_3b, binw_3b, maxd_3b, f1_idx + "-" + f2_idx + ".3b_clu-" + style + ".hist", same, 3);
+    gen_flat_hists(f1_4b_flat_clusters, f2_4b_flat_clusters, f1_4b_atom_types, f2_4b_atom_types, npairs_4b, nbin_4b, binw_4b, maxd_4b, f1_idx + "-" + f2_idx + ".4b_clu-" + style + ".hist", same, 4);
 
 
     MPI_Finalize();

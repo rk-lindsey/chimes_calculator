@@ -2253,6 +2253,7 @@ void chimesFF::build_pair_int_quad_map()
     // to support GPU environment without string operations.
     // This must be called prior to force evaluation.
 
+    cout << "Entered weird func" << endl;
     const int natoms = 4 ;
     const int npairs = natoms * (natoms-1) / 2 ;
     vector<int> pair_map(npairs) ;
@@ -2261,7 +2262,7 @@ void chimesFF::build_pair_int_quad_map()
     if ( atom_int_quad_map.size() == 0 ) return ; // No quads !
     
     pair_int_quad_map.resize(natmtyps*natmtyps*natmtyps*natmtyps) ;
-
+    
     
     for ( int i = 0 ; i < natmtyps ; i++ )
     {
@@ -2309,6 +2310,7 @@ void chimesFF::build_pair_int_quad_map()
         }
     }   
     GlobalParams::pair_int_quad_mapping = pair_int_quad_map;
+    cout << "Assigned global param" << endl;
 }
 
 void chimesFF::build_pair_int_trip_map()
