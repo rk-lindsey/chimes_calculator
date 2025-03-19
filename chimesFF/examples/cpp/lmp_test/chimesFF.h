@@ -39,6 +39,14 @@ namespace GlobalParams {
     extern vector<vector<vector<double>>> rcut_3b_list;
     extern vector<vector<vector<double>>> rcut_4b_list;
     extern vector<double> morse_lambda_list;
+
+    // Add mapping vectors
+    extern vector <int> atom_int_pair_mapping;
+    extern vector <int> atom_int_trip_mapping;
+    extern vector <int> atom_int_quad_mapping;
+
+    extern vector<vector<int>> pair_int_trip_mapping;
+    extern vector<vector<int>> pair_int_quad_mapping;
 }
 
 // Temporary storage for ChIMES interaction.

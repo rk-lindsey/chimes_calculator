@@ -24,6 +24,14 @@ namespace GlobalParams {
     vector<vector<vector<double>>> rcut_3b_list;
     vector<vector<vector<double>>> rcut_4b_list;
     vector<double> morse_lambda_list;
+
+    // Add mapping vectors
+    vector <int> atom_int_pair_mapping;
+    vector <int> atom_int_trip_mapping;
+    vector <int> atom_int_quad_mapping;
+
+    vector<vector<int>> pair_int_trip_mapping;
+    vector<vector<int>> pair_int_quad_mapping;
 }
 
 template <typename T>
@@ -1339,6 +1347,10 @@ void chimesFF::read_parameters(string paramfile)
     GlobalParams::rcut_3b_list = chimes_3b_cutoff;
     GlobalParams::rcut_4b_list = chimes_4b_cutoff;
     GlobalParams::morse_lambda_list = morse_var;
+
+    GlobalParams::atom_int_pair_mapping = atom_int_pair_map;
+    GlobalParams::atom_int_trip_mapping = atom_int_trip_map;
+    GlobalParams::atom_int_quad_mapping = atom_int_quad_map;
     
     param_file.close();    
 }
@@ -2296,6 +2308,7 @@ void chimesFF::build_pair_int_quad_map()
 			cout << "Warning: Did not initialize pair_int_quad_map for excluded entry " << i << endl ;
         }
     }   
+    GlobalParams::pair_int_quad_mapping = pair_int_quad_map;
 }
 
 void chimesFF::build_pair_int_trip_map()
@@ -2353,5 +2366,6 @@ void chimesFF::build_pair_int_trip_map()
         }
     }
     
+    GlobalParams::pair_int_trip_mapping = pair_int_trip_map;
 }
 
