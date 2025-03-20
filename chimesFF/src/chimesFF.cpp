@@ -1525,12 +1525,12 @@ void chimesFF::compute_2B(const double dx, const vector<double> & dr, const vect
 }
 
 // Overload for calls from LAMMPS  
-void chimesFF::compute_3B(const vector<double> & dx, const vector<double> & dr, const vector<int> & typ_idxs, vector<double> & force, vector<double> & stress, double & energy, chimes3BTmp &tmp, vector<vector<double > > & clusters_3b, bool fingerprint)
+void chimesFF::compute_3B(const vector<double> & dx, const vector<double> & dr, const vector<int> & typ_idxs, vector<double> & force, vector<double> & stress, double & energy, chimes3BTmp &tmp, vector<vector<double > > & clusters_3b, bool fingerprint, bool ghost_3b)
 {
 	vector<double> dummy_force_scalar(3);
-	compute_3B(dx, dr, typ_idxs, force, stress, energy, tmp, dummy_force_scalar,clusters_3b,  fingerprint);
+	compute_3B(dx, dr, typ_idxs, force, stress, energy, tmp, dummy_force_scalar,clusters_3b,  fingerprint, ghost_3b);
 }
-void chimesFF::compute_3B(const vector<double> & dx, const vector<double> & dr, const vector<int> & typ_idxs, vector<double> & force, vector<double> & stress, double & energy, chimes3BTmp &tmp, vector<double> & force_scalar_in, vector<vector<double>> & clusters_3b, bool fingerprint)
+void chimesFF::compute_3B(const vector<double> & dx, const vector<double> & dr, const vector<int> & typ_idxs, vector<double> & force, vector<double> & stress, double & energy, chimes3BTmp &tmp, vector<double> & force_scalar_in, vector<vector<double>> & clusters_3b, bool fingerprint, bool ghost_3b)
 {
     // Compute 3b (input: 3 atoms or distances, corresponding types... outputs (updates) force, acceleration, energy, stress
     //
@@ -1606,6 +1606,7 @@ void chimesFF::compute_3B(const vector<double> & dx, const vector<double> & dr, 
         combinedVec.insert(combinedVec.end(), cluster_typ_idxs_3b.begin(), cluster_typ_idxs_3b.end());
         clusters_3b.push_back(combinedVec);
     }
+    if(ghost_3b){return;}
 
  int pair_type_1 = atom_int_pair_map[ typ_idxs[0]*natmtyps + typ_idxs[1] ];
  int pair_type_2 = atom_int_pair_map[ typ_idxs[0]*natmtyps + typ_idxs[2] ];
@@ -1761,12 +1762,12 @@ void chimesFF::compute_3B(const vector<double> & dx, const vector<double> & dr, 
     return;    
 }
 
-void chimesFF::compute_4B(const vector<double> & dx, const vector<double> & dr, const vector<int> & typ_idxs, vector<double> & force, vector<double> & stress, double & energy, chimes4BTmp &tmp, vector<vector<double>> & clusters_4b, bool fingerprint)
+void chimesFF::compute_4B(const vector<double> & dx, const vector<double> & dr, const vector<int> & typ_idxs, vector<double> & force, vector<double> & stress, double & energy, chimes4BTmp &tmp, vector<vector<double>> & clusters_4b, bool fingerprint, bool ghost_4b)
 {              
         vector<double> dummy_force_scalar(6);
-        compute_4B(dx, dr, typ_idxs, force, stress, energy, tmp, dummy_force_scalar, clusters_4b,  fingerprint);                                                               
+        compute_4B(dx, dr, typ_idxs, force, stress, energy, tmp, dummy_force_scalar, clusters_4b,  fingerprint, ghost_4b);                                                               
 }
-void chimesFF::compute_4B(const vector<double> & dx, const vector<double> & dr, const vector<int> & typ_idxs, vector<double> & force, vector<double> & stress, double & energy, chimes4BTmp &tmp, vector<double> & force_scalar_in, vector<vector<double>> & clusters_4b, bool fingerprint)
+void chimesFF::compute_4B(const vector<double> & dx, const vector<double> & dr, const vector<int> & typ_idxs, vector<double> & force, vector<double> & stress, double & energy, chimes4BTmp &tmp, vector<double> & force_scalar_in, vector<vector<double>> & clusters_4b, bool fingerprint, bool ghost_4b)
 {
     // Compute 3b (input: 3 atoms or distances, corresponding types... outputs (updates) force, acceleration, energy, stress
     //
@@ -1868,7 +1869,7 @@ void chimesFF::compute_4B(const vector<double> & dx, const vector<double> & dr, 
         combinedVec.insert(combinedVec.end(), cluster_typ_idxs_4b.begin(), cluster_typ_idxs_4b.end());
         clusters_4b.push_back(combinedVec);
     }
-
+    if (ghost_4b) return;
     // At this point, all distances are within allowed ranges. We can now proceed to the force/stress/energy calculation
     
  int pair_type_1 = atom_int_pair_map[ typ_idxs[0]*natmtyps + typ_idxs[1] ];

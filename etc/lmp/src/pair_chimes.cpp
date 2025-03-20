@@ -214,7 +214,19 @@ void PairCHIMES::coeff(int narg, char **arg)
 	}
 
 	maxcut_3b = chimes_calculator.max_cutoff_3B();
+	if (maxcut_3b==0.0 && fingerprint){
+		double max_val = 20;
+		for (const auto& row : cutoff_2b) {
+			for (double val : row) {
+				if (val > max_val) {
+					max_val = val;
+				}
+			}
+		}
+		maxcut_3b=max_val;
+	}
 	maxcut_4b = chimes_calculator.max_cutoff_4B();
+	if (maxcut_4b==0.0 && fingerprint){maxcut_4b=maxcut_3b;}
 }
 void writeClusterDataComp(const string& filename, const vector<vector<double>>& data) 
 {
@@ -302,7 +314,7 @@ inline double PairCHIMES::get_dist(int i, int j)
 void PairCHIMES::build_mb_neighlists()
 {
 
-	if ( (chimes_calculator.poly_orders[1] == 0) &&  (chimes_calculator.poly_orders[2] == 0))
+	if ( ((chimes_calculator.poly_orders[1] == 0) &&  (chimes_calculator.poly_orders[2] == 0))&& !fingerprint)
 		return;
 
 	// List gets built based on atoms owned by calling proc. 
@@ -396,7 +408,7 @@ void PairCHIMES::build_mb_neighlists()
 				
 				// Now decide if we should continue on to 4-body neighbor list construction
 
-				if (chimes_calculator.poly_orders[2] == 0)
+				if (chimes_calculator.poly_orders[2] == 0 || fingerprint)
 					continue;
 
 				llist = firstneigh[i];	
@@ -465,6 +477,8 @@ void PairCHIMES::compute(int eflag, int vflag)
     vector<vector<double > > tmp_dist_4b;
 	bool 				 tmp_FP;
 	bool 				 valid_order;
+	bool 				 ghost_3b;
+	bool 				 ghost_4b;
     int                  atmidxlst[6][2];
 	
 	// General LAMMPS compute vars
@@ -619,11 +633,12 @@ void PairCHIMES::compute(int eflag, int vflag)
         if(update->ntimestep % output->every_dump[0] == 0)
             badness_stream << update->ntimestep << " " <<  chimes_calculator.get_badness() << endl;
 
-	if (chimes_calculator.poly_orders[1] > 0)
+	if (chimes_calculator.poly_orders[1] > 0 || tmp_FP)
 	{
 		////////////////////////////////////////
 		// Compute 3-body interactions
 		////////////////////////////////////////
+		if (chimes_calculator.poly_orders[1] == 0){ghost_3b=true;} 
 
 		for (ii = 0; ii < neighborlist_3mers.size(); ii++)		
 		{
@@ -645,7 +660,7 @@ void PairCHIMES::compute(int eflag, int vflag)
 			energy = 0.0 ;
 			valid_order = (tag[i] < tag[j] && tag[i] < tag[k] && tag[j] < tag[k]);
 			
-			chimes_calculator.compute_3B( dist_3b, dr_3b, typ_idxs_3b, force_3b, stensor, energy, chimes_3btmp, tmp_dist_3b, tmp_FP && valid_order);
+			chimes_calculator.compute_3B( dist_3b, dr_3b, typ_idxs_3b, force_3b, stensor, energy, chimes_3btmp, tmp_dist_3b, tmp_FP && valid_order, ghost_3b);
 
 			for (idx=0; idx<3; idx++)
 			{
@@ -677,12 +692,12 @@ void PairCHIMES::compute(int eflag, int vflag)
 	if (tmp_FP)
 
 
-	if (chimes_calculator.poly_orders[2] > 0)
+	if (chimes_calculator.poly_orders[2] > 0 || tmp_FP)
 	{
 		////////////////////////////////////////
 		// Compute 4-body interactions
 		////////////////////////////////////////
-		
+		if (chimes_calculator.poly_orders[2] == 0){ghost_4b=true;} 
 		for (ii = 0; ii < neighborlist_4mers.size(); ii++)		
 		{
 			i     = neighborlist_4mers[ii][0];
@@ -708,7 +723,7 @@ void PairCHIMES::compute(int eflag, int vflag)
 			energy = 0.0 ;	
 			valid_order = (tag[i] < tag[j] && tag[j] < tag[k] && tag[k] < tag[l]);
 			
-			chimes_calculator.compute_4B( dist_4b, dr_4b, typ_idxs_4b, force_4b, stensor, energy, chimes_4btmp, tmp_dist_4b, tmp_FP && valid_order);
+			chimes_calculator.compute_4B( dist_4b, dr_4b, typ_idxs_4b, force_4b, stensor, energy, chimes_4btmp, tmp_dist_4b, tmp_FP && valid_order, ghost_4b);
 
 			for (idx=0; idx<3; idx++)
 			{

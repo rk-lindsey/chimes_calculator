@@ -36,3 +36,19 @@ Also make sure that all modulefiles written in TCL start with the string
 
 
 
+
+Lmod is automatically replacing "intel-classic/2021.6.0-magic" with
+"intel/2022.1.0-magic".
+
+Lmod has detected the following error: The following module(s) are unknown:
+"impi"
+
+Please check the spelling or version number. Also try "module spider ..."
+It is also possible your cache file is out-of-date; it may help to try:
+  $ module --ignore_cache load "impi"
+
+Also make sure that all modulefiles written in TCL start with the string
+#%Module
+
+
+

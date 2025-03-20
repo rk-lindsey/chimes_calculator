@@ -551,11 +551,11 @@ int main(int argc, char *argv[])
         
         all_files[i] = string(buffer, str_len);
     }
-
+    string param_file = argv[1];
     // Initialize ChIMES calculator
     chimesFF ff;
     ff.init(my_rank);
-    ff.read_parameters("params.txt.reduced");
+    ff.read_parameters(param_file);
     ff.build_pair_int_trip_map();
     ff.build_pair_int_quad_map();
     
