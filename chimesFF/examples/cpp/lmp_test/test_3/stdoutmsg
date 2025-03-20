@@ -1,0 +1,38 @@
+
+Lmod is automatically replacing "intel-classic/2021.6.0-magic" with
+"intel/2022.1.0-magic".
+
+Lmod has detected the following error: The following module(s) are unknown:
+"impi"
+
+Please check the spelling or version number. Also try "module spider ..."
+It is also possible your cache file is out-of-date; it may help to try:
+  $ module --ignore_cache load "impi"
+
+Also make sure that all modulefiles written in TCL start with the string
+#%Module
+
+
+
+application called MPI_Abort(MPI_COMM_WORLD, 1) - process 0
+[cli_0]: aborting job:
+application called MPI_Abort(MPI_COMM_WORLD, 1) - process 0
+slurmstepd: error: *** STEP 4293751.0 ON ruby2 CANCELLED AT 2025-03-20T07:55:55 ***
+srun: Job step aborted: Waiting up to 62 seconds for job step to finish.
+srun: error: ruby2: tasks 0-55: Killed
+
+Lmod is automatically replacing "intel-classic/2021.6.0-magic" with
+"intel/2022.1.0-magic".
+
+Lmod has detected the following error: The following module(s) are unknown:
+"impi"
+
+Please check the spelling or version number. Also try "module spider ..."
+It is also possible your cache file is out-of-date; it may help to try:
+  $ module --ignore_cache load "impi"
+
+Also make sure that all modulefiles written in TCL start with the string
+#%Module
+
+
+

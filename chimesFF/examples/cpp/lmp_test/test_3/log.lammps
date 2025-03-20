@@ -1,0 +1,107 @@
+LAMMPS (29 Oct 2020)
+#############################################
+# Specify high-level simulation style
+##############################################
+
+units        real                      # Specify units to use
+newton       on
+atom_style   atomic                      # Only store info on atom coords and type - no bonded info
+atom_modify  sort 0 0.0                # Maintain atom ordering when printing information
+atom_modify  map array                 # Also needed to maintain ordering
+neighbor     1.0 bin                   # Specify neighborlist parameters
+neigh_modify delay 0 every 1 check yes # More neighborlist parameters
+
+boundary p p p
+box tilt large
+read_data    ./final_structure.data
+Reading data file ...
+  triclinic box = (0.0000000 0.0000000 0.0000000) to (13.061980 13.061980 13.061980) with tilt (0.0000000 0.0000000 0.0000000)
+  4 by 2 by 7 MPI processor grid
+  reading atoms ...
+  216 atoms
+  reading velocities ...
+  216 velocities
+  read_data CPU = 0.006 seconds
+pair_style hybrid/overlay chimesFF fingerprint 1 for_fitting momb 12.0 0.75 20.0
+pair_coeff  * * chimesFF params.txt.reduced
+pair_coeff 1 1  momb 0.0 1.0 1.0 418.2600153 2.904
+pair_coeff 2 2  momb 0.0 1.0 1.0 2206.022943 3.432
+pair_coeff 1 2  momb 0.0 1.0 1.0 960.5681861 3.168
+
+##############################################
+# Specify the requested output
+##############################################
+#
+variable temp equal 1000
+
+compute         ke_tensor all temp
+thermo_style    custom step time ke pe etotal temp press pxx pyy pzz pxy pxz pyz vol c_ke_tensor[1] c_ke_tensor[2] c_ke_tensor[3] c_ke_tensor[4] c_ke_tensor[5] c_ke_tensor[6]
+thermo_modify   line one format float %20.5f flush yes
+thermo 1
+
+timestep 0.1
+dump            1 all custom 1 traj.lammpstrj id element xu yu zu fx fy fz
+dump_modify 1 element C Si sort id
+# Run
+velocity all create ${temp} 2217 rot yes dist gaussian
+velocity all create 1000 2217 rot yes dist gaussian
+fix 2 all nvt temp ${temp} ${temp} 100
+fix 2 all nvt temp 1000 ${temp} 100
+fix 2 all nvt temp 1000 1000 100
+fix_modify 2 energy yes
+run 0
+Neighbor list info ...
+  update every 1 steps, delay 0 steps, check yes
+  max neighbors/atom: 2000, page size: 100000
+  master list distance cutoff = 13
+  ghost atom cutoff = 13
+  binsize = 6.5, bins = 3 3 3
+  2 neighbor lists, perpetual/occasional/extra = 2 0 0
+  (1) pair chimesFF, perpetual
+      attributes: full, newton on, ghost
+      pair build: full/bin/ghost
+      stencil: full/ghost/bin/3d
+      bin: standard
+  (2) pair momb, perpetual
+      attributes: half, newton on
+      pair build: half/bin/newton/tri
+      stencil: half/bin/3d/newton/tri
+      bin: standard
+Per MPI rank memory allocation (min/avg/max) = 9.532 | 9.752 | 9.916 Mbytes
+Step Time KinEng PotEng TotEng Temp Press Pxx Pyy Pzz Pxy Pxz Pyz Volume c_ke_tensor[1] c_ke_tensor[2] c_ke_tensor[3] c_ke_tensor[4] c_ke_tensor[5] c_ke_tensor[6] 
+       0              0.00000            640.87416         -38020.51440         -37379.64024           1000.00000          62589.54878          64511.76089          62444.70672          60812.17872           5125.96741          13358.43393           -951.78145           2228.57379            394.41993            459.00322            428.32517             -3.37339            -12.84335             12.43011 
+Loop time of 5.27501e-06 on 56 procs for 0 steps with 216 atoms
+
+78.5% CPU use with 56 MPI tasks x no OpenMP threads
+
+MPI task timing breakdown:
+Section |  min time  |  avg time  |  max time  |%varavg| %total
+---------------------------------------------------------------
+Pair    | 0          | 0          | 0          |   0.0 |  0.00
+Neigh   | 0          | 0          | 0          |   0.0 |  0.00
+Comm    | 0          | 0          | 0          |   0.0 |  0.00
+Output  | 0          | 0          | 0          |   0.0 |  0.00
+Modify  | 0          | 0          | 0          |   0.0 |  0.00
+Other   |            | 5.275e-06  |            |       |100.00
+
+Nlocal:        3.85714 ave           6 max           1 min
+Histogram: 1 0 6 0 14 0 18 0 13 4
+Nghost:        2495.70 ave        2548 max        2428 min
+Histogram: 6 1 9 4 4 0 5 7 15 5
+Neighs:        1715.48 ave        2730 max         442 min
+Histogram: 1 3 3 13 1 17 1 12 1 4
+FullNghs:      3430.96 ave        5339 max         887 min
+Histogram: 1 2 4 5 9 7 11 7 6 4
+
+Total # of neighbors = 192134
+Ave neighs/atom = 889.50926
+Neighbor list builds = 0
+Dangerous builds = 0
+# write_data      final_structure.data
+# Post-run
+# Output relaxed structure
+
+
+Please see the log.cite file for references relevant to this simulation
+
+Total wall time: 0:00:00

@@ -441,7 +441,7 @@ void gen_flat_hists(vector<double > & clu1, vector<double > & clu2, vector<int> 
                 cout << "Improper body count" << endl;
                 exit(1);
             }
-            total_dist = sqrt(dist_struct) + abs(d_comp1 - d_comp2);
+            total_dist = sqrt(dist_struct) + d_comp1 - d_comp2;
             bin  = get_bin(binw, maxd, total_dist);
             
             if (bin > nbin)
@@ -536,8 +536,8 @@ int main(int argc, char *argv[])
     // Read in 2B clusters -- IN TERMS OF sij - determined by user
     /////////////////////////////////////////////
     
-    string f1_2b = f1_idx + ".2b_combined.txt"; 
-    string f2_2b = f2_idx + ".2b_combined.txt";
+    string f1_2b = f1_idx + ".all-2b-clusters.txt"; 
+    string f2_2b = f2_idx + ".all-2b-clusters.txt";
 
     
     vector<double> f1_2b_flat_clusters;
@@ -556,8 +556,8 @@ int main(int argc, char *argv[])
     // Read in 3B clusters -- IN TERMS OF rij **OR** sij - determined by user
     /////////////////////////////////////////////
         
-    string f1_3b = f1_idx + ".3b_combined.txt"; 
-    string f2_3b = f2_idx + ".3b_combined.txt";
+    string f1_3b = f1_idx + ".all-3b-clusters.txt"; 
+    string f2_3b = f2_idx + ".all-3b-clusters.txt";
     
     vector<double> f1_3b_flat_clusters;
     vector<double> f2_3b_flat_clusters;
@@ -573,8 +573,8 @@ int main(int argc, char *argv[])
     // Read in 4B clusters -- IN TERMS OF rij **OR** sij - determined by user
     /////////////////////////////////////////////  
     
-    string f1_4b = f1_idx + ".4b_combined.txt"; 
-    string f2_4b = f2_idx + ".4b_combined.txt";   
+    string f1_4b = f1_idx + ".all-4b-clusters.txt"; 
+    string f2_4b = f2_idx + ".all-4b-clusters.txt";   
     
     vector<double> f1_4b_flat_clusters;
     vector<double> f2_4b_flat_clusters;   

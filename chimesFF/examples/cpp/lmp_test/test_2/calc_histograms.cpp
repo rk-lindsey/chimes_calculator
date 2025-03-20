@@ -441,7 +441,7 @@ void gen_flat_hists(vector<double > & clu1, vector<double > & clu2, vector<int> 
                 cout << "Improper body count" << endl;
                 exit(1);
             }
-            total_dist = sqrt(dist_struct) + abs(d_comp1 - d_comp2);
+            total_dist = sqrt(dist_struct) + d_comp1 - d_comp2;
             bin  = get_bin(binw, maxd, total_dist);
             
             if (bin > nbin)
