@@ -184,28 +184,28 @@ void read_flat_clusters(string clufile, int npairs_per_cluster, vector<double > 
             morse_pair_1 = morse_lambda_list[atom_int_pair_mapping[ typ_idxs[0]*atom_typ_cnt + typ_idxs[1]]];
             edge_lengths[0] = transform(cutoff_00, cutoff_0, morse_pair_1, stod(line_contents[0]));
         } else if (body_cnt == 3){
-            cout << "Entered body_cnt 3 look" << endl;
+            // cout << "Entered body_cnt 3 look" << endl;
             int type_idx =  typ_idxs[0]*atom_typ_cnt*atom_typ_cnt + typ_idxs[1]*atom_typ_cnt + typ_idxs[2];
             int tripidx = atom_int_trip_mapping[type_idx];
             vector<int> & mapped_pair_idx_3b = pair_int_trip_mapping[type_idx];
             // Get cutoffs
-            cout << "Getting cutoffs" << endl;
-            cout << type_idx << endl;
-            cout << mapped_pair_idx_3b[0] << endl;
+            // cout << "Getting cutoffs" << endl;
+            // cout << type_idx << endl;
+            // cout << mapped_pair_idx_3b[0] << endl;
             cutoff_0  = rcut_3b_list[ tripidx ][1][mapped_pair_idx_3b[0]]; // outer cutoff
-            cout << "got cutoff" << endl;
+            // cout << "got cutoff" << endl;
             cutoff_00 = rcut_3b_list[ tripidx ][0][mapped_pair_idx_3b[0]]; // inner cutoff
             cutoff_1  = rcut_3b_list[ tripidx ][1][mapped_pair_idx_3b[1]];
             cutoff_01 = rcut_3b_list[ tripidx ][0][mapped_pair_idx_3b[1]]; 
             cutoff_2  = rcut_3b_list[ tripidx ][1][mapped_pair_idx_3b[2]];
             cutoff_02 = rcut_3b_list[ tripidx ][0][mapped_pair_idx_3b[2]];
             // Get morse variables
-            cout << "Getting morse" << endl;
+            // cout << "Getting morse" << endl;
             morse_pair_1 = morse_lambda_list[atom_int_pair_mapping[ typ_idxs[0]*atom_typ_cnt + typ_idxs[1]]];
             morse_pair_2 = morse_lambda_list[atom_int_pair_mapping[ typ_idxs[0]*atom_typ_cnt + typ_idxs[2]]];
             morse_pair_3 = morse_lambda_list[atom_int_pair_mapping[ typ_idxs[1]*atom_typ_cnt + typ_idxs[2]]];
             // Assign edge lengths
-            cout << "Assigning edges" << endl;
+            // cout << "Assigning edges" << endl;
             edge_lengths[0] = transform(cutoff_00, cutoff_0, morse_pair_1, stod(line_contents[0]));
             edge_lengths[1] = transform(cutoff_01, cutoff_1, morse_pair_2, stod(line_contents[1]));
             edge_lengths[2] = transform(cutoff_02, cutoff_2, morse_pair_3, stod(line_contents[2]));
@@ -407,7 +407,7 @@ void gen_flat_hists(vector<double > & clu1, vector<double > & clu2, vector<int> 
         // Compute the distances
         // Need to determine the flat index for the item
         // Should be i*n_cluster_pairs
-        cout << "Entering first loop generation" << endl;
+        // cout << "Entering first loop generation" << endl;
         for (int j=looptwo_start; j<clu2.size()/n_cluster_pairs; j++)
         {
             dist_struct = 0;
@@ -520,11 +520,11 @@ int main(int argc, char *argv[])
     // Initialize ChIMES calculator
     chimesFF ff;
     ff.init(my_rank);
+    ff.read_parameters("params.txt.reduced");  // Replace with actual parameter file
     ff.build_pair_int_trip_map();
     ff.build_pair_int_quad_map();
     
     // Read parameters FIRST
-    ff.read_parameters("params.txt.reduced");  // Replace with actual parameter file
          
     print_global_params();
     
@@ -547,10 +547,10 @@ int main(int argc, char *argv[])
     
     int npairs_2b = 1;
     
-    cout << "Entering read_flat_clusters" << endl;
+    // cout << "Entering read_flat_clusters" << endl;
     read_flat_clusters(f1_2b, npairs_2b, f1_2b_flat_clusters, f1_2b_atom_types, 2);
     read_flat_clusters(f2_2b, npairs_2b, f2_2b_flat_clusters, f2_2b_atom_types, 2);        
-    cout << "Finished read_flat_clusters" << endl;
+    // cout << "Finished read_flat_clusters" << endl;
 
     /////////////////////////////////////////////
     // Read in 3B clusters -- IN TERMS OF rij **OR** sij - determined by user
@@ -565,7 +565,7 @@ int main(int argc, char *argv[])
     vector<int>    f2_3b_atom_types;
     
     int npairs_3b = 3;
-    cout << "Got to 3b calcs" << endl;
+    // cout << "Got to 3b calcs" << endl;
     read_flat_clusters(f1_3b, npairs_3b, f1_3b_flat_clusters, f1_3b_atom_types, 3);
     read_flat_clusters(f2_3b, npairs_3b, f2_3b_flat_clusters, f2_3b_atom_types, 3);   
   
@@ -582,7 +582,7 @@ int main(int argc, char *argv[])
     vector<int>    f2_4b_atom_types; 
     
     int npairs_4b = 6;
-    cout << "Got to 4b calcs" << endl;
+    // cout << "Got to 4b calcs" << endl;
     read_flat_clusters(f1_4b, npairs_4b, f1_4b_flat_clusters, f1_4b_atom_types, 4);
     read_flat_clusters(f2_4b, npairs_4b, f2_4b_flat_clusters, f2_4b_atom_types, 4);       
  
