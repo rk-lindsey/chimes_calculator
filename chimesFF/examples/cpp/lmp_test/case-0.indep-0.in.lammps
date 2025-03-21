@@ -13,7 +13,7 @@ neigh_modify delay 0 every 1 check yes # More neighborlist parameters
 boundary p p p
 box tilt large
 read_data    ./final_structure.data
-pair_style hybrid/overlay chimesFF fingerprint 1 for_fitting momb 12.0 0.75 20.0
+pair_style hybrid/overlay chimesFF fingerprint 50 momb 12.0 0.75 20.0
 pair_coeff  * * chimesFF params.txt.reduced 
 pair_coeff 1 1  momb 0.0 1.0 1.0 418.2600153 2.904
 pair_coeff 2 2  momb 0.0 1.0 1.0 2206.022943 3.432
@@ -37,7 +37,7 @@ dump_modify 1 element C Si sort id
 velocity all create ${temp} 2217 rot yes dist gaussian
 fix 2 all nvt temp ${temp} ${temp} 100
 fix_modify 2 energy yes
-run 0
+run 500
 # write_data      final_structure.data
 # Post-run
 # Output relaxed structure

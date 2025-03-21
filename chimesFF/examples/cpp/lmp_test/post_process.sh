@@ -5,7 +5,7 @@ for body in 2b 3b 4b; do
     echo "Processing ${body} clusters..."
     
     # Find all cluster files for this body type
-    find . -maxdepth 1 -name "*.[0-9]*.all-${body}-clusters.txt" -print0 | while IFS= read -r -d $'\0' file; do
+    find . -maxdepth 1 -name "*.[0-9]*.${body}_clusters.txt" -print0 | while IFS= read -r -d $'\0' file; do
         # Extract components from filename
         filename=$(basename "$file")
         frame=$(echo "$filename" | cut -d. -f1)
