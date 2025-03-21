@@ -7,7 +7,7 @@ newton       on
 atom_style   atomic                      # Only store info on atom coords and type - no bonded info
 atom_modify  sort 0 0.0                # Maintain atom ordering when printing information
 atom_modify  map array                 # Also needed to maintain ordering
-neighbor     1.0 bin                   # Specify neighborlist parameters
+neighbor     3.0 bin                   # Specify neighborlist parameters
 neigh_modify delay 0 every 1 check yes # More neighborlist parameters
 
 boundary p p p

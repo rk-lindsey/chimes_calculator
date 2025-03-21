@@ -24,7 +24,7 @@ for body in 2b 3b 4b; do
             echo "  Combining frame $frame for ${body}"
             
             # Sort files by rank and concatenate
-            sort -n -k1 "$framefile" | awk '{print $2}' | xargs cat > "${frame}.${body}_combined.txt"
+            sort -n -k1 "$framefile" | awk '{print $2}' | xargs cat > "${frame}.all-${body}-clusters.txt"
             
             # Remove original files and corresponding lists if concatenation succeeded
             if [ $? -eq 0 ]; then

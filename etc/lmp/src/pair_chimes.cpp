@@ -408,7 +408,7 @@ void PairCHIMES::build_mb_neighlists()
 				
 				// Now decide if we should continue on to 4-body neighbor list construction
 
-				if (chimes_calculator.poly_orders[2] == 0 || fingerprint)
+				if (chimes_calculator.poly_orders[2] == 0 || !fingerprint)
 					continue;
 
 				llist = firstneigh[i];	
@@ -692,12 +692,17 @@ void PairCHIMES::compute(int eflag, int vflag)
 	if (tmp_FP)
 
 
-	if (chimes_calculator.poly_orders[2] > 0 || tmp_FP)
-	{
-		////////////////////////////////////////
-		// Compute 4-body interactions
-		////////////////////////////////////////
-		if (chimes_calculator.poly_orders[2] == 0){ghost_4b=true;} 
+    cout << "Made it to poly check" << endl;
+    if (chimes_calculator.poly_orders[2] > 0 || tmp_FP)
+    {
+        cout << "Made it between ifs" << endl;
+        ////////////////////////////////////////
+        // Compute 4-body interactions
+        ////////////////////////////////////////
+        if (chimes_calculator.poly_orders[2] == 0){ghost_4b=true;}
+        cout << "neighbor_size: " << endl;
+        cout << neighborlist_4mers.size() << endl;
+        cout << "Made it to ghost atoms check___2" << endl;
 		for (ii = 0; ii < neighborlist_4mers.size(); ii++)		
 		{
 			i     = neighborlist_4mers[ii][0];
