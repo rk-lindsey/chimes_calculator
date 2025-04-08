@@ -13,19 +13,19 @@ echo ""
 
 
 # Grab the specific stable branch of LAMMPS compaitbility has been tested for
+#lammps="stable_2Aug2023_update3"
+lammps="stable_29Aug2024_update1"
+mkdir -p build/${lammps}
 
-mkdir -p build/lammps_stable_29Oct2020
-
-
-git clone --depth 1 --branch stable_29Oct2020 https://github.com/lammps/lammps.git build/lammps_stable_29Oct2020
+# Shallow clone only for the most recent commit (without full commit history)
+git clone --depth 1 --branch ${lammps} https://github.com/lammps/lammps.git build/${lammps}
 
 
 # Copy ChIMES files to correct locations
-
-cp ../../chimesFF/src/chimesFF.{h,cpp}	build/lammps_stable_29Oct2020/src/MANYBODY/
-cp src/pair_chimes.{h,cpp} 		build/lammps_stable_29Oct2020/src/MANYBODY/
-cp etc/pair.{h,cpp} 			build/lammps_stable_29Oct2020/src
-cp etc/Makefile.mpi_chimes 		build/lammps_stable_29Oct2020/src/MAKE
+cp ../../chimesFF/src/chimesFF.{h,cpp}	build/${lammps}/src/MANYBODY/
+cp src/pair_chimes.{h,cpp} 	          	build/${lammps}/src/MANYBODY/
+cp etc/pair.{h,cpp} 			              build/${lammps}/src
+cp etc/Makefile.mpi_chimes 	          	build/${lammps}/src/MAKE
 
 
 # Load module files and configure compilers
@@ -49,7 +49,7 @@ elif [[ "$hosttype" == "JHU-ARCH" ]] ; then
     MPI=`which mpicxx`    
 elif [[ "$hosttype" == "UT-TACC" ]] ; then
     source modfiles/UT-TACC.mod
-    cp etc/Makefile.mpi_chimes.UT-TACC build/lammps_stable_29Oct2020/src/MAKE/Makefile.mpi_chimes
+    cp etc/Makefile.mpi_chimes.UT-TACC build/${lammps}/src/MAKE/Makefile.mpi_chimes
 
 else
     echo ""
@@ -73,9 +73,10 @@ fi
 
 # Compile
 
-cd build/lammps_stable_29Oct2020/src
+cd build/${lammps}/src
 make yes-manybody
 make yes-user-misc
+make yes-mpiio
 make -j 4 mpi_chimes
 cd -
 
@@ -83,7 +84,7 @@ cd -
 # Finish
 
 mkdir exe
-mv build/lammps_stable_29Oct2020/src/lmp_mpi_chimes exe
+mv build/${lammps}/src/lmp_mpi_chimes exe
 
 loc=`pwd`
 echo ""
