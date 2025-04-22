@@ -1,0 +1,214 @@
+LAMMPS (29 Aug 2024 - Update 1)
+########################################
+########################################
+# NPT-MD (thermalization) for a ~3000 C atom system with ~140000 Ar atoms (4 nm CNP)
+# DO NOT RUN THIS SCRIPT WITH MORE THAN 224 PROCS!!! There will be domain decomposition errors
+# With a 0.5 fs timestep, can get .75 ns/day on 224 procs
+# SOMETHING TO CONSIDER: How frequently should we output positions/velocities to make statements about time-resolved thermal equi libration?
+########################################
+########################################
+
+
+##########################################
+# USER-SPECIFIED VARIABLES
+##########################################
+
+variable tstep               equal  0.5                                        # timestep in fs
+variable run_steps           equal  500                                        # Number of steps to run
+variable temperature         equal  2500                                       # Temperature (K)
+variable pressure            equal  78953.8                                    # Target pressure (atm)
+
+variable io_freq             equal  10                                         # Frequency of dumping trajectory (steps)
+
+variable data_file           string CNP_40Ang_2500K_8GPa.data.in			   # Data file for initial structure
+variable restart_file        string npt.restart                                # Restart file
+variable param_file          string C-2.0-Small.params.txt.reduced             # Small carbon model parameter file
+
+
+########################################
+# GENERAL CONTROLS
+########################################
+
+units           real                          # Required for CHIMES pair style
+newton          on                            # Required for CHIMES pair style
+atom_style      atomic                        # Required for CHIMES pair style
+atom_modify     sort 0 0.0                    # Prevent sorting (to maintain 3b parent/neighbor relationships)
+atom_modify     map array                     # May improve efficiency
+
+neighbor        1.5 bin
+neigh_modify    delay 0 every 1 check yes
+
+
+########################################
+# INITIALIZATION CONTROLS
+########################################
+
+read_data       ${data_file}
+read_data       CNP_40Ang_2500K_8GPa.data.in
+Reading data file ...
+  orthogonal box = (0 0 0) to (150 150 150)
+  1 by 1 by 1 MPI processor grid
+  reading atoms ...
+  104576 atoms
+  read_data CPU = 0.196 seconds
+
+velocity        all create ${temperature} 1234 dist gaussian mom yes rot yes loop all  # Assign initial velocity (comment this line out when reading from a restart file)
+velocity        all create 2500 1234 dist gaussian mom yes rot yes loop all  
+
+group carbon type 1    # group carbon atoms (for better load balance)
+3359 atoms in group carbon
+group argon  type 2    # group argon  atoms
+101217 atoms in group argon
+
+
+########################################
+# FORCE FIELD CONTROLS
+########################################
+
+pair_style      hybrid/overlay chimesFF momb 9.0 0.75 20.0 lj/cut 10.0            # Use ChIMES, momb and LJ potentials (removed "for_fitting" after chimesFF copied from the parameter file)
+pair_coeff      * * chimesFF ${param_file}                                        # Use ChIMES for C-C
+pair_coeff      * * chimesFF C-2.0-Small.params.txt.reduced                                        
+pair_coeff      1 1 momb 0.0 1.0 1.0 418.26 2.904                                 # Use momb for dispersion correction (only for the small carbon model, copied from the parameter file)
+pair_coeff      1 2 lj/cut 0.25   3.5                                             # Use LJ for C-Ar  (epsilon: Kcal/mol, sigma: Angstrom) calculated with L-B combining rules
+pair_coeff      2 2 lj/cut 0.25   3.5                                             # Use LJ for Ar-Ar (epsilon: Kcal/mol, sigma: Angstrom)
+
+# LJ params for Ar:    0.25 3.5             (epsilon: Kcal/mol, sigma: Angstrom, treated as general LJ particles instead of actual Ar atoms)
+# LJ params for Ar-C:  Manually s�et to make the elements immiscibles
+
+
+########################################
+# RESTART CONTROLS
+########################################
+
+restart         100 npt.a.restart npt.b.restart	# Write restart files
+
+
+########################################
+# RUN, DUMP, AND THERMO CONTROLS
+########################################
+
+##### Set the ensemble
+
+variable temp_damp  equal  v_tstep*100.0	# Temperature damping coefficient
+variable press_damp equal  v_tstep*1000.0	# Pressure damping coefficient
+
+fix             1 all npt temp ${temperature} ${temperature} ${temp_damp} iso ${pressure} ${pressure} ${press_damp}  # Couple pressure with "iso" for liquid system
+fix             1 all npt temp 2500 ${temperature} ${temp_damp} iso ${pressure} ${pressure} ${press_damp}  
+fix             1 all npt temp 2500 2500 ${temp_damp} iso ${pressure} ${pressure} ${press_damp}  
+fix             1 all npt temp 2500 2500 50 iso ${pressure} ${pressure} ${press_damp}  
+fix             1 all npt temp 2500 2500 50 iso 78953.8 ${pressure} ${press_damp}  
+fix             1 all npt temp 2500 2500 50 iso 78953.8 78953.8 ${press_damp}  
+fix             1 all npt temp 2500 2500 50 iso 78953.8 78953.8 500  
+
+##### Enable load balancing since LJ Ar-Ar and C-Ar interactions are WAY cheaper than C-C interactions
+
+comm_style 	tiled
+fix 		2 all balance 10 0.25 rcb weight time 0.75 # This should generally work well for any system that requires load balancing
+
+##### Define thermo output
+
+variable e_ensemble           equal f_1
+variable e_conserve           equal ke+pe+v_e_ensemble
+thermo_style    custom step time temp press density ke pe etotal v_e_ensemble v_e_conserve econserve
+thermo_modify   line one format float %20.5f flush yes
+thermo          ${io_freq}
+thermo          10
+
+##### Print separate dump files for the whole system and just the particle
+
+#dump            dump_1 all custom ${io_freq} traj.lammpstrj id type element xu yu zu vx vy vz
+#dump_modify     dump_1 sort id element C Ar
+
+#dump            dump_2 carbon custom ${io_freq} traj.C.lammpstrj id type element xu yu zu vx vy vz
+#dump_modify     dump_2 sort id element C Ar
+
+##### Run the simulation
+
+timestep        ${tstep}
+timestep        0.5
+run             ${run_steps}
+run             500
+
+CITE-CITE-CITE-CITE-CITE-CITE-CITE-CITE-CITE-CITE-CITE-CITE-CITE
+
+Your simulation uses code contributions which should be cited:
+
+- Type Label Framework: https://doi.org/10.1021/acs.jpcb.3c08419
+
+@Article{Gissinger24,
+ author = {Jacob R. Gissinger, Ilia Nikiforov, Yaser Afshar, Brendon Waters, Moon-ki Choi, Daniel S. Karls, Alexander Stukowski, Wonpil Im, Hendrik Heinz, Axel Kohlmeyer, and Ellad B. Tadmor},
+ title = {Type Label Framework for Bonded Force Fields in LAMMPS},
+ journal = {J. Phys. Chem. B},
+ year =    2024,
+ volume =  128,
+ number =  13,
+ pages =   {3282–-3297}
+}
+
+- Pair style momb: doi:10.1021/jp412098n
+
+@Article{pair_momb_2015,
+title = {A Force Field for Describing the Polyvinylpyrrolidone-Mediated
+    Solution-Phase Synthesis of Shape-Selective {Ag} Nanoparticles},
+volume = {118},
+number = {6},
+url = {https://doi.org/10.1021/jp412098n},
+doi = {10.1021/jp412098n},
+journal = {J.~Phys.\ Chem.~C},
+author = {Zhou, Ya and Wissam A. Saidi and Kristen A. Fichthorn},
+year = {2014},
+pages = {3366--3374}
+}
+
+CITE-CITE-CITE-CITE-CITE-CITE-CITE-CITE-CITE-CITE-CITE-CITE-CITE
+
+Generated 0 of 1 mixed pair_coeff terms from geometric mixing rule
+Neighbor list info ...
+  update: every = 1 steps, delay = 0 steps, check = yes
+  max neighbors/atom: 2000, page size: 100000
+  master list distance cutoff = 11.5
+  ghost atom cutoff = 11.5
+  binsize = 5.75, bins = 27 27 27
+  4 neighbor lists, perpetual/occasional/extra = 4 0 0
+  (1) pair chimesFF, perpetual
+      attributes: full, newton on, ghost, cut 6.5
+      pair build: full/bin/ghost
+      stencil: full/ghost/bin/3d
+      bin: standard
+  (2) pair momb, perpetual, skip trim from (4)
+      attributes: half, newton on, cut 10.5
+      pair build: skip/trim
+      stencil: none
+      bin: none
+  (3) pair lj/cut, perpetual, skip from (4)
+      attributes: half, newton on
+      pair build: skip
+      stencil: none
+      bin: none
+  (4) neighbor class addition, perpetual
+      attributes: half, newton on
+      pair build: half/bin/atomonly/newton
+      stencil: half/bin/3d
+      bin: standard
+Per MPI rank memory allocation (min/avg/max) = 150.5 | 150.5 | 150.5 Mbytes
+   Step          Time           Temp          Press         Density         KinEng         PotEng         TotEng      v_e_ensemble   v_e_conserve    Econserve   
+         0               0.00000           2500.00000         162897.22719              2.00926         779295.52745         590687.59812        1369983.12557              0.00000        1369983.12557        1369983.12557
+        10               5.00000           2558.60840         160994.11643              2.00688         797564.83357         562974.03438        1360538.86795           9470.45907        1370009.32702        1370009.32702
+        20              10.00000           2779.05770         154965.28263              2.00041         866282.89310         468573.48655        1334856.37965          35199.44058        1370055.82023        1370055.82023
+        30              15.00000           3190.75809         145832.74115              1.99286         994617.40213         309432.86353        1304050.26566          66015.39321        1370065.65887        1370065.65887
+        40              20.00000           3664.65334         135560.98895              1.98653        1142339.18431         134142.22826        1276481.41257          93590.08507        1370071.49763        1370071.49763
+        50              25.00000           4068.00816         125629.76774              1.98081        1268072.22684         -18260.40407        1249811.82277         120247.85905        1370059.68182        1370059.68182
+        60              30.00000           4286.63429         116976.77825              1.97543        1336221.97142        -114304.08750        1221917.88392         148192.11155        1370109.99546        1370109.99546
+        70              35.00000           4375.12663         109989.16992              1.97069        1363806.64726        -169297.74534        1194508.90192         175655.88115        1370164.78307        1370164.78307
+        80              40.00000           4400.26620         104769.08772              1.96670        1371643.10892        -203442.09581        1168201.01311         202000.66295        1370201.67607        1370201.67607
+        90              45.00000           4409.68349         100857.30335              1.96332        1374578.64961        -231762.64732        1142816.00229         227417.21895        1370233.22123        1370233.22123
+       100              50.00000           4406.30401          97925.83502              1.96039        1373525.20442        -255554.30697        1117970.89745         252278.71927        1370249.61672        1370249.61672
+       110              55.00000           4410.33089          95331.50184              1.95779        1374780.45478        -281387.22283        1093393.23195         276847.94729        1370241.17924        1370241.17924
+       120              60.00000           4402.83838          93034.97706              1.95545        1372444.90251        -303467.13981        1068977.76270         301243.88638        1370221.64908        1370221.64908
+       130              65.00000           4377.37733          91092.45986              1.95332        1364508.22953        -319740.41610        1044767.81344         325432.61256        1370200.42599        1370200.42599
+       140              70.00000           4348.08589          89338.84995              1.95139        1355377.55532        -334519.22465        1020858.33066         349328.88464        1370187.21531        1370187.21531
+       150              75.00000           4313.81343          87794.23270              1.94964        1344694.20627        -347485.02515         997209.18112         372932.42700        1370141.60812        1370141.60812
+       160              80.00000           4269.57969          86390.06664              1.94805        1330905.74394        -356964.25333         973941.49060         396159.86529        1370101.35589        1370101.35589
+       170              85.00000           4226.73367          85137.08264              1.94662        1317549.85824        -366462.40022         951087.45801         418966.70249        1370054.16050        1370054.16050
+       180              90.00000           4183.79448          83958.70134              1.94533        1304164.93092        -375524.42672         928640.50420         441351.28528        1369991.78947        1369991.78947
+       190              95.00000           4132.37025          82979.04214              1.94418        1288135.06067        -381477.99853         906657.06214         463278.92796        1369935.99010        1369935.99010

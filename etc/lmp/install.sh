@@ -13,7 +13,6 @@ echo ""
 
 
 # Grab the specific stable branch of LAMMPS compaitbility has been tested for
-#lammps="stable_2Aug2023_update3"
 lammps="stable_29Aug2024_update1"
 mkdir -p build/${lammps}
 
@@ -75,8 +74,7 @@ fi
 
 cd build/${lammps}/src
 make yes-manybody
-make yes-user-misc
-make yes-mpiio
+make yes-extra-pair
 make -j 4 mpi_chimes
 cd -
 
