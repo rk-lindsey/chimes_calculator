@@ -24,6 +24,7 @@ namespace GlobalParams {
     vector<vector<vector<double>>> rcut_3b_list;
     vector<vector<vector<double>>> rcut_4b_list;
     vector<double> morse_lambda_list;
+    vector<double> atomic_descriptors;
 
     // Add mapping vectors
     vector <int> atom_int_pair_mapping;
@@ -307,12 +308,20 @@ void chimesFF::read_parameters(string paramfile)
         {
             atmtyps.resize(natmtyps);
 			masses.resize(natmtyps);
+            atomic_des.resize(natmtyps);
             for (int i=0; i<natmtyps; i++)
             {
                 line = get_next_line(param_file);
                 split_line(line, tmp_str_items);
                 atmtyps[i] = tmp_str_items[1];
 				masses[i]  = stod(tmp_str_items[3]);
+
+                 // Check if the fourth element exists, else use the third
+                if (tmp_str_items.size() > 4) {
+                    atomic_des[i] = stod(tmp_str_items[4]);
+                } else {
+                    atomic_des[i] = stod(tmp_str_items[3]);
+                }
                 
                 if (rank == 0)
                     cout << "chimesFF: " << "\t" << i << " " << atmtyps[i] << endl;
@@ -1347,6 +1356,7 @@ void chimesFF::read_parameters(string paramfile)
     GlobalParams::rcut_3b_list = chimes_3b_cutoff;
     GlobalParams::rcut_4b_list = chimes_4b_cutoff;
     GlobalParams::morse_lambda_list = morse_var;
+    GlobalParams::atomic_descriptors = atomic_des;
 
     GlobalParams::atom_int_pair_mapping = atom_int_pair_map;
     GlobalParams::atom_int_trip_mapping = atom_int_trip_map;

@@ -39,6 +39,7 @@ namespace GlobalParams {
     extern vector<vector<vector<double>>> rcut_3b_list;
     extern vector<vector<vector<double>>> rcut_4b_list;
     extern vector<double> morse_lambda_list;
+    extern vector<double> atomic_descriptors;
 
     // Add mapping vectors
     extern vector <int> atom_int_pair_mapping;
@@ -153,6 +154,7 @@ public:
     vector<int>      poly_orders;    // [bodiedness-1]; i.e. 12 = 2-body only, 12th order; 12 5 = 2+3-body, 0 5 = 3-body only, 5th order
     vector<string>   atmtyps;        // Atom types 
     vector<double>   masses;         // Atom masses
+    vector<double>   atomic_des;     // Atom descriptor
 
     ////////////////////////
     // Functions

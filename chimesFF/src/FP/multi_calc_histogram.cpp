@@ -108,22 +108,6 @@ bool get_next_line(istream& str, string & line)
     return true;
 }
 
-// Function to print the adjacency matrix with atom types
-void print_adjacency_matrix(const vector<vector<double>>& adjacency_matrix, const vector<int>& atom_types) {
-    int n = adjacency_matrix.size();
-    for (int i = 0; i < n; i++) {
-        // Print atom type first
-        cout << setw(4) << atom_types[i] << " |";
-        // Print adjacency information
-        for (int j = 0; j < n; j++) {
-            if(i == j) cout << setw(10) << "N/A" << " ";  // Diagonal is atom type
-            else cout << setw(10) << fixed << setprecision(4) << adjacency_matrix[i][j] << " ";
-        }
-        cout << endl;
-    }
-    cout << endl;
-}
-
 double transform(double rcin, double rcout, double lambda, double rij)
 {
     double x_min = exp(-1*rcin/lambda);
@@ -138,7 +122,7 @@ double transform(double rcin, double rcout, double lambda, double rij)
 }
 
 // Function to read the clusters and construct adjacency matrices
-void read_flat_clusters(string clufile, int npairs_per_cluster, vector<double > & clusters, vector<int> & atom_types, const int body_cnt) {
+void read_flat_clusters(string clufile, int npairs_per_cluster, vector<double > & clusters, vector<double> & atom_types, const int body_cnt) {
     ifstream clustream(clufile);
     if (!clustream.is_open()) {
         cerr << "ERROR: Could not open file " << clufile << endl;
@@ -162,11 +146,13 @@ void read_flat_clusters(string clufile, int npairs_per_cluster, vector<double > 
         // Extract edge lengths and atom types
         vector<double> edge_lengths(npairs_per_cluster);
         vector<int> typ_idxs(body_cnt);
+        vector<double> tmp_desc(body_cnt);
 
         for (int i = 0; i < body_cnt; i++) {
             typ_idxs[i] = stoi(line_contents[npairs_per_cluster + i]);
+            tmp_desc[i] = atomic_descriptors[stoi(line_contents[npairs_per_cluster + i])];
         }
-        atom_types.insert(atom_types.end(), typ_idxs.begin(), typ_idxs.end());
+        atom_types.insert(atom_types.end(), tmp_desc.begin(), tmp_desc.end());
 
         double cutoff_0, cutoff_00;
         double cutoff_1, cutoff_01;
@@ -300,12 +286,12 @@ void divide_task(int & my_rank_start, int & my_rank_end, int tasks)
 	}
 }
 
-double compute_composition_weight_2b(vector<double> edges, vector<int> atom_types){
+double compute_composition_weight_2b(vector<double> edges, vector<double> atom_types){
     double normalized_dist = (atom_types[0] + atom_types[1])/(2.0*atom_typ_cnt);
     return normalized_dist;
 }
 
-double compute_composition_weight_3b(vector<double> edges, vector<int> atom_types){
+double compute_composition_weight_3b(vector<double> edges, vector<double> atom_types){
 
     vector<pair<int, double>> sum_edge_lengths(3);
     sum_edge_lengths[0] = {0, edges[0] + edges[1]};
@@ -326,7 +312,7 @@ double compute_composition_weight_3b(vector<double> edges, vector<int> atom_type
     return normalized_dist;
 }
 
-double compute_composition_weight_4b(vector<double> edges, vector<int> atom_types){
+double compute_composition_weight_4b(vector<double> edges, vector<double> atom_types){
 
     vector<pair<int, double>> sum_edge_lengths(4);
     sum_edge_lengths[0] = {0, edges[0] + edges[1] + edges[2]};
@@ -349,7 +335,7 @@ double compute_composition_weight_4b(vector<double> edges, vector<int> atom_type
     return normalized_dist;
 }
 
-void gen_flat_hists(vector<double > & clu1, vector<double > & clu2, vector<int> & clu1_atm_types, vector<int> & clu2_atm_types, int n_cluster_pairs, int nbin, double binw, double maxd, string histfile, bool same = false, int body_cnt = 2)
+void gen_flat_hists(vector<double > & clu1, vector<double > & clu2, vector<double> & clu1_atm_types, vector<double> & clu2_atm_types, int n_cluster_pairs, int nbin, double binw, double maxd, string histfile, bool same = false, int body_cnt = 2)
 {
     int                     bin;
     double                  total_dist;
@@ -383,7 +369,6 @@ void gen_flat_hists(vector<double > & clu1, vector<double > & clu2, vector<int> 
 
     for (int i=my_rank_start; i<=my_rank_end; i++)
     {   
-
          
         // Print progress
         
@@ -414,8 +399,8 @@ void gen_flat_hists(vector<double > & clu1, vector<double > & clu2, vector<int> 
             dist_struct = 0;
             vector<double> edge_length_1(n_cluster_pairs);
             vector<double> edge_length_2(n_cluster_pairs);
-            vector<int>    atom_list_1(body_cnt);
-            vector<int>    atom_list_2(body_cnt);
+            vector<double>    atom_list_1(body_cnt);
+            vector<double>    atom_list_2(body_cnt);
     
             for (int k=0; k<n_cluster_pairs; k++){   
                 // Distance calculation between two clusters             
@@ -496,7 +481,6 @@ void gen_flat_hists(vector<double > & clu1, vector<double > & clu2, vector<int> 
     }
  
 }
-
 
 int main(int argc, char *argv[])
 {
@@ -586,7 +570,7 @@ int main(int argc, char *argv[])
         double binw_4b = maxd_4b/nbin_4b; 
 
         vector<double> f1_2b_flat_clusters, f2_2b_flat_clusters;
-        vector<int> f1_2b_atom_types, f2_2b_atom_types;
+        vector<double> f1_2b_atom_types, f2_2b_atom_types;
         int npairs_2b = 1;
         read_flat_clusters(f1_2b, npairs_2b, f1_2b_flat_clusters, f1_2b_atom_types, 2);
         read_flat_clusters(f2_2b, npairs_2b, f2_2b_flat_clusters, f2_2b_atom_types, 2);
@@ -595,7 +579,7 @@ int main(int argc, char *argv[])
         string f1_3b = f1_idx + ".all-3b-clusters.txt"; 
         string f2_3b = f2_idx + ".all-3b-clusters.txt";
         vector<double> f1_3b_flat_clusters, f2_3b_flat_clusters;
-        vector<int> f1_3b_atom_types, f2_3b_atom_types;
+        vector<double> f1_3b_atom_types, f2_3b_atom_types;
         int npairs_3b = 3;
         read_flat_clusters(f1_3b, npairs_3b, f1_3b_flat_clusters, f1_3b_atom_types, 3);
         read_flat_clusters(f2_3b, npairs_3b, f2_3b_flat_clusters, f2_3b_atom_types, 3);
@@ -604,7 +588,7 @@ int main(int argc, char *argv[])
         string f1_4b = f1_idx + ".all-4b-clusters.txt"; 
         string f2_4b = f2_idx + ".all-4b-clusters.txt";   
         vector<double> f1_4b_flat_clusters, f2_4b_flat_clusters;   
-        vector<int> f1_4b_atom_types, f2_4b_atom_types; 
+        vector<double> f1_4b_atom_types, f2_4b_atom_types; 
         int npairs_4b = 6;
         read_flat_clusters(f1_4b, npairs_4b, f1_4b_flat_clusters, f1_4b_atom_types, 4);
         read_flat_clusters(f2_4b, npairs_4b, f2_4b_flat_clusters, f2_4b_atom_types, 4);
