@@ -287,7 +287,7 @@ void divide_task(int & my_rank_start, int & my_rank_end, int tasks)
 }
 
 double compute_composition_weight_2b(vector<double> edges, vector<double> atom_types){
-    double normalized_dist = (atom_types[0] + atom_types[1])/(2.0*atom_typ_cnt);
+    double normalized_dist = (atom_types[0] + atom_types[1])/(2.0*max_descr);
     return normalized_dist;
 }
 
@@ -308,7 +308,7 @@ double compute_composition_weight_3b(vector<double> edges, vector<double> atom_t
                         + 2.0*atom_types[sum_edge_lengths[1].first] 
                         + 3.0*atom_types[sum_edge_lengths[2].first];
     
-    double normalized_dist = total_dist / (6.0*atom_typ_cnt);
+    double normalized_dist = total_dist / (6.0*max_descr);
     return normalized_dist;
 }
 
@@ -331,7 +331,7 @@ double compute_composition_weight_4b(vector<double> edges, vector<double> atom_t
                         + 3.0*atom_types[sum_edge_lengths[2].first] 
                         + 4.0*atom_types[sum_edge_lengths[3].first]; 
     
-    double normalized_dist = total_dist / (10.0*atom_typ_cnt);
+    double normalized_dist = total_dist / (10.0*max_descr);
     return normalized_dist;
 }
 
@@ -382,9 +382,7 @@ void gen_flat_hists(vector<double > & clu1, vector<double > & clu2, vector<doubl
 		else if(i%(total_tasks/10) == 0)
 			cout << histfile << " Completion percent: " << status << " " << i << " of " << total_tasks << " assigned" << endl;
         
-        
         // Modify bounds in case this is a self-calculation
-        
         if (same)
             looptwo_start = i+1;
         else
@@ -556,8 +554,6 @@ int main(int argc, char *argv[])
         // File paths - using same index for both
         string f1_2b = f1_idx + ".all-2b-clusters.txt";
         string f2_2b = f2_idx + ".all-2b-clusters.txt";
-
-        // ... rest of your processing code ...
 
         // Histogram parameters
         const int nbin_2b = 100, nbin_3b = 100, nbin_4b = 100;

@@ -40,6 +40,7 @@ namespace GlobalParams {
     extern vector<vector<vector<double>>> rcut_4b_list;
     extern vector<double> morse_lambda_list;
     extern vector<double> atomic_descriptors;
+    extern double max_descr;
 
     // Add mapping vectors
     extern vector <int> atom_int_pair_mapping;
