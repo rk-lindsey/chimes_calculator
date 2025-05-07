@@ -1402,12 +1402,14 @@ void chimesFF::compute_1B(const int typ_idx, double & energy )
 }
 
 // Overload for calls from LAMMPS                 
-void chimesFF::compute_2B(const double dx, const vector<double> & dr, const vector<int> typ_idxs, vector<double> & force, vector<double> & stress, double & energy, chimes2BTmp &tmp, vector<vector<double > > & clusters_2b, bool fingerprint)
+void chimesFF::compute_2B(const double dx, const vector<double> & dr, const vector<int> typ_idxs, vector<double> & force, vector<double> & stress, double & energy, chimes2BTmp &tmp)
 {              
     double dummy_force_scalar;
-    compute_2B(dx, dr, typ_idxs, force, stress, energy, tmp, dummy_force_scalar, clusters_2b, fingerprint);                                                               
+    vector<vector<double>> dummy_clusters_2b;
+    bool dummy_fingerprint = false;
+    compute_2B(dx, dr, typ_idxs, force, stress, energy, tmp, dummy_force_scalar, dummy_clusters_2b, dummy_fingerprint);                                                               
 }
-void chimesFF::compute_2B(const double dx, const vector<double> & dr, const vector<int> typ_idxs, vector<double> & force, vector<double> & stress, double & energy, chimes2BTmp &tmp, double & force_scalar_in, vector<vector<double > > & clusters_2b, bool fingerprint)
+void chimesFF::compute_2B(const double dx, const vector<double> & dr, const vector<int> typ_idxs, vector<double> & force, vector<double> & stress, double & energy, chimes2BTmp &tmp, double & force_scalar_in, vector<vector<double>> & clusters_2b, bool fingerprint)
 {
     // Compute 2b (input: 2 atoms or distances, corresponding types... outputs (updates) force, acceleration, energy, stress
     //
@@ -1525,10 +1527,13 @@ void chimesFF::compute_2B(const double dx, const vector<double> & dr, const vect
 }
 
 // Overload for calls from LAMMPS  
-void chimesFF::compute_3B(const vector<double> & dx, const vector<double> & dr, const vector<int> & typ_idxs, vector<double> & force, vector<double> & stress, double & energy, chimes3BTmp &tmp, vector<vector<double > > & clusters_3b, bool fingerprint, bool ghost_3b)
+void chimesFF::compute_3B(const vector<double> & dx, const vector<double> & dr, const vector<int> & typ_idxs, vector<double> & force, vector<double> & stress, double & energy, chimes3BTmp &tmp)
 {
 	vector<double> dummy_force_scalar(3);
-	compute_3B(dx, dr, typ_idxs, force, stress, energy, tmp, dummy_force_scalar,clusters_3b,  fingerprint, ghost_3b);
+    vector<vector<double>> dummy_clusters_3b;
+    bool dummy_fingerprint = false;
+    bool dummy_ghost_3b = false;
+	compute_3B(dx, dr, typ_idxs, force, stress, energy, tmp, dummy_force_scalar, dummy_clusters_3b,  dummy_fingerprint, dummy_ghost_3b);
 }
 void chimesFF::compute_3B(const vector<double> & dx, const vector<double> & dr, const vector<int> & typ_idxs, vector<double> & force, vector<double> & stress, double & energy, chimes3BTmp &tmp, vector<double> & force_scalar_in, vector<vector<double>> & clusters_3b, bool fingerprint, bool ghost_3b)
 {
@@ -1762,10 +1767,13 @@ void chimesFF::compute_3B(const vector<double> & dx, const vector<double> & dr, 
     return;    
 }
 
-void chimesFF::compute_4B(const vector<double> & dx, const vector<double> & dr, const vector<int> & typ_idxs, vector<double> & force, vector<double> & stress, double & energy, chimes4BTmp &tmp, vector<vector<double>> & clusters_4b, bool fingerprint, bool ghost_4b)
+void chimesFF::compute_4B(const vector<double> & dx, const vector<double> & dr, const vector<int> & typ_idxs, vector<double> & force, vector<double> & stress, double & energy, chimes4BTmp &tmp)
 {              
         vector<double> dummy_force_scalar(6);
-        compute_4B(dx, dr, typ_idxs, force, stress, energy, tmp, dummy_force_scalar, clusters_4b,  fingerprint, ghost_4b);                                                               
+        vector<vector<double>> dummy_clusters_4b;
+        bool dummy_fingerprint;
+        bool dummy_ghost_4b;
+        compute_4B(dx, dr, typ_idxs, force, stress, energy, tmp, dummy_force_scalar, dummy_clusters_4b, dummy_fingerprint, dummy_ghost_4b);                                                               
 }
 void chimesFF::compute_4B(const vector<double> & dx, const vector<double> & dr, const vector<int> & typ_idxs, vector<double> & force, vector<double> & stress, double & energy, chimes4BTmp &tmp, vector<double> & force_scalar_in, vector<vector<double>> & clusters_4b, bool fingerprint, bool ghost_4b)
 {

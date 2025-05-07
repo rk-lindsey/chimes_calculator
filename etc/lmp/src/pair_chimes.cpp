@@ -599,7 +599,12 @@ void PairCHIMES::compute(int eflag, int vflag)
 
 			energy = 0.0;	
 			valid_order = (i < j);
-			chimes_calculator.compute_2B( dist, dr, typ_idxs_2b, force_2b, stensor, energy, chimes_2btmp, tmp_dist_2b, tmp_FP && valid_order);	// Auto-updates badness		
+			if (tmp_FP && valid_order){
+				double tmp_force_scalar;
+				chimes_calculator.compute_2B( dist, dr, typ_idxs_2b, force_2b, stensor, energy, chimes_2btmp, tmp_force_scalar, tmp_dist_2b, tmp_FP && valid_order);	// Auto-updates badness
+			} else {
+				chimes_calculator.compute_2B( dist, dr, typ_idxs_2b, force_2b, stensor, energy, chimes_2btmp);	// Auto-updates badness		
+			}
 			for (idx=0; idx<3; idx++)
 			{
 				f[i][idx] += force_2b[0*CHDIM+idx] ;
@@ -660,7 +665,12 @@ void PairCHIMES::compute(int eflag, int vflag)
 			energy = 0.0 ;
 			valid_order = (tag[i] < tag[j] && tag[i] < tag[k] && tag[j] < tag[k]);
 			
-			chimes_calculator.compute_3B( dist_3b, dr_3b, typ_idxs_3b, force_3b, stensor, energy, chimes_3btmp, tmp_dist_3b, tmp_FP && valid_order, ghost_3b);
+			if (tmp_FP && valid_order){
+				vector<double> tmp_force_scalar_3b;
+				chimes_calculator.compute_3B( dist_3b, dr_3b, typ_idxs_3b, force_3b, stensor, energy, chimes_3btmp, tmp_force_scalar_3b, tmp_dist_3b, tmp_FP && valid_order, ghost_3b);
+			} else {
+				chimes_calculator.compute_3B( dist_3b, dr_3b, typ_idxs_3b, force_3b, stensor, energy, chimes_3btmp);
+			}
 
 			for (idx=0; idx<3; idx++)
 			{
@@ -689,10 +699,7 @@ void PairCHIMES::compute(int eflag, int vflag)
 		filename_3b << ts << "." << std::to_string(chimes_calculator.rank) <<".3b_clusters.txt";
 		writeClusterDataComp(filename_3b.str(), tmp_dist_3b);
 	}
-	if (tmp_FP)
 
-
-    cout << "Made it to poly check" << endl;
     if (chimes_calculator.poly_orders[2] > 0 || tmp_FP)
     {
         cout << "Made it between ifs" << endl;
@@ -728,7 +735,12 @@ void PairCHIMES::compute(int eflag, int vflag)
 			energy = 0.0 ;	
 			valid_order = (tag[i] < tag[j] && tag[j] < tag[k] && tag[k] < tag[l]);
 			
-			chimes_calculator.compute_4B( dist_4b, dr_4b, typ_idxs_4b, force_4b, stensor, energy, chimes_4btmp, tmp_dist_4b, tmp_FP && valid_order, ghost_4b);
+			if (tmp_FP && valid_order){
+				vector<double> tmp_force_scalar_4b;
+				chimes_calculator.compute_4B( dist_4b, dr_4b, typ_idxs_4b, force_4b, stensor, energy, chimes_4btmp, tmp_force_scalar_4b, tmp_dist_4b, tmp_FP && valid_order, ghost_4b);
+			} else {
+				chimes_calculator.compute_4B( dist_4b, dr_4b, typ_idxs_4b, force_4b, stensor, energy, chimes_4btmp);
+			}
 
 			for (idx=0; idx<3; idx++)
 			{
