@@ -72,6 +72,7 @@ PairCHIMES::PairCHIMES(LAMMPS *lmp) : Pair(lmp)
 	
 	chimes_calculator.init(me);  
     for_fitting = false;
+	fingerprint = false;
 	
 	// 2, 3, and 4-body vars for chimesFF access
 
@@ -129,6 +130,7 @@ void PairCHIMES::settings(int narg, char **arg)
         if (utils::strmatch(arg[0],"fitting"))
         {
             for_fitting   = true;
+			std::cout << "Setting for_fitting to " << (for_fitting ? "true" : "false") << std::endl;
             stringstream ss;
             ss << chimes_calculator.rank;
             badness_stream.open("rank-" + ss.str() + ".badness.log");    
@@ -138,9 +140,10 @@ void PairCHIMES::settings(int narg, char **arg)
     {  
         if (utils::strmatch(arg[0],"fingerprint"))
         {
-			
             fingerprint   = true;
-			IO_freq = std::stoi(arg[1]);;  
+			IO_freq = std::stoi(arg[1]);  
+			std::cout << "Setting fingerprint to " << (fingerprint ? "true" : "false") << std::endl;
+			std::cout << "Setting IO Frequency of fingerprint to " << IO_freq << std::endl;
         }
     }
 	
@@ -150,22 +153,31 @@ void PairCHIMES::settings(int narg, char **arg)
         {
 			
             fingerprint   = true;
-			IO_freq = std::stoi(arg[1]);;  
+			IO_freq = std::stoi(arg[1]);  
+			std::cout << "Setting fingerprint to " << (fingerprint ? "true" : "false") << std::endl;
+			std::cout << "Setting IO Frequency of fingerprint to " << IO_freq << std::endl;
         }
         if (utils::strmatch(arg[1],"fingerprint"))
         {
-			
             fingerprint   = true;
-			IO_freq = std::stoi(arg[2]);;  
+			IO_freq = std::stoi(arg[2]);
+			std::cout << "Setting fingerprint to " << (fingerprint ? "true" : "false") << std::endl;
+			std::cout << "Setting IO Frequency of fingerprint to " << IO_freq << std::endl;  
         }
         if (utils::strmatch(arg[0],"fitting") || utils::strmatch(arg[1],"fitting") || utils::strmatch(arg[2],"fitting"))
         {
             for_fitting   = true;
+			std::cout << "Setting for_fitting to " << (for_fitting ? "true" : "false") << std::endl;
             stringstream ss;
             ss << chimes_calculator.rank;
             badness_stream.open("rank-" + ss.str() + ".badness.log");  
         }
     }
+	else {
+		std::cout << "No hyperparameters set in pair_style chimesFF" << std::endl;
+		std::cout << "Setting for_fitting to " << (for_fitting ? "true" : "false") << std::endl;
+		std::cout << "Setting fingerprint to " << (fingerprint ? "true" : "false") << std::endl;
+	}
 
 	return;	
 }
@@ -512,10 +524,11 @@ void PairCHIMES::compute(int eflag, int vflag)
 		vflag_fdotr = 0;
   		vflag_atom  = 0;
 	}
-
+	std::cout << "Global fingerprint variable = " << (fingerprint ? "true" : "false") << std::endl;
 	if (fingerprint)
 		if(update->ntimestep % IO_freq == 0){tmp_FP = true;}
 	else{tmp_FP = false;}
+	std::cout << "Tmp fingerprint variable = " << (tmp_FP ? "true" : "false") << std::endl;
 
 	////////////////////////////////////////
 	// Access to (2-body) neighbor list vars
@@ -598,8 +611,9 @@ void PairCHIMES::compute(int eflag, int vflag)
 			std::fill(stensor.begin(), stensor.end(), 0.0) ;
 
 			energy = 0.0;	
-			valid_order = (i < j);
-			if (tmp_FP && valid_order){
+			//valid_order = (i < j);
+			// if (tmp_FP && valid_order){
+			if (tmp_FP){
 				double tmp_force_scalar;
 				chimes_calculator.compute_2B( dist, dr, typ_idxs_2b, force_2b, stensor, energy, chimes_2btmp, tmp_force_scalar, tmp_dist_2b, tmp_FP && valid_order);	// Auto-updates badness
 			} else {
@@ -663,9 +677,9 @@ void PairCHIMES::compute(int eflag, int vflag)
 			std::fill(stensor.begin(), stensor.end(), 0.0) ;
 				
 			energy = 0.0 ;
-			valid_order = (tag[i] < tag[j] && tag[i] < tag[k] && tag[j] < tag[k]);
+			//valid_order = (tag[i] < tag[j] && tag[i] < tag[k] && tag[j] < tag[k]);
 			
-			if (tmp_FP && valid_order){
+			if (tmp_FP && true){
 				vector<double> tmp_force_scalar_3b;
 				chimes_calculator.compute_3B( dist_3b, dr_3b, typ_idxs_3b, force_3b, stensor, energy, chimes_3btmp, tmp_force_scalar_3b, tmp_dist_3b, tmp_FP && valid_order, ghost_3b);
 			} else {
@@ -733,9 +747,9 @@ void PairCHIMES::compute(int eflag, int vflag)
 			std::fill(stensor.begin(), stensor.end(), 0.0) ;
 
 			energy = 0.0 ;	
-			valid_order = (tag[i] < tag[j] && tag[j] < tag[k] && tag[k] < tag[l]);
+			//valid_order = (tag[i] < tag[j] && tag[j] < tag[k] && tag[k] < tag[l]);
 			
-			if (tmp_FP && valid_order){
+			if (tmp_FP && true){
 				vector<double> tmp_force_scalar_4b;
 				chimes_calculator.compute_4B( dist_4b, dr_4b, typ_idxs_4b, force_4b, stensor, energy, chimes_4btmp, tmp_force_scalar_4b, tmp_dist_4b, tmp_FP && valid_order, ghost_4b);
 			} else {
