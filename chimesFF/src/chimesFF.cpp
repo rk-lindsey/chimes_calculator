@@ -1443,25 +1443,14 @@ void chimesFF::compute_2B(const double dx, const vector<double> & dr, const vect
 
     if (dx >= chimes_2b_cutoff[pair_idx][1])
         return;    
-    // if(fingerprint){
-    //     vector<double> dist_2b;
-    //     dist_2b.push_back(dx);
-    //     cluster_typ_idxs_2b[0] = 1.0*typ_idxs[0];
-    //     cluster_typ_idxs_2b[1] = 1.0*typ_idxs[1];
-    //     vector<double> combinedVec;
-    //     combinedVec.reserve(dist_2b.size() + cluster_typ_idxs_2b.size());
-    //     combinedVec.insert(combinedVec.end(), dist_2b.begin(), dist_2b.end());
-    //     combinedVec.insert(combinedVec.end(), cluster_typ_idxs_2b.begin(), cluster_typ_idxs_2b.end());
-    //     clusters_2b.push_back(combinedVec);
-    // }
     if (fingerprint) {
         // Reserve space if you have an estimate of how many elements will be added
         // clusters_2b.reserve(clusters_2b.size() + expected_additional_elements);
         
         // Construct the vector directly without temporaries
         clusters_2b.emplace_back(initializer_list<double>{
-            dx, 
-            static_cast<double>(typ_idxs[0]), 
+            dx,
+            static_cast<double>(typ_idxs[0]),
             static_cast<double>(typ_idxs[1])
         });
     }
@@ -1612,24 +1601,15 @@ void chimesFF::compute_3B(const vector<double> & dx, const vector<double> & dr, 
      double cutoff_02 = chimes_3b_cutoff[ tripidx ][0][mapped_pair_idx[2]];
     if (dx[2] >= cutoff_2)    // jk
         return;    
-    // if (fingerprint){
-    //     cluster_typ_idxs_3b[0] = 1.0*typ_idxs[0];
-    //     cluster_typ_idxs_3b[1] = 1.0*typ_idxs[1];
-    //     cluster_typ_idxs_3b[2] = 1.0*typ_idxs[2];
-    //     vector<double> combinedVec;
-    //     combinedVec.reserve(dx.size() + cluster_typ_idxs_3b.size());
-    //     combinedVec.insert(combinedVec.end(), dx.begin(), dx.end());
-    //     combinedVec.insert(combinedVec.end(), cluster_typ_idxs_3b.begin(), cluster_typ_idxs_3b.end());
-    //     clusters_3b.push_back(combinedVec);
-    // }
     if (fingerprint) {
         // Most efficient version - construct in-place with emplace_back
-        clusters_3b.emplace_back(std::initializer_list<double>{
+            clusters_3b.emplace_back(std::initializer_list<double>{
             dx[0], dx[1], dx[2],  // Assuming dx is a vector of 3 distances
             static_cast<double>(typ_idxs[0]),
-            static_cast<double>(typ_idxs[1]), 
+            static_cast<double>(typ_idxs[1]),
             static_cast<double>(typ_idxs[2])});
         }
+    // std::cout << "ghost_3b defined as: "<< (ghost_3b ? "true" : "false") << std::endl; 
     if(ghost_3b){return;}
 
  int pair_type_1 = atom_int_pair_map[ typ_idxs[0]*natmtyps + typ_idxs[1] ];
@@ -1885,17 +1865,6 @@ void chimesFF::compute_4B(const vector<double> & dx, const vector<double> & dr, 
      double cutoff_05 = chimes_4b_cutoff[ quadidx ][0][mapped_pair_idx[5]];
     if (dx[5] >= cutoff_5)    // kl
         return;
-    // if (fingerprint){
-    //     cluster_typ_idxs_4b[0] = 1.0*typ_idxs[0];
-    //     cluster_typ_idxs_4b[1] = 1.0*typ_idxs[1];
-    //     cluster_typ_idxs_4b[2] = 1.0*typ_idxs[2];
-    //     cluster_typ_idxs_4b[3] = 1.0*typ_idxs[3];
-    //     vector<double> combinedVec;
-    //     combinedVec.reserve(dx.size() + cluster_typ_idxs_4b.size());
-    //     combinedVec.insert(combinedVec.end(), dx.begin(), dx.end());
-    //     combinedVec.insert(combinedVec.end(), cluster_typ_idxs_4b.begin(), cluster_typ_idxs_4b.end());
-    //     clusters_4b.push_back(combinedVec);
-    // }
     if (fingerprint) {
     // Fastest version - construct in-place with emplace_back
     clusters_4b.emplace_back(std::initializer_list<double>{
@@ -1904,8 +1873,7 @@ void chimesFF::compute_4B(const vector<double> & dx, const vector<double> & dr, 
         static_cast<double>(typ_idxs[1]),
         static_cast<double>(typ_idxs[2]),
         static_cast<double>(typ_idxs[3])
-    });
-}
+    });}
     if (ghost_4b) return;
     // At this point, all distances are within allowed ranges. We can now proceed to the force/stress/energy calculation
     
