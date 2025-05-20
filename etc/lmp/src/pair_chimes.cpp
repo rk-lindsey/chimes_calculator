@@ -315,7 +315,7 @@ inline double PairCHIMES::get_dist(int i, int j)
 void PairCHIMES::build_mb_neighlists()
 {
 
-	if ( ((chimes_calculator.poly_orders[1] == 0) &&  (chimes_calculator.poly_orders[2] == 0))&& !fingerprint)
+	if ( ((chimes_calculator.poly_orders[1] == 0) &&  (chimes_calculator.poly_orders[2] == 0)) && !fingerprint)
 		return;
 
 	// List gets built based on atoms owned by calling proc. 
@@ -409,7 +409,7 @@ void PairCHIMES::build_mb_neighlists()
 				
 				// Now decide if we should continue on to 4-body neighbor list construction
 
-				if (chimes_calculator.poly_orders[2] == 0 || !fingerprint)
+				if (chimes_calculator.poly_orders[2] == 0 && !fingerprint)
 					continue;
 
 				llist = firstneigh[i];	
@@ -473,13 +473,6 @@ void PairCHIMES::compute(int eflag, int vflag)
     std::vector<double>  fscalar(6);
     std::vector<double>  tmp_dist(1);
     std::vector<double>  tmp_dr(6);
-    vector<vector<double > > tmp_dist_2b;
-    vector<vector<double > > tmp_dist_3b;
-    vector<vector<double > > tmp_dist_4b;
-	bool 				 tmp_FP;
-	bool 				 valid_order;
-	bool 				 ghost_3b;
-	bool 				 ghost_4b;
     int                  atmidxlst[6][2];
 	
 	// General LAMMPS compute vars
@@ -514,9 +507,17 @@ void PairCHIMES::compute(int eflag, int vflag)
   		vflag_atom  = 0;
 	}
 
+	// Compile if fingerprinting desired
+	#ifdef FINGERPRINT
+	std::vector<std::vector<double>> tmp_dist_2b;
+    std::vector<std::vector<double>> tmp_dist_3b;
+    std::vector<std::vector<double>> tmp_dist_4b;
+	bool 				 tmp_FP;
+	bool 				 valid_order;
 	if (fingerprint){
 		if(update->ntimestep % IO_freq == 0){tmp_FP = true;}
 	}else{tmp_FP = false;}
+	#endif
 
 	////////////////////////////////////////
 	// Access to (2-body) neighbor list vars
@@ -599,13 +600,17 @@ void PairCHIMES::compute(int eflag, int vflag)
 			std::fill(stensor.begin(), stensor.end(), 0.0) ;
 
 			energy = 0.0;	
+			#ifdef FINGERPRINT
 			valid_order = (i < j);
 			if (tmp_FP && valid_order){
 				double tmp_force_scalar;
 				chimes_calculator.compute_2B( dist, dr, typ_idxs_2b, force_2b, stensor, energy, chimes_2btmp, tmp_force_scalar, tmp_dist_2b, tmp_FP && valid_order);	// Auto-updates badness
 			} else {
+			#endif
 				chimes_calculator.compute_2B( dist, dr, typ_idxs_2b, force_2b, stensor, energy, chimes_2btmp);	// Auto-updates badness		
+			#ifdef FINGERPRINT
 			}
+			#endif
 			for (idx=0; idx<3; idx++)
 			{
 				f[i][idx] += force_2b[0*CHDIM+idx] ;
@@ -626,6 +631,7 @@ void PairCHIMES::compute(int eflag, int vflag)
 				ev_tally_mb(2, atmidxlst, energy, fscalar, tmp_dist, dr);         
 		}
 	}
+	#ifdef FINGERPRINT
 	std::string ts = std::to_string(update->ntimestep);
 	if (tmp_FP)
 	{
@@ -633,19 +639,19 @@ void PairCHIMES::compute(int eflag, int vflag)
 		filename << ts << "." << std::to_string(chimes_calculator.rank) <<".2b_clusters.txt";
 		writeClusterDataComp(filename.str(), tmp_dist_2b);
 	}
+	#endif
 
     // Document badness for configuration: current timestep, current rank, worst badness seen by rank
     if (for_fitting)
         if(update->ntimestep % output->every_dump[0] == 0)
             badness_stream << update->ntimestep << " " <<  chimes_calculator.get_badness() << endl;
 
-	if (chimes_calculator.poly_orders[1] > 0 || tmp_FP)
+	// if (chimes_calculator.poly_orders[1] > 0 || tmp_FP)
+	if (chimes_calculator.poly_orders[1] > 0)
 	{
 		////////////////////////////////////////
 		// Compute 3-body interactions
 		////////////////////////////////////////
-		if (chimes_calculator.poly_orders[1] == 0){ghost_3b=true;
-		} else{ghost_3b=false;}
 
 		for (ii = 0; ii < neighborlist_3mers.size(); ii++)		
 		{
@@ -665,14 +671,17 @@ void PairCHIMES::compute(int eflag, int vflag)
 			std::fill(stensor.begin(), stensor.end(), 0.0) ;
 				
 			energy = 0.0 ;
+			#ifdef FINGERPRINT
 			valid_order = (tag[i] < tag[j] && tag[i] < tag[k] && tag[j] < tag[k]);
-			
 			if (tmp_FP && valid_order){
 				vector<double> tmp_force_scalar_3b(3);
-				chimes_calculator.compute_3B( dist_3b, dr_3b, typ_idxs_3b, force_3b, stensor, energy, chimes_3btmp, tmp_force_scalar_3b, tmp_dist_3b, tmp_FP && valid_order, ghost_3b);
+				chimes_calculator.compute_3B( dist_3b, dr_3b, typ_idxs_3b, force_3b, stensor, energy, chimes_3btmp, tmp_force_scalar_3b, tmp_dist_3b, tmp_FP && valid_order);
 			} else {
+			#endif
 				chimes_calculator.compute_3B( dist_3b, dr_3b, typ_idxs_3b, force_3b, stensor, energy, chimes_3btmp);
+			#ifdef FINGERPRINT
 			}
+			#endif
 
 			for (idx=0; idx<3; idx++)
 			{
@@ -695,21 +704,22 @@ void PairCHIMES::compute(int eflag, int vflag)
 				ev_tally_mb(3, atmidxlst, energy, fscalar, dist_3b, dr_3b);		            
 		}		
 	}
+	#ifdef FINGERPRINT
 	if (tmp_FP)
 	{
 		std::stringstream filename_3b;
 		filename_3b << ts << "." << std::to_string(chimes_calculator.rank) <<".3b_clusters.txt";
 		writeClusterDataComp(filename_3b.str(), tmp_dist_3b);
 	}
+	#endif
 
-    if (chimes_calculator.poly_orders[2] > 0 || tmp_FP)
+    // if (chimes_calculator.poly_orders[2] > 0 || tmp_FP)
+	if (chimes_calculator.poly_orders[2] > 0)
     {
         cout << "Made it between ifs" << endl;
         ////////////////////////////////////////
         // Compute 4-body interactions
         ////////////////////////////////////////
-        if (chimes_calculator.poly_orders[2] == 0){ghost_4b=true;
-		} else{ghost_4b=false;}
         cout << "neighbor_size: " << endl;
         cout << neighborlist_4mers.size() << endl;
         cout << "Made it to ghost atoms check___2" << endl;
@@ -736,14 +746,18 @@ void PairCHIMES::compute(int eflag, int vflag)
 			std::fill(stensor.begin(), stensor.end(), 0.0) ;
 
 			energy = 0.0 ;	
-			valid_order = (tag[i] < tag[j] && tag[j] < tag[k] && tag[k] < tag[l]);
 			
+			#ifdef FINGERPRINT
+			valid_order = (tag[i] < tag[j] && tag[j] < tag[k] && tag[k] < tag[l]);
 			if (tmp_FP && valid_order){
 				vector<double> tmp_force_scalar_4b(6);
-				chimes_calculator.compute_4B( dist_4b, dr_4b, typ_idxs_4b, force_4b, stensor, energy, chimes_4btmp, tmp_force_scalar_4b, tmp_dist_4b, tmp_FP && valid_order, ghost_4b);
+				chimes_calculator.compute_4B( dist_4b, dr_4b, typ_idxs_4b, force_4b, stensor, energy, chimes_4btmp, tmp_force_scalar_4b, tmp_dist_4b, tmp_FP && valid_order);
 			} else {
+			#endif
 				chimes_calculator.compute_4B( dist_4b, dr_4b, typ_idxs_4b, force_4b, stensor, energy, chimes_4btmp);
+			#ifdef FINGERPRINT
 			}
+			#endif
 
 			for (idx=0; idx<3; idx++)
 			{
@@ -774,13 +788,14 @@ void PairCHIMES::compute(int eflag, int vflag)
             
 		}
 	}
+	#ifdef FINGERPRINT
 	if (tmp_FP)
 	{
 		std::stringstream filename_4b;
 		filename_4b << ts << "." << std::to_string(chimes_calculator.rank) <<".4b_clusters.txt";
 		writeClusterDataComp(filename_4b.str(), tmp_dist_4b);
 	}
-	if (tmp_FP)
+	#endif
 
 if (vflag_fdotr) 
         virial_fdotr_compute();

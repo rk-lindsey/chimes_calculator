@@ -1,5 +1,20 @@
 #!/bin/bash
 
+# Builds all relevant chimes_calculator executables/library files 
+#
+# If working on a machine with a corresponding .mod file in the modfiles folder
+# (e.g., modfiles/LLNL-LC.mod), execute with, e.g.:
+#
+#   export hosttype=LLNL-LC; ./install.sh
+# 
+# Otherwise, load necessary modules manually and execute with 
+# 
+# ./install.sh 
+# 
+# Note that additional arguments can be specified, i.e.:
+#
+#   ./install.sh <FINGERPRINT>
+
 echo ""
 echo "Note: This install script assumes: "
 echo "1. Availibility of Intel C++ compilers with c++11 support"
