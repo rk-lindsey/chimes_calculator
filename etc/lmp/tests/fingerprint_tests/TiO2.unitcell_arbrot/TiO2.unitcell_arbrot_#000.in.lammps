@@ -6,7 +6,7 @@ variable temp    equal 0	# Temperature (K)
 variable seed  	 equal 1111	# Random seed
 variable iofrq   equal 1	# Output frequency: thermo and trajectory MUST use same value
 variable delt    equal 0.2	# Timestep (fs)
-variable nstep   equal 0	# Number of steps for simulation
+variable nstep   equal 10	# Number of steps for simulation
 
 
 ##############################################
@@ -33,7 +33,7 @@ velocity        all create ${temp} ${seed} loop all mom yes rot yes dist gaussia
 ###   Model definition - UPDATE as needed  ###
 ##############################################
 
-pair_style	chimesFF
+pair_style	chimesFF fingerprint 1
 pair_coeff	* * validated_params.TiO2.2+3b.Tersoff.txt
 
 ##############################################
