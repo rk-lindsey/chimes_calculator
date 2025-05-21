@@ -72,7 +72,9 @@ PairCHIMES::PairCHIMES(LAMMPS *lmp) : Pair(lmp)
 	
 	chimes_calculator.init(me);  
     for_fitting = false;
+#ifdef FINGERPRINT
     fingerprint = false;
+#endif
 	
 	// 2, 3, and 4-body vars for chimesFF access
 
@@ -135,6 +137,7 @@ void PairCHIMES::settings(int narg, char **arg)
             badness_stream.open("rank-" + ss.str() + ".badness.log");    
         }
     }
+	#ifdef FINGERPRINT
     if (narg == 2) 
     {  
         if (utils::strmatch(arg[0],"fingerprint"))
@@ -167,6 +170,7 @@ void PairCHIMES::settings(int narg, char **arg)
             badness_stream.open("rank-" + ss.str() + ".badness.log");  
         }
     }
+	#endif
 
 	return;	
 }
@@ -215,19 +219,19 @@ void PairCHIMES::coeff(int narg, char **arg)
 	}
 
 	maxcut_3b = chimes_calculator.max_cutoff_3B();
-	if (maxcut_3b==0.0 && fingerprint){
-		double max_val = 20;
-		for (const auto& row : cutoff_2b) {
-			for (double val : row) {
-				if (val > max_val) {
-					max_val = val;
-				}
-			}
-		}
-		maxcut_3b=max_val;
-	}
+	// if (maxcut_3b==0.0 && fingerprint){
+	// 	double max_val = 20;
+	// 	for (const auto& row : cutoff_2b) {
+	// 		for (double val : row) {
+	// 			if (val > max_val) {
+	// 				max_val = val;
+	// 			}
+	// 		}
+	// 	}
+	// 	maxcut_3b=max_val;
+	// }
 	maxcut_4b = chimes_calculator.max_cutoff_4B();
-	if (maxcut_4b==0.0 && fingerprint){maxcut_4b=maxcut_3b;}
+	// if (maxcut_4b==0.0 && fingerprint){maxcut_4b=maxcut_3b;}
 }
 void writeClusterDataComp(const string& filename, const vector<vector<double>>& data) 
 {
@@ -315,7 +319,12 @@ inline double PairCHIMES::get_dist(int i, int j)
 void PairCHIMES::build_mb_neighlists()
 {
 
-	if ( ((chimes_calculator.poly_orders[1] == 0) &&  (chimes_calculator.poly_orders[2] == 0)) && !fingerprint)
+
+	if ( (chimes_calculator.poly_orders[1] == 0) &&  (chimes_calculator.poly_orders[2] == 0) 
+		#ifdef FINGERPRINT
+			&& (!fingerprint)
+		#endif
+		)
 		return;
 
 	// List gets built based on atoms owned by calling proc. 
@@ -409,7 +418,11 @@ void PairCHIMES::build_mb_neighlists()
 				
 				// Now decide if we should continue on to 4-body neighbor list construction
 
-				if (chimes_calculator.poly_orders[2] == 0 && !fingerprint)
+				if (chimes_calculator.poly_orders[2] == 0 
+					#ifdef FINGERPRINT
+						&& !fingerprint
+					#endif
+					)
 					continue;
 
 				llist = firstneigh[i];	
@@ -508,7 +521,7 @@ void PairCHIMES::compute(int eflag, int vflag)
 	}
 
 	// Compile if fingerprinting desired
-	#ifdef FINGERPRINT
+#ifdef FINGERPRINT
 	std::vector<std::vector<double>> tmp_dist_2b;
     std::vector<std::vector<double>> tmp_dist_3b;
     std::vector<std::vector<double>> tmp_dist_4b;
@@ -517,7 +530,7 @@ void PairCHIMES::compute(int eflag, int vflag)
 	if (fingerprint){
 		if(update->ntimestep % IO_freq == 0){tmp_FP = true;}
 	}else{tmp_FP = false;}
-	#endif
+#endif
 
 	////////////////////////////////////////
 	// Access to (2-body) neighbor list vars

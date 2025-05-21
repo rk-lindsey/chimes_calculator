@@ -32,7 +32,7 @@ velocity        all create ${temp} ${seed} loop all mom yes rot yes dist gaussia
 ###   Model definition - UPDATE as needed  ###
 ##############################################
 
-pair_style	chimesFF fingerprint 5
+pair_style	chimesFF fingerprint 1
 pair_coeff	* * published_params.liqCO.2+3b.cubic.txt
 
 ##############################################

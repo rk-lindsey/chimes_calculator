@@ -1405,11 +1405,21 @@ void chimesFF::compute_1B(const int typ_idx, double & energy )
 void chimesFF::compute_2B(const double dx, const vector<double> & dr, const vector<int> typ_idxs, vector<double> & force, vector<double> & stress, double & energy, chimes2BTmp &tmp)
 {              
     double dummy_force_scalar;
+#ifdef FINGERPRINT
     vector<vector<double>> dummy_clusters_2b;
     bool dummy_fingerprint = false;
-    compute_2B(dx, dr, typ_idxs, force, stress, energy, tmp, dummy_force_scalar, dummy_clusters_2b, dummy_fingerprint);                                                               
+#endif
+    compute_2B(dx, dr, typ_idxs, force, stress, energy, tmp, dummy_force_scalar
+                #ifdef FINGERPRINT
+                    , dummy_clusters_2b, dummy_fingerprint
+                #endif
+                );                                                               
 }
-void chimesFF::compute_2B(const double dx, const vector<double> & dr, const vector<int> typ_idxs, vector<double> & force, vector<double> & stress, double & energy, chimes2BTmp &tmp, double & force_scalar_in, vector<vector<double>> & clusters_2b, bool fingerprint)
+void chimesFF::compute_2B(const double dx, const vector<double> & dr, const vector<int> typ_idxs, vector<double> & force, vector<double> & stress, double & energy, chimes2BTmp &tmp, double & force_scalar_in
+                            #ifdef FINGERPRINT
+                                , vector<vector<double>> & clusters_2b, bool fingerprint
+                            #endif
+                            )
 {
     // Compute 2b (input: 2 atoms or distances, corresponding types... outputs (updates) force, acceleration, energy, stress
     //
@@ -1436,13 +1446,12 @@ void chimesFF::compute_2B(const double dx, const vector<double> & dr, const vect
     // Use references for readability.
     vector<double> &Tn = tmp.Tn ;
     vector<double> &Tnd = tmp.Tnd ;
-
-    vector<double> cluster_typ_idxs_2b(2);
     
     pair_idx = atom_int_pair_map[ typ_idxs[0]*natmtyps + typ_idxs[1] ];
 
     if (dx >= chimes_2b_cutoff[pair_idx][1])
         return;    
+
 #ifdef FINGERPRINT
     if (fingerprint) {
         // Construct the vector directly without temporaries
@@ -1529,11 +1538,21 @@ void chimesFF::compute_2B(const double dx, const vector<double> & dr, const vect
 void chimesFF::compute_3B(const vector<double> & dx, const vector<double> & dr, const vector<int> & typ_idxs, vector<double> & force, vector<double> & stress, double & energy, chimes3BTmp &tmp)
 {
 	vector<double> dummy_force_scalar(3);
+#ifdef FINGERPRINT
     vector<vector<double>> dummy_clusters_3b;
     bool dummy_fingerprint = false;
-	compute_3B(dx, dr, typ_idxs, force, stress, energy, tmp, dummy_force_scalar, dummy_clusters_3b,  dummy_fingerprint);
+#endif
+	compute_3B(dx, dr, typ_idxs, force, stress, energy, tmp, dummy_force_scalar
+               #ifdef FINGERPRINT
+                    , dummy_clusters_3b,  dummy_fingerprint
+               #endif
+               );
 }
-void chimesFF::compute_3B(const vector<double> & dx, const vector<double> & dr, const vector<int> & typ_idxs, vector<double> & force, vector<double> & stress, double & energy, chimes3BTmp &tmp, vector<double> & force_scalar_in, vector<vector<double>> & clusters_3b, bool fingerprint)
+void chimesFF::compute_3B(const vector<double> & dx, const vector<double> & dr, const vector<int> & typ_idxs, vector<double> & force, vector<double> & stress, double & energy, chimes3BTmp &tmp, vector<double> & force_scalar_in
+                #ifdef FINGERPRINT
+                    , vector<vector<double>> & clusters_3b, bool fingerprint
+                #endif
+                )
 {
     // Compute 3b (input: 3 atoms or distances, corresponding types... outputs (updates) force, acceleration, energy, stress
     //
@@ -1579,7 +1598,6 @@ void chimesFF::compute_3B(const vector<double> & dx, const vector<double> & dr, 
 
     int type_idx =  typ_idxs[0]*natmtyps*natmtyps + typ_idxs[1]*natmtyps + typ_idxs[2] ;
     int tripidx = atom_int_trip_map[type_idx];
-    vector<double> cluster_typ_idxs_3b(3);
 
     if(tripidx < 0)    // Skipping an excluded interaction
         return;
@@ -1767,11 +1785,21 @@ void chimesFF::compute_3B(const vector<double> & dx, const vector<double> & dr, 
 void chimesFF::compute_4B(const vector<double> & dx, const vector<double> & dr, const vector<int> & typ_idxs, vector<double> & force, vector<double> & stress, double & energy, chimes4BTmp &tmp)
 {              
         vector<double> dummy_force_scalar(6);
+    #ifdef FINGERPRINT
         vector<vector<double>> dummy_clusters_4b;
         bool dummy_fingerprint;
-        compute_4B(dx, dr, typ_idxs, force, stress, energy, tmp, dummy_force_scalar, dummy_clusters_4b, dummy_fingerprint);                                                               
+    #endif
+        compute_4B(dx, dr, typ_idxs, force, stress, energy, tmp, dummy_force_scalar
+                    #ifdef FINGERPRINT
+                        , dummy_clusters_4b, dummy_fingerprint
+                    #endif
+                    );                                                               
 }
-void chimesFF::compute_4B(const vector<double> & dx, const vector<double> & dr, const vector<int> & typ_idxs, vector<double> & force, vector<double> & stress, double & energy, chimes4BTmp &tmp, vector<double> & force_scalar_in, vector<vector<double>> & clusters_4b, bool fingerprint)
+void chimesFF::compute_4B(const vector<double> & dx, const vector<double> & dr, const vector<int> & typ_idxs, vector<double> & force, vector<double> & stress, double & energy, chimes4BTmp &tmp, vector<double> & force_scalar_in
+                            #ifdef FINGERPRINT
+                                , vector<vector<double>> & clusters_4b, bool fingerprint
+                            #endif
+                            )
 {
     // Compute 3b (input: 3 atoms or distances, corresponding types... outputs (updates) force, acceleration, energy, stress
     //
@@ -1816,9 +1844,7 @@ void chimesFF::compute_4B(const vector<double> & dx, const vector<double> & dr, 
     vector<double> &Tnd_il  = tmp.Tnd_il ;  
     vector<double> &Tnd_jk  = tmp.Tnd_jk ;
     vector<double> &Tnd_jl  = tmp.Tnd_jl ;
-    vector<double> &Tnd_kl  = tmp.Tnd_kl ;    
-
-    vector<double> cluster_typ_idxs_4b(4);          
+    vector<double> &Tnd_kl  = tmp.Tnd_kl ;            
 
     int idx = typ_idxs[0]*natmtyps*natmtyps*natmtyps
         + typ_idxs[1]*natmtyps*natmtyps + typ_idxs[2]*natmtyps + typ_idxs[3] ;
@@ -1862,6 +1888,8 @@ void chimesFF::compute_4B(const vector<double> & dx, const vector<double> & dr, 
      double cutoff_05 = chimes_4b_cutoff[ quadidx ][0][mapped_pair_idx[5]];
     if (dx[5] >= cutoff_5)    // kl
         return;
+
+
 #ifdef FINGERPRINT
     if (fingerprint) {
         // Fastest version - construct in-place with emplace_back
@@ -1882,6 +1910,7 @@ void chimesFF::compute_4B(const vector<double> & dx, const vector<double> & dr, 
     int pair_type_5 = atom_int_pair_map[ typ_idxs[1]*natmtyps + typ_idxs[3] ];
     int pair_type_6 = atom_int_pair_map[ typ_idxs[2]*natmtyps + typ_idxs[3] ];
     int order       = poly_orders[2];    
+
 
     // Set up the polynomials
     
@@ -1904,12 +1933,18 @@ void chimesFF::compute_4B(const vector<double> & dx, const vector<double> & dr, 
     for (int i=0; i<npairs; i++)    
         get_fcut(dx[i], chimes_4b_cutoff[quadidx][1][mapped_pair_idx[i]], fcut[i], fcutderiv[i]);
 */
+
     get_fcut(dx[0], cutoff_0, fcut[0], fcutderiv[0]);
     get_fcut(dx[1], cutoff_1, fcut[1], fcutderiv[1]);
     get_fcut(dx[2], cutoff_2, fcut[2], fcutderiv[2]);
     get_fcut(dx[3], cutoff_3, fcut[3], fcutderiv[3]);
     get_fcut(dx[4], cutoff_4, fcut[4], fcutderiv[4]);
     get_fcut(dx[5], cutoff_5, fcut[5], fcutderiv[5]);
+
+
+
+
+
 
     // Product of all 6 fcuts.
     double fcut_all = fcut[0] * fcut[1] * fcut[2] * fcut[3] * fcut[4] * fcut[5]  ;
@@ -1924,6 +1959,7 @@ void chimesFF::compute_4B(const vector<double> & dx, const vector<double> & dr, 
     fcut_5[5] = fcut[0] * fcut[1] * fcut[2] * fcut[3] * fcut[4] / dx[5] ;
     
     // Start the force/stress/energy calculation
+
     double coeff;
     int powers[npairs] ;
     double force_scalar[npairs] ;
@@ -1996,6 +2032,7 @@ void chimesFF::compute_4B(const vector<double> & dx, const vector<double> & dr, 
 #endif      
         
         // Accumulate forces/stresses on/from the ik pair
+
         force[0*CHDIM+0] += fscalar_1 * dr[1*CHDIM+0];
         force[0*CHDIM+1] += fscalar_1 * dr[1*CHDIM+1];
         force[0*CHDIM+2] += fscalar_1 * dr[1*CHDIM+2];
@@ -2020,6 +2057,7 @@ void chimesFF::compute_4B(const vector<double> & dx, const vector<double> & dr, 
         stress[5] -= fscalar_1  * dr[1*CHDIM+2] * dr[1*CHDIM+2]; // zz tensor component
 #endif      
         // Accumulate forces/stresses on/from the il pair
+
         force[0*CHDIM+0] += fscalar_2 * dr[2*CHDIM+0];
         force[0*CHDIM+1] += fscalar_2 * dr[2*CHDIM+1];
         force[0*CHDIM+2] += fscalar_2 * dr[2*CHDIM+2];
@@ -2043,6 +2081,7 @@ void chimesFF::compute_4B(const vector<double> & dx, const vector<double> & dr, 
         stress[4] -= fscalar_2  * dr[2*CHDIM+1] * dr[2*CHDIM+2]; // yz tensor component
         stress[5] -= fscalar_2  * dr[2*CHDIM+2] * dr[2*CHDIM+2]; // zz tensor component           
 #endif
+
         // Accumulate forces/stresses on/from the jk pair
         
         force[1*CHDIM+0] += fscalar_3 * dr[3*CHDIM+0];
@@ -2095,6 +2134,7 @@ void chimesFF::compute_4B(const vector<double> & dx, const vector<double> & dr, 
         stress[5] -= fscalar_4  * dr[4*CHDIM+2] * dr[4*CHDIM+2]; // zz tensor component
 #endif      
         // Accumulate forces/stresses on/from the kl pair
+
         force[2*CHDIM+0] += fscalar_5 * dr[5*CHDIM+0];
         force[2*CHDIM+1] += fscalar_5 * dr[5*CHDIM+1];
         force[2*CHDIM+2] += fscalar_5 * dr[5*CHDIM+2];
@@ -2119,6 +2159,7 @@ void chimesFF::compute_4B(const vector<double> & dx, const vector<double> & dr, 
         stress[5] -= fscalar_5  * dr[5*CHDIM+2] * dr[5*CHDIM+2]; // zz tensor component
 #endif      
     }
+    
 	force_scalar_in[0] = force_scalar[0];
 	force_scalar_in[1] = force_scalar[1];
 	force_scalar_in[2] = force_scalar[2];

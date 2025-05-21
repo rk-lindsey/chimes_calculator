@@ -22,6 +22,14 @@ echo "2. Availability of Intel MPI compilers"
 echo "...Intel oneapi compilers are now freely available"
 echo ""
 
+# ********** NEW: FINGERPRINT FLAG HANDLING **********
+FINGERPRINT_FLAG=""
+if [[ "$1" == "FINGERPRINT" ]] ; then
+    FINGERPRINT_FLAG="-DFINGERPRINT"
+    echo "Enabling FINGERPRINT compilation flag for ChIMES files"
+    shift  # Remove this argument from $@
+fi
+
 # Cleanup any previous installation
 
 ./uninstall.sh
@@ -42,6 +50,14 @@ cp src/pair_chimes.{h,cpp} 		build/lammps_stable_29Oct2020/src/MANYBODY/
 cp etc/pair.{h,cpp} 			build/lammps_stable_29Oct2020/src
 cp etc/Makefile.mpi_chimes 		build/lammps_stable_29Oct2020/src/MAKE
 
+# ********** MODIFIED MAKEFILE HANDLING **********
+if [ -n "$FINGERPRINT_FLAG" ]; then
+    # Append fingerprint flag to CCFLAGS
+    sed -e "/^CCFLAGS[[:space:]]*=/ s|$| $FINGERPRINT_FLAG|" etc/Makefile.mpi_chimes > build/lammps_stable_29Oct2020/src/MAKE/Makefile.mpi_chimes
+else
+    # Use standard Makefile
+    cp etc/Makefile.mpi_chimes build/lammps_stable_29Oct2020/src/MAKE/
+fi
 
 # Load module files and configure compilers
 # Note: If using intel compilers from after Jan. 2021 (e.g.,) have access to oneapi
