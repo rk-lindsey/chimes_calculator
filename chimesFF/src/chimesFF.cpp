@@ -1894,7 +1894,7 @@ void chimesFF::compute_4B(const vector<double> & dx, const vector<double> & dr, 
     if (fingerprint) {
         // Fastest version - construct in-place with emplace_back
         clusters_4b.emplace_back(std::initializer_list<double>{
-            dx[0], dx[1], dx[2], dx[3],  // Assuming dx contains 4 distances
+            dx[0], dx[1], dx[2], dx[3], dx[4], dx[5],  // Assuming dx contains 4 distances
             static_cast<double>(typ_idxs[0]),
             static_cast<double>(typ_idxs[1]),
             static_cast<double>(typ_idxs[2]),
