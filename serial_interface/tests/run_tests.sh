@@ -25,7 +25,7 @@ do
 	FFS+=($FF); CFGS+=($CFG); OPTIONS+=($OPTION)
 done < tmp-data.dat; rm -f tmp-data.dat
 
-API_LIST="0 1 2 3 4 5 6"
+API_LIST="0 1 2 3 4 5 6 7"
 NO_TESTS=${#FFS[@]}
 LOC=`pwd`
 
@@ -36,6 +36,7 @@ API[3]="python"   ; EXE[3]="main.py"			; XTRA[3]="" #"2 1"
 API[4]="fortran08"; EXE[4]="chimescalc-test_serial-F08" ; XTRA[4]="" #"0"
 API[5]="fortran_instance"; EXE[5]="chimescalc-test_serial-F_instance" ; XTRA[5]="" #"0"
 API[6]="c_instance"; EXE[6]="chimescalc-test_serial-C_instance" ; XTRA[6]="" #"0"
+API[7]="python_instance"   ; EXE[7]="main.py"			; XTRA[7]="" #"2 1"
 
 echo "Running $STYLE tests"
 date
@@ -55,12 +56,12 @@ do
 			echo "Compiling for API ${API[$i]}"
 			echo ""
 
-			if [[ "${API[$i]}" != "python" ]] ; then
+			if [ "${API[$i]}" == "python_instance" ] || [ "${API[$i]}" == "python" ]; then
 	
-				make all DEBUG=1
-			else
 				make all
 				cp libchimescalc-serial_dl.so ../../tests/libchimescalc_dl.so
+			else
+				make all DEBUG=1
 			fi
 			
 			cd ../../tests
@@ -108,16 +109,16 @@ do
 				
 				# Run the test
 				
-				if [[ "${API[$i]}" != "python" ]] ; then
+				if [ "${API[$i]}" == "python_instance" ] || [ "${API[$i]}" == "python" ]; then
 				
+					${PYTH3} ../examples/${API[$i]}/${EXE[$i]} force_fields/${FFS[$j]} configurations/$CFG ${OPTIONS[$j]} ${LOC}/../api 1 > /dev/null
+					
+				else				
 					if [[ $compile == "CMAKE" ]] ; then
 						../../build/${EXE[$i]} force_fields/${FFS[$j]} configurations/$CFG ${OPTIONS[$j]} > /dev/null
 					else
 						../examples/${API[$i]}/${EXE[$i]} force_fields/${FFS[$j]} configurations/$CFG ${OPTIONS[$j]}  > /dev/null
 					fi
-					
-				else				
-					${PYTH3} ../examples/${API[$i]}/${EXE[$i]} force_fields/${FFS[$j]} configurations/$CFG ${OPTIONS[$j]} ${LOC}/../api 1 > /dev/null
 				fi
 
 				# Compare results against expected results (expected_output/${FFS[$j]}.$CFG.dat)
