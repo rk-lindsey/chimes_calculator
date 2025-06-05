@@ -80,7 +80,14 @@ elif [[ "$hosttype" == "JHU-ARCH" ]] ; then
     MPI=`which mpicxx`    
 elif [[ "$hosttype" == "UT-TACC" ]] ; then
     source modfiles/UT-TACC.mod
-    cp etc/Makefile.mpi_chimes.UT-TACC build/lammps_stable_29Oct2020/src/MAKE/Makefile.mpi_chimes
+    # cp etc/Makefile.mpi_chimes.UT-TACC build/lammps_stable_29Oct2020/src/MAKE/Makefile.mpi_chimes
+    # ********** MODIFIED MAKEFILE HANDLING **********
+    if [ -n "$FINGERPRINT_FLAG" ]; then
+        # Append fingerprint flag to CCFLAGS
+        sed -e "/^CCFLAGS[[:space:]]*=/ s|$| $FINGERPRINT_FLAG|" etc/Makefile.mpi_chimes.UT-TACC > build/lammps_stable_29Oct2020/src/MAKE/Makefile.mpi_chimes
+    else
+        cp etc/Makefile.mpi_chimes.UT-TACC build/lammps_stable_29Oct2020/src/MAKE/Makefile.mpi_chimes
+    fi
 
 else
     echo ""
