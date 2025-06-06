@@ -84,7 +84,7 @@ elif [[ "$hosttype" == "UT-TACC" ]] ; then
     # ********** MODIFIED MAKEFILE HANDLING **********
     if [ -n "$FINGERPRINT_FLAG" ]; then
         # Append fingerprint flag to CCFLAGS
-        sed -e "/^CCFLAGS[[:space:]]*=/ s|$| $FINGERPRINT_FLAG|" etc/Makefile.mpi_chimes.UT-TACC > build/lammps_stable_29Oct2020/src/MAKE/Makefile.mpi_chimes
+        sed -e "/^CCFLAGS[[:space:]]*=/ s|$| $FINGERPRINT_FLAG|"  etc/Makefile.mpi_chimes.UT-TACC > build/lammps_stable_29Oct2020/src/MAKE/Makefile.mpi_chimes
     else
         cp etc/Makefile.mpi_chimes.UT-TACC build/lammps_stable_29Oct2020/src/MAKE/Makefile.mpi_chimes
     fi
