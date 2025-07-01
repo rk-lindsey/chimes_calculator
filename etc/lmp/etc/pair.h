@@ -144,7 +144,7 @@ class Pair : protected Pointers {
   void ev_tally_xyz(int, int, int, int, double, double,
                     double, double, double, double, double, double);
 					
-  void ev_tally_mb(int npair, int atmpairidxlst[6][2], double evdwl, std::vector<double>fscalar, std::vector<double> & dist, std::vector<double> &dr);
+  void ev_tally_mb(int ninteractionatoms, int npairs, int atmpairidxlst[6][2], double evdwl, std::vector<double> stress);
   
 
   // general child-class methods
