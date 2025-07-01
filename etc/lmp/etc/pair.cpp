@@ -30,7 +30,6 @@
 #include "neighbor.h"
 #include "suffix.h"
 #include "update.h"
-#include "iostream"
 
 #include <cfloat>    // IWYU pragma: keep
 #include <climits>   // IWYU pragma: keep
