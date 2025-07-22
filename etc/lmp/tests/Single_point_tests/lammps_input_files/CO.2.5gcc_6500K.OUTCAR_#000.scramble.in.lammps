@@ -25,7 +25,7 @@ neigh_modify    delay 0 every 1 check yes
 ###             Initialization             ###
 ##############################################
 
-read_data       "lammps_input_files/CO.2.5gcc_6500K.OUTCAR_#000.scramble.in.data" 
+read_data       "configurations/replicate_2x2x2_CO.2.5gcc_6500K.OUTCAR_#000.scramble.in.data" 
 velocity        all create ${temp} ${seed} loop all mom yes rot yes dist gaussian
 
 ##############################################
@@ -33,7 +33,7 @@ velocity        all create ${temp} ${seed} loop all mom yes rot yes dist gaussia
 ##############################################
 
 pair_style	chimesFF
-pair_coeff	* * lammps_input_files/published_params.liqCO.2+3b.cubic.txt
+pair_coeff	* * force_fields/published_params.liqCO.2+3b.cubic.txt
 
 ##############################################
 ###        Specify dyanmics                ###

@@ -25,7 +25,7 @@ neigh_modify    delay 0 every 1 check yes
 ###             Initialization             ###
 ##############################################
 
-read_data       "HN3.2gcc_3000K.OUTCAR_#000.data.in "
+read_data       "configurations/HN3.2gcc_3000K.OUTCAR_#000.in.data"
 velocity        all create ${temp} ${seed} loop all mom yes rot yes dist gaussian
 
 ##############################################
@@ -33,13 +33,13 @@ velocity        all create ${temp} ${seed} loop all mom yes rot yes dist gaussia
 ##############################################
 
 pair_style	chimesFF
-pair_coeff	* * published_params.liqCO.2+3b.cubic.txt
+pair_coeff	* * force_fields/published_params.HN3.2+3+4b.Tersoff.special.offsets.txt
 
 ##############################################
 ###        Specify dyanmics                ###
 ##############################################
 
-thermo_style    custom step time ke pe etotal temp press pxx pyy pzz pxy pxz pyz vol
+thermo_style    custom step time atoms ke pe etotal temp press pxx pyy pzz pxy pxz pyz vol
 thermo_modify   line one format float %20.5f flush yes
 thermo          ${iofrq}
 

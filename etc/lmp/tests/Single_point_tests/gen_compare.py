@@ -2,6 +2,14 @@ import re
 from lammps_logfile import File
 import sys
 
+# Unit converters 
+Kb      = 0.0019872067          # Boltzmann constant in kcal/mol-K. (Copied from LAMMPS).
+GPa     = 6.9476955  		    # Unit conversion factor... kcal/mol/A^3 * (this constant) ==> GPa
+atm     = GPa*9869.2326671      # stress conversion to atm (for LAMMPS).
+GPa2atm = 9869.23266716	        # x_GPa * GPa2atm = x_atm
+NA = 6.02213676e23              # Avogadro's number (1/mol)
+
+
 def parse_log_file(log_path):
     stress = {
         'sxx': None,
@@ -11,23 +19,25 @@ def parse_log_file(log_path):
         'sxz': None,
         'syz': None
     }
-
+    # LAMMPS tests have units = real
     log = File(log_path)
-    energy = float(log.get("PotEng")[0])
-    volume = float(log.get("Volume")[0])
-    temp = float(log.get("Temp")[0])
-    n_atoms = float(log.get("Atoms")[0])
-    kB = (1.3806488 * 10 **(-23)) * 0.000239006 # kcal/K
-    sub_constant = (kB*temp*n_atoms/volume) / 0.14393 * (6.022 * 10 **(23))
-    print(sub_constant)
+    energy = float(log.get("PotEng")[0]) # kcal/mol
+    volume = float(log.get("Volume")[0]) # A^3
+    temp = float(log.get("Temp")[0]) # K
+    n_atoms = float(log.get("Atoms")[0]) 
+    # Ideal gas component
+    sub_constant = (Kb * temp * n_atoms / volume) / NA * GPa
+
 
     try:
-        stress['sxx'] = float(log.get("Pxx")[0]) * 0.000101325 - sub_constant
-        stress['syy'] = float(log.get("Pyy")[0]) * 0.000101325 - sub_constant
-        stress['szz'] = float(log.get("Pzz")[0]) * 0.000101325 - sub_constant
-        stress['sxy'] = float(log.get("Pxy")[0]) * 0.000101325 - sub_constant
-        stress['sxz'] = float(log.get("Pxz")[0]) * 0.000101325 - sub_constant
-        stress['syz'] = float(log.get("Pyz")[0]) * 0.000101325 - sub_constant
+        # LAMMPS output pressure in units of atm
+        stress['sxx'] = float(log.get("Pxx")[0]) / GPa2atm - sub_constant # GPa
+        stress['syy'] = float(log.get("Pyy")[0]) / GPa2atm - sub_constant # GPa
+        stress['szz'] = float(log.get("Pzz")[0]) / GPa2atm - sub_constant # GPa
+        stress['sxy'] = float(log.get("Pxy")[0]) / GPa2atm - sub_constant # GPa
+        stress['sxz'] = float(log.get("Pxz")[0]) / GPa2atm - sub_constant # GPa
+        stress['syz'] = float(log.get("Pyz")[0]) / GPa2atm - sub_constant # GPa
+
     except (IndexError, ValueError):
         pass
 
@@ -65,12 +75,13 @@ def write_output(filename, energy, stress, forces):
 
         # f.write("sxx (kcal/mol/A^3)\n")
         for key in ['sxx', 'syy', 'szz', 'sxy', 'sxz', 'syz']:
-            f.write(f"{stress[key]:.6f}\n" if stress[key] is not None else "N/A\n")
+            f.write(f"{stress[key]:.16f}\n" if stress[key] is not None else "N/A\n")
 
-        for i, (fx, fy, fz) in enumerate(forces):
-            f.write(f"{fx:.6f}\n")
-            f.write(f"{fy:.6f}\n")
-            f.write(f"{fz:.6f}\n")
+        # Write forces in scientific notation, full precision
+        for fx, fy, fz in forces:
+            f.write(f"{fx:.16e}\n")
+            f.write(f"{fy:.16e}\n")
+            f.write(f"{fz:.16e}\n")
 
 def main():
     if len(sys.argv) != 4:
@@ -86,6 +97,7 @@ def main():
     write_output(output_file, energy, stress, forces)
 
     print(f"Output written to {output_file}")
+    print(f"Moved {output_file} to the generated_output folder")
 
 if __name__ == "__main__":
     main()

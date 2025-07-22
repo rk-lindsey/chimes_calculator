@@ -1,0 +1,6 @@
+published_params.liqCO.2+3b.cubic.txt	replicate_2x2x2_CO.2.5gcc_6500K.OUTCAR_#000.scramble.in.data	CO.2.5gcc_6500K.OUTCAR_#000.scramble.in.lammps
+published_params.liqCO.2+3b.cubic.txt	replicate_2x2x2_CO.2.5gcc_6500K.OUTCAR_#000.in.data	CO.2.5gcc_6500K.OUTCAR_#000.in.lammps
+published_params.liqCO.2+3b.cubic.txt	CO.2.5gcc_6500K.OUTCAR_#000.translate.in.data	CO.2.5gcc_6500K.OUTCAR_#000.translate.in.lammps
+published_params.HN3.2+3+4b.Tersoff.special.offsets.txt	HN3.2gcc_3000K.OUTCAR_#000.in.data	HN3.2gcc_3000K.OUTCAR_#000.in.lammps
+published_params.CO2400K.2+3+4b.Tersoff.special.offsets.txt	CO.9GPa_2400K.OUTCAR_#000.in.data	CO.9GPa_2400K.OUTCAR_#000.in.lammps
+validated_params.TiO2.2+3b.Tersoff.txt	TiO2.unitcell_arbrot_#000.in.data	TiO2.unitcell_arbrot_#000.in.lammps

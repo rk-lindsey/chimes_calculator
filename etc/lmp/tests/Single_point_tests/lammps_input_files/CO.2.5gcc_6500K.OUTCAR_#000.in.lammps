@@ -6,7 +6,7 @@ variable temp    equal 300	# Temperature (K)
 variable seed  	 equal 1111	# Random seed
 variable iofrq   equal 1	# Output frequency: thermo and trajectory MUST use same value
 variable delt    equal 0.2	# Timestep (fs)
-variable nstep   equal 0	# Number of steps for simulation
+variable nstep   equal 0  	# Number of steps for simulation
 
 
 ##############################################
@@ -25,7 +25,7 @@ neigh_modify    delay 0 every 1 check yes
 ###             Initialization             ###
 ##############################################
 
-read_data       "configurations/CO.9GPa_2400K.OUTCAR_#000.in.data"  
+read_data       "configurations/replicate_2x2x2_CO.2.5gcc_6500K.OUTCAR_#000.in.data" 
 velocity        all create ${temp} ${seed} loop all mom yes rot yes dist gaussian
 
 ##############################################
@@ -33,14 +33,11 @@ velocity        all create ${temp} ${seed} loop all mom yes rot yes dist gaussia
 ##############################################
 
 pair_style	chimesFF
-pair_coeff	* * force_fields/published_params.CO2400K.2+3+4b.Tersoff.special.offsets.txt
+pair_coeff	* * force_fields/published_params.liqCO.2+3b.cubic.txt
 
 ##############################################
 ###        Specify dyanmics                ###
 ##############################################
-
-#fix             1 all nvt temp ${temp} ${temp} 20.0
-#fix_modify      1 energy yes	# Add thermostat kinetic and energy to system potential energy, turn potential energy into conserved quantity
 
 thermo_style    custom step time atoms ke pe etotal temp press pxx pyy pzz pxy pxz pyz vol
 thermo_modify   line one format float %20.5f flush yes

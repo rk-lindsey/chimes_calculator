@@ -1,54 +1,87 @@
 #!/bin/bash
-set -e
 
 SCRIPT_DIR=$(dirname "$0")
 SCRIPT_NAME=$(basename "$0")
 
-if [ $# -ne 1 ]; then
-  echo "Usage: $SCRIPT_NAME INPUT_FILE" >&2
+if [ "$#" -lt 3 ]; then
+  echo "Usage: $0 [BINARY] PARAMETERFILE GEOMETRYFILE LAMMPSINPUT" >&2
+  echo "Assumes BINARY is at location ../../exe/lmp_mpi_chimes if not given"
+  echo "At least 3 arguments required." >&2
   exit 1
 fi
 
-inputfile=$1
-exe=../../exe/lmp_mpi_chimes
+if [ "$#" -eq 3 ]; then
+  echo "Assuming BINARY is at location ../../exe/lmp_mpi_chimes"
+  binary=$(realpath ../../exe/lmp_mpi_chimes)
+  parameterfile=$1
+  geometryfile=$2
+  lammpsfile=$3
+  workdir=$(realpath .)
+elif [ "$#" -ge 4 ]; then
+  binary=$(realpath "$1")
+  parameterfile=$2
+  geometryfile=$3
+  lammpsfile=$4
+  workdir=$(realpath "${5:-.}")
+else
+  echo "Usage: $0 [BINARY] PARAMETERFILE GEOMETRYFILE LAMMPSINPUT" >&2
+  echo "Assumes BINARY is at location ../../exe/lmp_mpi_chimes if not given"
+  echo "At least 3 arguments required." >&2
+  exit 1
+fi
 
-echo "[INFO] Running $SCRIPT_NAME with input file: $inputfile"
+filename=$(basename "$lammpsfile")
+base_parameter=$(basename "$parameterfile")
+base_geometry=$(basename "$geometryfile")
+echo "[INFO] Running $SCRIPT_NAME with input file(s): $base_parameter, $base_geometry and $filename"
 
 # Check if executable exists
-if [ ! -x "$exe" ]; then
-  echo "[ERROR] Executable not found or not executable at $exe" >&2
+if [ ! -x "$binary" ]; then
+  echo "[ERROR] Executable not found or not executable at $binary" >&2
   exit 2
 fi
 
-echo "[INFO] Found LAMMPS executable at $exe"
+echo "[INFO] Found LAMMPS executable at $binary"
 
-# Run LAMMPS
-outputfile="${inputfile}_lammps_output.log"
-echo "[INFO] Running LAMMPS simulation..."
-if "$exe" -i "lammps_input_files/${inputfile}" > "${outputfile}"; then
-  echo "[SUCCESS] LAMMPS simulation completed"
-else
-  echo "[ERROR] LAMMPS simulation failed!" >&2
-  exit 3
+if [ ! -d ${workdir} ]; then
+  mkdir -p ${workdir}
 fi
 
-# Move output files
-mkdir -p output_files
-mv "${outputfile}" "output_files/"
-mv traj.lammpstrj "output_files/${inputfile}.traj.lammpstrj" 2>/dev/null || echo "[WARNING] traj.lammpstrj not found"
-rm -f log.cite log.lammps rank-0.badness.log
+# Run LAMMPS
+cd "${workdir}" || { echo "Failed to cd into $workdir"; exit 1; }
+# ${binary} -i ${SCRIPT_DIR}/${parameterfile} >& output
+${binary} -i ${SCRIPT_DIR}/${lammpsfile} | tee output
 
-# Define paths
-log_file="output_files/${outputfile}"
-traj_file="output_files/${inputfile}.traj.lammpstrj"
-parsed_output_file="output_files/${inputfile}.parsed_output.txt"
+# Generate debug.dat file
+echo "[INFO] Parsing LAMMPS output..."
+python3 "${SCRIPT_DIR}/gen_compare.py" \
+  "${workdir}/log.lammps" \
+  "${workdir}/traj.lammpstrj" \
+  "${workdir}/${filename}.debug.dat"
 
-# Check if log and traj files exist before parsing
-if [[ -f "$log_file" && -f "$traj_file" ]]; then
-  echo "[INFO] Parsing LAMMPS output..."
-  python3 gen_compare.py "${log_file}" "${traj_file}" "${parsed_output_file}"
-  echo "[SUCCESS] Parsed output written to $parsed_output_file"
+outputdir="generated_output"
+if [ ! -d ${outputdir} ]; then
+  mkdir -p ${outputdir}
+fi
+
+mv "${workdir}/${filename}.debug.dat" "${outputdir}/" 
+
+# Comparing expected_output with generated_output
+echo "[INFO] Comparing LAMMPS output with expected output for ${filename}..."
+geo_xyz="${base_geometry/.in.data/.xyz}"  # replace .in.data → .xyz
+python3 "${SCRIPT_DIR}/compare.py" \
+  "${outputdir}/${filename}.debug.dat" \
+  "expected_output/${base_parameter}.${geo_xyz}.dat"
+
+echo "[INFO] Completed test. Removing log.lammps, traj.lammpstrj, output..."
+rm log.lammps traj.lammpstrj output
+
+cmp_status=$?
+
+if [ "$cmp_status" -ne 0 ]; then
+    echo "[FAIL] Comparison failed"
+    exit 1  # This ensures run_all_jobs.sh knows this test failed
 else
-  echo "[ERROR] Missing output files: log or trajectory file not found." >&2
-  exit 4
+    echo "[PASS] Comparison succeeded"
+    exit 0
 fi
