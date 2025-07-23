@@ -86,3 +86,60 @@ This command will produce a file named like ``chimes_scan_2+3b.type_0.dat.gnuplo
 .. code-block:: bash
 
      splot 'chimes_scan_2+3b.type_0.dat.gnuplot.2.5' u 1:2:3 w pm3d
+
+
+ChIMES Fingerprint Generator
+****************************
+
+Input
+^^^^^^^^^
+
+The ChIMES Fingerprint Generator is a utility for generating on-the-fly n-body cluster distribution fingerprints during LAMMPS simulations. This tool provides a convenient way to extract structural information used in training or analyzing ChIMES models.
+
+To enable fingerprint generation, install LAMMPS with the ``FINGERPRINT`` build option:
+
+.. code-block:: bash
+    sh install.sh FINGERPRINT
+
+After installation, modify your LAMMPS input script within the model definition block. Specifically, add the ``fingerprint`` keyword and an integer frequency ``n`` to the pair_style command, where ``n`` specifies how often fingerprints are recorded:
+
+.. code-block:: text
+
+    ##############################################
+    ###   Model definition  ###
+    ##############################################
+
+    pair_style	chimesFF fingerprint 1
+
+Once your simulation is complete, use the provided post-processing script to organize and clean the generated cluster lists:
+
+.. code-block:: bash
+
+    sh "/path/to/your/chimes_calculator/repository/chimesFF/src/FP/post_process.sh"
+
+With the cleaned cluster lists, you can now generate the cluster-graph fingerprints using the following command:
+
+.. code-block:: bash
+
+    sh "/path/to/your/chimes_calculator/repository/chimesFF/src/FP/histogram params.txt.reduced"
+
+This step requires the ``params.txt.reduced`` file, which is typically already in use when running ChIMES models in LAMMPS. The file provides the necessary element indexing for fingerprint computation.
+
+If there are issues with the ``histogram`` executable, the file can be recompiled with the following command:
+
+.. code-block:: bash
+    mpiicc -O3 -o histogram multi_calc_histogram.cpp chimesFF.cpp
+
+Output
+^^^^^^^^^
+
+All *n*-body fingerprints will produce output files named like ``<frame_n>-<frame_n>.<n>b_clu-s.hist``, where <n> is the bodiedness.
+
+The first column is the cluster-graph dissimilarity whereas the second column is the dissimilarity frequency.
+
+For citing
+^^^^^^^^^^
+
+If you use this software in your work, please cite the following:
+
+Laubach, Benjamin, and Rebecca Lindsey. "Cluster-Graph Fingerprinting: A Framework for Quantitative Analysis of Machine-Learned Interatomic Model Training and Simulation Data." (2025).
