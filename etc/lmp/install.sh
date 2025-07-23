@@ -1,11 +1,13 @@
 #!/bin/bash
 
-# Builds all relevant chimes_calculator executables/library files 
-#
 # Usage:
-#   ./install.sh [TABULATION]
-#   If you pass “TABULATION” as the first argument, -DTABULATION will
-#   be appended to the C++ compile flags for pair_chimes.cpp and chimes_ff.cpp.
+# ./install.sh
+# or
+# ./install.sh TABULATION
+
+# The “TABULATION” argument adds -DTABULATION to the C++ compiler flags for pair_chimes.cpp and 
+# chimes_ff.cpp, allowing the ChIMES tabulation capability to be used. If compiled with this flag, simulations 
+# using non-tabulated parameter files will run slightly slower.
 
 echo ""
 echo "Note: This install script assumes: "
@@ -116,7 +118,7 @@ mv build/lammps_stable_29Oct2020/src/lmp_mpi_chimes exe
 loc=`pwd`
 echo ""
 echo "Compilation complete. "
-echo "Generated LAMMPS executable with ChIMES support${TAB_FLAG:+ (TABULATION)}:"
+echo "Generated the following LAMMPS executable with ChIMES support${TAB_FLAG:+ (TABULATION)}:"
 echo "${loc}/exe/lmp_mpi_chimes"
 echo "See ${loc}/tests for usage examples"
 echo ""

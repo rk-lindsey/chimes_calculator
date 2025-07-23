@@ -187,21 +187,6 @@ if hasattr(config,'TRIPTYPES'):
                     jk = (steps[l]/2)**.5
 
                     forces, dummy_stress, energy = chimescalc_py.chimes_compute_3b_props([steps[j], steps[k], steps[l]], [[1,0,0],[0,1,0],[0,0,1]], trip_types[config.TRIPTYPES[i]], dummy_force, dummy_stress, energy)
-                    # print(steps[j])
-                    # print(steps[k])
-                    # print(steps[l])
-                    # print(forces[0][0])
-                    # print(forces[0][1])
-                    # print(forces[0][2])
-                    # print(forces[1][0])
-                    # print(forces[1][1])
-                    # print(forces[1][2])
-                    # print(forces[2][0])
-                    # print(forces[2][1])
-                    # print(forces[2][2])
-                    # for t1 in forces:
-                    #     for t2 in t1:
-                    #         print(t2)
 
                     scanfile_1.write(str(steps[j]) + " " + str(steps[k]) + " " + str(steps[l]) + " " + str(energy)+ " " + str(forces[0][0])+ " " + str(forces[0][1])+ " " + str(forces[1][2]) + '\n')
                 
