@@ -100,8 +100,10 @@ chimesFF::chimesFF()
     
     // Set defaults
     
+#ifdef TABULATION
     tabulate_2B = false;
     tabulate_3B = false;
+#endif
     
     fcut_type = fcutType::CUBIC ;
     
@@ -194,6 +196,7 @@ string chimesFF::get_next_line(istream& str)
     return line;
 }
 
+#ifdef TABULATION
 void chimesFF::read_2B_tab(string tab_file, bool energy)
 {
     // Note: Force and energy tabulation should use the same exact rij values
@@ -346,6 +349,7 @@ void chimesFF::read_3B_tab(string tab_file, bool energy)
 
     tab_files.close();
 }
+#endif
 
 void chimesFF::read_parameters(string paramfile)
 {
@@ -698,6 +702,7 @@ void chimesFF::read_parameters(string paramfile)
         {
             tmp_no_items = split_line(line, tmp_str_items);
             
+#ifdef TABULATION
             if (tmp_no_items == 7) // Then these 2B parameters are tabulated
             {
                 tab_param_files.push_back(param_file_path + tmp_str_items[6]);
@@ -720,6 +725,7 @@ void chimesFF::read_parameters(string paramfile)
                     cout << "ERROR: All parameters of a given bodiedness must either be tabulated or not tabulated, but not a mixture of each" << endl;
                     exit(0);
                 }
+#endif
                 
                 tmp_int = stoi(tmp_str_items[2]);
             
@@ -743,7 +749,9 @@ void chimesFF::read_parameters(string paramfile)
                 if (rank == 0)
                     cout << "chimesFF: " << "\t" << chimes_2b_pows[tmp_int][i] << " " << chimes_2b_params[tmp_int][i] << endl;
             }
+            #ifdef TABULATION
             }
+#endif
         }
         
         if(line.find("PAIRMAPS:") != string::npos)
@@ -855,6 +863,7 @@ void chimesFF::read_parameters(string paramfile)
                 trip_params_atm_chems[tmp_int].push_back(tmp_str_items[4]);
                 trip_params_atm_chems[tmp_int].push_back(tmp_str_items[5]);
 
+#ifdef TABULATION
                 if (tmp_no_items == 8){  // 3B are tabulated
 
                     tab_param_files.push_back(param_file_path  + tmp_str_items[7]);
@@ -868,6 +877,7 @@ void chimesFF::read_parameters(string paramfile)
                     read_3B_tab(tab_param_files[tab_param_files.size()-1],true);         // Read tabulated energies
                     read_3B_tab(tab_param_files[tab_param_files.size()-1],false);   // Read tabulated forces
                 } 
+#endif
                 
 
                     if (rank == 0)
@@ -883,8 +893,13 @@ void chimesFF::read_parameters(string paramfile)
 		
 		// Check for non-excluded triplet types
 	
+#ifdef TABULATION
 		if(tmp_str_items[4] != "EXCLUDED:" && !tabulate_3B)
 		{
+#else
+		if(tmp_str_items[4] != "EXCLUDED:")
+		{
+#endif
                 	ncoeffs_3b[tmp_int] = stoi(tmp_str_items[7]);    
 	
         	        get_next_line(param_file);
@@ -910,7 +925,7 @@ void chimesFF::read_parameters(string paramfile)
         {
             cout << "chimesFF: \tType is excluded... skipping." << endl;
         }
-            }    
+            }   
             
             if(line.find("TRIPMAPS:") != string::npos)
             {
@@ -1716,6 +1731,7 @@ void chimesFF::compute_2B(const double dx, const vector<double> & dr, const vect
     
     force_scalar_in = force_scalar;
 }
+#ifdef TABULATION
 void chimesFF::compute_2B_tab(const double dx, const vector<double> & dr, const vector<int> typ_idxs, vector<double> & force, vector<double> & stress, double & energy, chimes2BTmp &tmp)
 {              
     double dummy_force_scalar;
@@ -1864,6 +1880,7 @@ double chimesFF::get_tab_2B(int pair_idx, double rij, bool for_energy)
     // Interpolate the target y value using the spline polynomial
     return a + b * dx + c * dx * dx + d * dx * dx * dx;
 }
+#endif
 
 
 
@@ -2083,6 +2100,7 @@ void chimesFF::compute_3B(const vector<double> & dx, const vector<double> & dr, 
 
     return;    
 }
+#ifdef TABULATION
 void chimesFF::compute_3B_tab(const vector<double> & dx, const vector<double> & dr, const vector<int> & typ_idxs, vector<double> & force, vector<double> & stress, double & energy, chimes3BTmp &tmp)
 {
 	vector<double> dummy_force_scalar(3);
@@ -2397,6 +2415,7 @@ double chimesFF::get_tab_3B(int tripidx, const string& pairtyp_ij, const string&
 //     return get_tab_3B_general(tripidx, pairtyp_ij, pairtyp_ik, pairtyp_jk, rij, rik, rjk, true, force_scalar); 
 // }
 
+#endif
 
 
 

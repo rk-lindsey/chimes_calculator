@@ -522,9 +522,11 @@ void PairCHIMES::compute(int eflag, int vflag)
 
 			energy = 0.0;	
 			
+#ifdef TABULATION
 			if (chimes_calculator.tabulate_2B)
                 chimes_calculator.compute_2B_tab( dist, dr, typ_idxs_2b, force_2b, stensor, energy, chimes_2btmp);
             else
+#endif
                 chimes_calculator.compute_2B( dist, dr, typ_idxs_2b, force_2b, stensor, energy, chimes_2btmp);
 
 			for (idx=0; idx<3; idx++)
@@ -577,9 +579,11 @@ void PairCHIMES::compute(int eflag, int vflag)
 			std::fill(stensor.begin(), stensor.end(), 0.0) ;
 				
 			energy = 0.0 ;
+#ifdef TABULATION
 			if (chimes_calculator.tabulate_3B){
                 chimes_calculator.compute_3B_tab( dist_3b, dr_3b, typ_idxs_3b, force_3b, stensor, energy, chimes_3btmp);}
             else
+#endif
 				chimes_calculator.compute_3B( dist_3b, dr_3b, typ_idxs_3b, force_3b, stensor, energy, chimes_3btmp);
 
 			for (idx=0; idx<3; idx++)

@@ -181,7 +181,7 @@ public:
     
     
     // New for tabulation -- 2b
-
+#ifdef TABULATION
     bool                    tabulate_2B;          
     vector<string>          tab_param_files;    // tab_param_files[pair type index]
     vector<vector<double> > tab_r;              // tab_r[pair type index][rij]
@@ -214,7 +214,7 @@ public:
     void   compute_3B_tab(const vector<double> & dx, const vector<double> & dr, const vector<int> & typ_idxs, vector<double> & force, vector<double> & stress, double & energy, chimes3BTmp &tmp, vector<double> & force_scalar_in);     
     double get_tab_3B(int tripidx, const std::string& pairtyp_ij, const std::string& pairtyp_ik, const std::string& pairtyp_jk,  double rij, double rik, double rjk, double (&force_scalar)[3]);
     //double get_tab_3B_general(int tripidx, string pairtyp_ij, string pairtyp_ik, string pairtyp_jk, double rij, double rik, double rjk, bool for_energy, double (&force_scalar)[3]);
-    
+    #endif
     
 private:
         
