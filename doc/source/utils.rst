@@ -90,26 +90,28 @@ This command will produce a file named like ``chimes_scan_2+3b.type_0.dat.gnuplo
 Tabulation
 *****************
 
+By precomputing these interaction tables, your ChIMES-based molecular dynamics simulations can replace on-the-fly Chebyshev expansions with table lookups, yielding significant speed-ups with minimal loss of accuracy.
+
 Input
 ^^^^^^^^^
 
 A utility for tabulating a ChIMES potential energy surface *2/3*-body clusters is available in ``utils/tabulator``. To use this utility, use the same ``config.py`` file described for the PES generator.
 
-All input and output distances are in Angstroms, and all energies are provided in kcal/mol. Additionally, note that the penalty function will be included in scan results unless ``PAIRSTART`` is greater than the sum of the pair interaction inner cutoff and the penalty kick-in distance, or if the user has set ``PAIR CHEBYSHEV PENALTY SCALING:`` to zero in the parameter file. Similar variables must be set to specify desired 3- and 4-body scans. Note that empty lists can be provided if no scan is desired.
+Note that the penalty function is included in scan results by default, and should typically be retained when generating tabulated potentials. It will be excluded if PAIR CHEBYSHEV PENALTY SCALING: is set to zero. 
 
 Output
 ^^^^^^^^^
 
-All *n*-body scans will produce output scan files named like ``chimes_scan_<n>b.type_<index>.dat.energy`` or ``force``, where <n> is the bodiedness, and <index> is the ``PAIRTYPES`` or ``TRIPTYPES`` index. 
+All *n*-body scans will produce output scan files named like ``chimes_scan_<n>b.type_<index>.dat.energy`` or ``force``, where <n> is the bodiedness, and <index> is the ``PAIRTYPES`` or ``TRIPTYPES`` index. All units match units used in the PES Generator.
 
 The first line in each output file provides a comment listing the number of tabulated points, this should be roughly (max-min)/stepsize_2B for 2b and ((max-min)/stepsize_3B)^3 for 3b. Following, each line provides the *ij* (and if appropriate, *ik* and *jk* distances, respectively) and the corresponding cluster energy or force. 
-
-By precomputing these interaction tables, your ChIMES-based molecular dynamics simulations can replace on-the-fly Chebyshev expansions with table lookups, yielding significant speed-ups with minimal loss of accuracy.
 
 Running simulations
 ^^^^^^^^^^^^^^^^^^^^
 
-Once the tabulated 2- and 3-body force and energy files are generated they can be called by modifying the params.txt file 
+Currently tabulation is only implemented in lammps.
+
+Once the tabulated 2- and 3-body force and energy files are generated they can be called by modifying the params.txt file. 
 
 Modify the section:
 .. code-block:: text
