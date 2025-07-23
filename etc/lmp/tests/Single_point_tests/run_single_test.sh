@@ -54,7 +54,7 @@ ${binary} -i ${SCRIPT_DIR}/${lammpsfile} | tee output
 
 # Generate debug.dat file
 echo "[INFO] Parsing LAMMPS output..."
-python3 "${SCRIPT_DIR}/gen_compare.py" \
+python3 "${SCRIPT_DIR}/generate_compare.py" \
   "${workdir}/log.lammps" \
   "${workdir}/traj.lammpstrj" \
   "${workdir}/${filename}.debug.dat"

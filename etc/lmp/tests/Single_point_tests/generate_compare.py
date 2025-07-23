@@ -1,14 +1,36 @@
 import re
-from lammps_logfile import File
+from subprocess import check_output 
+from subprocess import CalledProcessError
 import sys
 
 # Unit converters 
 Kb      = 0.0019872067          # Boltzmann constant in kcal/mol-K. (Copied from LAMMPS).
-GPa     = 6.9476955  		    # Unit conversion factor... kcal/mol/A^3 * (this constant) ==> GPa
+GPa     = 6.9476955    # Unit conversion factor... kcal/mol/A^3 * (this constant) ==> GPa
 atm     = GPa*9869.2326671      # stress conversion to atm (for LAMMPS).
-GPa2atm = 9869.23266716	        # x_GPa * GPa2atm = x_atm
+GPa2atm = 9869.23266716       # x_GPa * GPa2atm = x_atm
 NA = 6.02213676e23              # Avogadro's number (1/mol)
 
+
+def run_bash_cmnd(cmnd_str):
+
+    """ 
+
+    Runs a (bash) shell command - captures and returns any resulting output. 
+
+    Usage: run_bash_cmnd("my command string")
+
+    Notes: Linux wildcards will not work as expected. Use the glob if needed.
+
+    """
+
+    msg = ""
+
+    try:
+        msg = check_output(cmnd_str.split())
+    except CalledProcessError as err_msg:
+        msg = err_msg.output
+
+    return msg.decode('utf-8')
 
 def parse_log_file(log_path):
     stress = {
@@ -20,23 +42,22 @@ def parse_log_file(log_path):
         'syz': None
     }
     # LAMMPS tests have units = real
-    log = File(log_path)
-    energy = float(log.get("PotEng")[0]) # kcal/mol
-    volume = float(log.get("Volume")[0]) # A^3
-    temp = float(log.get("Temp")[0]) # K
-    n_atoms = float(log.get("Atoms")[0]) 
-    # Ideal gas component
-    sub_constant = (Kb * temp * n_atoms / volume) / NA * GPa
+
+    dat = run_bash_cmnd("awk /Step/{getline;print}" + " " + log_path).split()
+
+    energy = float(dat[4]) # kcal/mol
+    volume = float(dat[14]) # A^3
+    n_atoms = float(run_bash_cmnd("awk /Loop/{print($(NF-1))}" + " " + log_path)) 
 
 
     try:
         # LAMMPS output pressure in units of atm
-        stress['sxx'] = float(log.get("Pxx")[0]) / GPa2atm - sub_constant # GPa
-        stress['syy'] = float(log.get("Pyy")[0]) / GPa2atm - sub_constant # GPa
-        stress['szz'] = float(log.get("Pzz")[0]) / GPa2atm - sub_constant # GPa
-        stress['sxy'] = float(log.get("Pxy")[0]) / GPa2atm - sub_constant # GPa
-        stress['sxz'] = float(log.get("Pxz")[0]) / GPa2atm - sub_constant # GPa
-        stress['syz'] = float(log.get("Pyz")[0]) / GPa2atm - sub_constant # GPa
+        stress['sxx'] = float(dat[ 8]) / GPa2atm  # GPa
+        stress['syy'] = float(dat[ 9]) / GPa2atm  # GPa
+        stress['szz'] = float(dat[10]) / GPa2atm  # GPa
+        stress['sxy'] = float(dat[11]) / GPa2atm  # GPa
+        stress['sxz'] = float(dat[12]) / GPa2atm  # GPa
+        stress['syz'] = float(dat[13]) / GPa2atm  # GPa
 
     except (IndexError, ValueError):
         pass
@@ -71,21 +92,21 @@ def parse_traj_file(traj_path):
 def write_output(filename, energy, stress, forces):
     with open(filename, 'w') as f:
         # f.write("Energy (kcal/mol)\n")
-        f.write(f"{energy:.6f}\n" if energy is not None else "N/A\n")
+        f.write(f"{energy:15.6f}\n" if energy is not None else "N/A\n")
 
         # f.write("sxx (kcal/mol/A^3)\n")
         for key in ['sxx', 'syy', 'szz', 'sxy', 'sxz', 'syz']:
-            f.write(f"{stress[key]:.16f}\n" if stress[key] is not None else "N/A\n")
+            f.write(f"{stress[key]:15.6f}\n" if stress[key] is not None else "N/A\n")
 
         # Write forces in scientific notation, full precision
         for fx, fy, fz in forces:
-            f.write(f"{fx:.16e}\n")
-            f.write(f"{fy:.16e}\n")
-            f.write(f"{fz:.16e}\n")
+            f.write(f"{fx:15.6f}\n")
+            f.write(f"{fy:15.6f}\n")
+            f.write(f"{fz:15.6f}\n")
 
 def main():
     if len(sys.argv) != 4:
-        print("Usage: python3 gen_compare.py <lammps_output.log> <tray.lammpstrj> <output.txt>")
+        print("Usage: python3 generate_compare.py <lammps_output.log> <tray.lammpstrj> <output.txt>")
         sys.exit(1)
 
     log_file = sys.argv[1]
@@ -101,3 +122,4 @@ def main():
 
 if __name__ == "__main__":
     main()
+ 

@@ -2,12 +2,9 @@
 ### Variable definition - UPDATE as needed ###
 ##############################################
 
-variable temp    equal 0	# Temperature (K)
 variable seed  	 equal 1111	# Random seed
 variable iofrq   equal 1	# Output frequency: thermo and trajectory MUST use same value
-variable delt    equal 0.2	# Timestep (fs)
 variable nstep   equal 0	# Number of steps for simulation
-
 
 ##############################################
 ### General settings - LEAVE EXACTLY AS IS ###
@@ -26,7 +23,6 @@ neigh_modify    delay 0 every 1 check yes
 ##############################################
 
 read_data       "configurations/HN3.2gcc_3000K.OUTCAR_#000.in.data"
-velocity        all create ${temp} ${seed} loop all mom yes rot yes dist gaussian
 
 ##############################################
 ###   Model definition - UPDATE as needed  ###
@@ -46,5 +42,4 @@ thermo          ${iofrq}
 dump            1 all custom ${iofrq} traj.lammpstrj element xu yu zu fx fy fz
 dump_modify     1 sort id element H N
 
-timestep        ${delt}
 run             ${nstep}
