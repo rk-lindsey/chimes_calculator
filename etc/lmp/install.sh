@@ -13,7 +13,7 @@
 # 
 # Note that additional arguments can be specified, i.e.:
 #
-#   ./install.sh <FINGERPRINT>
+#   ./install.sh FINGERPRINT
 
 echo ""
 echo "Note: This install script assumes: "
