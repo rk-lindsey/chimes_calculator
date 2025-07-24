@@ -121,9 +121,9 @@ With the cleaned cluster lists, you can now generate the cluster-graph fingerpri
 
 .. code-block:: bash
 
-    sh "/path/to/your/chimes_calculator/repository/chimesFF/src/FP/histogram params.txt.reduced"
+    sh "/path/to/your/chimes_calculator/repository/chimesFF/src/FP/histogram [CHIMES PARAMETER FILE]"
 
-This step requires the ``params.txt.reduced`` file used to run the ChIMES-LAMMPS simulation to provide the necessary element indexing for fingerprint computation.
+This step requires the ``[CHIMES PARAMETER FILE]`` file used to run the ChIMES-LAMMPS simulation to provide the necessary element indexing for fingerprint computation.
 
 Output
 ^^^^^^^^^

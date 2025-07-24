@@ -6,7 +6,7 @@ variable temp    equal 0	# Temperature (K)
 variable seed  	 equal 1111	# Random seed
 variable iofrq   equal 1	# Output frequency: thermo and trajectory MUST use same value
 variable delt    equal 0.2	# Timestep (fs)
-variable nstep   equal 10	# Number of steps for simulation
+variable nstep   equal 6	# Number of steps for simulation
 
 
 ##############################################
@@ -25,16 +25,15 @@ neigh_modify    delay 0 every 1 check yes
 ###             Initialization             ###
 ##############################################
 
-box tilt large 
-read_data       "TiO2.unitcell_arbrot_#000.data.in"
+read_data       "HN3.2gcc_3000K.OUTCAR_#000.data.in"
 velocity        all create ${temp} ${seed} loop all mom yes rot yes dist gaussian
 
 ##############################################
 ###   Model definition - UPDATE as needed  ###
 ##############################################
 
-pair_style	chimesFF fingerprint 1
-pair_coeff	* * validated_params.TiO2.2+3b.Tersoff.txt
+pair_style	chimesFF fingerprint 2
+pair_coeff	* * published_params.HN3.2+3+4b.Tersoff.special.offsets.txt
 
 ##############################################
 ###        Specify dyanmics                ###
@@ -45,7 +44,7 @@ thermo_modify   line one format float %20.5f flush yes
 thermo          ${iofrq}
 
 dump            1 all custom ${iofrq} traj.lammpstrj element xu yu zu fx fy fz
-dump_modify     1 sort id element O Ti 
+dump_modify     1 sort id element H N
 
 timestep        ${delt}
 run             ${nstep}
