@@ -140,6 +140,8 @@ The first column is the cluster-graph dissimilarity whereas the second column is
 For citing
 ^^^^^^^^^^
 
+A link to the ChIMES Fingerpring publication can be found here: https://chemrxiv.org/engage/chemrxiv/article-details/67f0635bfa469535b9cbed7b
+
 If you use this software in your work, please cite the following:
 
 Laubach, Benjamin, and Rebecca Lindsey. "Cluster-Graph Fingerprinting: A Framework for Quantitative Analysis of Machine-Learned Interatomic Model Training and Simulation Data." (2025).
