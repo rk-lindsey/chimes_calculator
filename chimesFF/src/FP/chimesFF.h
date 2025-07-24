@@ -33,6 +33,24 @@ using namespace std;
 #define CHDIM 3 // The number of spatial dimensions.
 #define USE_DISTANCE_TENSOR 1 // Use tensor of distances in computing stresses.
 
+namespace GlobalParams {
+    extern int atom_typ_cnt;
+    extern vector<vector<double>> rcut_2b_list;
+    extern vector<vector<vector<double>>> rcut_3b_list;
+    extern vector<vector<vector<double>>> rcut_4b_list;
+    extern vector<double> morse_lambda_list;
+    extern vector<double> atomic_descriptors;
+    extern double max_descr;
+
+    // Add mapping vectors
+    extern vector <int> atom_int_pair_mapping;
+    extern vector <int> atom_int_trip_mapping;
+    extern vector <int> atom_int_quad_mapping;
+
+    extern vector<vector<int>> pair_int_trip_mapping;
+    extern vector<vector<int>> pair_int_quad_mapping;
+}
+
 // Temporary storage for ChIMES interaction.
 class chimes2BTmp
 {
@@ -137,6 +155,7 @@ public:
     vector<int>      poly_orders;    // [bodiedness-1]; i.e. 12 = 2-body only, 12th order; 12 5 = 2+3-body, 0 5 = 3-body only, 5th order
     vector<string>   atmtyps;        // Atom types 
     vector<double>   masses;         // Atom masses
+    vector<double>   atomic_des;     // Atom descriptor
 
     ////////////////////////
     // Functions
@@ -153,26 +172,14 @@ public:
         
 	// 2+B compute functions overloaded with force_scalar_in var for compatibility with LAMMPS
 
-	void compute_2B(const double dx, const vector<double> & dr, const vector<int> typ_idxs, vector<double> & force, vector<double> & stress, double & energy, chimes2BTmp &tmp);
-	void compute_2B(const double dx, const vector<double> & dr, const vector<int> typ_idxs, vector<double> & force, vector<double> & stress, double & energy, chimes2BTmp &tmp, double & force_scalar_in
-                    #ifdef FINGERPRINT
-                        , vector<vector<double>> & clusters_2b, bool fingerprint
-                    #endif
-                    ); 
+	void compute_2B(const double dx, const vector<double> & dr, const vector<int> typ_idxs, vector<double> & force, vector<double> & stress, double & energy, chimes2BTmp &tmp, vector<vector<double > > & clusters_2b, bool fingerprint);
+	void compute_2B(const double dx, const vector<double> & dr, const vector<int> typ_idxs, vector<double> & force, vector<double> & stress, double & energy, chimes2BTmp &tmp, double & force_scalar_in, vector<vector<double > > & clusters_2b, bool fingerprint); 
 
-	void compute_3B(const vector<double> & dx, const vector<double> & dr, const vector<int> & typ_idxs, vector<double> & force,vector<double> & stress, double & energy, chimes3BTmp &tmp);
-	void compute_3B(const vector<double> & dx, const vector<double> & dr, const vector<int> & typ_idxs, vector<double> & force,vector<double> & stress, double & energy, chimes3BTmp &tmp, vector<double> & force_scalar_in
-                    #ifdef FINGERPRINT
-                        , vector<vector<double >> & clusters_3b, bool fingerprint
-                    #endif
-                    ); 
+	void compute_3B(const vector<double> & dx, const vector<double> & dr, const vector<int> & typ_idxs, vector<double> & force,vector<double> & stress, double & energy, chimes3BTmp &tmp, vector<vector<double > > & clusters_3b, bool fingerprint);
+	void compute_3B(const vector<double> & dx, const vector<double> & dr, const vector<int> & typ_idxs, vector<double> & force,vector<double> & stress, double & energy, chimes3BTmp &tmp, vector<double> & force_scalar_in, vector<vector<double > > & clusters_3b, bool fingerprint); 
 
-	void compute_4B(const vector<double> & dx, const vector<double> & dr, const vector<int> & typ_idxs, vector<double> & force, vector<double> & stress, double & energy, chimes4BTmp &tmp);
-	void compute_4B(const vector<double> & dx, const vector<double> & dr, const vector<int> & typ_idxs, vector<double> & force, vector<double> & stress, double & energy, chimes4BTmp &tmp, vector<double> & force_scalar_in
-                    #ifdef FINGERPRINT
-                        , vector<vector<double>> & clusters_4b, bool fingerprint
-                    #endif
-                    );
+	void compute_4B(const vector<double> & dx, const vector<double> & dr, const vector<int> & typ_idxs, vector<double> & force, vector<double> & stress, double & energy, chimes4BTmp &tmp, vector<vector<double>> & clusters_4b, bool fingerprint);
+	void compute_4B(const vector<double> & dx, const vector<double> & dr, const vector<int> & typ_idxs, vector<double> & force, vector<double> & stress, double & energy, chimes4BTmp &tmp, vector<double> & force_scalar_in, vector<vector<double>> & clusters_4b, bool fingerprint);
 
     void get_cutoff_2B(vector<vector<double> >  & cutoff_2b);   // Populates the 2b cutoffs
     

@@ -74,6 +74,8 @@ namespace LAMMPS_NS
             // Prepare files necessary for ChIMES fitting 
             
             bool     for_fitting;
+            bool     fingerprint;
+			int IO_freq;
             ofstream badness_stream;			
 
 			// 2-body vars for chimesFF access

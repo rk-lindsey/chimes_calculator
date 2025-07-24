@@ -18,6 +18,23 @@
 using namespace std;
 
 #include "chimesFF.h"    
+namespace GlobalParams {
+    int atom_typ_cnt;
+    vector<vector<double>> rcut_2b_list;
+    vector<vector<vector<double>>> rcut_3b_list;
+    vector<vector<vector<double>>> rcut_4b_list;
+    vector<double> morse_lambda_list;
+    vector<double> atomic_descriptors;
+    double max_descr;
+
+    // Add mapping vectors
+    vector <int> atom_int_pair_mapping;
+    vector <int> atom_int_trip_mapping;
+    vector <int> atom_int_quad_mapping;
+
+    vector<vector<int>> pair_int_trip_mapping;
+    vector<vector<int>> pair_int_quad_mapping;
+}
 
 template <typename T>
 int get_index(const vector<T>  & vec, const T  & element)
@@ -277,6 +294,7 @@ void chimesFF::read_parameters(string paramfile)
             tmp_no_items = split_line(line, tmp_str_items);
         
             natmtyps = stoi(tmp_str_items[2]);
+            GlobalParams::atom_typ_cnt = natmtyps;
         
             if (rank == 0)
                 cout << "chimesFF: " << "Will consider " << natmtyps << " atom types:" << endl;
@@ -291,12 +309,20 @@ void chimesFF::read_parameters(string paramfile)
         {
             atmtyps.resize(natmtyps);
 			masses.resize(natmtyps);
+            atomic_des.resize(natmtyps);
             for (int i=0; i<natmtyps; i++)
             {
                 line = get_next_line(param_file);
                 split_line(line, tmp_str_items);
                 atmtyps[i] = tmp_str_items[1];
 				masses[i]  = stod(tmp_str_items[3]);
+
+                 // Check if the fourth element exists, else use the third
+                if (tmp_str_items.size() > 4) {
+                    atomic_des[i] = stod(tmp_str_items[4]);
+                } else {
+                    atomic_des[i] = stod(tmp_str_items[3]);
+                }
                 
                 if (rank == 0)
                     cout << "chimesFF: " << "\t" << i << " " << atmtyps[i] << endl;
@@ -1326,6 +1352,18 @@ void chimesFF::read_parameters(string paramfile)
             }            
         }    
     }
+
+    GlobalParams::rcut_2b_list = chimes_2b_cutoff;
+    GlobalParams::rcut_3b_list = chimes_3b_cutoff;
+    GlobalParams::rcut_4b_list = chimes_4b_cutoff;
+    GlobalParams::morse_lambda_list = morse_var;
+    GlobalParams::atomic_descriptors = atomic_des;
+    double max_descriptor = *std::max_element(atomic_des.begin(), atomic_des.end());
+    GlobalParams::max_descr = max_descriptor;
+
+    GlobalParams::atom_int_pair_mapping = atom_int_pair_map;
+    GlobalParams::atom_int_trip_mapping = atom_int_trip_map;
+    GlobalParams::atom_int_quad_mapping = atom_int_quad_map;
     
     param_file.close();    
 }
@@ -1402,24 +1440,12 @@ void chimesFF::compute_1B(const int typ_idx, double & energy )
 }
 
 // Overload for calls from LAMMPS                 
-void chimesFF::compute_2B(const double dx, const vector<double> & dr, const vector<int> typ_idxs, vector<double> & force, vector<double> & stress, double & energy, chimes2BTmp &tmp)
+void chimesFF::compute_2B(const double dx, const vector<double> & dr, const vector<int> typ_idxs, vector<double> & force, vector<double> & stress, double & energy, chimes2BTmp &tmp, vector<vector<double > > & clusters_2b, bool fingerprint)
 {              
     double dummy_force_scalar;
-#ifdef FINGERPRINT
-    vector<vector<double>> dummy_clusters_2b;
-    bool dummy_fingerprint = false;
-#endif
-    compute_2B(dx, dr, typ_idxs, force, stress, energy, tmp, dummy_force_scalar
-                #ifdef FINGERPRINT
-                    , dummy_clusters_2b, dummy_fingerprint
-                #endif
-                );                                                               
+    compute_2B(dx, dr, typ_idxs, force, stress, energy, tmp, dummy_force_scalar, clusters_2b, fingerprint);                                                               
 }
-void chimesFF::compute_2B(const double dx, const vector<double> & dr, const vector<int> typ_idxs, vector<double> & force, vector<double> & stress, double & energy, chimes2BTmp &tmp, double & force_scalar_in
-                            #ifdef FINGERPRINT
-                                , vector<vector<double>> & clusters_2b, bool fingerprint
-                            #endif
-                            )
+void chimesFF::compute_2B(const double dx, const vector<double> & dr, const vector<int> typ_idxs, vector<double> & force, vector<double> & stress, double & energy, chimes2BTmp &tmp, double & force_scalar_in, vector<vector<double > > & clusters_2b, bool fingerprint)
 {
     // Compute 2b (input: 2 atoms or distances, corresponding types... outputs (updates) force, acceleration, energy, stress
     //
@@ -1446,22 +1472,24 @@ void chimesFF::compute_2B(const double dx, const vector<double> & dr, const vect
     // Use references for readability.
     vector<double> &Tn = tmp.Tn ;
     vector<double> &Tnd = tmp.Tnd ;
+
+    vector<double> cluster_typ_idxs_2b(2);
     
     pair_idx = atom_int_pair_map[ typ_idxs[0]*natmtyps + typ_idxs[1] ];
 
     if (dx >= chimes_2b_cutoff[pair_idx][1])
         return;    
-
-#ifdef FINGERPRINT
-    if (fingerprint) {
-        // Construct the vector directly without temporaries
-        clusters_2b.emplace_back(initializer_list<double>{
-            dx,
-            static_cast<double>(typ_idxs[0]),
-            static_cast<double>(typ_idxs[1])
-        });
+    if(fingerprint){
+        vector<double> dist_2b;
+        dist_2b.push_back(dx);
+        cluster_typ_idxs_2b[0] = 1.0*typ_idxs[0];
+        cluster_typ_idxs_2b[1] = 1.0*typ_idxs[1];
+        vector<double> combinedVec;
+        combinedVec.reserve(dist_2b.size() + cluster_typ_idxs_2b.size());
+        combinedVec.insert(combinedVec.end(), dist_2b.begin(), dist_2b.end());
+        combinedVec.insert(combinedVec.end(), cluster_typ_idxs_2b.begin(), cluster_typ_idxs_2b.end());
+        clusters_2b.push_back(combinedVec);
     }
-#endif
     set_cheby_polys(Tn, Tnd, dx, morse_var[pair_idx], chimes_2b_cutoff[pair_idx][0], chimes_2b_cutoff[pair_idx][1], poly_orders[0]);  
 
     get_fcut(dx, chimes_2b_cutoff[pair_idx][1], fcut, fcutderiv);
@@ -1535,24 +1563,12 @@ void chimesFF::compute_2B(const double dx, const vector<double> & dr, const vect
 }
 
 // Overload for calls from LAMMPS  
-void chimesFF::compute_3B(const vector<double> & dx, const vector<double> & dr, const vector<int> & typ_idxs, vector<double> & force, vector<double> & stress, double & energy, chimes3BTmp &tmp)
+void chimesFF::compute_3B(const vector<double> & dx, const vector<double> & dr, const vector<int> & typ_idxs, vector<double> & force, vector<double> & stress, double & energy, chimes3BTmp &tmp, vector<vector<double > > & clusters_3b, bool fingerprint)
 {
 	vector<double> dummy_force_scalar(3);
-#ifdef FINGERPRINT
-    vector<vector<double>> dummy_clusters_3b;
-    bool dummy_fingerprint = false;
-#endif
-	compute_3B(dx, dr, typ_idxs, force, stress, energy, tmp, dummy_force_scalar
-               #ifdef FINGERPRINT
-                    , dummy_clusters_3b,  dummy_fingerprint
-               #endif
-               );
+	compute_3B(dx, dr, typ_idxs, force, stress, energy, tmp, dummy_force_scalar,clusters_3b,  fingerprint);
 }
-void chimesFF::compute_3B(const vector<double> & dx, const vector<double> & dr, const vector<int> & typ_idxs, vector<double> & force, vector<double> & stress, double & energy, chimes3BTmp &tmp, vector<double> & force_scalar_in
-                #ifdef FINGERPRINT
-                    , vector<vector<double>> & clusters_3b, bool fingerprint
-                #endif
-                )
+void chimesFF::compute_3B(const vector<double> & dx, const vector<double> & dr, const vector<int> & typ_idxs, vector<double> & force, vector<double> & stress, double & energy, chimes3BTmp &tmp, vector<double> & force_scalar_in, vector<vector<double>> & clusters_3b, bool fingerprint)
 {
     // Compute 3b (input: 3 atoms or distances, corresponding types... outputs (updates) force, acceleration, energy, stress
     //
@@ -1598,6 +1614,7 @@ void chimesFF::compute_3B(const vector<double> & dx, const vector<double> & dr, 
 
     int type_idx =  typ_idxs[0]*natmtyps*natmtyps + typ_idxs[1]*natmtyps + typ_idxs[2] ;
     int tripidx = atom_int_trip_map[type_idx];
+    vector<double> cluster_typ_idxs_3b(3);
 
     if(tripidx < 0)    // Skipping an excluded interaction
         return;
@@ -1617,16 +1634,16 @@ void chimesFF::compute_3B(const vector<double> & dx, const vector<double> & dr, 
      double cutoff_02 = chimes_3b_cutoff[ tripidx ][0][mapped_pair_idx[2]];
     if (dx[2] >= cutoff_2)    // jk
         return;    
-#ifdef FINGERPRINT
-    if (fingerprint) {
-        // Most efficient version - construct in-place with emplace_back
-            clusters_3b.emplace_back(std::initializer_list<double>{
-            dx[0], dx[1], dx[2],  // Assuming dx is a vector of 3 distances
-            static_cast<double>(typ_idxs[0]),
-            static_cast<double>(typ_idxs[1]),
-            static_cast<double>(typ_idxs[2])});
-        }
-#endif
+    if (fingerprint){
+        cluster_typ_idxs_3b[0] = 1.0*typ_idxs[0];
+        cluster_typ_idxs_3b[1] = 1.0*typ_idxs[1];
+        cluster_typ_idxs_3b[2] = 1.0*typ_idxs[2];
+        vector<double> combinedVec;
+        combinedVec.reserve(dx.size() + cluster_typ_idxs_3b.size());
+        combinedVec.insert(combinedVec.end(), dx.begin(), dx.end());
+        combinedVec.insert(combinedVec.end(), cluster_typ_idxs_3b.begin(), cluster_typ_idxs_3b.end());
+        clusters_3b.push_back(combinedVec);
+    }
 
  int pair_type_1 = atom_int_pair_map[ typ_idxs[0]*natmtyps + typ_idxs[1] ];
  int pair_type_2 = atom_int_pair_map[ typ_idxs[0]*natmtyps + typ_idxs[2] ];
@@ -1782,24 +1799,12 @@ void chimesFF::compute_3B(const vector<double> & dx, const vector<double> & dr, 
     return;    
 }
 
-void chimesFF::compute_4B(const vector<double> & dx, const vector<double> & dr, const vector<int> & typ_idxs, vector<double> & force, vector<double> & stress, double & energy, chimes4BTmp &tmp)
+void chimesFF::compute_4B(const vector<double> & dx, const vector<double> & dr, const vector<int> & typ_idxs, vector<double> & force, vector<double> & stress, double & energy, chimes4BTmp &tmp, vector<vector<double>> & clusters_4b, bool fingerprint)
 {              
         vector<double> dummy_force_scalar(6);
-    #ifdef FINGERPRINT
-        vector<vector<double>> dummy_clusters_4b;
-        bool dummy_fingerprint;
-    #endif
-        compute_4B(dx, dr, typ_idxs, force, stress, energy, tmp, dummy_force_scalar
-                    #ifdef FINGERPRINT
-                        , dummy_clusters_4b, dummy_fingerprint
-                    #endif
-                    );                                                               
+        compute_4B(dx, dr, typ_idxs, force, stress, energy, tmp, dummy_force_scalar, clusters_4b,  fingerprint);                                                               
 }
-void chimesFF::compute_4B(const vector<double> & dx, const vector<double> & dr, const vector<int> & typ_idxs, vector<double> & force, vector<double> & stress, double & energy, chimes4BTmp &tmp, vector<double> & force_scalar_in
-                            #ifdef FINGERPRINT
-                                , vector<vector<double>> & clusters_4b, bool fingerprint
-                            #endif
-                            )
+void chimesFF::compute_4B(const vector<double> & dx, const vector<double> & dr, const vector<int> & typ_idxs, vector<double> & force, vector<double> & stress, double & energy, chimes4BTmp &tmp, vector<double> & force_scalar_in, vector<vector<double>> & clusters_4b, bool fingerprint)
 {
     // Compute 3b (input: 3 atoms or distances, corresponding types... outputs (updates) force, acceleration, energy, stress
     //
@@ -1844,7 +1849,9 @@ void chimesFF::compute_4B(const vector<double> & dx, const vector<double> & dr, 
     vector<double> &Tnd_il  = tmp.Tnd_il ;  
     vector<double> &Tnd_jk  = tmp.Tnd_jk ;
     vector<double> &Tnd_jl  = tmp.Tnd_jl ;
-    vector<double> &Tnd_kl  = tmp.Tnd_kl ;            
+    vector<double> &Tnd_kl  = tmp.Tnd_kl ;    
+
+    vector<double> cluster_typ_idxs_4b(4);          
 
     int idx = typ_idxs[0]*natmtyps*natmtyps*natmtyps
         + typ_idxs[1]*natmtyps*natmtyps + typ_idxs[2]*natmtyps + typ_idxs[3] ;
@@ -1888,30 +1895,29 @@ void chimesFF::compute_4B(const vector<double> & dx, const vector<double> & dr, 
      double cutoff_05 = chimes_4b_cutoff[ quadidx ][0][mapped_pair_idx[5]];
     if (dx[5] >= cutoff_5)    // kl
         return;
+    if (fingerprint){
+        cluster_typ_idxs_4b[0] = 1.0*typ_idxs[0];
+        cluster_typ_idxs_4b[1] = 1.0*typ_idxs[1];
+        cluster_typ_idxs_4b[2] = 1.0*typ_idxs[2];
+        cluster_typ_idxs_4b[3] = 1.0*typ_idxs[3];
+        vector<double> combinedVec;
+        combinedVec.reserve(dx.size() + cluster_typ_idxs_4b.size());
+        combinedVec.insert(combinedVec.end(), dx.begin(), dx.end());
+        combinedVec.insert(combinedVec.end(), cluster_typ_idxs_4b.begin(), cluster_typ_idxs_4b.end());
+        clusters_4b.push_back(combinedVec);
+    }
 
-
-#ifdef FINGERPRINT
-    if (fingerprint) {
-        // Fastest version - construct in-place with emplace_back
-        clusters_4b.emplace_back(std::initializer_list<double>{
-            dx[0], dx[1], dx[2], dx[3], dx[4], dx[5],  // Assuming dx contains 4 distances
-            static_cast<double>(typ_idxs[0]),
-            static_cast<double>(typ_idxs[1]),
-            static_cast<double>(typ_idxs[2]),
-            static_cast<double>(typ_idxs[3])
-    });}
-#endif
     // At this point, all distances are within allowed ranges. We can now proceed to the force/stress/energy calculation
     
-    int pair_type_1 = atom_int_pair_map[ typ_idxs[0]*natmtyps + typ_idxs[1] ];
-    int pair_type_2 = atom_int_pair_map[ typ_idxs[0]*natmtyps + typ_idxs[2] ];
-    int pair_type_3 = atom_int_pair_map[ typ_idxs[0]*natmtyps + typ_idxs[3] ];
-    int pair_type_4 = atom_int_pair_map[ typ_idxs[1]*natmtyps + typ_idxs[2] ];
-    int pair_type_5 = atom_int_pair_map[ typ_idxs[1]*natmtyps + typ_idxs[3] ];
-    int pair_type_6 = atom_int_pair_map[ typ_idxs[2]*natmtyps + typ_idxs[3] ];
-    int order       = poly_orders[2];    
+ int pair_type_1 = atom_int_pair_map[ typ_idxs[0]*natmtyps + typ_idxs[1] ];
+ int pair_type_2 = atom_int_pair_map[ typ_idxs[0]*natmtyps + typ_idxs[2] ];
+ int pair_type_3 = atom_int_pair_map[ typ_idxs[0]*natmtyps + typ_idxs[3] ];
+ int pair_type_4 = atom_int_pair_map[ typ_idxs[1]*natmtyps + typ_idxs[2] ];
+ int pair_type_5 = atom_int_pair_map[ typ_idxs[1]*natmtyps + typ_idxs[3] ];
+ int pair_type_6 = atom_int_pair_map[ typ_idxs[2]*natmtyps + typ_idxs[3] ];
+ int order       = poly_orders[2];    
 
-
+    
     // Set up the polynomials
     
     set_cheby_polys(Tn_ij, Tnd_ij, dx[0], morse_var[pair_type_1], cutoff_00, cutoff_0, order);
@@ -1959,7 +1965,7 @@ void chimesFF::compute_4B(const vector<double> & dx, const vector<double> & dr, 
     fcut_5[5] = fcut[0] * fcut[1] * fcut[2] * fcut[3] * fcut[4] / dx[5] ;
     
     // Start the force/stress/energy calculation
-
+        
     double coeff;
     int powers[npairs] ;
     double force_scalar[npairs] ;
@@ -1998,12 +2004,12 @@ void chimesFF::compute_4B(const vector<double> & dx, const vector<double> & dr, 
         force_scalar[4]  = coeff * deriv[4] * fcut_5[4] * Tn_ij_ik_il  * Tn_jk[powers[3]] * Tn_kl_5 ;
         force_scalar[5]  = coeff * deriv[5] * fcut_5[5] * Tn_ij_ik_il * Tn_jk_jl ;
 	
-        fscalar_0 = force_scalar[0];
-        fscalar_1 = force_scalar[1];
-        fscalar_2 = force_scalar[2];
-        fscalar_3 = force_scalar[3];
-        fscalar_4 = force_scalar[4];
-        fscalar_5 = force_scalar[5];
+	fscalar_0 = force_scalar[0];
+	fscalar_1 = force_scalar[1];
+	fscalar_2 = force_scalar[2];
+	fscalar_3 = force_scalar[3];
+	fscalar_4 = force_scalar[4];
+	fscalar_5 = force_scalar[5];
 
         // Accumulate forces/stresses on/from the ij pair
         
@@ -2032,7 +2038,7 @@ void chimesFF::compute_4B(const vector<double> & dx, const vector<double> & dr, 
 #endif      
         
         // Accumulate forces/stresses on/from the ik pair
-
+        
         force[0*CHDIM+0] += fscalar_1 * dr[1*CHDIM+0];
         force[0*CHDIM+1] += fscalar_1 * dr[1*CHDIM+1];
         force[0*CHDIM+2] += fscalar_1 * dr[1*CHDIM+2];
@@ -2057,7 +2063,7 @@ void chimesFF::compute_4B(const vector<double> & dx, const vector<double> & dr, 
         stress[5] -= fscalar_1  * dr[1*CHDIM+2] * dr[1*CHDIM+2]; // zz tensor component
 #endif      
         // Accumulate forces/stresses on/from the il pair
-
+        
         force[0*CHDIM+0] += fscalar_2 * dr[2*CHDIM+0];
         force[0*CHDIM+1] += fscalar_2 * dr[2*CHDIM+1];
         force[0*CHDIM+2] += fscalar_2 * dr[2*CHDIM+2];
@@ -2081,7 +2087,7 @@ void chimesFF::compute_4B(const vector<double> & dx, const vector<double> & dr, 
         stress[4] -= fscalar_2  * dr[2*CHDIM+1] * dr[2*CHDIM+2]; // yz tensor component
         stress[5] -= fscalar_2  * dr[2*CHDIM+2] * dr[2*CHDIM+2]; // zz tensor component           
 #endif
-
+        
         // Accumulate forces/stresses on/from the jk pair
         
         force[1*CHDIM+0] += fscalar_3 * dr[3*CHDIM+0];
@@ -2134,7 +2140,7 @@ void chimesFF::compute_4B(const vector<double> & dx, const vector<double> & dr, 
         stress[5] -= fscalar_4  * dr[4*CHDIM+2] * dr[4*CHDIM+2]; // zz tensor component
 #endif      
         // Accumulate forces/stresses on/from the kl pair
-
+        
         force[2*CHDIM+0] += fscalar_5 * dr[5*CHDIM+0];
         force[2*CHDIM+1] += fscalar_5 * dr[5*CHDIM+1];
         force[2*CHDIM+2] += fscalar_5 * dr[5*CHDIM+2];
@@ -2260,6 +2266,7 @@ void chimesFF::build_pair_int_quad_map()
     // to support GPU environment without string operations.
     // This must be called prior to force evaluation.
 
+    cout << "Entered weird func" << endl;
     const int natoms = 4 ;
     const int npairs = natoms * (natoms-1) / 2 ;
     vector<int> pair_map(npairs) ;
@@ -2268,7 +2275,7 @@ void chimesFF::build_pair_int_quad_map()
     if ( atom_int_quad_map.size() == 0 ) return ; // No quads !
     
     pair_int_quad_map.resize(natmtyps*natmtyps*natmtyps*natmtyps) ;
-
+    
     
     for ( int i = 0 ; i < natmtyps ; i++ )
     {
@@ -2315,6 +2322,8 @@ void chimesFF::build_pair_int_quad_map()
 			cout << "Warning: Did not initialize pair_int_quad_map for excluded entry " << i << endl ;
         }
     }   
+    GlobalParams::pair_int_quad_mapping = pair_int_quad_map;
+    cout << "Assigned global param" << endl;
 }
 
 void chimesFF::build_pair_int_trip_map()
@@ -2372,5 +2381,6 @@ void chimesFF::build_pair_int_trip_map()
         }
     }
     
+    GlobalParams::pair_int_trip_mapping = pair_int_trip_map;
 }
 
