@@ -119,6 +119,13 @@ make yes-user-misc
 make -j 4 mpi_chimes
 cd -
 
+# Compile fingerprint executable if flag true
+
+if [ -n "$FINGERPRINT_FLAG" ]; then
+    echo ""
+    echo "Compiling histogram executable for ChIMES fingerprints"
+    mpiicc -O3 -o ../../chimesFF/src/FP/histogram ../../chimesFF/src/FP/multi_calc_histogram.cpp ../../chimesFF/src/FP/chimesFF.cpp
+fi
 
 # Finish
 

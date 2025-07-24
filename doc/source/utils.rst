@@ -101,7 +101,7 @@ To enable fingerprint generation, install LAMMPS with the ``FINGERPRINT`` build 
 .. code-block:: bash
     sh install.sh FINGERPRINT
 
-After installation, modify your LAMMPS input script within the model definition block. Specifically, add the ``fingerprint`` keyword and an integer frequency ``n`` to the pair_style command, where ``n`` specifies how often fingerprints are recorded:
+After installation, modify your LAMMPS pair_style chimesFF specification to contain the  ``fingerprint`` keyword and an integer specifying the frequency with which fingerprints are recorded n.
 
 .. code-block:: text
 
@@ -123,12 +123,7 @@ With the cleaned cluster lists, you can now generate the cluster-graph fingerpri
 
     sh "/path/to/your/chimes_calculator/repository/chimesFF/src/FP/histogram params.txt.reduced"
 
-This step requires the ``params.txt.reduced`` file, which is typically already in use when running ChIMES models in LAMMPS. The file provides the necessary element indexing for fingerprint computation.
-
-If there are issues with the ``histogram`` executable, the file can be recompiled with the following command:
-
-.. code-block:: bash
-    mpiicc -O3 -o histogram multi_calc_histogram.cpp chimesFF.cpp
+This step requires the ``params.txt.reduced`` file used to run the ChIMES-LAMMPS simulation to provide the necessary element indexing for fingerprint computation.
 
 Output
 ^^^^^^^^^
