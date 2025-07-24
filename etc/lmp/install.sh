@@ -24,11 +24,13 @@ echo ""
 
 # ********** NEW: FINGERPRINT FLAG HANDLING **********
 FINGERPRINT_FLAG=""
-if [[ "$1" == "FINGERPRINT" ]] ; then
-    FINGERPRINT_FLAG="-DFINGERPRINT"
-    echo "Enabling FINGERPRINT compilation flag for ChIMES files"
-    shift  # Remove this argument from $@
-fi
+for arg in "$@"; do
+    if [[ "$arg" == "FINGERPRINT" ]]; then
+        FINGERPRINT_FLAG="-DFINGERPRINT"
+        echo "Enabling FINGERPRINT compilation flag for ChIMES files"
+        break
+    fi
+done
 
 # Cleanup any previous installation
 
