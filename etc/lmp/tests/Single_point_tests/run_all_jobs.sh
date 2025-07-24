@@ -7,7 +7,7 @@ passed_tests=()
 failed_tests=()
 
 while IFS=$'\t' read -r param_file geo_file input_file; do
-  param_path="force_fields/${param_file}"
+  param_path="../../../../serial_interface/tests/force_fields/${param_file}"
   geo_path="configurations/${geo_file}"
   input_path="lammps_input_files/${input_file}"
 

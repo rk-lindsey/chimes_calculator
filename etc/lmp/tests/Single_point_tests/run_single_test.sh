@@ -71,7 +71,7 @@ echo "[INFO] Comparing LAMMPS output with expected output for ${filename}..."
 geo_xyz="${base_geometry/.in.data/.xyz}"  # replace .in.data → .xyz
 python3 "${SCRIPT_DIR}/compare.py" \
   "${outputdir}/${filename}.debug.dat" \
-  "expected_output/${base_parameter}.${geo_xyz}.dat"
+  "../../../../serial_interface/tests/expected_output/${base_parameter}.${geo_xyz}.dat"
 
 echo "[INFO] Completed test. Removing log.lammps, traj.lammpstrj, output..."
 rm log.lammps traj.lammpstrj output
