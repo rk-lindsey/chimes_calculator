@@ -162,3 +162,4 @@ rm -f debug.dat san.dat *.so output_lib.xyzf
 
 cd ../../
 ./uninstall.sh $PREFX
+

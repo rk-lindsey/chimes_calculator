@@ -1643,7 +1643,7 @@ void chimesFF::compute_2B(const double dx, const vector<double> & dr, const vect
                                 , vector<vector<double>> & clusters_2b, bool fingerprint
                             #endif
                             )
-                            {
+{
     // Compute 2b (input: 2 atoms or distances, corresponding types... outputs (updates) force, acceleration, energy, stress
     //
     // Input parameters:
