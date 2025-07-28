@@ -87,6 +87,60 @@ This command will produce a file named like ``chimes_scan_2+3b.type_0.dat.gnuplo
 
      splot 'chimes_scan_2+3b.type_0.dat.gnuplot.2.5' u 1:2:3 w pm3d
 
+
+ChIMES Fingerprint Generator
+****************************
+
+Input
+^^^^^^^^^
+
+The ChIMES Fingerprint Generator is a utility for generating on-the-fly n-body cluster distribution fingerprints during LAMMPS simulations. This tool provides a convenient way to extract structural information used in training or analyzing ChIMES models.
+
+To enable fingerprint generation, install LAMMPS with the ``FINGERPRINT`` build option:
+
+.. code-block:: bash
+    sh install.sh FINGERPRINT
+
+After installation, modify your LAMMPS pair_style chimesFF specification to contain the  ``fingerprint`` keyword and an integer specifying the frequency with which fingerprints are recorded n.
+
+.. code-block:: text
+
+    ##############################################
+    ###   Model definition  ###
+    ##############################################
+
+    pair_style	chimesFF fingerprint 1
+
+Once your simulation is complete, use the provided post-processing script to organize and clean the generated cluster lists:
+
+.. code-block:: bash
+
+    sh "/path/to/your/chimes_calculator/repository/chimesFF/src/FP/post_process.sh"
+
+With the cleaned cluster lists, you can now generate the cluster-graph fingerprints using the following command:
+
+.. code-block:: bash
+
+    sh "/path/to/your/chimes_calculator/repository/chimesFF/src/FP/histogram [CHIMES PARAMETER FILE]"
+
+This step requires the ``[CHIMES PARAMETER FILE]`` file used to run the ChIMES-LAMMPS simulation to provide the necessary element indexing for fingerprint computation.
+
+Output
+^^^^^^^^^
+
+All *n*-body fingerprints will produce output files named like ``<frame_n>-<frame_n>.<n>b_clu-s.hist``, where <n> is the bodiedness.
+
+The first column is the cluster-graph dissimilarity whereas the second column is the dissimilarity frequency.
+
+For citing
+^^^^^^^^^^
+
+A link to the ChIMES Fingerpring publication can be found here: https://chemrxiv.org/engage/chemrxiv/article-details/67f0635bfa469535b9cbed7b
+
+If you use this software in your work, please cite the following:
+
+Laubach, Benjamin, and Rebecca Lindsey. "Cluster-Graph Fingerprinting: A Framework for Quantitative Analysis of Machine-Learned Interatomic Model Training and Simulation Data." (2025).
+
 Tabulation
 *****************
 
