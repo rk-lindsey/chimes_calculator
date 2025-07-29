@@ -118,6 +118,7 @@ make -j 4 mpi_chimes
 cd -
 
 # Compile fingerprint executable if flag true
+
 if [ -n "$FINGERPRINT_FLAG" ]; then
     echo ""
     echo "Compiling histogram executable for ChIMES fingerprints"

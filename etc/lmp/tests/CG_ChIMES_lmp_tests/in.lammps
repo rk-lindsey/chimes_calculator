@@ -1,0 +1,63 @@
+#######################################################################
+# MD assembly simulation of OS-CG particles with alpha=4 using ChIMES model at 300 K.
+#######################################################################
+
+######################################################################
+# run 100_000 steps
+#####################################################################
+clear
+variable dt         equal 5.0 
+variable Tstart     equal 300.0 
+variable Tstop      equal 300.0 
+variable Tdamp      equal 500.0
+variable atmmass    equal 67256
+variable uc         equal 120
+variable nrepl      equal 4
+variable timesteps  equal 100000
+variable iofrq      equal 1000
+
+####################################################################
+# Specify high-level paramters 
+####################################################################
+units		        real
+atom_style	        molecular
+atom_modify         sort 0 0.0                           # print out in frames in order  
+neighbor    	    2.0 bin                              # consider cutoff +2 as neighbor
+neigh_modify	    every 1 delay 0 check yes            # every x step//no delay//check the neighbor list to see if need to update  
+
+######################################################
+# Set up simulation box with particle initialized at FCC lattice
+######################################################
+lattice             fcc ${uc}
+region              box block 0 1 0 1 0 1 units lattice
+create_box          1 box                                # use that empty cell to define simulation cell
+create_atoms        1 box                                # place atoms on lattice points 
+replicate           ${nrepl} ${nrepl} ${nrepl}
+
+mass                1 ${atmmass} 
+velocity            all create ${Tstart} 4834834 rot yes mom yes dist gaussian
+
+######################################################
+# Define the interaction model
+######################################################
+pair_style          chimesFF     
+pair_coeff          * * A4_params.txt   
+
+timestep            ${dt}
+
+################################################################################################################
+# Specify thermodynamic constraints & output and run simulation
+################################################################################################################
+fix                 1 all nvt temp ${Tstart} ${Tstop} ${Tdamp}
+#fix                 1 all temp/csvr ${Tstart} ${Tstop} ${Tdamp} 4834834
+
+restart             10 nvt.a.restart nvt.b.restart   
+
+thermo_style        custom step time ke pe temp press etotal f_1 lx ly lz 
+thermo              ${iofrq}                   
+thermo_modify       norm yes
+
+dump                1 all custom ${iofrq} chimes_A4.lammpstrj id type element xu yu zu fx fy fz     
+dump_modify         1 element A sort id    #give element names 
+
+run	                ${timesteps}

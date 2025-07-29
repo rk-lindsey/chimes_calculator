@@ -141,6 +141,7 @@ If you use this software in your work, please cite the following:
 
 Laubach, Benjamin, and Rebecca Lindsey. "Cluster-Graph Fingerprinting: A Framework for Quantitative Analysis of Machine-Learned Interatomic Model Training and Simulation Data." (2025).
 
+
 Tabulation
 *****************
 

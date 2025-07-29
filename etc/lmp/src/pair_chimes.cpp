@@ -583,9 +583,11 @@ void PairCHIMES::compute(int eflag, int vflag)
 		energy = 0.0;
 		
 		chimes_calculator.compute_1B(type[i]-1, energy);
+        
+        atmidxlst[0][0] = i;
 		
 		if(evflag)
-			ev_tally_mb(0, atmidxlst, energy, fscalar, tmp_dist, tmp_dr);
+			ev_tally_mb(1, 0, atmidxlst, energy, stensor);
 
 		// Now move on to two-body force, stress, and energy
 		
@@ -613,7 +615,6 @@ void PairCHIMES::compute(int eflag, int vflag)
 			std::fill(stensor.begin(), stensor.end(), 0.0) ;
 
 			energy = 0.0;	
-			
 #ifdef TABULATION
 			if (chimes_calculator.tabulate_2B)
                 chimes_calculator.compute_2B_tab( dist, dr, typ_idxs_2b, force_2b, stensor, energy, chimes_2btmp);
@@ -647,7 +648,7 @@ void PairCHIMES::compute(int eflag, int vflag)
 			tmp_dist    [0] = dist;
 			
 			if (evflag)
-				ev_tally_mb(2, atmidxlst, energy, fscalar, tmp_dist, dr);         
+				ev_tally_mb(2, 1, atmidxlst, energy, stensor);         
 		}
 	}
 	#ifdef FINGERPRINT
@@ -659,7 +660,7 @@ void PairCHIMES::compute(int eflag, int vflag)
 		writeClusterDataComp(filename.str(), tmp_dist_2b);
 	}
 	#endif
-    
+
     // Document badness for configuration: current timestep, current rank, worst badness seen by rank
     if (for_fitting)
         if(update->ntimestep % output->every_dump[0] == 0)
@@ -690,6 +691,7 @@ void PairCHIMES::compute(int eflag, int vflag)
 			std::fill(stensor.begin(), stensor.end(), 0.0) ;
 				
 			energy = 0.0 ;
+      
 #ifdef TABULATION
 			if (chimes_calculator.tabulate_3B){
                 chimes_calculator.compute_3B_tab( dist_3b, dr_3b, typ_idxs_3b, force_3b, stensor, energy, chimes_3btmp);}
@@ -726,7 +728,7 @@ void PairCHIMES::compute(int eflag, int vflag)
             }
 			
 			if (evflag)
-				ev_tally_mb(3, atmidxlst, energy, fscalar, dist_3b, dr_3b);		            
+				ev_tally_mb(3, 3, atmidxlst, energy, stensor);		            
 		}		
 	}
 	#ifdef FINGERPRINT
@@ -740,10 +742,12 @@ void PairCHIMES::compute(int eflag, int vflag)
 
     // if (chimes_calculator.poly_orders[2] > 0 || tmp_FP)
 	if (chimes_calculator.poly_orders[2] > 0)
+
 	{
 		////////////////////////////////////////
 		// Compute 4-body interactions
 		////////////////////////////////////////
+
 		for (ii = 0; ii < neighborlist_4mers.size(); ii++)		
 		{
 			i     = neighborlist_4mers[ii][0];
@@ -779,7 +783,7 @@ void PairCHIMES::compute(int eflag, int vflag)
 			#ifdef FINGERPRINT
 			}
 			#endif
-			
+
 			for (idx=0; idx<3; idx++)
 			{
 				f[i][idx] += force_4b[0*CHDIM+idx] ;
@@ -788,7 +792,7 @@ void PairCHIMES::compute(int eflag, int vflag)
 				f[l][idx] += force_4b[3*CHDIM+idx] ;
 			}
 			
-            if (vflag_atom)
+            if (vflag_atom) 
             {
 			    atmidxlst[0][0] = i;
 			    atmidxlst[0][1] = j;
@@ -805,7 +809,7 @@ void PairCHIMES::compute(int eflag, int vflag)
             }
 			
 			if (evflag)
-				ev_tally_mb(4, atmidxlst, energy, fscalar, dist_4b, dr_4b);	
+				ev_tally_mb(4, 6, atmidxlst, energy, stensor);	
             
 		}
 	}

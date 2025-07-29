@@ -2538,7 +2538,7 @@ void chimesFF::compute_4B(const vector<double> & dx, const vector<double> & dr, 
     vector<double> &Tnd_il  = tmp.Tnd_il ;  
     vector<double> &Tnd_jk  = tmp.Tnd_jk ;
     vector<double> &Tnd_jl  = tmp.Tnd_jl ;
-    vector<double> &Tnd_kl  = tmp.Tnd_kl ;              
+    vector<double> &Tnd_kl  = tmp.Tnd_kl ;            
 
     int idx = typ_idxs[0]*natmtyps*natmtyps*natmtyps
         + typ_idxs[1]*natmtyps*natmtyps + typ_idxs[2]*natmtyps + typ_idxs[3] ;
