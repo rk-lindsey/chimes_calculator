@@ -841,11 +841,10 @@ void PairCHIMES::set_chimes_type()
 		//std::cout << "       but only found " << nmatches << " matches with the ChIMES parameter file." << std::endl;
 		//exit(0);
  
-	    std::cout << "WARNING: LAMMPS coordinate file has " << atom->ntypes << " atom type masses" << std::endl;
+	        std::cout << "WARNING: LAMMPS coordinate file has " << atom->ntypes << " atom type masses" << std::endl;
 		std::cout << "       but only found " << nmatches << " matches with the ChIMES parameter file." << std::endl;
 		std::cout << "       Will not use ChIMES to evaluate interactions between these pairs! " << std::endl;
 	}
-}
 }
 							
 void PairCHIMES::write_restart(){}			
