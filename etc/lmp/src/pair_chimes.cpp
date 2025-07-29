@@ -279,10 +279,12 @@ void PairCHIMES::init_style()
 	// Set up neighbor lists... borrowing this from pair_airebo:
 	// need a full neighbor list, including neighbors of ghosts
 
-	int irequest = neighbor->request(this,instance_me);
-	neighbor->requests[irequest]->half = 0;
-	neighbor->requests[irequest]->full = 1;
-	neighbor->requests[irequest]->ghost = 1;
+	// int irequest = neighbor->request(this,instance_me);
+	// neighbor->requests[irequest]->half = 0;
+	// neighbor->requests[irequest]->full = 1;
+	// neighbor->requests[irequest]->ghost = 1;
+
+    neighbor->add_request(this, NeighConst::REQ_FULL | NeighConst::REQ_GHOST);
 }
 
 double PairCHIMES::init_one(int i, int j)
@@ -841,17 +843,19 @@ void PairCHIMES::set_chimes_type()
 				chimes_type.push_back(j);
 				nmatches++;
 			}
-		}	}
+		}
+	}
 
 	if (nmatches < atom->ntypes )
 	{
+
 		// Commented out to allow for hybrid/overlay pair style. For example, combining ChIMES description for carbon 
 		// with LJ description of Ar for simulations of carbon nanoparticles in an argon bath
 		//std::cout << "ERROR: LAMMPS coordinate file has " << atom->ntypes << " atom type masses" << std::endl; 
 		//std::cout << "       but only found " << nmatches << " matches with the ChIMES parameter file." << std::endl;
 		//exit(0);
  
-	        std::cout << "WARNING: LAMMPS coordinate file has " << atom->ntypes << " atom type masses" << std::endl;
+    std::cout << "WARNING: LAMMPS coordinate file has " << atom->ntypes << " atom type masses" << std::endl;
 		std::cout << "       but only found " << nmatches << " matches with the ChIMES parameter file." << std::endl;
 		std::cout << "       Will not use ChIMES to evaluate interactions between these pairs! " << std::endl;
 	}

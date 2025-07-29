@@ -381,6 +381,10 @@ void chimesFF::read_parameters(string paramfile)
     int            tmp_int;
     int            no_pairs;
     
+    // Variables to track if penalty parameters were found in file
+    bool found_penalty_dist = false;
+    bool found_penalty_scaling = false;
+    
     // Check that this is actually a chebyshev parameter set
 
     while (!found_end)
@@ -638,9 +642,7 @@ void chimesFF::read_parameters(string paramfile)
             tmp_no_items = split_line(line, tmp_str_items);
             
             penalty_params[0] = stod(tmp_str_items[4]);
-            
-            if (rank == 0)
-                cout << "chimesFF: " << "Will use penalty distance: " << penalty_params[0] << endl;
+            found_penalty_dist = true;
         }
         
         if(line.find("PAIR CHEBYSHEV PENALTY SCALING:") != string::npos)
@@ -648,9 +650,7 @@ void chimesFF::read_parameters(string paramfile)
             tmp_no_items = split_line(line, tmp_str_items);
             
             penalty_params[1] = stod(tmp_str_items[4]);
-            
-            if (rank == 0)
-                cout << "chimesFF: " << "Will use penalty scaling: " << penalty_params[1] << endl;
+            found_penalty_scaling = true;
         }
         
         if(line.find("NO ENERGY OFFSETS:") != string::npos)
@@ -683,6 +683,20 @@ void chimesFF::read_parameters(string paramfile)
             }
             
         }                
+    }
+    
+    // Output messages about penalty parameters once after file parsing
+    if (rank == 0)
+    {
+        if (found_penalty_dist)
+            cout << "chimesFF: " << "Will use penalty distance: " << penalty_params[0] << endl;
+        else
+            cout << "chimesFF: " << "Will use default penalty distance: " << penalty_params[0] << endl;
+            
+        if (found_penalty_scaling)
+            cout << "chimesFF: " << "Will use penalty scaling: " << penalty_params[1] << endl;
+        else
+            cout << "chimesFF: " << "Will use default penalty scaling: " << penalty_params[1] << endl;
     }
     
     // Rewind and read the 2-body Chebyshev pair parameters
@@ -1685,6 +1699,7 @@ void chimesFF::compute_2B(const double dx, const vector<double> & dr, const vect
         });
     }
 #endif
+
     set_cheby_polys(Tn, Tnd, dx, morse_var[pair_idx], chimes_2b_cutoff[pair_idx][0], chimes_2b_cutoff[pair_idx][1], poly_orders[0]);  
 
     get_fcut(dx, chimes_2b_cutoff[pair_idx][1], fcut, fcutderiv);
@@ -2005,6 +2020,12 @@ void chimesFF::compute_3B(const vector<double> & dx, const vector<double> & dr, 
 #endif
 
  int pair_type_1 = atom_int_pair_map[ typ_idxs[0]*natmtyps + typ_idxs[1] ];
+ int pair_type_2 = atom_int_pair_map[ typ_idxs[0]*natmtyps + typ_idxs[2] ];
+ int pair_type_3 = atom_int_pair_map[ typ_idxs[1]*natmtyps + typ_idxs[2] ];
+ int order       = poly_orders[1];
+
+     
+ int pair_type_1 = atom_int_pair_map[ typ_idxs[0]*natmtyps + typ_idxs[1] ];;
  int pair_type_2 = atom_int_pair_map[ typ_idxs[0]*natmtyps + typ_idxs[2] ];
  int pair_type_3 = atom_int_pair_map[ typ_idxs[1]*natmtyps + typ_idxs[2] ];
  int order       = poly_orders[1];
@@ -2556,7 +2577,6 @@ void chimesFF::compute_4B(const vector<double> & dx, const vector<double> & dr, 
         if (dx[i] >= chimes_4b_cutoff[ quadidx ][1][mapped_pair_idx[i]])
             return;    
 */
-
     // These speed up fcut calculations by a LOT
      double cutoff_0  = chimes_4b_cutoff[ quadidx ][1][mapped_pair_idx[0]];
      double cutoff_00 = chimes_4b_cutoff[ quadidx ][0][mapped_pair_idx[0]];
@@ -2597,6 +2617,7 @@ void chimesFF::compute_4B(const vector<double> & dx, const vector<double> & dr, 
 #endif
     // At this point, all distances are within allowed ranges. We can now proceed to the force/stress/energy calculation
     
+
     int pair_type_1 = atom_int_pair_map[ typ_idxs[0]*natmtyps + typ_idxs[1] ];
     int pair_type_2 = atom_int_pair_map[ typ_idxs[0]*natmtyps + typ_idxs[2] ];
     int pair_type_3 = atom_int_pair_map[ typ_idxs[0]*natmtyps + typ_idxs[3] ];
@@ -2604,7 +2625,6 @@ void chimesFF::compute_4B(const vector<double> & dx, const vector<double> & dr, 
     int pair_type_5 = atom_int_pair_map[ typ_idxs[1]*natmtyps + typ_idxs[3] ];
     int pair_type_6 = atom_int_pair_map[ typ_idxs[2]*natmtyps + typ_idxs[3] ];
     int order       = poly_orders[2];    
-
 
     // Set up the polynomials
     
@@ -2634,11 +2654,6 @@ void chimesFF::compute_4B(const vector<double> & dx, const vector<double> & dr, 
     get_fcut(dx[3], cutoff_3, fcut[3], fcutderiv[3]);
     get_fcut(dx[4], cutoff_4, fcut[4], fcutderiv[4]);
     get_fcut(dx[5], cutoff_5, fcut[5], fcutderiv[5]);
-
-
-
-
-
 
     // Product of all 6 fcuts.
     double fcut_all = fcut[0] * fcut[1] * fcut[2] * fcut[3] * fcut[4] * fcut[5]  ;
@@ -2730,7 +2745,6 @@ void chimesFF::compute_4B(const vector<double> & dx, const vector<double> & dr, 
         force[0*CHDIM+0] += fscalar_1 * dr[1*CHDIM+0];
         force[0*CHDIM+1] += fscalar_1 * dr[1*CHDIM+1];
         force[0*CHDIM+2] += fscalar_1 * dr[1*CHDIM+2];
-
         force[2*CHDIM+0] -= fscalar_1 * dr[1*CHDIM+0];
         force[2*CHDIM+1] -= fscalar_1 * dr[1*CHDIM+1];
         force[2*CHDIM+2] -= fscalar_1 * dr[1*CHDIM+2];   
@@ -2755,7 +2769,6 @@ void chimesFF::compute_4B(const vector<double> & dx, const vector<double> & dr, 
         force[0*CHDIM+0] += fscalar_2 * dr[2*CHDIM+0];
         force[0*CHDIM+1] += fscalar_2 * dr[2*CHDIM+1];
         force[0*CHDIM+2] += fscalar_2 * dr[2*CHDIM+2];
-
         force[3*CHDIM+0] -= fscalar_2 * dr[2*CHDIM+0];
         force[3*CHDIM+1] -= fscalar_2 * dr[2*CHDIM+1];
         force[3*CHDIM+2] -= fscalar_2 * dr[2*CHDIM+2];   
@@ -2828,11 +2841,9 @@ void chimesFF::compute_4B(const vector<double> & dx, const vector<double> & dr, 
         stress[5] -= fscalar_4  * dr[4*CHDIM+2] * dr[4*CHDIM+2]; // zz tensor component
 #endif      
         // Accumulate forces/stresses on/from the kl pair
-
         force[2*CHDIM+0] += fscalar_5 * dr[5*CHDIM+0];
         force[2*CHDIM+1] += fscalar_5 * dr[5*CHDIM+1];
         force[2*CHDIM+2] += fscalar_5 * dr[5*CHDIM+2];
-
         force[3*CHDIM+0] -= fscalar_5 * dr[5*CHDIM+0];
         force[3*CHDIM+1] -= fscalar_5 * dr[5*CHDIM+1];
         force[3*CHDIM+2] -= fscalar_5 * dr[5*CHDIM+2];     
