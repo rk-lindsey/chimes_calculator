@@ -132,10 +132,11 @@ if hasattr(config,'PAIRTYPES'):
         for j in range(steps.size): # r_ij distance
         
             energy = 0.0
+            force = 0.0
+            force, dummy_stress, energy = chimescalc_py.chimes_compute_2b_props(steps[j], [1,0,0], pair_types[config.PAIRTYPES[i]], dummy_force, dummy_stress, energy)
         
-            dummy_force, dummy_stress, energy = chimescalc_py.chimes_compute_2b_props(steps[j], dummy_rij, pair_types[config.PAIRTYPES[i]], dummy_force, dummy_stress, energy)
-        
-            scanfile.write(str(steps[j]) + " " + str(energy) + '\n')
+            #print(force[0][0])
+            scanfile.write(str(steps[j]) + " " + str(energy) + " " + str(force[0][0]) + '\n')
         
         scanfile.close()
 
@@ -176,23 +177,26 @@ if hasattr(config,'TRIPTYPES'):
             for k in range(steps.size): # r_ik distance
         
                 for l in range(steps.size): # r_jk distance
-            
+                    forces = 0.0
                     energy       = 0.0
                     dummy_force  = [[0.0, 0.0, 0.0], [0.0, 0.0, 0.0], [0.0, 0.0, 0.0]] # Need to re-declare because compute_2b changes its dimension
                     dummy_stress = [0.0]*9
                     # Get/write the 3-body only energy
-                
-                    dummy_force, dummy_stress, energy = chimescalc_py.chimes_compute_3b_props([steps[j], steps[k], steps[l]], dummy_rij, trip_types[config.TRIPTYPES[i]], dummy_force, dummy_stress, energy)
-        
-                    scanfile_1.write(str(steps[j]) + " " + str(steps[k]) + " " + str(steps[l]) + " " + str(energy) + '\n')
+                    ij = (steps[j]/2)**.5
+                    ik = (steps[k]/2)**.5
+                    jk = (steps[l]/2)**.5
+
+                    forces, dummy_stress, energy = chimescalc_py.chimes_compute_3b_props([steps[j], steps[k], steps[l]], [[1,0,0],[0,1,0],[0,0,1]], trip_types[config.TRIPTYPES[i]], dummy_force, dummy_stress, energy)
+
+                    scanfile_1.write(str(steps[j]) + " " + str(steps[k]) + " " + str(steps[l]) + " " + str(energy)+ " " + str(forces[0][0])+ " " + str(forces[0][1])+ " " + str(forces[1][2]) + '\n')
                 
                     # Add/write the 2-body contributions
         
                     dummy_force, dummy_stress, energy = chimescalc_py.chimes_compute_2b_props(steps[j], [0.0, 0.0, 0.0], [trip_types[config.TRIPTYPES[i]][0], trip_types[config.TRIPTYPES[i]][1]], dummy_force, dummy_stress, energy)
                     dummy_force, dummy_stress, energy = chimescalc_py.chimes_compute_2b_props(steps[k], [0.0, 0.0, 0.0], [trip_types[config.TRIPTYPES[i]][0], trip_types[config.TRIPTYPES[i]][2]], dummy_force, dummy_stress, energy)
                     dummy_force, dummy_stress, energy = chimescalc_py.chimes_compute_2b_props(steps[l], [0.0, 0.0, 0.0], [trip_types[config.TRIPTYPES[i]][1], trip_types[config.TRIPTYPES[i]][2]], dummy_force, dummy_stress, energy)
-        
-                    scanfile_2.write(str(steps[j]) + " " + str(steps[k]) + " " + str(steps[l]) + " " + str(energy) + '\n')
+
+                    scanfile_2.write(str(steps[j]) + " " + str(steps[k]) + " " + str(steps[l]) + " " + str(energy)+ " " + str(forces[0][0])+ " " + str(forces[0][1])+ " " + str(forces[1][2]) + '\n')
     
         scanfile_1.close()    
         scanfile_2.close()

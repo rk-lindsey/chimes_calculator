@@ -1422,51 +1422,65 @@ void Pair::ev_tally4(int i, int j, int k, int m, double evdwl,
    do not make sense. Expects newton_pair = 1.
  ------------------------------------------------------------------------- */
 
- void Pair::ev_tally_mb(int npair, int atmpairidxlst[6][2], double evdwl, std::vector<double>fscalar, std::vector<double> & dist, std::vector<double> &dr)
- {
-     double v[6];
-    
-     eng_vdwl += evdwl; // Note: Assume eflag_global alsways true and eflag atom always false
+void Pair::ev_tally_mb(int ninteractionatoms, int npairs, int atmpairidxlst[6][2], double evdwl, std::vector<double> stress)
+{
+    // Assumes newton pair is always true 
+    // Assumes a full neighbor list is always true (hard coded in pair_chimes.cpp)
+    // Modeled after ev_tally_full and ev_tally3 (to get MB handling)
+    // force and distance vector are flattened 2d vectors, e.g., atom_idx*3 + [0,1,2 == x,y,z dims]
 
-     if (vflag_either) // Note: Assume newton_pair always true for this pair type
-     {
-         for (int i=0; i<npair; i++)
-         {
-             v[0] = fscalar[i] * dr[i*3+0] * dr[i*3+0] / dist[i];
-             v[1] = fscalar[i] * dr[i*3+1] * dr[i*3+1] / dist[i];
-             v[2] = fscalar[i] * dr[i*3+2] * dr[i*3+2] / dist[i];
-             v[3] = fscalar[i] * dr[i*3+0] * dr[i*3+1] / dist[i];
-             v[4] = fscalar[i] * dr[i*3+0] * dr[i*3+2] / dist[i];
-             v[5] = fscalar[i] * dr[i*3+1] * dr[i*3+2] / dist[i];
-            
-             if (vflag_global)
-             {
-                 virial[0] += v[0];
-                 virial[1] += v[1];
-                 virial[2] += v[2];
-                 virial[3] += v[3];
-                 virial[4] += v[4];
-                 virial[5] += v[5];
-             }
-             if(vflag_atom)
-             {
-                 vatom[atmpairidxlst[i][0]][0] += 0.5*v[0];
-                 vatom[atmpairidxlst[i][0]][1] += 0.5*v[1];
-                 vatom[atmpairidxlst[i][0]][2] += 0.5*v[2];
-                 vatom[atmpairidxlst[i][0]][3] += 0.5*v[3];
-                 vatom[atmpairidxlst[i][0]][4] += 0.5*v[4];
-                 vatom[atmpairidxlst[i][0]][5] += 0.5*v[5];
-                
-                 vatom[atmpairidxlst[i][1]][0] += 0.5*v[0];
-                 vatom[atmpairidxlst[i][1]][1] += 0.5*v[1];
-                 vatom[atmpairidxlst[i][1]][2] += 0.5*v[2];
-                 vatom[atmpairidxlst[i][1]][3] += 0.5*v[3];
-                 vatom[atmpairidxlst[i][1]][4] += 0.5*v[4];
-                 vatom[atmpairidxlst[i][1]][5] += 0.5*v[5];
-             }
-         }
-     }                      
-  }
+    std::vector<int> atmlist(4);
+
+    atmlist[0] = atmpairidxlst[0][0];       // i
+
+    if(ninteractionatoms>1) // 2, 3, and/or 4b
+        atmlist[1] = atmpairidxlst[0][1];   // j
+        
+    if(ninteractionatoms>2) // 3 and/or 4b
+        atmlist[2] = atmpairidxlst[1][1];   // k
+        
+    if(ninteractionatoms>3) // 4b only
+        atmlist[3] = atmpairidxlst[2][1];   // l
+    
+    if (eflag_global)
+        eng_vdwl += evdwl;
+
+    if (eflag_atom)
+        for(int atm=0; atm<ninteractionatoms; atm++)
+                eatom[atmlist[atm]] += evdwl/ninteractionatoms;
+
+    if (ninteractionatoms < 2)
+        return;
+
+    if (!vflag_either)
+        return;
+        
+    // FYI, stress calculations follow strategy described here: https://docs.lammps.org/compute_stress_atom.html
+
+    if (vflag_global)
+    {
+        virial[0] += stress[0];
+        virial[1] += stress[3];
+        virial[2] += stress[5];
+        virial[3] += stress[1];
+        virial[4] += stress[2];
+        virial[5] += stress[4];
+    }
+
+    if (vflag_atom) 
+    {
+        for (int a=0; a<ninteractionatoms; a++)
+        {
+             vatom[atmlist[a]][0] += stress[0]/ninteractionatoms;
+             vatom[atmlist[a]][1] += stress[3]/ninteractionatoms;
+             vatom[atmlist[a]][2] += stress[5]/ninteractionatoms;
+             vatom[atmlist[a]][3] += stress[1]/ninteractionatoms;
+             vatom[atmlist[a]][4] += stress[2]/ninteractionatoms;
+             vatom[atmlist[a]][5] += stress[4]/ninteractionatoms;          
+        }
+    }
+}
+
 
 
 /* ----------------------------------------------------------------------
