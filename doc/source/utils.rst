@@ -140,3 +140,61 @@ A link to the ChIMES Fingerpring publication can be found here: https://chemrxiv
 If you use this software in your work, please cite the following:
 
 Laubach, Benjamin, and Rebecca Lindsey. "Cluster-Graph Fingerprinting: A Framework for Quantitative Analysis of Machine-Learned Interatomic Model Training and Simulation Data." (2025).
+
+
+Tabulation
+*****************
+
+ChIMES interactions can be precomputed and stored in look-up tables compatible with the ChIMES_Calculator as implemented in LAMMPS. These tables can substantially speed up your ChIMES calculations by replacing on-the-fly Chebyshev expansions. Due to memory requirements, tabulation is recommended for 2- and 3-body interactions, only.
+
+To use this capability, one must generate the tabulation files and update the parameter file to point to these tabulation files. Instructions for doing so are given below:
+
+Input
+^^^^^^^^^
+
+A utility for tabulating a ChIMES potential energy surface 2- and 3-body interactions is available in ``utils/tabulator``. To use this utility, use the same ``config.py`` file described for the PES generator.
+
+Note: The PES generator uses the chimes_calculator. This means that (1) if penalty parameters are _not_ explicitlly defined in the parameter file, the calculator will introduce default values during the tabulation; (2) if penalty parameters _are_ explicitly defined and _both_ the prefactor (A$_{p}$) or kick-in distance (d$_{p}$) are _non-zero_, the user-defined penalty will be introduced during the tabulation; (3) if penalty parameters _are_ explicitly defined and either the prefactor (A$_{p}$) or kick-in distance (d$_{p}$) are _zero_, no contribution from the penalty function will enter into the tabulation. 
+
+Output
+^^^^^^^^^
+
+All *n*-body scans will produce output scan files named like ``chimes_scan_<n>b.type_<index>.dat.energy`` or ``chimes_scan_<n>b.type_<index>.dat.force``, where <n> is the bodiedness, and <index> is the ``PAIRTYPES`` or ``TRIPTYPES`` index. All units match units used in the PES Generator.
+
+The first line in each output file provides a comment listing the number of tabulated points, this should be roughly (max-min)/stepsize_2B for 2b and ((max-min)/stepsize_3B)^3 for 3b. Following, each line provides the *ij* (and if appropriate, *ik* and *jk* distances, respectively) and the corresponding cluster energy or force. 
+
+Running simulations
+^^^^^^^^^^^^^^^^^^^^
+
+In order to use tabulated models in ChIMES-LAMMPS simulations, the parameter file (e.g., params.txt) must be updated to reference them. To do so:
+
+Modify sections that look like:
+.. code-block:: text
+
+    PAIR CHEBYSHEV PARAMS 
+
+    PAIRTYPE PARAMS: 0 H H
+
+
+To read, e.g.:
+.. code-block:: text
+
+    PAIR CHEBYSHEV PARAMS 
+
+    PAIRTYPE PARAMS: 0 H H TABULATED ./chimes_scan_2b.type_0.dat
+
+This will need to be done for each pair type.
+
+For 3b interactions text such as: 
+
+.. code-block:: text
+    TRIPLETTYPE PARAMS:
+        INDEX: 0 ATOMS: H H H
+
+modify such that they read: 
+
+.. code-block:: text
+    TRIPLETTYPE PARAMS:
+        INDEX: 0 ATOMS: H H H TABULATED ./chimes_scan_3b.type_0.dat
+
+Due to memory requirements, tabulation is only supported in ChIMES-LAMMPS for 2- and 3-body interactions.

@@ -615,6 +615,11 @@ void PairCHIMES::compute(int eflag, int vflag)
 			std::fill(stensor.begin(), stensor.end(), 0.0) ;
 
 			energy = 0.0;	
+#ifdef TABULATION
+			if (chimes_calculator.tabulate_2B)
+                chimes_calculator.compute_2B_tab( dist, dr, typ_idxs_2b, force_2b, stensor, energy, chimes_2btmp);
+            else
+#endif
 			#ifdef FINGERPRINT
 			valid_order = (i < j);
 			if (tmp_FP && valid_order){
@@ -686,6 +691,13 @@ void PairCHIMES::compute(int eflag, int vflag)
 			std::fill(stensor.begin(), stensor.end(), 0.0) ;
 				
 			energy = 0.0 ;
+      
+#ifdef TABULATION
+			if (chimes_calculator.tabulate_3B){
+                chimes_calculator.compute_3B_tab( dist_3b, dr_3b, typ_idxs_3b, force_3b, stensor, energy, chimes_3btmp);}
+            else
+#endif
+
 			#ifdef FINGERPRINT
 			valid_order = (tag[i] < tag[j] && tag[i] < tag[k] && tag[j] < tag[k]);
 			if (tmp_FP && valid_order){
@@ -730,14 +742,12 @@ void PairCHIMES::compute(int eflag, int vflag)
 
     // if (chimes_calculator.poly_orders[2] > 0 || tmp_FP)
 	if (chimes_calculator.poly_orders[2] > 0)
-    {
-        cout << "Made it between ifs" << endl;
-        ////////////////////////////////////////
-        // Compute 4-body interactions
-        ////////////////////////////////////////
-        cout << "neighbor_size: " << endl;
-        cout << neighborlist_4mers.size() << endl;
-        cout << "Made it to ghost atoms check___2" << endl;
+
+	{
+		////////////////////////////////////////
+		// Compute 4-body interactions
+		////////////////////////////////////////
+
 		for (ii = 0; ii < neighborlist_4mers.size(); ii++)		
 		{
 			i     = neighborlist_4mers[ii][0];
