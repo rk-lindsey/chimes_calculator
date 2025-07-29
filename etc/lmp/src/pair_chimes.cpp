@@ -833,13 +833,19 @@ void PairCHIMES::set_chimes_type()
 			}
 		}	}
 
-	
 	if (nmatches < atom->ntypes )
 	{
-		std::cout << "ERROR: LAMMPS coordinate file has " << atom->ntypes << " atom type masses" << std::endl; 
+		// Commented out to allow for hybrid/overlay pair style. For example, combining ChIMES description for carbon 
+		// with LJ description of Ar for simulations of carbon nanoparticles in an argon bath
+		//std::cout << "ERROR: LAMMPS coordinate file has " << atom->ntypes << " atom type masses" << std::endl; 
+		//std::cout << "       but only found " << nmatches << " matches with the ChIMES parameter file." << std::endl;
+		//exit(0);
+ 
+	    std::cout << "WARNING: LAMMPS coordinate file has " << atom->ntypes << " atom type masses" << std::endl;
 		std::cout << "       but only found " << nmatches << " matches with the ChIMES parameter file." << std::endl;
-		exit(0);
-	} 
+		std::cout << "       Will not use ChIMES to evaluate interactions between these pairs! " << std::endl;
+	}
+}
 }
 							
 void PairCHIMES::write_restart(){}			
