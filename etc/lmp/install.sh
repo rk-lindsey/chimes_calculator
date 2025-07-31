@@ -55,7 +55,6 @@ git clone --depth 1 --branch ${lammps} https://github.com/lammps/lammps.git buil
 cp ../../chimesFF/src/chimesFF.{h,cpp}	build/${lammps}/src/MANYBODY/
 cp src/pair_chimes.{h,cpp} 	          	build/${lammps}/src/MANYBODY/
 cp etc/pair.{h,cpp} 			              build/${lammps}/src
-cp etc/Makefile.mpi_chimes 	          	build/${lammps}/src/MAKE
 
 MAKEFILE_SRC="etc/Makefile.mpi_chimes"
 if [[ "$hosttype" == "UT-TACC" ]]; then
@@ -92,7 +91,6 @@ elif [[ "$hosttype" == "JHU-ARCH" ]] ; then
     MPI=`which mpicxx`
 elif [[ "$hosttype" == "UT-TACC" ]] ; then
     source modfiles/UT-TACC.mod
-    cp etc/Makefile.mpi_chimes.UT-TACC build/${lammps}/src/MAKE/Makefile.mpi_chimes
 else
     echo ""
     echo "ERROR: Unknown hosttype ($hosttype) specified"
