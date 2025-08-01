@@ -18,14 +18,14 @@ pair_coeff  * * params.txt.reduced
 
 fix 1 all nve
 fix 2 all langevin 300.0 300.0 100 747
-fix_modify 2 energy yes
+# fix_modify 2 energy yes    ## replaced by econserve
 comm_style tiled
 fix 3 all balance 100 1.1 rcb  
 
 timestep 0.05
 
 compute         ke_tensor all temp
-thermo_style    custom step time ke pe etotal temp press pxx pyy pzz pxy pxz pyz vol c_ke_tensor[1] c_ke_tensor[2] c_ke_tensor[3] c_ke_tensor[4] c_ke_tensor[5] c_ke_tensor[6]
+thermo_style    custom step time ke pe etotal temp press pxx pyy pzz pxy pxz pyz vol c_ke_tensor[1] c_ke_tensor[2] c_ke_tensor[3] c_ke_tensor[4] c_ke_tensor[5] c_ke_tensor[6] econserve  # econserve replaces fix_modify
 thermo_modify   line one format float %20.5f flush yes
 thermo          1
 

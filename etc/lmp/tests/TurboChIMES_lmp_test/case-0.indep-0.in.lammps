@@ -46,10 +46,10 @@ pair_coeff      * * chimesFF  2  1params.txt.reduced
 timestep        0.05
 
 fix             1 all nvt temp ${temp} ${temp} 5
-fix_modify      1 energy yes
+# fix_modify      1 energy   ## replaced by econserve
 
 compute         ke_tensor all temp
-thermo_style    custom step time ke pe etotal temp press pxx pyy pzz pxy pxz pyz vol c_ke_tensor[1] c_ke_tensor[2] c_ke_tensor[3] c_ke_tensor[4] c_ke_tensor[5] c_ke_tensor[6]
+thermo_style    custom step time ke pe etotal temp press pxx pyy pzz pxy pxz pyz vol c_ke_tensor[1] c_ke_tensor[2] c_ke_tensor[3] c_ke_tensor[4] c_ke_tensor[5] c_ke_tensor[6] econserve # econserve replaces fix_modify
 thermo_modify   line one format float %20.5f flush yes
 thermo          ${iofrq}
 
