@@ -18,7 +18,6 @@ pair_coeff  * * params.txt.reduced
 
 fix 1 all nve
 fix 2 all langevin 300.0 300.0 100 747
-# fix_modify 2 energy yes    ## replaced by econserve
 comm_style tiled
 fix 3 all balance 100 1.1 rcb  
 
