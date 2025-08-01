@@ -244,4 +244,3 @@ inline double simulation_system::get_dist(int i,int j)
 
 
 
-
