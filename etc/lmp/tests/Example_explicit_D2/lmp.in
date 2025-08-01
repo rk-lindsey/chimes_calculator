@@ -23,9 +23,8 @@ pair_coeff 1 1  momb 0.0 1.0 1.0 2206.022943 3.432
 velocity all create 8000.0 2217 rot yes dist gaussian
  
 fix             1 all nvt temp 8000.0 8000.0 100
-fix_modify 1 energy yes
 
-thermo_style    custom step lx ly lz pxx pyy pzz pe ke etotal vol press temp 
+thermo_style    custom step lx ly lz pxx pyy pzz pe ke etotal econserve vol press temp  # econserve replaces fix_modify
 thermo          1
 
 timestep 0.5
