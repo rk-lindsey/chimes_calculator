@@ -29,7 +29,7 @@ Please see :ref:`the special Github instructions <page-getting_started-Open-GH>`
 Compiling and running the code
 ****************************************
 
-As described above, the ``chimes_calculator`` comprises library tools for evaluating ChIMES interactions. Further information about the model architecture can be found in :ref:`ChIMES Calculator <page-chimesFF>`. ``chimesFF`` (expert mode) is the source file that implements the core logic of calculating ChIMES interactions given the atom cluster. It is focused on individual atom clusters  and does not perform neighbor clustering. 
+As described above, the ``chimes_calculator`` comprises library tools for evaluating ChIMES interactions. Further information about the model architecture can be found in :ref:`ChIMES Calculator <page-chimesFF>`. ``chimesFF`` is the source file that implements the core logic of calculating ChIMES interactions given the cluster of atoms. It is focused on individual atom clusters  and does not perform neighbor clustering. 
 
 An example of using chimesFF is provided in :ref:`ChIMES Calculator Serial Interface <sec-ser-use-examples-api>`, which demonstrates how to use the ``chimes_calculator`` for an overall system evaluation. This implementation is intended to be instructional and is not optimized for performance.
 
