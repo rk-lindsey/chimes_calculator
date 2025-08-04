@@ -33,7 +33,7 @@ As described above, the ``chimes_calculator`` comprises library tools for evalua
 
 An example of using chimesFF is provided in :ref:`ChIMES Calculator Serial Interface <sec-ser-use-examples-api>`, which demonstrates how to use the ``chimes_calculator`` for an overall system evaluation. This implementation is intended to be instructional and is not optimized for performance.
 
-These examples can be compiled by navigating to a given example subdirectory (e.g. ``chimes_FF/examples/cpp/``) and typing ``make``.
+These examples can be compiled by navigating to a given example subdirectory (e.g. ``chimesFF/examples/cpp/``) and typing ``make``.
 
 You can compile and install the entire software suite in in different computing environments. All require C, C++ and Fortran compilers:
 
