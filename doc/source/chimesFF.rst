@@ -68,107 +68,248 @@ The ChIMES Calculator source files are located in ``chimesFF/src``. To use in a 
 
 Note that the ChIMES calculator ``chimesFF`` class provides users with the following functions:
 
-=========== =================  =================
-Return Type Name               Arguments and Description
-=========== =================  =================
-void        init               ======   ===
-                               Type     Description
-                               ======   ===
-                               int      MPI rank
-                               ======   ===
+============== =======================  =================
+Return Type    Name                     Arguments and Description
+============== =======================  =================
+void           init                     ======   ===
+                                        Type     Description
+                                        ======   ===
+                                        int      MPI rank
+                                        ======   ===
 
-                               Set the MPI rank. With the exception of error messages,
-                               the ChIMES calculator will only print output for rank 0.
+                                        Set the MPI rank. With the exception of error messages,
+                                        the ChIMES calculator will only print output for rank 0.
 
-void        read_parameters    ======   ===
-                               Type     Description
-                               ======   ===
-                               string   Parameter file
-                               ======   ===
+void           read_parameters          ======   ===
+                                        Type     Description
+                                        ======   ===
+                                        string   Parameter file
+                                        ======   ===
 
-                               Read the chimes parameter file.
+                                        Read the chimes parameter file.
 
-void        set_atomtypes      ==============  ===
-                               Type            Description
-                               ==============  ===
-                               vector<string>  List of atom types defined by parameter file (updated by function)
-                               ==============  ===
+int            get_atom_pair_index      ==============  ===
+                                        Type            Description
+                                        ==============  ===
+                                        integer         id of a particular pair of atoms
+                                        ==============  ===
 
-                               Update the input vector with atom types in the parameter file.
+                                        Returns the pair index of a particular pair id of atoms
 
-double      max_cutoff_2B      ======    ===
-                               Type      Description
-                               ======    ===
-                               bool      Flag: If true, prints largest 2-body cutoff
-                               ======    ===
+void           build_pair_int_trip_map  No arguments. Build the pair maps for all possible triplets.
 
-                               Returns the maximum 2-body outer cutoff distance.
+void           build_pair_int_quad_map  No arguments. Build the pair maps for all possible quadruplets.
 
-double      max_cutoff_3B      ======    ===
-                               Type      Description
-                               ======    ===
-                               bool      Flag: If true, prints largest 3-body cutoff
-                               ======    ===
+int            get_badness              No arguments. Keeps track of whether any interactions for atoms owned by proc rank are below rcutin, in the penalty region, or in the r rcutin+dp region. 0 = good, 1 = in penalty region, 2 = below rcutin 
 
-                               Returns the maximum 3-body outer cutoff distance.
+void           reset_badness            No arguments. Set badness value to that processor to good (0).
 
-double      max_cutoff_4B      ======    ===
-                               Type      Description
-                               ======    ===
-                               bool      Flag: If true, prints largest 4-body cutoff
-                               ======    ===
+void           set_atomtypes            ==============  ===
+                                        Type            Description
+                                        ==============  ===
+                                        vector<string>  List of atom types defined by parameter file (updated by function)
+                                        ==============  ===
 
-                               Returns the maximum 4-body outer cutoff distance.
+                                        Update the input vector with atom types in the parameter file.
 
-void        compute_1B         ======    ===
-                               Type      Description
-                               ======    ===
-                               int       Atom type index
-                               double    Energy (updated)
-                               ======    ===
+double         max_cutoff_2B            ======    ===
+                                        Type      Description
+                                        ======    ===
+                                        bool      Flag: If true, prints largest 2-body cutoff
+                                        ======    ===
 
-                               Update energy with the single atom contribution.
+                                        Returns the maximum 2-body outer cutoff distance.
 
-void        compute_2B         ==========================   ===
-                               Type                         Description
-                               ==========================   ===
-                               double                       Distance between two atoms, i and j
-                               vector<double>               Distance vector components for each atom
-                               vector<int>                  Type indices for atoms i and j
-                               vector<vector<double* > >    Force pointer ([atom index (out of 2)][component index (i.e. fx=0, fy=1, fz=3)]) (contents updated by function)
-                               vector<double*>              Stress tensor pointer ([s_xx, s_xy, s_xz, s_yx, s_yy, s_yz, s_zx, s_zy, s_zz]) (contents updated by function)
-                               double                       Energy (updated by function)
-                               ==========================   ===
+double         max_cutoff_3B            ======    ===
+                                        Type      Description
+                                        ======    ===
+                                        bool      Flag: If true, prints largest 3-body cutoff
+                                        ======    ===
 
-                               Update the force pointer, stress tensor pointer, and energy with the two-atom contribution.
+                                        Returns the maximum 3-body outer cutoff distance.
 
-void        compute_3B         ==========================   ===
-                               Type                         Description
-                               ==========================   ===
-                               vector<double>               Distances between three atoms, ij, ik, and jk
-                               vector<vector<double> >      Distance vector components for each atom
-                               vector<int>                  Type indices for atoms i, j and k
-                               vector<vector<double* > >    Force pointer ([atom index (out of 3)][component index (i.e. fx=0, fy=1, fz=3)]) (contents updated by function)
-                               vector<double*>              Stress tensor pointer ([s_xx, s_xy, s_xz, s_yx, s_yy, s_yz, s_zx, s_zy, s_zz]) (contents updated by function)
-                               double                       Energy (updated by function)
-                               ==========================   ===
+double         max_cutoff_4B            ======    ===
+                                        Type      Description
+                                        ======    ===
+                                        bool      Flag: If true, prints largest 4-body cutoff
+                                        ======    ===
 
-                               Update the force pointer, stress tensor pointer, and energy with the three-atom contribution.
+                                        Returns the maximum 4-body outer cutoff distance.
 
-void        compute_4B         ==========================   ===
-                               Type                         Description
-                               ==========================   ===
-                               vector<double>               Distance between four atoms, ij, ik, il, jk, jl, and kl
-                               vector<vector<double> >      Distance vector components for each atom
-                               vector<int>                  Type indices for atoms i, j, k  and l
-                               vector<vector<double* > >    Force pointer ([atom index (out of 4)][component index (i.e. fx=0, fy=1, fz=3)]) (contents updated by function)
-                               vector<double*>              Stress tensor pointer ([s_xx, s_xy, s_xz, s_yx, s_yy, s_yz, s_zx, s_zy, s_zz]) (contents updated by function)
-                               double                       Energy (updated by function)
-                               ==========================   ===
+void           get_cutoff_2B            ==========================   ===
+                                        Type                         Description
+                                        ==========================   ===
+                                        vector<vector<double> >      List of 2b cutoffs
+                                        ==========================   ===
+                                        
+                                        Populates the 2b cutoffs
 
-                               Update the force pointer, stress tensor pointer, and energy with the four-atom contribution.
+void           compute_1B               ======    ===
+                                        Type      Description
+                                        ======    ===
+                                        int       Atom type index
+                                        double    Energy (updated)
+                                        ======    ===
 
-=========== =================  =================
+                                        Update energy with the single atom contribution.
+
+
+void           compute_2B               Note: This function is overloaded. The first 7 arguments are identical between the two versions. One version has three additional parameters, as indicated below. 
+
+                                        ==========================   ===
+                                        Type                         Description
+                                        ==========================   ===
+                                        double                       Distance between two atoms, i and j
+                                        vector<double>               Vector of distance components between atoms
+                                        vector<int>                  Type indices for atoms i and j
+                                        vector<double>               Flattened force vector ([fx_i, fy_i, fz_i, fx_j, fy_j, fz_j]) (contents updated by function)
+                                        vector<double>               Stress tensor vector ([s_xx, s_xy, s_xz, s_yy, s_yz, s_zz]) (contents updated by function)
+                                        double                       Energy (updated by function)
+                                        chimes2BTmp                  Information on 2-body polynomial orders
+                                        double                       [Overloaded version]: Scalar force value (contents updated by function)
+                                        vector<vector<double>>       [Overloaded version]: Used if compiled with ``FINGERPRINT`` option. List of 2-body clusters ([2b_cluster-1 ,2b_cluster-2 ,... , 2b_cluster-n]) (contents updated by function)
+                                        bool                         [Overloaded version]: Used if compiled with ``FINGERPRINT`` option. If the functional call should return 2b clusters
+                                        ==========================   ===
+
+                                        Update the force pointer, stress tensor pointer, and energy with the two-atom contribution.
+
+
+void           compute_3B               ==========================   ===
+                                        Type                         Description
+                                        ==========================   ===
+                                        vector<double>               Distances between three atoms, ij, ik, and jk
+                                        vector<double>               Flattened vector of distance components between atoms ([dx_i-j, dx_i-k, dx_j-k, dy_i-j, ..., dz_j-k])
+                                        vector<int>                  Type indices for atoms i, j and k
+                                        vector<double>               Flattened force vector ([fx_i, fy_i, fz_i, fx_j, ..., fz_k]) (contents updated by function)
+                                        vector<double>               Stress tensor vector ([s_xx, s_xy, s_xz, s_yy, s_yz, s_zz]) (contents updated by function)
+                                        double                       Energy (updated by function)
+                                        chimes3BTmp                  Information on 3-body polynomial orders
+                                        vector<double>               [Overloaded version]: Scalar force value for each atom (contents updated by function)
+                                        vector<vector<double>>       [Overloaded version]: Used if compiled with ``FINGERPRINT`` option. List of 3-body clusters ([3b_cluster-1 ,3b_cluster-2 ,... , 3b_cluster-n]) (contents updated by function)
+                                        bool                         [Overloaded version]: Used if compiled with ``FINGERPRINT`` option. If the functional call should return 3b clusters
+                                        ==========================   ===
+
+                                        Update the force pointer, stress tensor pointer, and energy with the three-atom contribution.
+
+void           compute_4B               ==========================   ===
+                                        Type                         Description
+                                        ==========================   ===
+                                        vector<double>               Distance between four atoms, ij, ik, il, jk, jl, and kl
+                                        vector<double>               Flattened vector of distance components between atoms ([dx_i-j, dx_i-k, dx_i-l, dx_j-k, dx_j-l, dx_k-l, dy_i-j, ..., dz_k-l])
+                                        vector<int>                  Type indices for atoms i, j, k  and l
+                                        vector<double>               Flattened force vector ([fx_i, fy_i, fz_i, fx_j, ..., fz_l]) (contents updated by function)
+                                        vector<double>               Stress tensor vector ([s_xx, s_xy, s_xz, s_yy, s_yz, s_zz]) (contents updated by function)
+                                        double                       Energy (updated by function)
+                                        chimes3BTmp                  Information on 4-body polynomial orders
+                                        vector<double>               [Overloaded version]: Scalar force value for each atom (contents updated by function)
+                                        vector<vector<double>>       [Overloaded version]: Used if compiled with ``FINGERPRINT`` option. List of 4-body clusters ([4b_cluster-1 ,4b_cluster-2 ,... , 4b_cluster-n]) (contents updated by function)
+                                        bool                         [Overloaded version]: Used if compiled with ``FINGERPRINT`` option. If the functional call should return 4b clusters
+                                        ==========================   ===
+
+                                        Update the force pointer, stress tensor pointer, and energy with the four-atom contribution.
+
+
+void           compute_2B_tab           Note: This function only used if compiled with the ``TABULATION`` option 
+
+                                        ==========================   ===
+                                        Type                         Description
+                                        ==========================   ===
+                                        double                       Distance between two atoms, i and j
+                                        vector<double>               Vector of distance components between atoms
+                                        vector<int>                  Type indices for atoms i and j
+                                        vector<double>               Flattened force vector ([fx_i, fy_i, fz_i, fx_j, fy_j, fz_j]) (contents updated by function)
+                                        vector<double>               Stress tensor vector ([s_xx, s_xy, s_xz, s_yy, s_yz, s_zz]) (contents updated by function)
+                                        double                       Energy (updated by function)
+                                        chimes2BTmp                  Information on 2-body polynomial orders
+                                        double                       [Overloaded version]: Scalar force value (contents updated by function)
+                                        ==========================   ===
+
+                                        Update the force pointer, stress tensor pointer, and energy with the two-atom contribution for ChIMES in the tabulated mode.
+
+void           compute_3B               Note: This function only used if compiled with the ``TABULATION`` option 
+
+                                        ==========================   ===
+                                        Type                         Description
+                                        ==========================   ===
+                                        vector<double>               Distances between three atoms, ij, ik, and jk
+                                        vector<double>               Flattened vector of distance components between atoms ([dx_i-j, dx_i-k, dx_j-k, dy_i-j, ..., dz_j-k])
+                                        vector<int>                  Type indices for atoms i, j and k
+                                        vector<double>               Flattened force vector ([fx_i, fy_i, fz_i, fx_j, ..., fz_k]) (contents updated by function)
+                                        vector<double>               Stress tensor vector ([s_xx, s_xy, s_xz, s_yy, s_yz, s_zz]) (contents updated by function)
+                                        double                       Energy (updated by function)
+                                        chimes3BTmp                  Information on 3-body polynomial orders
+                                        vector<double>               [Overloaded version]: Scalar force value for each atom (contents updated by function)
+                                        ==========================   ===
+
+                                        Update the force pointer, stress tensor pointer, and energy with the three-atom contribution for ChIMES in the tabulated mode.
+
+void           read_2B_tab              Note: This function only used if compiled with the ``TABULATION`` option 
+
+                                        ==========================   ===
+                                        Type                         Description
+                                        ==========================   ===
+                                        string                       Path to the file containing tabulated values
+                                        bool                         If energies should also be read in addition to forces
+                                        ==========================   ===
+
+                                        Reads the 2B data files to enable tabulation for 2-atom interactions.
+                                        
+void           read_3B_tab              Note: This function only used if compiled with the ``TABULATION`` option 
+
+                                        ==========================   ===
+                                        Type                         Description
+                                        ==========================   ===
+                                        string                       Path to the file containing tabulated values
+                                        bool                         If energies should also be read in addition to forces
+                                        ==========================   ===
+
+                                        Reads the 3B data files to enable tabulation for 3-atom interactions.
+                                        
+double         get_tab_2B               Note: This function only used if compiled with the ``TABULATION`` option 
+
+                                        ==========================   ===
+                                        Type                         Description
+                                        ==========================   ===
+                                        int                          The pair index of the interaction being calculated
+                                        double                       Scalar distance between atoms
+                                        bool                         If energies should be returned
+                                        ==========================   ===
+
+                                        Calculate the force and energy value for 2 atoms at a particular distance r_ij
+                                                                       
+double         get_tab_3B               Note: This function only used if compiled with the ``TABULATION`` option 
+
+                                        ==========================   ===
+                                        Type                         Description
+                                        ==========================   ===
+                                        int                          The triplet index of the interaction being calculated
+                                        string                       The pair type of atoms ij
+                                        string                       The pair type of atoms ik
+                                        string                       The pair type of atoms jk
+                                        double                       The scalar distance between atoms ij
+                                        double                       The scalar distance between atoms ik
+                                        double                       The scalar distance between atoms jk
+                                        double of size 3             Scalar force value for each atom (contents updated by function)                       
+                                        ==========================   ===
+
+                                        Calculate the force and energy value for 3 atoms i, j, k
+                                                                                  
+vector<double> interpolateTricubic      Note: This function only used if compiled with the ``TABULATION`` option 
+
+                                        ==========================   ===
+                                        Type                         Description
+                                        ==========================   ===
+                                        int                          The triplet index of the interaction being calculated
+                                        double                       The scalar distance between atoms ij
+                                        double                       The scalar distance between atoms ik
+                                        double                       The scalar distance between atoms jk
+                                        vector<double>               Force vector for atom i (contents updated by function)          
+                                        vector<double>               Force vector for atom j (contents updated by function)          
+                                        vector<double>               Force vector for atom k (contents updated by function)                       
+                                        ==========================   ===
+
+                                        Returns the energy value for 3 atoms i, j, k at a particular distance r_ij, r_ik, r_jk and sets the force vector for each atom i, j, k.
+============== =======================  =================
 
 
 
