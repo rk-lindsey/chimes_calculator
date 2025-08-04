@@ -69,7 +69,7 @@ Compiling and running LAMMPS with ChIMES
 We have implemented the CHIMES in the `LAMMPS <https://lammps.sandia.gov/>`_ and further information regarding Compiling and running can be found in :ref:`The ChIMES Calculator with LAMMPS <page-etc.rst>`. In here, the ChIMES force field is compiled into LAMMPS as a custom pair style, allowing it to be used like any other interatomic potential within LAMMPS input scripts.
     
 
-For additional details on using, integrating, and compiling, and contributing, see:
+For additional details on using, integrating, compiling, and contributing, see:
 
 * :ref:`The ChIMES Calculator <page-chimesFF>`
 * :ref:`The ChIMES Calculator Serial Interface <page-serial_interface>`
