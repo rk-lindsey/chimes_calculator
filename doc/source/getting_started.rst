@@ -48,7 +48,7 @@ You can compile and install the entire software suite in different computing env
 
  * CMake-Based Installation
 
-      * You can execute the appropriate CMake commands by simply running ``./install.sh`` from the base       ``chimes_calculator`` directory. If the this option is used, a list of generated executables/library files and their respective install locations can be found in the generated ``build/install_manifest.txt`` file. 
+      * You can execute the appropriate CMake commands by simply running ``./install.sh`` from the base       ``chimes_calculator`` directory. If this option is used, a list of generated executables/library files and their respective install locations can be found in the generated ``build/install_manifest.txt`` file. 
 
 .. Note :: 
 
