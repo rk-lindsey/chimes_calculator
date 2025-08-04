@@ -35,7 +35,7 @@ An example of using chimesFF is provided in :ref:`ChIMES Calculator Serial Inter
 
 These examples can be compiled by navigating to a given example subdirectory (e.g. ``chimesFF/examples/cpp/``) and typing ``make``.
 
-You can compile and install the entire software suite in in different computing environments. All require C, C++ and Fortran compilers:
+You can compile and install the entire software suite in different computing environments. All require C, C++ and Fortran compilers:
 
  * Standard Installation (Local Machine or Basic Environment)
 
