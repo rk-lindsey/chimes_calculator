@@ -63,10 +63,10 @@ Sample ChIMES parameter and input files are provided in the ``serial_interface/t
     serial_interface/tests/force_fields/published_params.liqC.2b.cubic.txt \
     serial_interface/tests/configurations/liqC.2.5gcc_6000K.OUTCAR_#000.xyz | tee my_test.log 
 
-Compiling and running LAMMPS with ChIMES
-****************************************
+Compiling the ChIMES Calculator with LAMMPS
+*********************************************
 
-We have implemented the CHIMES in the `LAMMPS <https://lammps.sandia.gov/>`_ and further information regarding Compiling and running can be found in :ref:`The ChIMES Calculator with LAMMPS <page-etc>`. In here, the ChIMES force field is compiled into LAMMPS as a custom pair style, allowing it to be used like any other interatomic potential within LAMMPS input scripts.
+We implemented the CHIMES in the `LAMMPS <https://lammps.sandia.gov/>`_ and detailed information regarding Compiling and running can be found in :ref:`The ChIMES Calculator with LAMMPS <page-etc>`. 
     
 
 For additional details on using, integrating, compiling, and contributing, see:
