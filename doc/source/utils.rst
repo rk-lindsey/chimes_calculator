@@ -155,11 +155,28 @@ ChIMES Fingerprint Generator
 Input
 ^^^^^^^^^
 
-The ChIMES Fingerprint Generator is a utility for generating on-the-fly n-body cluster distribution fingerprints during LAMMPS simulations. This tool provides a convenient way to extract structural information used in training or analyzing ChIMES models.
+The **ChIMES Fingerprint Generator** is a utility for generating on-the-fly *n*-body cluster distribution fingerprints during LAMMPS simulations. These fingerprints provide a compact, quantitative representation of material configurations that can be used for ML-IAM development.
+
+This tool is particularly useful for:
+
+- **Monitoring equilibration and dynamics** – Track changes in structure over time to assess whether a system has reached equilibrium or is sampling new configurations.
+- **Automated active learning workflows** – Integrate fingerprints into your ML-IAM loop to flag underrepresented environments or inform uncertainty quantification.
+- **Dataset curation and refinement** – Use fingerprints to automatically cluster, select, or discard configurations based on structural similarity.
+
+Ultimately, ChIMES fingerprints support automated decision-making in model training and simulation analysis, improving the robustness and reliability of ML-IAMs.
+
+An example ChIMES fingerprint is shown below:
+
+.. figure:: fingerprint_example.pdf
+   :align: center
+   :width: 80%
+
+   Sample configuration of liquid carbon at a density of 0.5 g/cm³ and temperature of 1000 K shown in panel (a), alongside the corresponding cluster-graph fingerprints for (b) 2-body, (c) 3-body, and (d) 4-body interactions obtained using a Morse transformation approach.
 
 To enable fingerprint generation, install LAMMPS with the ``FINGERPRINT`` build option:
 
 .. code-block:: bash
+
     sh install.sh FINGERPRINT
 
 After installation, modify your LAMMPS pair_style chimesFF specification to contain the  ``fingerprint`` keyword and an integer specifying the frequency with which fingerprints are recorded n.
@@ -196,8 +213,6 @@ The first column is the cluster-graph dissimilarity whereas the second column is
 For citing
 ^^^^^^^^^^
 
-A link to the ChIMES Fingerpring publication can be found here: https://chemrxiv.org/engage/chemrxiv/article-details/67f0635bfa469535b9cbed7b
+If you use this software in your work, please cite:
 
-If you use this software in your work, please cite the following:
-
-Laubach, Benjamin, and Rebecca Lindsey. "Cluster-Graph Fingerprinting: A Framework for Quantitative Analysis of Machine-Learned Interatomic Model Training and Simulation Data." (2025).
+Laubach, Benjamin, and Rebecca Lindsey. Cluster-Graph Fingerprinting: A Framework for Quantitative Analysis of Machine-Learned Interatomic Model Training and Simulation Data (2025). `ChemRxiv <https://chemrxiv.org/engage/chemrxiv/article-details/67f0635bfa469535b9cbed7b>`_
