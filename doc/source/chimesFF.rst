@@ -226,7 +226,7 @@ void           compute_2B_tab           Note: This function only used if compile
 
                                         Update the force pointer, stress tensor pointer, and energy with the two-atom contribution for ChIMES in the tabulated mode.
 
-void           compute_3B               Note: This function only used if compiled with the ``TABULATION`` option 
+void           compute_3B_tab           Note: This function only used if compiled with the ``TABULATION`` option 
 
                                         ==========================   ===
                                         Type                         Description
@@ -366,6 +366,9 @@ double      get_chimes_max_2b_cutoff          No arguments. Returns the two body
 double      get_chimes_max_3b_cutoff          No arguments. Returns the three body maximum outer cutoff set by the parameter file.
 double      get_chimes_max_4b_cutoff          No arguments. Returns the four body maximum outer cutoff set by the parameter file.
 
+void        chimes_build_pair_int_trip_map    No arguments. Build the pair maps for all possible triplets.
+
+void        chimes_build_pair_int_quad_map    No arguments. Build the pair maps for all possible quadruplets.
 
 void        chimes_compute_2b_props           ============  ===
                                               Type          Description
@@ -564,6 +567,10 @@ C_double    f_get_chimes_max_2b_cutoff          No arguments. Returns the two bo
 C_double    f_get_chimes_max_3b_cutoff          No arguments. Returns the three body maximum outer cutoff.
 C_double    f_get_chimes_max_4b_cutoff          No arguments. Returns the four body maximum outer cutoff.
 
+none        f_chimes_build_pair_int_trip_map    No arguments. Build the pair maps for all possible triplets.
+
+none        f_chimes_build_pair_int_quad_map    No arguments. Build the pair maps for all possible quadruplets.
+
 C_string    string2Cstring                      ======   ===
                                                 Type     Description
                                                 ======   ===
@@ -601,81 +608,86 @@ For additional information on compiling (i.e. generation of ``chimescalc_dl.so``
 Note that the ChIMES calculator ``chimescalc_py`` API provides users with the following functions:
 
 
-=========== ==================================  =================
-Return Type Name                                Arguments and Description
-=========== ==================================  =================
-ctypes      init_chimes_wrapper                 ==============   ===
-                                                Type             Description
-                                                ==============   ===
-                                                str              C-wrapper library name (i.e. "lib-C_wrapper-serial_interface.so")
-                                                ==============   ===
+===========                          ==================================  =================
+Return Type                          Name                                Arguments and Description
+===========                          ==================================  =================
+ctypes                               init_chimes_wrapper                 ==============   ===
+                                                                         Type             Description
+                                                                         ==============   ===
+                                                                         str              C-wrapper library name (i.e. "lib-C_wrapper-serial_interface.so")
+                                                                         ==============   ===
+                         
+none                                 set_chimes                          No arguments. Instantiates a pointer to a ``chimesFF`` object.
+                         
+none                                 init_chimes                         ==============   ===
+                                                                         Type             Description
+                                                                         ==============   ===
+                                                                         int              MPI rank (optional parameter)
+                                                                         ==============   ===
+                         
+                                                                         Set the MPI rank. With the exception of error messages,
+                                                                         the ChIMES calculator will only print output for rank 0.
+                         
+none                                 read_params                         ==============   ===
+                                                                         Type             Description
+                                                                         ==============   ===
+                                                                         str              Parameter file
+                                                                         ==============   ===
 
-none        set_chimes                          No arguments. Instantiates a pointer to a ``chimesFF`` object.
+float                                get_chimes_max_2b_cutoff            No arguments. Returns the two body order set by the parameter file.
+float                                get_chimes_max_2b_cutoff            No arguments. Returns the three body order set by the parameter file.
+float                                get_chimes_max_2b_cutoff            No arguments. Returns the four body order set by the parameter file.
+                         
+int                                  get_chimes_2b_order                 No arguments. Returns the two body maximum outer cutoff.
+int                                  get_chimes_3b_order                 No arguments. Returns the three body maximum outer cutoff.
+int                                  get_chimes_4b_order                 No arguments. Returns the four body maximum outer cutoff.
 
-none        init_chimes                         ==============   ===
-                                                Type             Description
-                                                ==============   ===
-                                                int              MPI rank (optional parameter)
-                                                ==============   ===
+none                                 build_pair_int_trip_map             No arguments. Build the pair maps for all possible triplets.
 
-                                                Set the MPI rank. With the exception of error messages,
-                                                the ChIMES calculator will only print output for rank 0.
-
-none        read_params                         ==============   ===
-                                                Type             Description
-                                                ==============   ===
-                                                str              Parameter file
-                                                ==============   ===
-
-float       get_chimes_max_2b_cutoff            No arguments. Returns the two body order set by the parameter file.
-float       get_chimes_max_2b_cutoff            No arguments. Returns the three body order set by the parameter file.
-float       get_chimes_max_2b_cutoff            No arguments. Returns the four body order set by the parameter file.
-
-int         get_chimes_2b_order                 No arguments. Returns the two body maximum outer cutoff.
-int         get_chimes_3b_order                 No arguments. Returns the three body maximum outer cutoff.
-int         get_chimes_4b_order                 No arguments. Returns the four body maximum outer cutoff.
-
-none        chimes_compute_2b_props             ==========  ===
-                                                Type        Description
-                                                ==========  ===
-                                                float       Distances between atoms i and j
-                                                float list  Distance vector components for each atom
-                                                str list    Types for atom i and j
-                                                float list  Forces for atoms i, and j ([atom index (out of 2)][component index (i.e. fx=0, fy=1, fz=3)]) (contents updated by function)
-                                                float list  Stress tensor ([s_xx, s_xy, s_xz, s_yx, s_yy, s_yz, s_zx, s_zy, s_zz]) (contents updated by function)
-                                                float       Energy (updated by function)
-                                                ==========  ===
-
-                                                Update the force, stress tensor, and energy with the two-atom contribution.
+none                                 build_pair_int_quad_map             No arguments. Build the pair maps for all possible quadruplets.
 
 
-none        chimes_compute_3b_props             ==========  ===
-                                                Type        Description
-                                                ==========  ===
-                                                float list  Distances between three atoms, ij, ik, and jk
-                                                float list  Distance vector components for each atom
-                                                str list    Types for atom i, j, and k
-                                                float list  Forces for atoms i, j, and k ([atom index (out of 3)][component index (i.e. fx=0, fy=1, fz=3)]) (contents updated by function)
-                                                float list  Stress tensor ([s_xx, s_xy, s_xz, s_yx, s_yy, s_yz, s_zx, s_zy, s_zz]) (contents updated by function)
-                                                float       Energy (updated by function)
-                                                ==========  ===
+float list, float list, float        chimes_compute_2b_props             ==========  ===
+                                                                         Type        Description
+                                                                         ==========  ===
+                                                                         float       Distances between atoms i and j
+                                                                         float list  Distance vector components for each atom
+                                                                         str list    Types for atom i and j
+                                                                         float list  Forces for atoms i, and j ([atom index (out of 2)][component index (i.e. fx=0, fy=1, fz=3)]) (contents updated by function)
+                                                                         float list  Stress tensor ([s_xx, s_xy, s_xz, s_yx, s_yy, s_yz, s_zx, s_zy, s_zz]) (contents updated by function)
+                                                                         float       Energy (updated by function)
+                                                                         ==========  ===
+                        
+                                                                         Update the force, stress tensor, and energy with the two-atom contribution. Returns the Force, Stress, and Energy.
 
-                                                Update the force, stress tensor, and energy with the three-atom contribution.
 
-none        chimes_compute_4b_props              ==========  ===
-                                                 Type        Description
-                                                 ==========  ===
-                                                 float list  Distances between four atoms, ij, ik, il, jk, jl, and kl
-                                                 float list  Distance vector components for each atom
-                                                 str list    Types for atom i, j, k, and l
-                                                 float list  Forces for atoms i, j, k, and l ([atom index (out of 4)][component index (i.e. fx=0, fy=1, fz=3)]) (contents updated by function)
-                                                 float list  Stress tensor ([s_xx, s_xy, s_xz, s_yx, s_yy, s_yz, s_zx, s_zy, s_zz]) (contents updated by function)
-                                                 float       Energy (updated by function)
-                                                 ==========  ===
+float list, float list, float        chimes_compute_3b_props             ==========  ===
+                                                                         Type        Description
+                                                                         ==========  ===
+                                                                         float list  Distances between three atoms, ij, ik, and jk
+                                                                         float list  Distance vector components for each atom
+                                                                         str list    Types for atom i, j, and k
+                                                                         float list  Forces for atoms i, j, and k ([atom index (out of 3)][component index (i.e. fx=0, fy=1, fz=3)]) (contents updated by function)
+                                                                         float list  Stress tensor ([s_xx, s_xy, s_xz, s_yx, s_yy, s_yz, s_zx, s_zy, s_zz]) (contents updated by function)
+                                                                         float       Energy (updated by function)
+                                                                         ==========  ===
+                         
+                                                                         Update the force, stress tensor, and energy with the three-atom contribution. Returns the Force, Stress, and Energy.
 
-                                                Update the force, stress tensor, and energy with the four-atom contribution.
+float list, float list, float        chimes_compute_4b_props             ==========  ===
+                                                                         Type        Description
+                                                                         ==========  ===
+                                                                         float list  Distances between four atoms, ij, ik, il, jk, jl, and kl
+                                                                         float list  Distance vector components for each atom
+                                                                         str list    Types for atom i, j, k, and l
+                                                                         float list  Forces for atoms i, j, k, and l ([atom index (out of 4)][component index (i.e. fx=0, fy=1, fz=3)]) (contents updated by function)
+                                                                         float list  Stress tensor ([s_xx, s_xy, s_xz, s_yx, s_yy, s_yz, s_zx, s_zy, s_zz]) (contents updated by function)
+                                                                         float       Energy (updated by function)
+                                                                         ==========  ===
+                          
+                                                                         Update the force, stress tensor, and energy with the four-atom contribution. Returns the Force, Stress, and Energy.
 
-=========== ==================================  =================
+===========                          ==================================  =================
 
 
 ---------------
