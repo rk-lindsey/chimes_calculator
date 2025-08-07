@@ -6,7 +6,10 @@ The ChIMES Calculator Serial Interface
 Overview
 ********
 
-The ChIMES calculator serial interface provides an easier means of evaluating ChIMES interactions for a given system. In constrast to the ChIMES calculator (i.e. ``chimesFF``), which takes information on *individual* atom clusters and returns the cluster energy, stress tensor, via ``compute_xB`` functions, the serial interface (i.e. ``serial_chimes_interface``) takes *overall* system information and returns *overall* system energy, stress tensor, and forces. Though far less flexible than direct use of ``chimesFF``, ``serial_chimes_interface`` allows users to leverage ChIMES with much less coding. For further details on ``chimesFF``, see :ref:`The ChIMES Calculator <page-chimesFF>`. For a complete set of ChIMES references, see :ref:`Citing ChIMES <page-citing>`. Note that this functionality is primarily intended for instructive purposes, and is not recommended for large scale simulations.
+The ChIMES calculator serial interface provides an easier means of evaluating ChIMES interactions for a given system. In contrast to the ChIMES calculator (i.e. ``chimesFF``), which takes information on *individual* atom clusters and returns the cluster energy, stress tensor, via ``compute_xB`` functions, the serial interface (i.e. ``serial_chimes_interface``) takes *overall* system information and returns *overall* system energy, stress tensor, and forces. Though far less flexible than direct use of ``chimesFF``, ``serial_chimes_interface`` allows users to leverage ChIMES with much less coding. For examples of how to implement the ChIMES calculator serial interface with different APIs, refer to :ref:`Implementation Examples <sec-ser-use-examples-api>`. For further details on ``chimesFF``, see :ref:`The ChIMES Calculator <page-chimesFF>`. For a complete set of ChIMES references, see :ref:`Citing ChIMES <page-citing>`. 
+
+.. Note:: 
+    The serial interface is intended to primarily serve as an easy-to-read example of how to use/implement the chimesFF library in various user codes. Hence, the implementation is not optimized for computational efficiency and therefore not recommended for use in long or large scale simulations. For users seeking a computationally efficient out-of-the-box simulation capability, we recommend using our LAMMPS implementation. See the :ref:`ChIMES in LAMMPS <page-etc>` for more details.
 
 
 The ChIMES Calculator Serial Interface
@@ -24,7 +27,7 @@ The ChIMES calculator serial interface source files are located in ``serial_inte
 
 .. Warning::
 
-	For small simulation cells (e.g., a single atom in a face-centered cubic unit cell), the ChIMES calculator must be instantiated via ``serial_chimes_interface chimes(true)``. This allows for automatic replication in situations where the ChIMES outer cutoff is greater than one half of the smallest supercell length. Please note that use of extra-small simulation cells is ill-advised for aything except crystalline systems and should be used with caution. 
+	It is recommended to have a supercell length of at least double the outer cutoff. For small simulation cells (e.g., a single atom in a face-centered cubic unit cell), the ChIMES calculator must be instantiated via ``serial_chimes_interface chimes(true)``. This allows for automatic replication in situations where the ChIMES outer cutoff is greater than one half of the smallest supercell length. Please note that use of extra-small simulation cells is ill-advised for aything except crystalline systems and should be used with caution. 
 
     *Developer note: To recover behavior of the research code, instantiate with:* ``serial_chimes_interface chimes(false)``.
 
@@ -111,10 +114,10 @@ void        calculate_chimes            =======================   =====
                                         double array              Vector of x-coordinates for system atoms
                                         double array              Vector of y-coordinates for system atoms
                                         double array              Vector of z-coordinates for system atoms
-                                        char  array               System cell a lattice vector
+                                        char array                Vector of atom types for system atoms
+                                        double array              System cell a lattice vector
                                         double array              System cell b lattice vector
                                         double array              System cell c lattice vector
-                                        double array              Vector of atom types for system atoms
                                         double*                   Overall system energy (updated by function)
                                         double array              Vector of forces for system atoms (updated by function); ([atom index][fx, fy, fz])
                                         double array              System stress tensor (updated by function); ([s_xx, s_xy, s_xz, s_yx, s_yy, s_yz, s_zx, s_zy, s_zz])
@@ -178,10 +181,10 @@ void        f_calculate_chimes          =======================   =====
                                         C_double array              Vector of x-coordinates for system atoms
                                         C_double array              Vector of y-coordinates for system atoms
                                         C_double array              Vector of z-coordinates for system atoms
-                                        C_char  array               System cell a lattice vector
+                                        C_char array                Vector of atom types for system atoms
+                                        C_double array              System cell a lattice vector
                                         C_double array              System cell b lattice vector
                                         C_double array              System cell c lattice vector
-                                        C_double array              Vector of atom types for system atoms
                                         C_double*                   Overall system energy (updated by function)
                                         C_double array              Vector of forces for system atoms (updated by function); ([atom index][fx, fy, fz])
                                         C_double array              System stress tensor (updated by function); ([s_xx, s_xy, s_xz, s_yx, s_yy, s_yz, s_zx, s_zy, s_zz])
@@ -328,10 +331,10 @@ See description calculate_chimes            =======================   =====
                                             float list                Vector of x-coordinates for system atoms
                                             float list                Vector of y-coordinates for system atoms
                                             float list                Vector of z-coordinates for system atoms
-                                            str list                  System cell a lattice vector
+                                            str list                  Vector of atom types for system atoms
+                                            float list                System cell a lattice vector
                                             float list                System cell b lattice vector
                                             float list                System cell c lattice vector
-                                            float list                Vector of atom types for system atoms
                                             float                     Overall system energy
                                             float list                Vector of forces for system atoms ([atom index][fx, fy, fz])
                                             float list                System stress tensor ([s_xx, s_xy, s_xz, s_yx, s_yy, s_yz, s_zx, s_zy, s_zz])
@@ -364,7 +367,10 @@ Implementation Examples
 ^^^^^^^^^^^^^^^^^^^^^^^
 
 The following codes demonstrates how ``serial_chimes_interface.{h,cpp}`` can be used to obtain the overall stress tensor, energy, and per-atom forces for a given system configuration using C, C++ Fortran, and Python. See the ``main.*`` files in each corresponding subdirectory of ``serial_interface/examples`` for further implementation details. Note that sample system configurations (i.e. ``*xyz`` files) and parameter files can be found in ``serial_interface/test/configurations`` and ``serial_interface/test/force_fields``, respectively.
-For user generated tests, note that ``*.xyz`` files must provide lattice vectors in the comment line, e.g. lx 0.0 0.0 0.0 ly 0.0 0.0 0.0 lz. Click :ref:`here <page-units>` for an overview of ChIMES units.
+
+.. Note:: 
+
+    For user generated tests, note that ``*.xyz`` files must provide lattice vectors in the comment line, e.g. lx 0.0 0.0 0.0 ly 0.0 0.0 0.0 lz. Click :ref:`here <page-units>` for an overview of ChIMES units.
 
 .. Note::
 
@@ -372,7 +378,7 @@ For user generated tests, note that ``*.xyz`` files must provide lattice vectors
 
 .. Warning::
 
-     These codes are for demonstrative purposes only and come with no guarantees.
+    These codes are for demonstrative purposes only and come with no guarantees.
 
 .. Note::
 
@@ -400,7 +406,6 @@ For user generated tests, note that ``*.xyz`` files must provide lattice vectors
    * Navigate to ``serial_interface/examples/fortran``
    * Compile with: ``make all``
    * Test with: ``./chimescalc-test_serial-F <parameter file> <xyz file>``
-   * Additional notes:
 
 * **Fortran2008 Example:** Similarly, this ``main`` function establishes a pointer to a ``serial_chimes_interface`` object via calls to ``ChimesCalc_init()`` and subroutine calls within the ``ChimesCalc`` class, defined in ``chimescalc_serial_F08.f90.``
   Subroutines called from the Fortran2008 API act as an interface for the wrapper functions establied in the Fortran90 API. Actual linking is achieved at compilation. See the ``Makefile`` for details.
@@ -408,7 +413,6 @@ For user generated tests, note that ``*.xyz`` files must provide lattice vectors
    * Navigate to ``serial_interface/examples/fortran08``
    * Compile with: ``make all``
    * Test with: ``./chimescalc-test_serial-F08 <parameter file> <xyz file>``
-   * Additional notes:
 
 * **Python Example:** This example accesses ``serial_chimes_interface`` functions through ``chimescalc_serial_py.py``, a ctypes-based python API for access to the C API functions
   (i.e. through ``chimescalc_serial_C.cpp``). Once ``chimescalc_serial_py.py`` is imported, it is associated with a compiled C API library file, i.e. ``lib-C_wrapper-serial_interface.so`` and  can be used to access ``serial_chimes_interface`` member functions.
@@ -416,5 +420,5 @@ For user generated tests, note that ``*.xyz`` files must provide lattice vectors
    * Navigate to ``serial_interface/examples/python``
    * Compile ``libchimescalc-serial_dl.so`` with: ``make all``
    * Rename: ``cp libchimescalc-serial_dl.so libchimescalc_dl.so``
-   * Test with: ``python main.py <parameter file> <coordinate file>``
+   * Test with: ``python main.py <parameter file> <xyz file>``
   
