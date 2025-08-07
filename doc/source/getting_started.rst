@@ -29,9 +29,9 @@ Please see :ref:`the special Github instructions <page-getting_started-Open-GH>`
 Compiling and running the code
 ****************************************
 
-As described above, the ``chimes_calculator`` comprises library tools for evaluating ChIMES interactions. Further information about the model architecture can be found in :ref:`ChIMES Calculator <page-chimesFF>`. ``chimesFF`` is the source file that implements the core logic of calculating ChIMES interactions given the cluster of atoms. It is focused on individual atom clusters  and does not perform neighbor clustering. 
+As described above, the ``chimes_calculator`` comprises library tools for evaluating ChIMES interactions. Further information about the model architecture can be found in :ref:`ChIMES Calculator <page-chimesFF>`. ``chimesFF.h`` and ``chimesFF.cpp`` are the source files that implement the core logic of calculating ChIMES interactions given the cluster of atoms.  When the class defined therein is instantiated, it read in a ChIMES parameter file. It then can be used to evaluate individual terms in the many-body cluster expansion that defines the ChIMES potential. Specifically, it contains functions to compute energy, stress tensor, and per-atom forces for an individual 2-, 3- or 4-body cluster of atoms, given their coordinates.
 
-An example of using chimesFF is provided in :ref:`ChIMES Calculator Serial Interface <sec-ser-use-examples-api>`, which demonstrates how to use the ``chimes_calculator`` for an overall system evaluation. This implementation is intended to be instructional and is not optimized for performance.
+For most applications, chimesFF should be integrated into a simulation code that can take a full system configuration, extract all n-body clusters while respecting periodic boundary conditions, and feed them into chimesFF. An example to do this is provided in :ref:`ChIMES Calculator Serial Interface <sec-ser-use-examples-api>`, which demonstrates how to use the ``chimes_calculator`` for an overall system evaluation. We also provide an implementation of chimesFF as a pair_style in lammps in the :ref:`The ChIMES Calculator with LAMMPS <page-etc>` page.
 
 These examples can be compiled by navigating to a given example subdirectory (e.g. ``chimesFF/examples/cpp/``) and typing ``make``.
 
