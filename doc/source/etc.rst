@@ -120,21 +120,18 @@ ChIMES can be used simultaneously with other potentials using LAMMPS' hybrid/ove
 
 .. code-block:: text
 
-    group carbon type 1    # group carbon atoms (for better load balance)
-    group argon  type 2    # group argon  atoms
-
     pair_style      hybrid/overlay chimesFF momb 9.0 0.75 20.0 lj/cut 10.0
     pair_coeff      * * chimesFF ${param_file}
     pair_coeff      1 1 momb 0.0 1.0 1.0 418.26 2.904
     pair_coeff      1 2 lj/cut 0.25   3.5
     pair_coeff      2 2 lj/cut 0.25   3.5
 
-In this example, ChIMES is combined with MOMB (Many-body van der Waals) and Lennard-Jones potentials for different atom type interactions.
+In this example, ChIMES is combined with MOMB (Many-body van der Waals) and Lennard-Jones potentials for different atom type interactions. 
 
 Models with D2 Dispersion Correction
 """""""""""""""""""""""""""""""""""
 
-Using hybrid ChIMES and MOMB is specifically for adding D2 dispersion correction at the time of using LAMMPS.
+Using hybrid ChIMES and MOMB is specifically for adding D2 dispersion correction at the time of using LAMMPS. Whether to include MOMB and the parameters used is specific to the ChIMES parameterization and should not be added arbitrarily.
 
 **Important:** When using MOMB with ChIMES, you must include the ``make yes-extra-pair`` command in the install.sh script when compiling LAMMPS to enable the MOMB potential support.
 
