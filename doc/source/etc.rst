@@ -1,3 +1,5 @@
+.. _page-etc:
+
 Support for Linking with External Codes
 =============================================
 
