@@ -39,7 +39,7 @@ You can test your installation by running an example job, e.g., by executing the
     serial_interface/tests/force_fields/published_params.liqC.2b.cubic.txt \
     serial_interface/tests/configurations/liqC.2.5gcc_6000K.OUTCAR_#000.xyz | tee my_test.log 
  
-LAMMPS installtion can be tested by running the following:
+LAMMPS installation can be tested by running the following:
 
 .. code-block:: bash
 
