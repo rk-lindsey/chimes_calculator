@@ -1,0 +1,36 @@
+#############################################
+# Specify high-level simulation style
+##############################################
+
+units        real                      # Specify units to use
+newton       on
+atom_style   atomic                      # Only store info on atom coords and type - no bonded info
+atom_modify  sort 0 0.0                # Maintain atom ordering when printing information
+atom_modify  map array                 # Also needed to maintain ordering
+neighbor     2.0 bin                   # Specify neighborlist parameters
+neigh_modify delay 0 every 1 check yes # More neighborlist parameters
+
+boundary p p p
+read_data    ./data.lammps
+pair_style hybrid/overlay chimesFF momb 12.0 0.75 20.0
+pair_coeff  * * chimesFF ../../../params.txt.reduced
+pair_coeff 1 1  momb 0.0 1.0 1.0 2206.022943 3.432
+
+##############################################
+# Specify the requested output
+##############################################
+#
+velocity all create 8000.0 2217 rot yes dist gaussian
+ 
+fix             1 all nvt temp 8000.0 8000.0 100
+
+thermo_style    custom step lx ly lz pxx pyy pzz pe ke etotal econserve vol press temp  # econserve replaces fix_modify
+thermo          1
+
+timestep 0.5
+dump            1 all custom 1 traj.lammpstrj id element xu yu zu
+dump_modify 1 element Si sort id
+thermo 10
+# Run
+run 10000
+write_data      Thermalization_1.data

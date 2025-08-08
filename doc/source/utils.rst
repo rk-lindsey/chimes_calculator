@@ -87,8 +87,6 @@ This command will produce a file named like ``chimes_scan_2+3b.type_0.dat.gnuplo
 
      splot 'chimes_scan_2+3b.type_0.dat.gnuplot.2.5' u 1:2:3 w pm3d
 
-
-
 Tabulation
 *****************
 
@@ -103,12 +101,14 @@ A utility for tabulating a ChIMES potential energy surface 2- and 3-body interac
 
 Note: The PES generator uses the chimes_calculator. This means that (1) if penalty parameters are *not* explicitlly defined in the parameter file, the calculator will introduce default values during the tabulation; (2) if penalty parameters are explicitly defined and *both* the prefactor :math:`A_{p}` or kick-in distance :math:`d_{p}` are non-zero, the user-defined penalty will be introduced during the tabulation; (3) if penalty parameters are explicitly defined and either the prefactor :math:`A_{p}` or kick-in distance:math:`d_{p}` are zero, no contribution from the penalty function will enter into the tabulation. 
 
+
 Output
 ^^^^^^^^^
 
 All *n*-body scans will produce output scan files named like ``chimes_scan_<n>b.type_<index>.dat.energy`` or ``chimes_scan_<n>b.type_<index>.dat.force``, where <n> is the bodiedness, and <index> is the ``PAIRTYPES`` or ``TRIPTYPES`` index. All units match units used in the PES Generator.
 
 The first line in each output file provides a comment listing the number of tabulated points, this should be roughly :math:`\frac{\text{max} - \text{min}}{\text{stepsize}_{2B}}` for 2b and :math:`\left( \frac{\text{max} - \text{min}}{\text{stepsize}_{3B}} \right)^3` for 3b. Following, each line provides the *ij* (and if appropriate, *ik* and *jk* distances, respectively) and the corresponding cluster energy or force. 
+
 
 Running simulations
 ^^^^^^^^^^^^^^^^^^^^
@@ -137,7 +137,6 @@ This will need to be done for each pair type.
 For 3b interactions text such as: 
 
 .. code-block:: text
-
     TRIPLETTYPE PARAMS:
         INDEX: 0 ATOMS: H H H
 
@@ -147,6 +146,8 @@ modify such that they read:
 
     TRIPLETTYPE PARAMS:
         INDEX: 0 ATOMS: H H H TABULATED ./chimes_scan_3b.type_0.dat
+
+Due to memory requirements, tabulation is only supported in ChIMES-LAMMPS for 2- and 3-body interactions.
 
 
 ChIMES Fingerprint Generator
@@ -216,3 +217,4 @@ For citing
 If you use this software in your work, please cite:
 
 Laubach, Benjamin, and Rebecca Lindsey. Cluster-Graph Fingerprinting: A Framework for Quantitative Analysis of Machine-Learned Interatomic Model Training and Simulation Data (2025). `ChemRxiv <https://chemrxiv.org/engage/chemrxiv/article-details/67f0635bfa469535b9cbed7b>`_
+
