@@ -3,8 +3,11 @@
 ChIMES Calculator Utilities
 ========================================
 
+
 The PES Generator
 *****************
+
+
 
 Input
 ^^^^^^^^^
@@ -27,15 +30,7 @@ A utility for generating ChIMES potential energy surface scans for *n*-body clus
     TRIPSTOP   = [4.0,  4.0 ] # Largest distance for scan
     TRIPSTEP   = [0.10, 0.10] # Step size for scan
     
-    # The example parameter file doesn't contain four body interactions, so the following is not needed.
-    # If four body scans are desired, keep in mind a small step size will take a long time to run
-    # Start with something very large to get a handle on run time, and modify from there
-    #
-    #QUADTYPES  = [7   ] # Triplet type index for scans, i.e. number after "TRIPLETTYPE PARAMS:" in parameter file
-    #QUADSTART  = [1.0 ] # Smallest distance for scan
-    #QUADSTOP	= [4.0 ] # Largest distance for scan
-    #QUADSTEP	= [1.00] # Step size for scan
-
+    
 Variables ``CHMS_REPO`` and ``PARAM_FILE`` specify the ``chimes_calculator`` repository location, and path to the ChIMES parameter of file. Note that paths should be provided in their absolute form. Following these variables, three sets of options are provided. Focusing on options beginning with ``PAIR``, one must provide the following: 
 
 * A list of pair type indices for which scans should be generated
@@ -46,13 +41,17 @@ Variables ``CHMS_REPO`` and ``PARAM_FILE`` specify the ``chimes_calculator`` rep
 * A list of the maximum pair distance for each pair type to consider during the scan
 * A scan step size
 
-All input and output distances are in Angstroms, and all energies are provided in kcal/mol. Additionally, note that the penalty function will be included in scan results unless ``PAIRSTART`` is greater than the sum of the pair interaction inner cutoff and the penalty kick-in distance, or if the user has set ``PAIR CHEBYSHEV PENALTY SCALING:`` to zero in the parameter file. Similar variables must be set to specify desired 3- and 4-body scans. Note that empty lists can be provided if no scan is desired.
+Note that the bounds of pair-distances must be within the defined range of potential i.e the inner and outer cutoffs specified in the params.txt file. The stepsize for 3-body scans should not be too small as that would lead to long computation times. A reasonable step size should be chosen to ensure the PES scan is completed in practical time.
+
+All input and output distances are in Angstroms, and all energies are provided in kcal/mol. Additionally, note that the penalty function will be included in scan results unless ``PAIRSTART`` is greater than the sum of the pair interaction inner cutoff and the penalty kick-in distance, or if the user has set ``PAIR CHEBYSHEV PENALTY SCALING:`` to zero in the parameter file. Similar variables must be set to specify desired 3-body scans. Note that empty lists can be provided if no scan is desired.
+
+
 
 
 Output
 ^^^^^^^^^
 
-All *n*-body scans will produce output scan files named like ``chimes_scan_<n>b.type_<index>.dat``, where <n> is the bodiedness, and <index> is the ``PAIRTYPES``, ``TRIPTYPES``, or ``QUADTYPES`` index. Many-body scans will produce additional files named like ``chimes_scan_2+3b.type_<index>.dat`` or ``chimes_scan_2+3+4b.type_<index>.dat``, which include contributions from lower-bodied interactions as well. 
+All *n*-body scans will produce output scan files named like ``chimes_scan_<n>b.type_<index>.dat``, where <n> is the bodiedness, and <index> is the ``PAIRTYPES``or ``TRIPTYPES`` index. Many-body scans will produce additional files named like ``chimes_scan_2+3b.type_<index>.dat`` , which include contributions from lower-bodied interactions as well. 
 
 The first line in each output file provides a comment (prepended by a ``#``) starting and stopping distances followed by the scan step size. Following, each line provides the *ij* (and if appropriate, *ik*, *il*, *jk*, *jl*, and *kl* distances, respectively) and the corresponding cluster energy. For example, consider the ``test_params.CHON.txt`` parameter file provided in ``serial_interface/tests/force_fields/``, which contains the following 3-body interaction:
 
