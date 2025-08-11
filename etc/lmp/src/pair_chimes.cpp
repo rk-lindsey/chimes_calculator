@@ -832,32 +832,48 @@ if (vflag_fdotr)
 
 void PairCHIMES::set_chimes_type()
 {
+	if(comm->me == 0)
+		std::cout << "Attempting to match LAMMPS and ChIMES atom types by comparing masses. Looking for matches within a tolerance of 1e-3." << std::endl;
 	int nmatches = 0;
 
 	for (int i=1; i<= atom->ntypes; i++) // Lammps indexing starts at 1
 	{
+		bool matched = false;
 		for (int j=0; j<chimes_calculator.natmtyps; j++) // ChIMES indexing starts at 0
 		{
+			if (comm->me == 0)
+				std::cout << "LAMMPS atom type idx: " << i << " LAMMPS mass: " << atom->mass[i] << " ; " << "ChIMES atom type idx: " << j << " ChIMES mass: " << chimes_calculator.masses[j] << " ... status: " << std::endl;
 			if (abs(atom->mass[i] - chimes_calculator.masses[j]) < 1e-3) // Masses should match to at least 3 decimal places
 			{
 				chimes_type.push_back(j);
 				nmatches++;
+				matched = true;
+				if(comm->me == 0)
+					std::cout << "Match" << std::endl;
+				break;
 			}
 		}
+		if (!matched && comm->me == 0)
+			std::cout << "No match" << std::endl;
 	}
 
-	if (nmatches < atom->ntypes )
+	if (nmatches == 0 && comm->me == 0)
 	{
-
+		std::cout << "ERROR: No element matches found between LAMMPS data file and ChIMES parameter file!" << std::endl;
+		std::cout << "       Either check your atom masses or do not request ChIMES interactions" << std::endl;
+		exit(0);
+	}
+	else if (nmatches < atom->ntypes && comm->me == 0)
+	{
 		// Commented out to allow for hybrid/overlay pair style. For example, combining ChIMES description for carbon 
 		// with LJ description of Ar for simulations of carbon nanoparticles in an argon bath
 		//std::cout << "ERROR: LAMMPS coordinate file has " << atom->ntypes << " atom type masses" << std::endl; 
 		//std::cout << "       but only found " << nmatches << " matches with the ChIMES parameter file." << std::endl;
 		//exit(0);
  
-    std::cout << "WARNING: LAMMPS coordinate file has " << atom->ntypes << " atom type masses" << std::endl;
+		std::cout << "WARNING: LAMMPS coordinate file has " << atom->ntypes << " atom type masses" << std::endl;
 		std::cout << "       but only found " << nmatches << " matches with the ChIMES parameter file." << std::endl;
-		std::cout << "       Will not use ChIMES to evaluate interactions between these pairs! " << std::endl;
+		std::cout << "       Will not use ChIMES to evaluate interactions related to unmatched atom types!" << std::endl;
 	}
 }
 							
