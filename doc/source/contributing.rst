@@ -37,7 +37,7 @@ LAMMPS contributions
 ************************
 
 Currently, `LAMMPS <https://www.lammps.org/#gsc.tab=0>`_ version ``stable_29Aug2024_update1`` is supported. A set of tests is available in the ``etc/lmp/tests/`` directory. 
-LAMMPS interacts with the following script: ``etc/lmp/src/pair_chimes.{h,cpp}``, ``etc/lmp/etc/pair.{h,cpp}`` and ``chimesFF/src/chimesFF.{h,cpp}`` Any contributing LAMMPS PRs should include an attached test suite log file and a test for the new functionality.
+LAMMPS interacts with the following scripts: ``etc/lmp/src/pair_chimes.{h,cpp}``, ``etc/lmp/etc/pair.{h,cpp}`` and ``chimesFF/src/chimesFF.{h,cpp}`` Any contributing LAMMPS PRs should include an attached test suite log file and a test for the new functionality.
 
 To add a new LAMMPS test, please navigate to ``etc/lmp/tests`` and follow the existing structure:
 
