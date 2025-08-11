@@ -36,7 +36,7 @@ for body in 2b 3b 4b; do
                     sub(/_clusters\.txt$/, "_list.txt", list_file); 
                     print cluster_file; 
                     print list_file
-                }' "$framefile" | xargs rm -v
+                }' "$framefile" | xargs rm -v > /dev/null 2>&1 
             else
                 echo "  Error concatenating files, preserving originals"
             fi
@@ -48,4 +48,4 @@ for body in 2b 3b 4b; do
 done
 
 echo -e "\nCombination complete. Created files:"
-ls -l *b_combined.txt
+ls -l *-clusters.txt | awk '{print $NF}'

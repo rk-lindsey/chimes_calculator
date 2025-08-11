@@ -1,0 +1,170 @@
+LAMMPS (29 Aug 2024 - Update 1)
+#######################################################################
+#######################################################################
+# MD assembly simulation of OS-CG particles with alpha=4 using ChIMES model at 300 K.
+#######################################################################
+#######################################################################
+
+##########################################
+# USER-SPECIFIED VARIABLES
+##########################################
+
+variable dt         equal 5.0
+variable Tstart     equal 300.0
+variable Tstop      equal 300.0
+variable Tdamp      equal 500.0
+variable atmmass    equal 67256 # Must match value(s) specified in parameter file
+variable uc         equal 120
+variable nrepl      equal 4
+variable params     string A4_params.txt
+variable timesteps  equal 10000
+variable iofrq      equal 1000
+
+
+########################################
+# GENERAL CONTROLS
+########################################
+
+units           real                          # Required for CHIMES pair style
+newton          on                            # Required for CHIMES pair style
+atom_style      atomic                        # Required for CHIMES pair style
+atom_modify     sort 0 0.0                    # Required for CHIMES pair style
+atom_modify     map array                     # Required for CHIMES pair style
+
+neighbor        2.0 bin
+neigh_modify    delay 0 every 1 check yes     # Required for CHIMES pair style
+
+
+########################################
+# INITIALIZATION CONTROLS - CREATE THE SYSTEM (FCC LATTICE)
+######################################################
+
+lattice             fcc ${uc}
+lattice             fcc 120
+Lattice spacing in x,y,z = 120 120 120
+region              box block 0 1 0 1 0 1 units lattice
+create_box          1 box                                # use that empty cell to define simulation cell
+Created orthogonal box = (0 0 0) to (120 120 120)
+  3 by 3 by 4 MPI processor grid
+create_atoms        1 box                                # place atoms on lattice points
+Created 4 atoms
+  using lattice units in orthogonal box = (0 0 0) to (120 120 120)
+  create_atoms CPU = 0.001 seconds
+replicate           ${nrepl} ${nrepl} ${nrepl}
+replicate           4 ${nrepl} ${nrepl}
+replicate           4 4 ${nrepl}
+replicate           4 4 4
+Replication is creating a 4x4x4 = 64 times larger system...
+  orthogonal box = (0 0 0) to (480 480 480)
+  3 by 3 by 4 MPI processor grid
+  256 atoms
+  replicate CPU = 0.002 seconds
+
+mass                1 ${atmmass}
+mass                1 67256
+velocity            all create ${Tstart} 4834834 rot yes mom yes dist gaussian
+velocity            all create 300 4834834 rot yes mom yes dist gaussian
+
+
+########################################
+# FORCE FIELD CONTROLS
+########################################
+
+pair_style          chimesFF
+pair_coeff          * * ${params}
+pair_coeff          * * A4_params.txt
+
+
+########################################
+# RESTART CONTROLS
+########################################
+
+# restart             10 nvt.a.restart nvt.b.restart
+
+
+########################################
+# RUN, DUMP, AND THERMO CONTROLS
+########################################
+
+##### Set the ensemble
+
+variable Tdamp  equal  dt*100.0	# Temperature damping coefficient
+
+fix                 1 all nvt temp ${Tstart} ${Tstop} ${Tdamp}
+fix                 1 all nvt temp 300 ${Tstop} ${Tdamp}
+fix                 1 all nvt temp 300 300 ${Tdamp}
+fix                 1 all nvt temp 300 300 100
+
+##### Define thermo output
+
+thermo_style        custom step time ke pe temp press etotal econserve lx ly lz
+thermo              ${iofrq}
+thermo              1000
+thermo_modify       norm yes
+
+##### Print dump files
+
+#dump                1 all custom ${iofrq} chimes_A4.lammpstrj id type element xu yu zu fx fy fz
+#dump_modify         1 element A sort id    #give element names
+
+##### Run the simulation
+
+timestep            ${dt}
+timestep            5
+run	                ${timesteps}
+run	                10000
+Generated 0 of 0 mixed pair_coeff terms from geometric mixing rule
+Neighbor list info ...
+  update: every = 1 steps, delay = 0 steps, check = yes
+  max neighbors/atom: 2000, page size: 100000
+  master list distance cutoff = 122
+  ghost atom cutoff = 122
+  binsize = 61, bins = 8 8 8
+  1 neighbor lists, perpetual/occasional/extra = 1 0 0
+  (1) pair chimesFF, perpetual
+      attributes: full, newton on, ghost
+      pair build: full/bin/ghost
+      stencil: full/ghost/bin/3d
+      bin: standard
+Per MPI rank memory allocation (min/avg/max) = 2.948 | 2.948 | 2.948 Mbytes
+   Step          Time          KinEng         PotEng          Temp          Press          TotEng       Econserve          Lx             Ly             Lz      
+         0   0              0.89074988    -14.658963      300            32.985657     -13.768213     -13.768213      480            480            480          
+      1000   5000           0.87132254    -14.55664       293.45697      31.598027     -13.685317     -34.905708      480            480            480          
+      2000   10000          0.85366605    -14.249335      287.51036      30.037445     -13.395669     -108.76321      480            480            480          
+      3000   15000          0.8499912     -13.880333      286.27269      28.228558     -13.030341     -201.9239       480            480            480          
+      4000   20000          0.88605228    -13.717986      298.41787      26.275156     -12.831934     -252.51257      480            480            480          
+      5000   25000          0.90430763    -14.001859      304.56618      24.024333     -13.097551     -184.78503      480            480            480          
+      6000   30000          0.93307478    -15.07483       314.25481      21.0597       -14.141755      81.48791       480            480            480          
+      7000   35000          0.91783005    -17.517624      309.12046      17.599728     -16.599794      708.2924       480            480            480          
+      8000   40000          0.93184474    -21.308811      313.84054      14.316705     -20.376967      1671.4532      480            480            480          
+      9000   45000          0.93738005    -25.892932      315.7048       11.401643     -24.955552      2838.9655      480            480            480          
+     10000   50000          0.94339333    -31.111581      317.73004      8.596624      -30.168187      4168.1526      480            480            480          
+Loop time of 6.47362 on 36 procs for 10000 steps with 256 atoms
+
+Performance: 667.324 ns/day, 0.036 hours/ns, 1544.732 timesteps/s, 395.451 katom-step/s
+99.7% CPU use with 36 MPI tasks x no OpenMP threads
+
+MPI task timing breakdown:
+Section |  min time  |  avg time  |  max time  |%varavg| %total
+---------------------------------------------------------------
+Pair    | 1.6865     | 3.518      | 6.0542     |  60.9 | 54.34
+Neigh   | 0.003026   | 0.0041279  | 0.0047044  |   0.7 |  0.06
+Comm    | 0.34488    | 2.879      | 4.712      |  67.3 | 44.47
+Output  | 0.00044466 | 0.00045248 | 0.00049335 |   0.0 |  0.01
+Modify  | 0.029294   | 0.039255   | 0.046796   |   1.5 |  0.61
+Other   |            | 0.03275    |            |       |  0.51
+
+Nlocal:        7.11111 ave          11 max           4 min
+Histogram: 2 4 6 0 9 11 0 1 1 2
+Nghost:        151.139 ave         158 max         147 min
+Histogram: 4 6 7 7 4 2 1 1 2 2
+Neighs:              0 ave           0 max           0 min
+Histogram: 36 0 0 0 0 0 0 0 0 0
+FullNghs:      117.556 ave         181 max          65 min
+Histogram: 2 4 3 3 9 7 5 0 1 2
+
+Total # of neighbors = 4232
+Ave neighs/atom = 16.53125
+Neighbor list builds = 19
+Dangerous builds = 0
+Total wall time: 0:00:06

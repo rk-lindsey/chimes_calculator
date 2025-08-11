@@ -1,0 +1,73 @@
+########################################
+########################################
+# United atom propane at 300 K, using ***Turbo*** ChIMES
+########################################
+########################################
+
+
+##########################################
+# USER-SPECIFIED VARIABLES
+##########################################
+
+variable temp equal 300
+variable seed equal 6306
+variable iofrq equal 4 
+
+########################################
+# GENERAL CONTROLS
+######################################## 
+
+units           real                          # Required for CHIMES pair style
+newton          on                            # Required for CHIMES pair style
+atom_style      atomic                        # Required for CHIMES pair style
+atom_modify     sort 0 0.0                    # Required for CHIMES pair style
+atom_modify     map array                     # Required for CHIMES pair style
+ 
+neighbor        2.0 bin
+neigh_modify    delay 0 every 1 check yes     # Required for CHIMES pair style
+
+
+########################################
+# INITIALIZATION CONTROLS
+########################################
+
+read_data       data.in # 
+velocity        all create ${temp} ${seed} loop all mom yes rot yes dist gaussian
+
+
+########################################
+# FORCE FIELD CONTROLS 
+########################################
+
+# The number of instances of "chimesFF" should match the number of *.fm_setup.in files you create/fit when developing a TurboChIMES model
+# If using with the ALD, replace each instance of "chimesFF" with "chimesFF for_fitting" 
+
+pair_style      hybrid/overlay chimesFF chimesFF 
+pair_coeff      * * chimesFF  1  0.params.txt.reduced
+pair_coeff      * * chimesFF  2  1.params.txt.reduced
+
+
+########################################
+# RUN, DUMP, AND THERMO CONTROLS 
+########################################
+
+##### Set the ensemble
+
+timestep        0.05
+fix             1 all nvt temp ${temp} ${temp} 5
+
+##### Define thermo output
+
+compute         ke_tensor all temp
+thermo_style    custom step time ke pe etotal temp press pxx pyy pzz pxy pxz pyz vol c_ke_tensor[1] c_ke_tensor[2] c_ke_tensor[3] c_ke_tensor[4] c_ke_tensor[5] c_ke_tensor[6] econserve # econserve replaces fix_modify
+thermo_modify   line one format float %20.5f flush yes
+thermo          ${iofrq}
+
+##### Print dump files
+
+dump            1 all custom ${iofrq} traj.lammpstrj element xu yu zu fx fy fz
+dump_modify     1 element N H sort id
+
+##### Run the simulation
+ 
+run             100

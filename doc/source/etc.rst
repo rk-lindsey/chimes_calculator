@@ -1,64 +1,49 @@
-.. _page-etc:
 
-Support for Linking with External Codes
+.. _etc:
+
+ChIMES in LAMMPS
 =============================================
 
-Using the ChIMES Calculator with LAMMPS
-******************************************
-
-We are currently working toward ChIMES calculator implementation in `LAMMPS <https://lammps.sandia.gov>`_ as a USER package. In the interim, the following provides a guide to implementing the ChIMES calculator as a LAMMPS pairstyle.
+We are currently working toward ChIMES calculator implementation in `LAMMPS <https://lammps.sandia.gov>`_ as a USER package. In the interim, we have provided a capability for compiling the `stable_29Aug2024_update1 <https://github.com/lammps/lammps.git build/>`_ version of LAMMPS with ChIMES as a pairstyle in this package.
 
 
 
 Quick start
 ^^^^^^^^^^^^^^^^
 
-Provided a system with a C++11-compatible compiler and an MPI compatible compiler are available, LAMMPS can be downloaded, installed, linked to ChIMES, and compiled all at once by navigating to ``etc/lmp``, adding Intel compilers to your path  and executing ``./install.sh``. Once complete, the installation can be tested by navigating to ``etc/lmp/tests`` and running the example via ``../exe/lmp_mpi_chimes -i in.lammps``. 
+.. Note ::
 
-As with installation of the ChIMES Calculator itself, if you are on a HPC using module files, you may need to load them first. Module files are already configured for a handful of HPC - inspect the contents of modfiles to see if
-yours is listed. If it is (e.g., LLNL-LC.mod), execute ``export hosttype=LLNL-LC; ./install.sh`` to install. Otherwise, load the appropriate modules by hand before running the
-install script.
+    To compile LAMMPS with ChIMES, you must have C++11 and MPI compilers avillable. As with installation of the ChIMES Calculator itself, if you are on a HPC using module files, you may need to load them first. Module files are already configured for a handful of HPC - inspect the contents of modfiles to see if yours is listed. If it is (e.g., LLNL-LC.mod), execute ``export hosttype=LLNL-LC`` Otherwise, load the appropriate modules by hand before running the install script.
 
-Note that Intel oneapi compilers (which are now free) can be used to properly configure your enviroment for all Intel capabilities (e.g., icc, mpiicpc, mkl, etc.) - simply locate and execute the setvars.sh script within your Intel installation.
+    Note that Intel oneapi compilers (which are now free) can be used to properly configure your enviroment for all Intel capabilities (e.g., icc, mpiicpc, mkl, etc.) - simply locate and execute the setvars.sh script within your Intel installation.
 
 
------
 
-Detailed Compilation Overview
-^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+Navigate to ``etc/lmp`` and execute  ``./install.sh`` to install. Once complete, the installation can be tested by navigating to ``etc/lmp/tests`` and either running the entire test suite via ``./run_tests.sh``, which takes roughly 15 minutes, or running an individual test by entering an example folder and executing ``../../exe/lmp_mpi_chimes -i in.lammps``. 
+
+The install script compiles with LAMMPS packages ``manybody`` and ``extra-pair``. Additional packages can be included by adding appropriate commands to the ``etc/lmp/install.sh`` script. For example, to add the MOLECULE package, one would add the line highlighted in yellow below:
 
 
-.. Note::
-
-    This example assumes users have downloaded the 29 Oct 2020 release of LAMMPS (stable version as of 10/29/20), which can be downloaded `here <https://lammps.sandia.gov/download.html>`_. 
+.. code-block :: 
+    :lineno-start: 114
+    :emphasize-lines: 6
     
+    # Compile
     
-
-To integrate the ChIMES calculator in LAMMPS, locate the following files, and place them in the following destination among the LAMMPS source code:
-
-========================    ================    ================    ==============
-File                        Location            Destination         Description
-========================    ================    ================    ==============
-``chimesFF.{h,cpp}``        ``chimesFF/src``    ``src/MANYBODY``    ChIMES calculator files
-``pair_chimes.{h,cpp}``     ``etc/lmp/src``     ``src/MANYBODY``    ChIMES pair_style definition files
-``pair.{h,cpp}``            ``etc/lmp/etc``     ``src``             Updated LAMMPS pair files (new ev_tally definition added)
-``Makefile.mpi_chimes``     ``etc/lmp/etc``     ``src/MAKE``        Makefile for compiling with ChIMES support
-========================    ================    ================    ==============
-
-
-Following, compile from the base LAMMPS directory with:
-
-.. code-block:: shell
-
+    cd build/${lammps}/src
     make yes-manybody
-    make mpi_chimes
+    make yes-extra-pair
+    make yes-molecule
+    make -j 4 mpi_chimes
+    cd -
 
-Note that a successful compilation should produce an executable named ``lmp_mpi_chimes``.
+    
 
-.. Tip::
 
-        If you are using an intel compiler, either delete the ``pair_list.*`` files that appear in the src folder following the ``make yes-manybody`` command, or add ``-restrict`` to ``CCFLAGS`` in ``MAKE/Makefile.mpi_chimes``. Note that the presently provided ``Makefile.mpi_chimes`` utilizes the latter approach.
+.. Tip ::
 
+    Additional flags can be specified during installation to enable features such as model tabulation and configuration fingerprint generation. For more details, see the :ref:`utils` page.
+    
 
 Running
 ^^^^^^^^^^^^^^^^

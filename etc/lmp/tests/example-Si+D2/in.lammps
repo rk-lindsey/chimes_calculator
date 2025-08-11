@@ -1,0 +1,64 @@
+########################################
+########################################
+# Si at 8000.0 K, using ***tabulated*** ChIMES
+########################################
+########################################
+
+########################################
+# GENERAL CONTROLS
+######################################## 
+
+units           real                          # Required for CHIMES pair style
+newton          on                            # Required for CHIMES pair style
+atom_style      atomic                        # Required for CHIMES pair style
+atom_modify     sort 0 0.0                    # Required for CHIMES pair style
+atom_modify     map array                     # Required for CHIMES pair style
+ 
+neighbor        2.0 bin
+neigh_modify    delay 0 every 1 check yes     # Required for CHIMES pair style
+
+
+########################################
+# INITIALIZATION CONTROLS
+########################################
+
+read_data    ./data.lammps
+velocity     all create 8000.0 2217 mom yes rot yes dist gaussian loop all
+
+########################################
+# FORCE FIELD CONTROLS 
+########################################
+
+# Note: This model uses Tabulated ChIMES with D2 via MOMB
+#       Tabulation is requested inside of the ChIMES parameter file!
+
+pair_style   hybrid/overlay chimesFF momb 12.0 0.75 20.0
+pair_coeff  * *  chimesFF params.txt
+pair_coeff  1 1  momb 0.0 1.0 1.0 2206.022943 3.432
+
+
+########################################
+# RUN, DUMP, AND THERMO CONTROLS 
+########################################
+
+##### Set the ensemble
+
+timestep 0.5
+fix             1 all nvt temp 8000.0 8000.0 50
+
+
+##### Define thermo output
+
+thermo_style    custom step lx ly lz pxx pyy pzz pe ke etotal econserve vol press temp  # econserve replaces fix_modify
+thermo          10
+
+
+##### Print dump files
+ 
+#dump            1 all custom 1 traj.lammpstrj id element xu yu zu
+#dump_modify 1 element Si sort id
+
+# Run
+
+run 20
+#write_data      Thermalization_1.data

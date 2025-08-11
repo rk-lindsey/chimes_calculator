@@ -1,0 +1,167 @@
+LAMMPS (29 Aug 2024 - Update 1)
+##########################################
+# USER-SPECIFIED VARIABLES
+##########################################
+
+variable tstep               equal  0.5                                        # timestep in fs
+variable run_steps           equal  100                                        # Number of steps to run
+variable temperature         equal  3000                                       # Temperature (K)
+variable pressure            equal  296077                                     # Target pressure (atm)
+
+variable io_freq             equal  10                                         # Frequency of dumping trajectory (500 steps, 250 fs)
+
+variable data_file           string diamond_3.21gcc_512atoms.data.in
+variable param_file          string ../../../../serial_interface/tests/force_fields/published_params.Carbon-2.0.Small.2+3+4b.Tersoff.txt
+
+########################################
+# GENERAL CONTROLS
+########################################
+
+units           real                          # Required for CHIMES pair style
+newton          on                            # Required for CHIMES pair style
+atom_style      atomic                        # Required for CHIMES pair style
+atom_modify     sort 0 0.0                    # Prevent sorting (to maintain 3b parent/neighbor relationships)
+atom_modify     map array                     # May improve efficiency
+
+neighbor        1.5 bin
+neigh_modify    delay 0 every 1 check yes
+
+########################################
+# INITIALIZATION CONTROLS
+########################################
+
+read_data       ${data_file}
+read_data       diamond_3.21gcc_512atoms.data.in
+Reading data file ...
+  orthogonal box = (0 0 0) to (14.69002 14.69002 14.69002)
+  3 by 3 by 4 MPI processor grid
+  reading atoms ...
+  512 atoms
+  read_data CPU = 0.008 seconds
+velocity        all create ${temperature} 1234 dist gaussian mom yes rot yes loop all  # Assign initial velocity (comment this line out when reading from a restart file)
+velocity        all create 3000 1234 dist gaussian mom yes rot yes loop all  
+
+
+########################################
+# FORCE FIELD CONTROLS
+########################################
+
+pair_style      chimesFF
+pair_coeff      * * ${param_file}
+pair_coeff      * * ../../../../serial_interface/tests/force_fields/published_params.Carbon-2.0.Small.2+3+4b.Tersoff.txt
+
+
+########################################
+# RESTART CONTROLS
+########################################
+
+restart         ${io_freq} a.restart b.restart	 # Write restart files
+restart         10 a.restart b.restart	 
+
+########################################
+# RUN, DUMP, AND THERMO CONTROLS
+########################################
+
+##### Set the ensemble
+variable temp_damp  equal  v_tstep*100.0	# Temperature damping coefficient
+variable press_damp equal  v_tstep*1000.0	# Pressure damping coefficient
+fix             1 all npt temp ${temperature} ${temperature} ${temp_damp} iso ${pressure} ${pressure} ${press_damp}  # Couple pressure with "iso" for liquid system
+fix             1 all npt temp 3000 ${temperature} ${temp_damp} iso ${pressure} ${pressure} ${press_damp}  
+fix             1 all npt temp 3000 3000 ${temp_damp} iso ${pressure} ${pressure} ${press_damp}  
+fix             1 all npt temp 3000 3000 50 iso ${pressure} ${pressure} ${press_damp}  
+fix             1 all npt temp 3000 3000 50 iso 296077 ${pressure} ${press_damp}  
+fix             1 all npt temp 3000 3000 50 iso 296077 296077 ${press_damp}  
+fix             1 all npt temp 3000 3000 50 iso 296077 296077 500  
+
+##### Define thermo output
+variable e_ensemble        equal f_1
+variable e_conserve        equal ke+pe+v_e_ensemble
+thermo_style    custom step time temp press density ke pe etotal v_e_ensemble v_e_conserve econserve
+thermo_modify   line one format float %20.5f flush yes
+thermo          ${io_freq}
+thermo          10
+
+##### Dump all atoms
+#dump            dump_1 carbon ${io_freq} traj.lammpstrj id type element xu yu zu vx vy vz
+#dump_modify     dump_1 sort id element C
+
+##### Run the simulation
+
+timestep        ${tstep}
+timestep        0.5
+run             ${run_steps} upto
+run             100 upto
+
+CITE-CITE-CITE-CITE-CITE-CITE-CITE-CITE-CITE-CITE-CITE-CITE-CITE
+
+Your simulation uses code contributions which should be cited:
+
+- Type Label Framework: https://doi.org/10.1021/acs.jpcb.3c08419
+
+@Article{Gissinger24,
+ author = {Jacob R. Gissinger, Ilia Nikiforov, Yaser Afshar, Brendon Waters, Moon-ki Choi, Daniel S. Karls, Alexander Stukowski, Wonpil Im, Hendrik Heinz, Axel Kohlmeyer, and Ellad B. Tadmor},
+ title = {Type Label Framework for Bonded Force Fields in LAMMPS},
+ journal = {J. Phys. Chem. B},
+ year =    2024,
+ volume =  128,
+ number =  13,
+ pages =   {3282–-3297}
+}
+
+CITE-CITE-CITE-CITE-CITE-CITE-CITE-CITE-CITE-CITE-CITE-CITE-CITE
+
+Generated 0 of 0 mixed pair_coeff terms from geometric mixing rule
+Neighbor list info ...
+  update: every = 1 steps, delay = 0 steps, check = yes
+  max neighbors/atom: 2000, page size: 100000
+  master list distance cutoff = 6.5
+  ghost atom cutoff = 6.5
+  binsize = 3.25, bins = 5 5 5
+  1 neighbor lists, perpetual/occasional/extra = 1 0 0
+  (1) pair chimesFF, perpetual
+      attributes: full, newton on, ghost
+      pair build: full/bin/ghost
+      stencil: full/ghost/bin/3d
+      bin: standard
+Per MPI rank memory allocation (min/avg/max) = 2.978 | 3.15 | 3.363 Mbytes
+   Step          Time           Temp          Press         Density         KinEng         PotEng         TotEng      v_e_ensemble   v_e_conserve    Econserve   
+         0               0.00000           3000.00000        -243441.37095              3.22122           4569.58181        -106757.39823        -102187.81642              0.00000        -102187.81642        -102187.81642
+        10               5.00000           1385.39078        -189489.57064              3.22504           2110.21883        -104301.05875        -102190.83991              8.39976        -102182.44016        -102182.44016
+        20              10.00000            535.16139        -165763.14397              3.23601            815.15458        -103021.28868        -102206.13410             24.47749        -102181.65661        -102181.65661
+        30              15.00000           1562.45140        -179832.08404              3.25381           2379.91649        -104592.33764        -102212.42115             27.81903        -102184.60212        -102184.60212
+        40              20.00000           1783.24467        -158147.55185              3.27848           2716.22747        -104912.56544        -102196.33797             12.43177        -102183.90620        -102183.90620
+        50              25.00000           1396.78882        -104874.90826              3.30949           2127.58027        -104322.82439        -102195.24412             12.82723        -102182.41690        -102182.41690
+        60              30.00000           1640.61549         -64227.94494              3.34560           2498.97556        -104686.88817        -102187.91261              5.18094        -102182.73166        -102182.73166
+        70              35.00000           1861.95689         -35166.22882              3.38543           2836.12145        -104991.92266        -102155.80122            -26.97348        -102182.77470        -102182.77470
+        80              40.00000           1464.12239          24910.72687              3.42742           2230.14235        -104330.94772        -102100.80537            -78.71965        -102179.52501        -102179.52501
+        90              45.00000           1775.02703          80934.33082              3.46965           2703.71041        -104715.65693        -102011.94652           -168.12058        -102180.06711        -102180.06711
+       100              50.00000           1741.85986         141928.03229              3.51037           2653.19038        -104533.26481        -101880.07443           -297.41956        -102177.49399        -102177.49399
+Loop time of 8.95785 on 36 procs for 100 steps with 512 atoms
+
+Performance: 0.482 ns/day, 49.766 hours/ns, 11.163 timesteps/s, 5.716 katom-step/s
+99.7% CPU use with 36 MPI tasks x no OpenMP threads
+
+MPI task timing breakdown:
+Section |  min time  |  avg time  |  max time  |%varavg| %total
+---------------------------------------------------------------
+Pair    | 2.5336     | 5.2352     | 8.6965     |  61.1 | 58.44
+Neigh   | 0.029129   | 0.031087   | 0.032616   |   0.5 |  0.35
+Comm    | 0.18487    | 3.6449     | 6.3449     |  73.2 | 40.69
+Output  | 0.043922   | 0.043924   | 0.043928   |   0.0 |  0.49
+Modify  | 0.0021352  | 0.0023089  | 0.0025045  |   0.2 |  0.03
+Other   |            | 0.0004984  |            |       |  0.01
+
+Nlocal:        14.2222 ave          19 max          11 min
+Histogram: 1 5 6 7 0 11 4 1 0 1
+Nghost:        926.722 ave         937 max         907 min
+Histogram: 2 2 1 2 5 2 1 3 4 14
+Neighs:              0 ave           0 max           0 min
+Histogram: 36 0 0 0 0 0 0 0 0 0
+FullNghs:      2693.72 ave        3589 max        2086 min
+Histogram: 1 5 6 7 7 4 4 1 0 1
+
+Total # of neighbors = 96974
+Ave neighs/atom = 189.40234
+Neighbor list builds = 10
+Dangerous builds = 0
+Total wall time: 0:00:09
