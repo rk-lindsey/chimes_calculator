@@ -22,21 +22,28 @@ int my_rank;
 #include <iomanip>
 #include "chimesFF.h"  // Make sure this includes the GlobalParams namespace declaration
 
-void print_global_params() {
+void print_global_params() 
+{
     
     // Print 2-body cutoffs
+    if (my_rank == 0)
+    {
     cout << "\n2-Body Cutoffs:\n";
-    for (size_t i = 0; i < rcut_2b_list.size(); ++i) {
+    for (size_t i = 0; i < rcut_2b_list.size(); ++i) 
+    {
         cout << "Pair " << i << ": ";
         cout << "Inner = " << fixed << setprecision(4) << rcut_2b_list[i][0];
         cout << ", Outer = " << rcut_2b_list[i][1] << "\n";
     }
+   
 
     // Print 3-body cutoffs
     cout << "\n3-Body Cutoffs:\n";
-    for (size_t i = 0; i < rcut_3b_list.size(); ++i) {
+    for (size_t i = 0; i < rcut_3b_list.size(); ++i) 
+    {
         cout << "Triplet " << i << ":\n";
-        for (size_t j = 0; j < rcut_3b_list[i].size(); ++j) {
+        for (size_t j = 0; j < rcut_3b_list[i].size(); ++j) 
+	{
             cout << "  Pair " << j << ": ";
             cout << "Inner = " << rcut_3b_list[i][j][0];
             cout << ", Outer = " << rcut_3b_list[i][j][1] << "\n";
@@ -45,9 +52,11 @@ void print_global_params() {
 
     // Print 4-body cutoffs
     cout << "\n4-Body Cutoffs:\n";
-    for (size_t i = 0; i < rcut_4b_list.size(); ++i) {
+    for (size_t i = 0; i < rcut_4b_list.size(); ++i) 
+    {
         cout << "Quadruplet " << i << ":\n";
-        for (size_t j = 0; j < rcut_4b_list[i].size(); ++j) {
+        for (size_t j = 0; j < rcut_4b_list[i].size(); ++j) 
+	{
             cout << "  Pair " << j << ": ";
             cout << "Inner = " << rcut_4b_list[i][j][0];
             cout << ", Outer = " << rcut_4b_list[i][j][1] << "\n";
@@ -56,10 +65,12 @@ void print_global_params() {
 
     // Print Morse lambda values
     cout << "\nMorse Lambda Values:\n";
-    for (size_t i = 0; i < morse_lambda_list.size(); ++i) {
+    for (size_t i = 0; i < morse_lambda_list.size(); ++i) 
+    {
         cout << "Pair " << i << ": λ = " 
                   << fixed << setprecision(4) 
                   << morse_lambda_list[i] << "\n";
+    }
     }
 }
 
@@ -569,7 +580,8 @@ int main(int argc, char *argv[])
         vector<double> f1_2b_atom_types, f2_2b_atom_types;
         int npairs_2b = 1;
         read_flat_clusters(f1_2b, npairs_2b, f1_2b_flat_clusters, f1_2b_atom_types, 2);
-        cout << "Read in 2B clusters..." << endl;
+        if (my_rank == 0)	
+		cout << "Read in 2B clusters..." << endl;
         read_flat_clusters(f2_2b, npairs_2b, f2_2b_flat_clusters, f2_2b_atom_types, 2);
 
         // Process 3B clusters
@@ -579,7 +591,8 @@ int main(int argc, char *argv[])
         vector<double> f1_3b_atom_types, f2_3b_atom_types;
         int npairs_3b = 3;
         read_flat_clusters(f1_3b, npairs_3b, f1_3b_flat_clusters, f1_3b_atom_types, 3);
-        cout << "Read in 3B clusters..." << endl;
+        if (my_rank == 0)
+		cout << "Read in 3B clusters..." << endl;
         read_flat_clusters(f2_3b, npairs_3b, f2_3b_flat_clusters, f2_3b_atom_types, 3);
 
         // Process 4B clusters
@@ -589,7 +602,8 @@ int main(int argc, char *argv[])
         vector<double> f1_4b_atom_types, f2_4b_atom_types; 
         int npairs_4b = 6;
         read_flat_clusters(f1_4b, npairs_4b, f1_4b_flat_clusters, f1_4b_atom_types, 4);
-        cout << "Read in 4B clusters..." << endl;
+        if (my_rank == 0)
+		cout << "Read in 4B clusters..." << endl;
         read_flat_clusters(f2_4b, npairs_4b, f2_4b_flat_clusters, f2_4b_atom_types, 4);
         
         if (my_rank == 0) {

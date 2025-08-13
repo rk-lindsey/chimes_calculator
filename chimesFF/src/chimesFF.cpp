@@ -938,9 +938,10 @@ void chimesFF::read_parameters(string paramfile)
         	        }
 		}
 		else if (tmp_str_items[4] == "EXCLUDED:")
-        {
-            cout << "chimesFF: \tType is excluded... skipping." << endl;
-        }
+        	{
+		if (rank == 0)
+            		cout << "chimesFF: \tType is excluded... skipping." << endl;
+        	}
             }   
             
             if(line.find("TRIPMAPS:") != string::npos)
@@ -1269,7 +1270,8 @@ void chimesFF::read_parameters(string paramfile)
 		}
 		else
 		{
-			cout << "chimesFF: \tType is excluded... skipping." << endl;		
+			if (rank == 0)
+				cout << "chimesFF: \tType is excluded... skipping." << endl;		
 		}
             }    
             
@@ -3009,9 +3011,11 @@ void chimesFF::build_pair_int_quad_map()
         if ( pair_int_quad_map[i].size() == 0 )
         {
 		if (atom_int_quad_map[i] >= 0)
-            		cout << "Error: Did not initialize pair_int_quad_map for entry " << i << endl ;
+			if(rank==0)
+            			cout << "Error: Did not initialize pair_int_quad_map for entry " << i << endl ;
 		else
-			cout << "Warning: Did not initialize pair_int_quad_map for excluded entry " << i << endl ;
+			if(rank==0)
+				cout << "Warning: Did not initialize pair_int_quad_map for excluded entry " << i << endl ;
         }
     }   
 }
@@ -3065,9 +3069,11 @@ void chimesFF::build_pair_int_trip_map()
         if ( pair_int_trip_map[i].size() == 0 )
         {
 		if (atom_int_trip_map[i] >= 0)
-            		cout << "Error: Did not initialize pair_int_trip_map for entry " << i << endl ;
+			if(rank==0)
+            			cout << "Error: Did not initialize pair_int_trip_map for entry " << i << endl ;
 		else
-			cout << "Warning: Did not initialize pair_int_trip_map for excluded entry " << i << endl ;
+			if(rank==0)
+				cout << "Warning: Did not initialize pair_int_trip_map for excluded entry " << i << endl ;
         }
     }
     

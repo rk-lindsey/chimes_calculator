@@ -1,0 +1,3646 @@
+LAMMPS (29 Aug 2024 - Update 1)
+Reading data file ...
+  orthogonal box = (0 0 0) to (16.5 16.5 16.5)
+  3 by 3 by 4 MPI processor grid
+  reading atoms ...
+  272 atoms
+  read_data CPU = 0.009 seconds
+chimesFF: 
+chimesFF: 01000011011010001001001010011010100010101010011 0100010101101110110011101101001011011101100101  
+chimesFF: 
+chimesFF:       _____  _      _____  __  __  ______   _____   ______                _                      
+chimesFF:      / ____|| |    |_   _||  \/  ||  ____| / ____| |  ____|              (_)                    
+chimesFF:     | |     | |__    | |  | \  / || |__   | (___   | |__    _ __    __ _  _  _ __    ___        
+chimesFF:     | |     | '_ \   | |  | |\/| ||  __|   \___ \  |  __|  | '_ \  / _` || || '_ \  / _ \ 
+chimesFF:     | |____ | | | | _| |_ | |  | || |____  ____) | | |____ | | | || (_| || || | | ||  __/        
+chimesFF:      \_____||_| |_||_____||_|  |_||______||_____/  |______||_| |_| \__, ||_||_| |_| \___|     
+chimesFF:                                                                     __/ |                        
+chimesFF:                                                                    |___/                         
+chimesFF: 
+chimesFF:                      Copyright (C) 2020 R.K. Lindsey, L.E. Fried, N. Goldman                     
+chimesFF: 
+chimesFF: 01000011011010001001001010011010100010101010011 0100010101101110110011101101001011011101100101   
+chimesFF: 
+
+************************* WARNING (pair_style chimesFF) ************************
+Assuming n-body interactions have longer cutoffs than all (n+1)-body interactions
+************************* WARNING (pair_style chimesFF) ************************
+
+chimesFF: 
+chimesFF: 01000011011010001001001010011010100010101010011 0100010101101110110011101101001011011101100101  
+chimesFF: 
+chimesFF:       _____  _      _____  __  __  ______   _____   ______                _                      
+chimesFF:      / ____|| |    |_   _||  \/  ||  ____| / ____| |  ____|              (_)                    
+chimesFF:     | |     | |__    | |  | \  / || |__   | (___   | |__    _ __    __ _  _  _ __    ___        
+chimesFF:     | |     | '_ \   | |  | |\/| ||  __|   \___ \  |  __|  | '_ \  / _` || || '_ \  / _ \ 
+chimesFF:     | |____ | | | | _| |_ | |  | || |____  ____) | | |____ | | | || (_| || || | | ||  __/        
+chimesFF:      \_____||_| |_||_____||_|  |_||______||_____/  |______||_| |_| \__, ||_||_| |_| \___|     
+chimesFF:                                                                     __/ |                        
+chimesFF:                                                                    |___/                         
+chimesFF: 
+chimesFF:                      Copyright (C) 2020 R.K. Lindsey, L.E. Fried, N. Goldman                     
+chimesFF: 
+chimesFF: 01000011011010001001001010011010100010101010011 0100010101101110110011101101001011011101100101   
+chimesFF: 
+
+************************* WARNING (pair_style chimesFF) ************************
+Assuming n-body interactions have longer cutoffs than all (n+1)-body interactions
+************************* WARNING (pair_style chimesFF) ************************
+
+chimesFF: Reading parameters from file: 0.params.txt.reduced
+chimesFF: Using respective 2, 3, and 4-body orders of: 6 5 3
+chimesFF: Note: Ignoring polynomial domain; assuming [-1,1]
+chimesFF: Will consider 2 atom types:
+chimesFF: 	0 N
+chimesFF: 	1 H
+chimesFF: Will consider 3 atom pair types
+chimesFF: Detected version 2 pair specification (no S_DELTA)
+chimesFF: 	0 N N
+chimesFF: 	1 H H
+chimesFF: 	2 N H
+chimesFF: Read the following pair type information:
+chimesFF: 	N N r_cut_in: 0.79300 r_cut_out: 3.50000 MORSE 1.15000
+chimesFF: 	H H r_cut_in: 0.45100 r_cut_out: 3.50000 MORSE 0.80000
+chimesFF: 	N H r_cut_in: 0.66600 r_cut_out: 3.50000 MORSE 1.00000
+chimesFF: Will use cutoff style TERSOFF
+ 0.75000
+chimesFF: Will use single atom energy offsets: 
+chimesFF: 	1 N -137.40713
+chimesFF: 	2 H -37.99153
+chimesFF: Will use penalty distance: 0.02000
+chimesFF: Will use penalty scaling: 1000000.00000
+chimesFF: Read 2B parameters for pair: 0 N N
+chimesFF: 	0 283.08494
+chimesFF: 	1 509.03479
+chimesFF: 	2 321.21492
+chimesFF: 	3 86.54391
+chimesFF: 	4 5.87279
+chimesFF: 	5 -0.94013
+chimesFF: Read 2B parameters for pair: 1 H H
+chimesFF: 	0 -186.60274
+chimesFF: 	1 102.19982
+chimesFF: 	2 388.62181
+chimesFF: 	3 164.59738
+chimesFF: 	4 7.58440
+chimesFF: 	5 -0.46434
+chimesFF: Read 2B parameters for pair: 2 N H
+chimesFF: 	0 132.96767
+chimesFF: 	1 256.80989
+chimesFF: 	2 145.84333
+chimesFF: 	3 33.89584
+chimesFF: 	4 -0.73337
+chimesFF: 	5 0.81430
+chimesFF: Built the following 2-body pair "slow" map:
+chimesFF: 	1 HH(i: 0)
+chimesFF: 	2 HN(i: 1)
+chimesFF: 	2 NH(i: 2)
+chimesFF: 	0 NN(i: 3)
+chimesFF: Built the following 2-body pair "fast" map:
+chimesFF: 	NN: 0 0
+chimesFF: 	NH: 1 2
+chimesFF: 	HN: 2 2
+chimesFF: 	HH: 3 1
+chimesFF: Read 3B parameters for triplet: 0 N N N
+chimesFF: 	0 1 1 -138.81749
+chimesFF: 	1 0 1 -138.81749
+chimesFF: 	1 1 0 -138.81749
+chimesFF: 	0 1 2 -83.59118
+chimesFF: 	1 0 2 -83.59118
+chimesFF: 	0 2 1 -83.59118
+chimesFF: 	2 0 1 -83.59118
+chimesFF: 	1 2 0 -83.59118
+chimesFF: 	2 1 0 -83.59118
+chimesFF: 	0 1 3 -87.68739
+chimesFF: 	1 0 3 -87.68739
+chimesFF: 	0 3 1 -87.68739
+chimesFF: 	3 0 1 -87.68739
+chimesFF: 	1 3 0 -87.68739
+chimesFF: 	3 1 0 -87.68739
+chimesFF: 	0 1 4 -6.81499
+chimesFF: 	1 0 4 -6.81499
+chimesFF: 	0 4 1 -6.81499
+chimesFF: 	4 0 1 -6.81499
+chimesFF: 	1 4 0 -6.81499
+chimesFF: 	4 1 0 -6.81499
+chimesFF: 	0 2 2 292.10326
+chimesFF: 	2 0 2 292.10326
+chimesFF: 	2 2 0 292.10326
+chimesFF: 	0 2 3 104.80389
+chimesFF: 	2 0 3 104.80389
+chimesFF: 	0 3 2 104.80389
+chimesFF: 	3 0 2 104.80389
+chimesFF: 	2 3 0 104.80389
+chimesFF: 	3 2 0 104.80389
+chimesFF: 	0 2 4 96.95596
+chimesFF: 	2 0 4 96.95596
+chimesFF: 	0 4 2 96.95596
+chimesFF: 	4 0 2 96.95596
+chimesFF: 	2 4 0 96.95596
+chimesFF: 	4 2 0 96.95596
+chimesFF: 	0 3 3 -23.24777
+chimesFF: 	3 0 3 -23.24777
+chimesFF: 	3 3 0 -23.24777
+chimesFF: 	0 3 4 20.18269
+chimesFF: 	3 0 4 20.18269
+chimesFF: 	0 4 3 20.18269
+chimesFF: 	4 0 3 20.18269
+chimesFF: 	3 4 0 20.18269
+chimesFF: 	4 3 0 20.18269
+chimesFF: 	0 4 4 -21.68163
+chimesFF: 	4 0 4 -21.68163
+chimesFF: 	4 4 0 -21.68163
+chimesFF: 	1 1 1 -761.50322
+chimesFF: 	1 1 2 -574.41452
+chimesFF: 	1 2 1 -574.41452
+chimesFF: 	2 1 1 -574.41452
+chimesFF: 	1 1 3 -704.05964
+chimesFF: 	1 3 1 -704.05964
+chimesFF: 	3 1 1 -704.05964
+chimesFF: 	1 1 4 -124.02393
+chimesFF: 	1 4 1 -124.02393
+chimesFF: 	4 1 1 -124.02393
+chimesFF: 	1 2 2 19.35527
+chimesFF: 	2 1 2 19.35527
+chimesFF: 	2 2 1 19.35527
+chimesFF: 	1 2 3 -213.26524
+chimesFF: 	2 1 3 -213.26524
+chimesFF: 	1 3 2 -213.26524
+chimesFF: 	3 1 2 -213.26524
+chimesFF: 	2 3 1 -213.26524
+chimesFF: 	3 2 1 -213.26524
+chimesFF: 	1 2 4 86.11371
+chimesFF: 	2 1 4 86.11371
+chimesFF: 	1 4 2 86.11371
+chimesFF: 	4 1 2 86.11371
+chimesFF: 	2 4 1 86.11371
+chimesFF: 	4 2 1 86.11371
+chimesFF: 	1 3 3 -450.07341
+chimesFF: 	3 1 3 -450.07341
+chimesFF: 	3 3 1 -450.07341
+chimesFF: 	1 3 4 -4.63141
+chimesFF: 	3 1 4 -4.63141
+chimesFF: 	1 4 3 -4.63141
+chimesFF: 	4 1 3 -4.63141
+chimesFF: 	3 4 1 -4.63141
+chimesFF: 	4 3 1 -4.63141
+chimesFF: 	1 4 4 -7.52881
+chimesFF: 	4 1 4 -7.52881
+chimesFF: 	4 4 1 -7.52881
+chimesFF: 	2 2 2 855.43678
+chimesFF: 	2 2 3 238.21635
+chimesFF: 	2 3 2 238.21635
+chimesFF: 	3 2 2 238.21635
+chimesFF: 	2 2 4 265.09727
+chimesFF: 	2 4 2 265.09727
+chimesFF: 	4 2 2 265.09727
+chimesFF: 	2 3 3 -76.20816
+chimesFF: 	3 2 3 -76.20816
+chimesFF: 	3 3 2 -76.20816
+chimesFF: 	2 3 4 75.34133
+chimesFF: 	3 2 4 75.34133
+chimesFF: 	2 4 3 75.34133
+chimesFF: 	4 2 3 75.34133
+chimesFF: 	3 4 2 75.34133
+chimesFF: 	4 3 2 75.34133
+chimesFF: 	2 4 4 9.10520
+chimesFF: 	4 2 4 9.10520
+chimesFF: 	4 4 2 9.10520
+chimesFF: 	3 3 3 -241.21938
+chimesFF: 	3 3 4 21.09532
+chimesFF: 	3 4 3 21.09532
+chimesFF: 	4 3 3 21.09532
+chimesFF: 	3 4 4 -5.90277
+chimesFF: 	4 3 4 -5.90277
+chimesFF: 	4 4 3 -5.90277
+chimesFF: 	4 4 4 -23.84438
+chimesFF: Read 3B parameters for triplet: 1 H N N
+chimesFF: 	0 1 1 -37.83617
+chimesFF: 	1 0 1 -37.83617
+chimesFF: 	0 1 2 -11.41796
+chimesFF: 	1 0 2 -11.41796
+chimesFF: 	0 1 3 -39.62726
+chimesFF: 	1 0 3 -39.62726
+chimesFF: 	0 1 4 -8.73378
+chimesFF: 	1 0 4 -8.73378
+chimesFF: 	0 2 1 -104.98463
+chimesFF: 	2 0 1 -104.98463
+chimesFF: 	0 2 2 114.15978
+chimesFF: 	2 0 2 114.15978
+chimesFF: 	0 2 3 -15.10502
+chimesFF: 	2 0 3 -15.10502
+chimesFF: 	0 2 4 53.02379
+chimesFF: 	2 0 4 53.02379
+chimesFF: 	0 3 1 -88.66552
+chimesFF: 	3 0 1 -88.66552
+chimesFF: 	0 3 2 59.31957
+chimesFF: 	3 0 2 59.31957
+chimesFF: 	0 3 3 -40.30034
+chimesFF: 	3 0 3 -40.30034
+chimesFF: 	0 3 4 11.63938
+chimesFF: 	3 0 4 11.63938
+chimesFF: 	0 4 1 -44.04320
+chimesFF: 	4 0 1 -44.04320
+chimesFF: 	0 4 2 26.77302
+chimesFF: 	4 0 2 26.77302
+chimesFF: 	0 4 3 -8.32019
+chimesFF: 	4 0 3 -8.32019
+chimesFF: 	0 4 4 7.67536
+chimesFF: 	4 0 4 7.67536
+chimesFF: 	1 1 0 -6.09040
+chimesFF: 	1 1 1 -149.22501
+chimesFF: 	1 1 2 -84.43560
+chimesFF: 	1 1 3 -235.66276
+chimesFF: 	1 1 4 -78.71397
+chimesFF: 	1 2 0 41.14230
+chimesFF: 	2 1 0 41.14230
+chimesFF: 	1 2 1 -220.24429
+chimesFF: 	2 1 1 -220.24429
+chimesFF: 	1 2 2 94.50526
+chimesFF: 	2 1 2 94.50526
+chimesFF: 	1 2 3 -155.76851
+chimesFF: 	2 1 3 -155.76851
+chimesFF: 	1 2 4 24.24236
+chimesFF: 	2 1 4 24.24236
+chimesFF: 	1 3 0 14.37993
+chimesFF: 	3 1 0 14.37993
+chimesFF: 	1 3 1 -219.05905
+chimesFF: 	3 1 1 -219.05905
+chimesFF: 	1 3 2 21.58462
+chimesFF: 	3 1 2 21.58462
+chimesFF: 	1 3 3 -186.85381
+chimesFF: 	3 1 3 -186.85381
+chimesFF: 	1 3 4 -26.22185
+chimesFF: 	3 1 4 -26.22185
+chimesFF: 	1 4 0 8.26697
+chimesFF: 	4 1 0 8.26697
+chimesFF: 	1 4 1 -77.28989
+chimesFF: 	4 1 1 -77.28989
+chimesFF: 	1 4 2 16.16659
+chimesFF: 	4 1 2 16.16659
+chimesFF: 	1 4 3 -39.62661
+chimesFF: 	4 1 3 -39.62661
+chimesFF: 	1 4 4 -0.82950
+chimesFF: 	4 1 4 -0.82950
+chimesFF: 	2 2 0 107.02307
+chimesFF: 	2 2 1 -182.72848
+chimesFF: 	2 2 2 322.50321
+chimesFF: 	2 2 3 -24.67310
+chimesFF: 	2 2 4 114.28662
+chimesFF: 	2 3 0 50.91268
+chimesFF: 	3 2 0 50.91268
+chimesFF: 	2 3 1 -174.20918
+chimesFF: 	3 2 1 -174.20918
+chimesFF: 	2 3 2 115.64839
+chimesFF: 	3 2 2 115.64839
+chimesFF: 	2 3 3 -86.29132
+chimesFF: 	3 2 3 -86.29132
+chimesFF: 	2 3 4 22.06787
+chimesFF: 	3 2 4 22.06787
+chimesFF: 	2 4 0 13.09396
+chimesFF: 	4 2 0 13.09396
+chimesFF: 	2 4 1 -67.88771
+chimesFF: 	4 2 1 -67.88771
+chimesFF: 	2 4 2 74.10364
+chimesFF: 	4 2 2 74.10364
+chimesFF: 	2 4 3 -5.61768
+chimesFF: 	4 2 3 -5.61768
+chimesFF: 	2 4 4 16.45133
+chimesFF: 	4 2 4 16.45133
+chimesFF: 	3 3 0 35.73640
+chimesFF: 	3 3 1 -152.48222
+chimesFF: 	3 3 2 20.34844
+chimesFF: 	3 3 3 -110.38938
+chimesFF: 	3 3 4 -6.52021
+chimesFF: 	3 4 0 8.15878
+chimesFF: 	4 3 0 8.15878
+chimesFF: 	3 4 1 -44.06459
+chimesFF: 	4 3 1 -44.06459
+chimesFF: 	3 4 2 22.82925
+chimesFF: 	4 3 2 22.82925
+chimesFF: 	3 4 3 -15.98346
+chimesFF: 	4 3 3 -15.98346
+chimesFF: 	3 4 4 -0.85667
+chimesFF: 	4 3 4 -0.85667
+chimesFF: 	4 4 0 1.64763
+chimesFF: 	4 4 1 -19.01201
+chimesFF: 	4 4 2 14.60832
+chimesFF: 	4 4 3 -2.10835
+chimesFF: 	4 4 4 3.50137
+chimesFF: Read 3B parameters for triplet: 2 H H N
+chimesFF: 	0 1 1 -121.33154
+chimesFF: 	0 1 2 -94.45926
+chimesFF: 	0 2 1 -94.45926
+chimesFF: 	0 1 3 -149.14876
+chimesFF: 	0 3 1 -149.14876
+chimesFF: 	0 1 4 -35.98686
+chimesFF: 	0 4 1 -35.98686
+chimesFF: 	0 2 2 145.73361
+chimesFF: 	0 2 3 8.51550
+chimesFF: 	0 3 2 8.51550
+chimesFF: 	0 2 4 26.46302
+chimesFF: 	0 4 2 26.46302
+chimesFF: 	0 3 3 -75.13317
+chimesFF: 	0 3 4 -0.05034
+chimesFF: 	0 4 3 -0.05034
+chimesFF: 	0 4 4 -2.88211
+chimesFF: 	1 0 1 -25.66453
+chimesFF: 	1 1 0 -25.66453
+chimesFF: 	1 0 2 50.61086
+chimesFF: 	1 2 0 50.61086
+chimesFF: 	1 0 3 10.52329
+chimesFF: 	1 3 0 10.52329
+chimesFF: 	1 0 4 15.89167
+chimesFF: 	1 4 0 15.89167
+chimesFF: 	1 1 1 -345.12578
+chimesFF: 	1 1 2 -173.11890
+chimesFF: 	1 2 1 -173.11890
+chimesFF: 	1 1 3 -310.37762
+chimesFF: 	1 3 1 -310.37762
+chimesFF: 	1 1 4 -48.28458
+chimesFF: 	1 4 1 -48.28458
+chimesFF: 	1 2 2 316.63876
+chimesFF: 	1 2 3 24.09529
+chimesFF: 	1 3 2 24.09529
+chimesFF: 	1 2 4 61.70002
+chimesFF: 	1 4 2 61.70002
+chimesFF: 	1 3 3 -156.88718
+chimesFF: 	1 3 4 4.17601
+chimesFF: 	1 4 3 4.17601
+chimesFF: 	1 4 4 -4.23479
+chimesFF: 	2 0 1 -16.25139
+chimesFF: 	2 1 0 -16.25139
+chimesFF: 	2 0 2 110.19323
+chimesFF: 	2 2 0 110.19323
+chimesFF: 	2 0 3 -5.70038
+chimesFF: 	2 3 0 -5.70038
+chimesFF: 	2 0 4 12.63485
+chimesFF: 	2 4 0 12.63485
+chimesFF: 	2 1 1 -344.24001
+chimesFF: 	2 1 2 -119.59688
+chimesFF: 	2 2 1 -119.59688
+chimesFF: 	2 1 3 -305.49040
+chimesFF: 	2 3 1 -305.49040
+chimesFF: 	2 1 4 -46.87912
+chimesFF: 	2 4 1 -46.87912
+chimesFF: 	2 2 2 323.86028
+chimesFF: 	2 2 3 -0.31980
+chimesFF: 	2 3 2 -0.31980
+chimesFF: 	2 2 4 52.96537
+chimesFF: 	2 4 2 52.96537
+chimesFF: 	2 3 3 -136.41727
+chimesFF: 	2 3 4 -3.74505
+chimesFF: 	2 4 3 -3.74505
+chimesFF: 	2 4 4 -4.82187
+chimesFF: 	3 0 1 -39.79602
+chimesFF: 	3 1 0 -39.79602
+chimesFF: 	3 0 2 72.57321
+chimesFF: 	3 2 0 72.57321
+chimesFF: 	3 0 3 -4.09294
+chimesFF: 	3 3 0 -4.09294
+chimesFF: 	3 0 4 10.23231
+chimesFF: 	3 4 0 10.23231
+chimesFF: 	3 1 1 -266.97705
+chimesFF: 	3 1 2 -60.17794
+chimesFF: 	3 2 1 -60.17794
+chimesFF: 	3 1 3 -174.13837
+chimesFF: 	3 3 1 -174.13837
+chimesFF: 	3 1 4 -19.73244
+chimesFF: 	3 4 1 -19.73244
+chimesFF: 	3 2 2 180.17298
+chimesFF: 	3 2 3 -2.57024
+chimesFF: 	3 3 2 -2.57024
+chimesFF: 	3 2 4 26.21984
+chimesFF: 	3 4 2 26.21984
+chimesFF: 	3 3 3 -76.55864
+chimesFF: 	3 3 4 -2.99904
+chimesFF: 	3 4 3 -2.99904
+chimesFF: 	3 4 4 -5.03888
+chimesFF: 	4 0 1 -2.40844
+chimesFF: 	4 1 0 -2.40844
+chimesFF: 	4 0 2 14.65021
+chimesFF: 	4 2 0 14.65021
+chimesFF: 	4 0 3 -8.19570
+chimesFF: 	4 3 0 -8.19570
+chimesFF: 	4 0 4 -0.66440
+chimesFF: 	4 4 0 -0.66440
+chimesFF: 	4 1 1 -60.09683
+chimesFF: 	4 1 2 -25.94882
+chimesFF: 	4 2 1 -25.94882
+chimesFF: 	4 1 3 -55.40612
+chimesFF: 	4 3 1 -55.40612
+chimesFF: 	4 1 4 -9.77623
+chimesFF: 	4 4 1 -9.77623
+chimesFF: 	4 2 2 52.12361
+chimesFF: 	4 2 3 -9.24102
+chimesFF: 	4 3 2 -9.24102
+chimesFF: 	4 2 4 4.69598
+chimesFF: 	4 4 2 4.69598
+chimesFF: 	4 3 3 -19.64032
+chimesFF: 	4 3 4 -4.65945
+chimesFF: 	4 4 3 -4.65945
+chimesFF: 	4 4 4 -3.43669
+chimesFF: Read 3B parameters for triplet: 3 H H H
+chimesFF: 	0 1 1 -23.17508
+chimesFF: 	1 0 1 -23.17508
+chimesFF: 	1 1 0 -23.17508
+chimesFF: 	0 1 2 1.66084
+chimesFF: 	1 0 2 1.66084
+chimesFF: 	0 2 1 1.66084
+chimesFF: 	2 0 1 1.66084
+chimesFF: 	1 2 0 1.66084
+chimesFF: 	2 1 0 1.66084
+chimesFF: 	0 1 3 -50.17552
+chimesFF: 	1 0 3 -50.17552
+chimesFF: 	0 3 1 -50.17552
+chimesFF: 	3 0 1 -50.17552
+chimesFF: 	1 3 0 -50.17552
+chimesFF: 	3 1 0 -50.17552
+chimesFF: 	0 1 4 -10.45513
+chimesFF: 	1 0 4 -10.45513
+chimesFF: 	0 4 1 -10.45513
+chimesFF: 	4 0 1 -10.45513
+chimesFF: 	1 4 0 -10.45513
+chimesFF: 	4 1 0 -10.45513
+chimesFF: 	0 2 2 121.14731
+chimesFF: 	2 0 2 121.14731
+chimesFF: 	2 2 0 121.14731
+chimesFF: 	0 2 3 20.03571
+chimesFF: 	2 0 3 20.03571
+chimesFF: 	0 3 2 20.03571
+chimesFF: 	3 0 2 20.03571
+chimesFF: 	2 3 0 20.03571
+chimesFF: 	3 2 0 20.03571
+chimesFF: 	0 2 4 1.90566
+chimesFF: 	2 0 4 1.90566
+chimesFF: 	0 4 2 1.90566
+chimesFF: 	4 0 2 1.90566
+chimesFF: 	2 4 0 1.90566
+chimesFF: 	4 2 0 1.90566
+chimesFF: 	0 3 3 -33.42730
+chimesFF: 	3 0 3 -33.42730
+chimesFF: 	3 3 0 -33.42730
+chimesFF: 	0 3 4 -7.51876
+chimesFF: 	3 0 4 -7.51876
+chimesFF: 	0 4 3 -7.51876
+chimesFF: 	4 0 3 -7.51876
+chimesFF: 	3 4 0 -7.51876
+chimesFF: 	4 3 0 -7.51876
+chimesFF: 	0 4 4 -18.35201
+chimesFF: 	4 0 4 -18.35201
+chimesFF: 	4 4 0 -18.35201
+chimesFF: 	1 1 1 -182.31858
+chimesFF: 	1 1 2 -137.25633
+chimesFF: 	1 2 1 -137.25633
+chimesFF: 	2 1 1 -137.25633
+chimesFF: 	1 1 3 -251.21356
+chimesFF: 	1 3 1 -251.21356
+chimesFF: 	3 1 1 -251.21356
+chimesFF: 	1 1 4 -46.72750
+chimesFF: 	1 4 1 -46.72750
+chimesFF: 	4 1 1 -46.72750
+chimesFF: 	1 2 2 89.33990
+chimesFF: 	2 1 2 89.33990
+chimesFF: 	2 2 1 89.33990
+chimesFF: 	1 2 3 -94.66804
+chimesFF: 	2 1 3 -94.66804
+chimesFF: 	1 3 2 -94.66804
+chimesFF: 	3 1 2 -94.66804
+chimesFF: 	2 3 1 -94.66804
+chimesFF: 	3 2 1 -94.66804
+chimesFF: 	1 2 4 -11.68264
+chimesFF: 	2 1 4 -11.68264
+chimesFF: 	1 4 2 -11.68264
+chimesFF: 	4 1 2 -11.68264
+chimesFF: 	2 4 1 -11.68264
+chimesFF: 	4 2 1 -11.68264
+chimesFF: 	1 3 3 -151.01420
+chimesFF: 	3 1 3 -151.01420
+chimesFF: 	3 3 1 -151.01420
+chimesFF: 	1 3 4 -26.49037
+chimesFF: 	3 1 4 -26.49037
+chimesFF: 	1 4 3 -26.49037
+chimesFF: 	4 1 3 -26.49037
+chimesFF: 	3 4 1 -26.49037
+chimesFF: 	4 3 1 -26.49037
+chimesFF: 	1 4 4 -32.61515
+chimesFF: 	4 1 4 -32.61515
+chimesFF: 	4 4 1 -32.61515
+chimesFF: 	2 2 2 307.22928
+chimesFF: 	2 2 3 34.78589
+chimesFF: 	2 3 2 34.78589
+chimesFF: 	3 2 2 34.78589
+chimesFF: 	2 2 4 3.75082
+chimesFF: 	2 4 2 3.75082
+chimesFF: 	4 2 2 3.75082
+chimesFF: 	2 3 3 -57.62903
+chimesFF: 	3 2 3 -57.62903
+chimesFF: 	3 3 2 -57.62903
+chimesFF: 	2 3 4 -18.93951
+chimesFF: 	3 2 4 -18.93951
+chimesFF: 	2 4 3 -18.93951
+chimesFF: 	4 2 3 -18.93951
+chimesFF: 	3 4 2 -18.93951
+chimesFF: 	4 3 2 -18.93951
+chimesFF: 	2 4 4 -36.26276
+chimesFF: 	4 2 4 -36.26276
+chimesFF: 	4 4 2 -36.26276
+chimesFF: 	3 3 3 -68.35452
+chimesFF: 	3 3 4 -17.73780
+chimesFF: 	3 4 3 -17.73780
+chimesFF: 	4 3 3 -17.73780
+chimesFF: 	3 4 4 -22.67978
+chimesFF: 	4 3 4 -22.67978
+chimesFF: 	4 4 3 -22.67978
+chimesFF: 	4 4 4 -21.76362
+chimesFF: Built the following 3-body pair "slow" map:
+chimesFF: 	3 HHHHHH
+chimesFF: 	2 HHNHNH
+chimesFF: 	2 NHHHNH
+chimesFF: 	2 NHNHHH
+chimesFF: 	1 NHNHNN
+chimesFF: 	1 NHNNNH
+chimesFF: 	1 NNNHNH
+chimesFF: 	0 NNNNNN
+chimesFF: Built the following 3-body pair "fast" map:
+chimesFF: 	0 0
+chimesFF: 	1 1
+chimesFF: 	2 1
+chimesFF: 	3 2
+chimesFF: 	4 1
+chimesFF: 	5 2
+chimesFF: 	6 2
+chimesFF: 	7 3
+chimesFF: Read 4B parameters for quadruplets: 0 N N N N
+chimesFF: 	0 0 1 0 1 1 -1660.37661
+chimesFF: 	0 1 0 1 0 1 -1660.37661
+chimesFF: 	1 0 0 1 1 0 -1660.37661
+chimesFF: 	1 1 1 0 0 0 -1660.37661
+chimesFF: 	0 0 1 0 1 2 90.85459
+chimesFF: 	0 1 0 1 0 2 90.85459
+chimesFF: 	0 0 1 0 2 1 90.85459
+chimesFF: 	0 1 0 2 0 1 90.85459
+chimesFF: 	1 0 0 1 2 0 90.85459
+chimesFF: 	1 0 0 2 1 0 90.85459
+chimesFF: 	0 0 2 0 1 1 90.85459
+chimesFF: 	0 2 0 1 0 1 90.85459
+chimesFF: 	2 0 0 1 1 0 90.85459
+chimesFF: 	1 1 2 0 0 0 90.85459
+chimesFF: 	1 2 1 0 0 0 90.85459
+chimesFF: 	2 1 1 0 0 0 90.85459
+chimesFF: 	0 0 1 0 2 2 1150.18252
+chimesFF: 	0 1 0 2 0 2 1150.18252
+chimesFF: 	1 0 0 2 2 0 1150.18252
+chimesFF: 	0 0 2 0 1 2 1150.18252
+chimesFF: 	0 2 0 1 0 2 1150.18252
+chimesFF: 	0 0 2 0 2 1 1150.18252
+chimesFF: 	0 2 0 2 0 1 1150.18252
+chimesFF: 	2 0 0 1 2 0 1150.18252
+chimesFF: 	2 0 0 2 1 0 1150.18252
+chimesFF: 	1 2 2 0 0 0 1150.18252
+chimesFF: 	2 1 2 0 0 0 1150.18252
+chimesFF: 	2 2 1 0 0 0 1150.18252
+chimesFF: 	0 0 1 1 0 0 1536.55464
+chimesFF: 	0 1 0 0 1 0 1536.55464
+chimesFF: 	1 0 0 0 0 1 1536.55464
+chimesFF: 	0 0 1 1 0 1 520.09759
+chimesFF: 	0 1 0 0 1 1 520.09759
+chimesFF: 	0 0 1 1 1 0 520.09759
+chimesFF: 	0 1 0 1 1 0 520.09759
+chimesFF: 	1 0 0 0 1 1 520.09759
+chimesFF: 	1 0 0 1 0 1 520.09759
+chimesFF: 	0 1 1 0 1 0 520.09759
+chimesFF: 	0 1 1 1 0 0 520.09759
+chimesFF: 	1 0 1 0 0 1 520.09759
+chimesFF: 	1 1 0 0 0 1 520.09759
+chimesFF: 	1 0 1 1 0 0 520.09759
+chimesFF: 	1 1 0 0 1 0 520.09759
+chimesFF: 	0 0 1 1 0 2 1319.01599
+chimesFF: 	0 1 0 0 1 2 1319.01599
+chimesFF: 	0 0 1 1 2 0 1319.01599
+chimesFF: 	0 1 0 2 1 0 1319.01599
+chimesFF: 	1 0 0 0 2 1 1319.01599
+chimesFF: 	1 0 0 2 0 1 1319.01599
+chimesFF: 	0 1 2 0 1 0 1319.01599
+chimesFF: 	0 2 1 1 0 0 1319.01599
+chimesFF: 	1 0 2 0 0 1 1319.01599
+chimesFF: 	1 2 0 0 0 1 1319.01599
+chimesFF: 	2 0 1 1 0 0 1319.01599
+chimesFF: 	2 1 0 0 1 0 1319.01599
+chimesFF: 	0 0 1 1 1 1 -909.71100
+chimesFF: 	0 1 0 1 1 1 -909.71100
+chimesFF: 	1 0 0 1 1 1 -909.71100
+chimesFF: 	0 1 1 0 1 1 -909.71100
+chimesFF: 	0 1 1 1 0 1 -909.71100
+chimesFF: 	1 0 1 0 1 1 -909.71100
+chimesFF: 	1 1 0 1 0 1 -909.71100
+chimesFF: 	1 0 1 1 1 0 -909.71100
+chimesFF: 	1 1 0 1 1 0 -909.71100
+chimesFF: 	1 1 1 0 0 1 -909.71100
+chimesFF: 	1 1 1 0 1 0 -909.71100
+chimesFF: 	1 1 1 1 0 0 -909.71100
+chimesFF: 	0 0 1 1 1 2 1296.29814
+chimesFF: 	0 1 0 1 1 2 1296.29814
+chimesFF: 	0 0 1 1 2 1 1296.29814
+chimesFF: 	0 1 0 2 1 1 1296.29814
+chimesFF: 	1 0 0 1 2 1 1296.29814
+chimesFF: 	1 0 0 2 1 1 1296.29814
+chimesFF: 	0 1 1 0 1 2 1296.29814
+chimesFF: 	0 1 1 1 0 2 1296.29814
+chimesFF: 	1 0 1 0 2 1 1296.29814
+chimesFF: 	1 1 0 2 0 1 1296.29814
+chimesFF: 	1 0 1 1 2 0 1296.29814
+chimesFF: 	1 1 0 2 1 0 1296.29814
+chimesFF: 	0 1 2 0 1 1 1296.29814
+chimesFF: 	0 2 1 1 0 1 1296.29814
+chimesFF: 	1 0 2 0 1 1 1296.29814
+chimesFF: 	1 2 0 1 0 1 1296.29814
+chimesFF: 	2 0 1 1 1 0 1296.29814
+chimesFF: 	2 1 0 1 1 0 1296.29814
+chimesFF: 	1 1 2 0 0 1 1296.29814
+chimesFF: 	1 2 1 0 0 1 1296.29814
+chimesFF: 	1 1 2 0 1 0 1296.29814
+chimesFF: 	1 2 1 1 0 0 1296.29814
+chimesFF: 	2 1 1 0 1 0 1296.29814
+chimesFF: 	2 1 1 1 0 0 1296.29814
+chimesFF: 	0 0 1 1 2 2 941.51543
+chimesFF: 	0 1 0 2 1 2 941.51543
+chimesFF: 	1 0 0 2 2 1 941.51543
+chimesFF: 	0 1 2 0 1 2 941.51543
+chimesFF: 	0 2 1 1 0 2 941.51543
+chimesFF: 	1 0 2 0 2 1 941.51543
+chimesFF: 	1 2 0 2 0 1 941.51543
+chimesFF: 	2 0 1 1 2 0 941.51543
+chimesFF: 	2 1 0 2 1 0 941.51543
+chimesFF: 	1 2 2 0 0 1 941.51543
+chimesFF: 	2 1 2 0 1 0 941.51543
+chimesFF: 	2 2 1 1 0 0 941.51543
+chimesFF: 	0 0 1 2 0 1 116.11136
+chimesFF: 	0 1 0 0 2 1 116.11136
+chimesFF: 	0 0 1 2 1 0 116.11136
+chimesFF: 	0 1 0 1 2 0 116.11136
+chimesFF: 	1 0 0 0 1 2 116.11136
+chimesFF: 	1 0 0 1 0 2 116.11136
+chimesFF: 	0 2 0 0 1 1 116.11136
+chimesFF: 	0 0 2 1 0 1 116.11136
+chimesFF: 	2 0 0 0 1 1 116.11136
+chimesFF: 	2 0 0 1 0 1 116.11136
+chimesFF: 	0 0 2 1 1 0 116.11136
+chimesFF: 	0 2 0 1 1 0 116.11136
+chimesFF: 	0 2 1 0 1 0 116.11136
+chimesFF: 	0 1 2 1 0 0 116.11136
+chimesFF: 	2 0 1 0 0 1 116.11136
+chimesFF: 	2 1 0 0 0 1 116.11136
+chimesFF: 	1 0 2 1 0 0 116.11136
+chimesFF: 	1 2 0 0 1 0 116.11136
+chimesFF: 	1 0 1 0 0 2 116.11136
+chimesFF: 	1 1 0 0 0 2 116.11136
+chimesFF: 	0 1 1 0 2 0 116.11136
+chimesFF: 	0 1 1 2 0 0 116.11136
+chimesFF: 	1 1 0 0 2 0 116.11136
+chimesFF: 	1 0 1 2 0 0 116.11136
+chimesFF: 	0 0 1 2 0 2 -86.26730
+chimesFF: 	0 1 0 0 2 2 -86.26730
+chimesFF: 	0 0 1 2 2 0 -86.26730
+chimesFF: 	0 1 0 2 2 0 -86.26730
+chimesFF: 	1 0 0 0 2 2 -86.26730
+chimesFF: 	1 0 0 2 0 2 -86.26730
+chimesFF: 	0 2 0 0 1 2 -86.26730
+chimesFF: 	0 0 2 1 0 2 -86.26730
+chimesFF: 	2 0 0 0 2 1 -86.26730
+chimesFF: 	2 0 0 2 0 1 -86.26730
+chimesFF: 	0 0 2 1 2 0 -86.26730
+chimesFF: 	0 2 0 2 1 0 -86.26730
+chimesFF: 	0 2 2 0 1 0 -86.26730
+chimesFF: 	0 2 2 1 0 0 -86.26730
+chimesFF: 	2 0 2 0 0 1 -86.26730
+chimesFF: 	2 2 0 0 0 1 -86.26730
+chimesFF: 	2 0 2 1 0 0 -86.26730
+chimesFF: 	2 2 0 0 1 0 -86.26730
+chimesFF: 	1 0 2 0 0 2 -86.26730
+chimesFF: 	1 2 0 0 0 2 -86.26730
+chimesFF: 	0 1 2 0 2 0 -86.26730
+chimesFF: 	0 2 1 2 0 0 -86.26730
+chimesFF: 	2 1 0 0 2 0 -86.26730
+chimesFF: 	2 0 1 2 0 0 -86.26730
+chimesFF: 	0 0 1 2 1 1 -965.41917
+chimesFF: 	0 1 0 1 2 1 -965.41917
+chimesFF: 	1 0 0 1 1 2 -965.41917
+chimesFF: 	0 2 1 0 1 1 -965.41917
+chimesFF: 	0 1 2 1 0 1 -965.41917
+chimesFF: 	2 0 1 0 1 1 -965.41917
+chimesFF: 	2 1 0 1 0 1 -965.41917
+chimesFF: 	1 0 2 1 1 0 -965.41917
+chimesFF: 	1 2 0 1 1 0 -965.41917
+chimesFF: 	1 1 1 0 0 2 -965.41917
+chimesFF: 	1 1 1 0 2 0 -965.41917
+chimesFF: 	1 1 1 2 0 0 -965.41917
+chimesFF: 	0 0 1 2 1 2 -359.04215
+chimesFF: 	0 1 0 1 2 2 -359.04215
+chimesFF: 	0 0 1 2 2 1 -359.04215
+chimesFF: 	0 1 0 2 2 1 -359.04215
+chimesFF: 	1 0 0 1 2 2 -359.04215
+chimesFF: 	1 0 0 2 1 2 -359.04215
+chimesFF: 	0 2 1 0 1 2 -359.04215
+chimesFF: 	0 1 2 1 0 2 -359.04215
+chimesFF: 	2 0 1 0 2 1 -359.04215
+chimesFF: 	2 1 0 2 0 1 -359.04215
+chimesFF: 	1 0 2 1 2 0 -359.04215
+chimesFF: 	1 2 0 2 1 0 -359.04215
+chimesFF: 	0 2 2 0 1 1 -359.04215
+chimesFF: 	0 2 2 1 0 1 -359.04215
+chimesFF: 	2 0 2 0 1 1 -359.04215
+chimesFF: 	2 2 0 1 0 1 -359.04215
+chimesFF: 	2 0 2 1 1 0 -359.04215
+chimesFF: 	2 2 0 1 1 0 -359.04215
+chimesFF: 	1 1 2 0 0 2 -359.04215
+chimesFF: 	1 2 1 0 0 2 -359.04215
+chimesFF: 	1 1 2 0 2 0 -359.04215
+chimesFF: 	1 2 1 2 0 0 -359.04215
+chimesFF: 	2 1 1 0 2 0 -359.04215
+chimesFF: 	2 1 1 2 0 0 -359.04215
+chimesFF: 	0 0 1 2 2 2 1583.83667
+chimesFF: 	0 1 0 2 2 2 1583.83667
+chimesFF: 	1 0 0 2 2 2 1583.83667
+chimesFF: 	0 2 2 0 1 2 1583.83667
+chimesFF: 	0 2 2 1 0 2 1583.83667
+chimesFF: 	2 0 2 0 2 1 1583.83667
+chimesFF: 	2 2 0 2 0 1 1583.83667
+chimesFF: 	2 0 2 1 2 0 1583.83667
+chimesFF: 	2 2 0 2 1 0 1583.83667
+chimesFF: 	1 2 2 0 0 2 1583.83667
+chimesFF: 	2 1 2 0 2 0 1583.83667
+chimesFF: 	2 2 1 2 0 0 1583.83667
+chimesFF: 	0 0 2 0 2 2 -756.86670
+chimesFF: 	0 2 0 2 0 2 -756.86670
+chimesFF: 	2 0 0 2 2 0 -756.86670
+chimesFF: 	2 2 2 0 0 0 -756.86670
+chimesFF: 	0 0 2 1 1 1 457.79503
+chimesFF: 	0 2 0 1 1 1 457.79503
+chimesFF: 	2 0 0 1 1 1 457.79503
+chimesFF: 	0 1 1 0 2 1 457.79503
+chimesFF: 	0 1 1 2 0 1 457.79503
+chimesFF: 	1 0 1 0 1 2 457.79503
+chimesFF: 	1 1 0 1 0 2 457.79503
+chimesFF: 	1 0 1 2 1 0 457.79503
+chimesFF: 	1 1 0 1 2 0 457.79503
+chimesFF: 	2 1 1 0 0 1 457.79503
+chimesFF: 	1 2 1 0 1 0 457.79503
+chimesFF: 	1 1 2 1 0 0 457.79503
+chimesFF: 	0 0 2 1 1 2 1229.85125
+chimesFF: 	0 2 0 1 1 2 1229.85125
+chimesFF: 	0 0 2 1 2 1 1229.85125
+chimesFF: 	0 2 0 2 1 1 1229.85125
+chimesFF: 	2 0 0 1 2 1 1229.85125
+chimesFF: 	2 0 0 2 1 1 1229.85125
+chimesFF: 	0 1 1 0 2 2 1229.85125
+chimesFF: 	0 1 1 2 0 2 1229.85125
+chimesFF: 	1 0 1 0 2 2 1229.85125
+chimesFF: 	1 1 0 2 0 2 1229.85125
+chimesFF: 	1 0 1 2 2 0 1229.85125
+chimesFF: 	1 1 0 2 2 0 1229.85125
+chimesFF: 	0 1 2 0 2 1 1229.85125
+chimesFF: 	0 2 1 2 0 1 1229.85125
+chimesFF: 	1 0 2 0 1 2 1229.85125
+chimesFF: 	1 2 0 1 0 2 1229.85125
+chimesFF: 	2 0 1 2 1 0 1229.85125
+chimesFF: 	2 1 0 1 2 0 1229.85125
+chimesFF: 	2 1 2 0 0 1 1229.85125
+chimesFF: 	2 2 1 0 0 1 1229.85125
+chimesFF: 	1 2 2 0 1 0 1229.85125
+chimesFF: 	1 2 2 1 0 0 1229.85125
+chimesFF: 	2 2 1 0 1 0 1229.85125
+chimesFF: 	2 1 2 1 0 0 1229.85125
+chimesFF: 	0 0 2 2 0 0 -603.95224
+chimesFF: 	0 2 0 0 2 0 -603.95224
+chimesFF: 	2 0 0 0 0 2 -603.95224
+chimesFF: 	0 0 2 2 0 1 -1230.41779
+chimesFF: 	0 2 0 0 2 1 -1230.41779
+chimesFF: 	0 0 2 2 1 0 -1230.41779
+chimesFF: 	0 2 0 1 2 0 -1230.41779
+chimesFF: 	2 0 0 0 1 2 -1230.41779
+chimesFF: 	2 0 0 1 0 2 -1230.41779
+chimesFF: 	0 2 1 0 2 0 -1230.41779
+chimesFF: 	0 1 2 2 0 0 -1230.41779
+chimesFF: 	2 0 1 0 0 2 -1230.41779
+chimesFF: 	2 1 0 0 0 2 -1230.41779
+chimesFF: 	1 0 2 2 0 0 -1230.41779
+chimesFF: 	1 2 0 0 2 0 -1230.41779
+chimesFF: 	0 0 2 2 0 2 -45.87507
+chimesFF: 	0 2 0 0 2 2 -45.87507
+chimesFF: 	0 0 2 2 2 0 -45.87507
+chimesFF: 	0 2 0 2 2 0 -45.87507
+chimesFF: 	2 0 0 0 2 2 -45.87507
+chimesFF: 	2 0 0 2 0 2 -45.87507
+chimesFF: 	0 2 2 0 2 0 -45.87507
+chimesFF: 	0 2 2 2 0 0 -45.87507
+chimesFF: 	2 0 2 0 0 2 -45.87507
+chimesFF: 	2 2 0 0 0 2 -45.87507
+chimesFF: 	2 0 2 2 0 0 -45.87507
+chimesFF: 	2 2 0 0 2 0 -45.87507
+chimesFF: 	0 0 2 2 1 1 -2471.24793
+chimesFF: 	0 2 0 1 2 1 -2471.24793
+chimesFF: 	2 0 0 1 1 2 -2471.24793
+chimesFF: 	0 2 1 0 2 1 -2471.24793
+chimesFF: 	0 1 2 2 0 1 -2471.24793
+chimesFF: 	2 0 1 0 1 2 -2471.24793
+chimesFF: 	2 1 0 1 0 2 -2471.24793
+chimesFF: 	1 0 2 2 1 0 -2471.24793
+chimesFF: 	1 2 0 1 2 0 -2471.24793
+chimesFF: 	2 1 1 0 0 2 -2471.24793
+chimesFF: 	1 2 1 0 2 0 -2471.24793
+chimesFF: 	1 1 2 2 0 0 -2471.24793
+chimesFF: 	0 0 2 2 1 2 85.79446
+chimesFF: 	0 2 0 1 2 2 85.79446
+chimesFF: 	0 0 2 2 2 1 85.79446
+chimesFF: 	0 2 0 2 2 1 85.79446
+chimesFF: 	2 0 0 1 2 2 85.79446
+chimesFF: 	2 0 0 2 1 2 85.79446
+chimesFF: 	0 2 1 0 2 2 85.79446
+chimesFF: 	0 1 2 2 0 2 85.79446
+chimesFF: 	2 0 1 0 2 2 85.79446
+chimesFF: 	2 1 0 2 0 2 85.79446
+chimesFF: 	1 0 2 2 2 0 85.79446
+chimesFF: 	1 2 0 2 2 0 85.79446
+chimesFF: 	0 2 2 0 2 1 85.79446
+chimesFF: 	0 2 2 2 0 1 85.79446
+chimesFF: 	2 0 2 0 1 2 85.79446
+chimesFF: 	2 2 0 1 0 2 85.79446
+chimesFF: 	2 0 2 2 1 0 85.79446
+chimesFF: 	2 2 0 1 2 0 85.79446
+chimesFF: 	2 1 2 0 0 2 85.79446
+chimesFF: 	2 2 1 0 0 2 85.79446
+chimesFF: 	1 2 2 0 2 0 85.79446
+chimesFF: 	1 2 2 2 0 0 85.79446
+chimesFF: 	2 2 1 0 2 0 85.79446
+chimesFF: 	2 1 2 2 0 0 85.79446
+chimesFF: 	0 0 2 2 2 2 -561.44081
+chimesFF: 	0 2 0 2 2 2 -561.44081
+chimesFF: 	2 0 0 2 2 2 -561.44081
+chimesFF: 	0 2 2 0 2 2 -561.44081
+chimesFF: 	0 2 2 2 0 2 -561.44081
+chimesFF: 	2 0 2 0 2 2 -561.44081
+chimesFF: 	2 2 0 2 0 2 -561.44081
+chimesFF: 	2 0 2 2 2 0 -561.44081
+chimesFF: 	2 2 0 2 2 0 -561.44081
+chimesFF: 	2 2 2 0 0 2 -561.44081
+chimesFF: 	2 2 2 0 2 0 -561.44081
+chimesFF: 	2 2 2 2 0 0 -561.44081
+chimesFF: 	0 1 1 1 1 0 311.63412
+chimesFF: 	1 0 1 1 0 1 311.63412
+chimesFF: 	1 1 0 0 1 1 311.63412
+chimesFF: 	0 1 1 1 1 1 -1672.97170
+chimesFF: 	1 0 1 1 1 1 -1672.97170
+chimesFF: 	1 1 0 1 1 1 -1672.97170
+chimesFF: 	1 1 1 0 1 1 -1672.97170
+chimesFF: 	1 1 1 1 0 1 -1672.97170
+chimesFF: 	1 1 1 1 1 0 -1672.97170
+chimesFF: 	0 1 1 1 1 2 2621.31651
+chimesFF: 	1 0 1 1 2 1 2621.31651
+chimesFF: 	1 1 0 2 1 1 2621.31651
+chimesFF: 	1 1 2 0 1 1 2621.31651
+chimesFF: 	1 2 1 1 0 1 2621.31651
+chimesFF: 	2 1 1 1 1 0 2621.31651
+chimesFF: 	0 1 1 1 2 0 562.46662
+chimesFF: 	0 1 1 2 1 0 562.46662
+chimesFF: 	1 0 1 1 0 2 562.46662
+chimesFF: 	1 1 0 0 1 2 562.46662
+chimesFF: 	1 0 1 2 0 1 562.46662
+chimesFF: 	1 1 0 0 2 1 562.46662
+chimesFF: 	0 1 2 1 1 0 562.46662
+chimesFF: 	0 2 1 1 1 0 562.46662
+chimesFF: 	1 0 2 1 0 1 562.46662
+chimesFF: 	1 2 0 0 1 1 562.46662
+chimesFF: 	2 0 1 1 0 1 562.46662
+chimesFF: 	2 1 0 0 1 1 562.46662
+chimesFF: 	0 1 1 1 2 2 286.54511
+chimesFF: 	0 1 1 2 1 2 286.54511
+chimesFF: 	1 0 1 1 2 2 286.54511
+chimesFF: 	1 1 0 2 1 2 286.54511
+chimesFF: 	1 0 1 2 2 1 286.54511
+chimesFF: 	1 1 0 2 2 1 286.54511
+chimesFF: 	0 1 2 1 1 2 286.54511
+chimesFF: 	0 2 1 1 1 2 286.54511
+chimesFF: 	1 0 2 1 2 1 286.54511
+chimesFF: 	1 2 0 2 1 1 286.54511
+chimesFF: 	2 0 1 1 2 1 286.54511
+chimesFF: 	2 1 0 2 1 1 286.54511
+chimesFF: 	1 1 2 0 1 2 286.54511
+chimesFF: 	1 2 1 1 0 2 286.54511
+chimesFF: 	1 1 2 0 2 1 286.54511
+chimesFF: 	1 2 1 2 0 1 286.54511
+chimesFF: 	2 1 1 1 2 0 286.54511
+chimesFF: 	2 1 1 2 1 0 286.54511
+chimesFF: 	1 2 2 0 1 1 286.54511
+chimesFF: 	1 2 2 1 0 1 286.54511
+chimesFF: 	2 1 2 0 1 1 286.54511
+chimesFF: 	2 2 1 1 0 1 286.54511
+chimesFF: 	2 1 2 1 1 0 286.54511
+chimesFF: 	2 2 1 1 1 0 286.54511
+chimesFF: 	0 1 1 2 2 0 -86.55897
+chimesFF: 	1 0 1 2 0 2 -86.55897
+chimesFF: 	1 1 0 0 2 2 -86.55897
+chimesFF: 	0 2 2 1 1 0 -86.55897
+chimesFF: 	2 0 2 1 0 1 -86.55897
+chimesFF: 	2 2 0 0 1 1 -86.55897
+chimesFF: 	1 2 0 0 1 2 -86.55897
+chimesFF: 	1 0 2 1 0 2 -86.55897
+chimesFF: 	2 1 0 0 2 1 -86.55897
+chimesFF: 	2 0 1 2 0 1 -86.55897
+chimesFF: 	0 1 2 1 2 0 -86.55897
+chimesFF: 	0 2 1 2 1 0 -86.55897
+chimesFF: 	0 1 1 2 2 1 -690.69091
+chimesFF: 	1 0 1 2 1 2 -690.69091
+chimesFF: 	1 1 0 1 2 2 -690.69091
+chimesFF: 	0 2 2 1 1 1 -690.69091
+chimesFF: 	2 0 2 1 1 1 -690.69091
+chimesFF: 	2 2 0 1 1 1 -690.69091
+chimesFF: 	1 2 1 0 1 2 -690.69091
+chimesFF: 	1 1 2 1 0 2 -690.69091
+chimesFF: 	2 1 1 0 2 1 -690.69091
+chimesFF: 	2 1 1 2 0 1 -690.69091
+chimesFF: 	1 1 2 1 2 0 -690.69091
+chimesFF: 	1 2 1 2 1 0 -690.69091
+chimesFF: 	0 1 1 2 2 2 3819.28056
+chimesFF: 	1 0 1 2 2 2 3819.28056
+chimesFF: 	1 1 0 2 2 2 3819.28056
+chimesFF: 	0 2 2 1 1 2 3819.28056
+chimesFF: 	2 0 2 1 2 1 3819.28056
+chimesFF: 	2 2 0 2 1 1 3819.28056
+chimesFF: 	1 2 2 0 1 2 3819.28056
+chimesFF: 	1 2 2 1 0 2 3819.28056
+chimesFF: 	2 1 2 0 2 1 3819.28056
+chimesFF: 	2 2 1 2 0 1 3819.28056
+chimesFF: 	2 1 2 1 2 0 3819.28056
+chimesFF: 	2 2 1 2 1 0 3819.28056
+chimesFF: 	0 1 2 1 2 1 395.87103
+chimesFF: 	0 2 1 2 1 1 395.87103
+chimesFF: 	1 0 2 1 1 2 395.87103
+chimesFF: 	1 2 0 1 1 2 395.87103
+chimesFF: 	2 0 1 2 1 1 395.87103
+chimesFF: 	2 1 0 1 2 1 395.87103
+chimesFF: 	1 1 1 0 2 2 395.87103
+chimesFF: 	1 1 1 2 0 2 395.87103
+chimesFF: 	1 1 1 2 2 0 395.87103
+chimesFF: 	2 2 1 0 1 1 395.87103
+chimesFF: 	2 1 2 1 0 1 395.87103
+chimesFF: 	1 2 2 1 1 0 395.87103
+chimesFF: 	0 1 2 1 2 2 116.09438
+chimesFF: 	0 2 1 2 1 2 116.09438
+chimesFF: 	1 0 2 1 2 2 116.09438
+chimesFF: 	1 2 0 2 1 2 116.09438
+chimesFF: 	2 0 1 2 2 1 116.09438
+chimesFF: 	2 1 0 2 2 1 116.09438
+chimesFF: 	1 1 2 0 2 2 116.09438
+chimesFF: 	1 2 1 2 0 2 116.09438
+chimesFF: 	2 1 1 2 2 0 116.09438
+chimesFF: 	2 2 2 0 1 1 116.09438
+chimesFF: 	2 2 2 1 0 1 116.09438
+chimesFF: 	2 2 2 1 1 0 116.09438
+chimesFF: 	0 1 2 2 1 0 222.49554
+chimesFF: 	0 2 1 1 2 0 222.49554
+chimesFF: 	1 0 2 2 0 1 222.49554
+chimesFF: 	1 2 0 0 2 1 222.49554
+chimesFF: 	2 0 1 1 0 2 222.49554
+chimesFF: 	2 1 0 0 1 2 222.49554
+chimesFF: 	0 1 2 2 1 1 -1269.42673
+chimesFF: 	0 2 1 1 2 1 -1269.42673
+chimesFF: 	1 0 2 2 1 1 -1269.42673
+chimesFF: 	1 2 0 1 2 1 -1269.42673
+chimesFF: 	2 0 1 1 1 2 -1269.42673
+chimesFF: 	2 1 0 1 1 2 -1269.42673
+chimesFF: 	1 2 1 0 2 1 -1269.42673
+chimesFF: 	1 1 2 2 0 1 -1269.42673
+chimesFF: 	2 1 1 0 1 2 -1269.42673
+chimesFF: 	2 1 1 1 0 2 -1269.42673
+chimesFF: 	1 1 2 2 1 0 -1269.42673
+chimesFF: 	1 2 1 1 2 0 -1269.42673
+chimesFF: 	0 1 2 2 2 0 -1255.02506
+chimesFF: 	0 2 1 2 2 0 -1255.02506
+chimesFF: 	1 0 2 2 0 2 -1255.02506
+chimesFF: 	1 2 0 0 2 2 -1255.02506
+chimesFF: 	2 0 1 2 0 2 -1255.02506
+chimesFF: 	2 1 0 0 2 2 -1255.02506
+chimesFF: 	0 2 2 1 2 0 -1255.02506
+chimesFF: 	0 2 2 2 1 0 -1255.02506
+chimesFF: 	2 0 2 1 0 2 -1255.02506
+chimesFF: 	2 2 0 0 1 2 -1255.02506
+chimesFF: 	2 0 2 2 0 1 -1255.02506
+chimesFF: 	2 2 0 0 2 1 -1255.02506
+chimesFF: 	0 1 2 2 2 1 -1602.28801
+chimesFF: 	0 2 1 2 2 1 -1602.28801
+chimesFF: 	1 0 2 2 1 2 -1602.28801
+chimesFF: 	1 2 0 1 2 2 -1602.28801
+chimesFF: 	2 0 1 2 1 2 -1602.28801
+chimesFF: 	2 1 0 1 2 2 -1602.28801
+chimesFF: 	0 2 2 1 2 1 -1602.28801
+chimesFF: 	0 2 2 2 1 1 -1602.28801
+chimesFF: 	2 0 2 1 1 2 -1602.28801
+chimesFF: 	2 2 0 1 1 2 -1602.28801
+chimesFF: 	2 0 2 2 1 1 -1602.28801
+chimesFF: 	2 2 0 1 2 1 -1602.28801
+chimesFF: 	1 2 1 0 2 2 -1602.28801
+chimesFF: 	1 1 2 2 0 2 -1602.28801
+chimesFF: 	2 1 1 0 2 2 -1602.28801
+chimesFF: 	2 1 1 2 0 2 -1602.28801
+chimesFF: 	1 1 2 2 2 0 -1602.28801
+chimesFF: 	1 2 1 2 2 0 -1602.28801
+chimesFF: 	2 2 1 0 1 2 -1602.28801
+chimesFF: 	2 1 2 1 0 2 -1602.28801
+chimesFF: 	2 2 1 0 2 1 -1602.28801
+chimesFF: 	2 1 2 2 0 1 -1602.28801
+chimesFF: 	1 2 2 1 2 0 -1602.28801
+chimesFF: 	1 2 2 2 1 0 -1602.28801
+chimesFF: 	0 1 2 2 2 2 154.46998
+chimesFF: 	0 2 1 2 2 2 154.46998
+chimesFF: 	1 0 2 2 2 2 154.46998
+chimesFF: 	1 2 0 2 2 2 154.46998
+chimesFF: 	2 0 1 2 2 2 154.46998
+chimesFF: 	2 1 0 2 2 2 154.46998
+chimesFF: 	0 2 2 1 2 2 154.46998
+chimesFF: 	0 2 2 2 1 2 154.46998
+chimesFF: 	2 0 2 1 2 2 154.46998
+chimesFF: 	2 2 0 2 1 2 154.46998
+chimesFF: 	2 0 2 2 2 1 154.46998
+chimesFF: 	2 2 0 2 2 1 154.46998
+chimesFF: 	1 2 2 0 2 2 154.46998
+chimesFF: 	1 2 2 2 0 2 154.46998
+chimesFF: 	2 1 2 0 2 2 154.46998
+chimesFF: 	2 2 1 2 0 2 154.46998
+chimesFF: 	2 1 2 2 2 0 154.46998
+chimesFF: 	2 2 1 2 2 0 154.46998
+chimesFF: 	2 2 2 0 1 2 154.46998
+chimesFF: 	2 2 2 1 0 2 154.46998
+chimesFF: 	2 2 2 0 2 1 154.46998
+chimesFF: 	2 2 2 2 0 1 154.46998
+chimesFF: 	2 2 2 1 2 0 154.46998
+chimesFF: 	2 2 2 2 1 0 154.46998
+chimesFF: 	0 2 2 2 2 0 1123.65253
+chimesFF: 	2 0 2 2 0 2 1123.65253
+chimesFF: 	2 2 0 0 2 2 1123.65253
+chimesFF: 	0 2 2 2 2 1 741.22181
+chimesFF: 	2 0 2 2 1 2 741.22181
+chimesFF: 	2 2 0 1 2 2 741.22181
+chimesFF: 	2 2 1 0 2 2 741.22181
+chimesFF: 	2 1 2 2 0 2 741.22181
+chimesFF: 	1 2 2 2 2 0 741.22181
+chimesFF: 	0 2 2 2 2 2 -231.14752
+chimesFF: 	2 0 2 2 2 2 -231.14752
+chimesFF: 	2 2 0 2 2 2 -231.14752
+chimesFF: 	2 2 2 0 2 2 -231.14752
+chimesFF: 	2 2 2 2 0 2 -231.14752
+chimesFF: 	2 2 2 2 2 0 -231.14752
+chimesFF: 	1 1 1 1 2 2 -1772.07989
+chimesFF: 	1 1 1 2 1 2 -1772.07989
+chimesFF: 	1 1 1 2 2 1 -1772.07989
+chimesFF: 	1 1 2 1 1 2 -1772.07989
+chimesFF: 	1 2 1 1 1 2 -1772.07989
+chimesFF: 	1 1 2 1 2 1 -1772.07989
+chimesFF: 	1 2 1 2 1 1 -1772.07989
+chimesFF: 	2 1 1 1 2 1 -1772.07989
+chimesFF: 	2 1 1 2 1 1 -1772.07989
+chimesFF: 	1 2 2 1 1 1 -1772.07989
+chimesFF: 	2 1 2 1 1 1 -1772.07989
+chimesFF: 	2 2 1 1 1 1 -1772.07989
+chimesFF: 	1 1 1 2 2 2 5891.84971
+chimesFF: 	1 2 2 1 1 2 5891.84971
+chimesFF: 	2 1 2 1 2 1 5891.84971
+chimesFF: 	2 2 1 2 1 1 5891.84971
+chimesFF: 	1 1 2 2 1 1 375.94174
+chimesFF: 	1 2 1 1 2 1 375.94174
+chimesFF: 	2 1 1 1 1 2 375.94174
+chimesFF: 	1 1 2 2 1 2 -2689.00808
+chimesFF: 	1 2 1 1 2 2 -2689.00808
+chimesFF: 	1 1 2 2 2 1 -2689.00808
+chimesFF: 	1 2 1 2 2 1 -2689.00808
+chimesFF: 	2 1 1 1 2 2 -2689.00808
+chimesFF: 	2 1 1 2 1 2 -2689.00808
+chimesFF: 	1 2 2 1 2 1 -2689.00808
+chimesFF: 	1 2 2 2 1 1 -2689.00808
+chimesFF: 	2 1 2 1 1 2 -2689.00808
+chimesFF: 	2 2 1 1 1 2 -2689.00808
+chimesFF: 	2 1 2 2 1 1 -2689.00808
+chimesFF: 	2 2 1 1 2 1 -2689.00808
+chimesFF: 	1 1 2 2 2 2 769.07869
+chimesFF: 	1 2 1 2 2 2 769.07869
+chimesFF: 	2 1 1 2 2 2 769.07869
+chimesFF: 	1 2 2 1 2 2 769.07869
+chimesFF: 	1 2 2 2 1 2 769.07869
+chimesFF: 	2 1 2 1 2 2 769.07869
+chimesFF: 	2 2 1 2 1 2 769.07869
+chimesFF: 	2 1 2 2 2 1 769.07869
+chimesFF: 	2 2 1 2 2 1 769.07869
+chimesFF: 	2 2 2 1 1 2 769.07869
+chimesFF: 	2 2 2 1 2 1 769.07869
+chimesFF: 	2 2 2 2 1 1 769.07869
+chimesFF: Read 4B parameters for quadruplets: 1 H N N N
+chimesFF: 	0 0 1 0 1 1 309.01017
+chimesFF: 	0 1 0 1 0 1 309.01017
+chimesFF: 	1 0 0 1 1 0 309.01017
+chimesFF: 	0 0 1 0 1 2 -271.13322
+chimesFF: 	0 1 0 1 0 2 -271.13322
+chimesFF: 	0 0 1 0 2 1 -271.13322
+chimesFF: 	0 1 0 2 0 1 -271.13322
+chimesFF: 	1 0 0 1 2 0 -271.13322
+chimesFF: 	1 0 0 2 1 0 -271.13322
+chimesFF: 	0 0 1 0 2 2 381.20953
+chimesFF: 	0 1 0 2 0 2 381.20953
+chimesFF: 	1 0 0 2 2 0 381.20953
+chimesFF: 	0 0 1 1 0 0 -534.15270
+chimesFF: 	0 1 0 0 1 0 -534.15270
+chimesFF: 	1 0 0 0 0 1 -534.15270
+chimesFF: 	0 0 1 1 0 1 -154.78239
+chimesFF: 	0 1 0 0 1 1 -154.78239
+chimesFF: 	0 0 1 1 1 0 -154.78239
+chimesFF: 	0 1 0 1 1 0 -154.78239
+chimesFF: 	1 0 0 0 1 1 -154.78239
+chimesFF: 	1 0 0 1 0 1 -154.78239
+chimesFF: 	0 0 1 1 0 2 -1382.74495
+chimesFF: 	0 1 0 0 1 2 -1382.74495
+chimesFF: 	0 0 1 1 2 0 -1382.74495
+chimesFF: 	0 1 0 2 1 0 -1382.74495
+chimesFF: 	1 0 0 0 2 1 -1382.74495
+chimesFF: 	1 0 0 2 0 1 -1382.74495
+chimesFF: 	0 0 1 1 1 1 345.22358
+chimesFF: 	0 1 0 1 1 1 345.22358
+chimesFF: 	1 0 0 1 1 1 345.22358
+chimesFF: 	0 0 1 1 1 2 -1180.23609
+chimesFF: 	0 1 0 1 1 2 -1180.23609
+chimesFF: 	0 0 1 1 2 1 -1180.23609
+chimesFF: 	0 1 0 2 1 1 -1180.23609
+chimesFF: 	1 0 0 1 2 1 -1180.23609
+chimesFF: 	1 0 0 2 1 1 -1180.23609
+chimesFF: 	0 0 1 1 2 2 -1810.65745
+chimesFF: 	0 1 0 2 1 2 -1810.65745
+chimesFF: 	1 0 0 2 2 1 -1810.65745
+chimesFF: 	0 0 1 2 0 0 -401.74522
+chimesFF: 	0 1 0 0 2 0 -401.74522
+chimesFF: 	1 0 0 0 0 2 -401.74522
+chimesFF: 	0 0 1 2 0 1 -396.53929
+chimesFF: 	0 1 0 0 2 1 -396.53929
+chimesFF: 	0 0 1 2 1 0 -396.53929
+chimesFF: 	0 1 0 1 2 0 -396.53929
+chimesFF: 	1 0 0 0 1 2 -396.53929
+chimesFF: 	1 0 0 1 0 2 -396.53929
+chimesFF: 	0 0 1 2 0 2 -191.65025
+chimesFF: 	0 1 0 0 2 2 -191.65025
+chimesFF: 	0 0 1 2 2 0 -191.65025
+chimesFF: 	0 1 0 2 2 0 -191.65025
+chimesFF: 	1 0 0 0 2 2 -191.65025
+chimesFF: 	1 0 0 2 0 2 -191.65025
+chimesFF: 	0 0 1 2 1 2 -324.49086
+chimesFF: 	0 1 0 1 2 2 -324.49086
+chimesFF: 	0 0 1 2 2 1 -324.49086
+chimesFF: 	0 1 0 2 2 1 -324.49086
+chimesFF: 	1 0 0 1 2 2 -324.49086
+chimesFF: 	1 0 0 2 1 2 -324.49086
+chimesFF: 	0 0 1 2 2 2 362.63554
+chimesFF: 	0 1 0 2 2 2 362.63554
+chimesFF: 	1 0 0 2 2 2 362.63554
+chimesFF: 	0 0 2 0 1 1 -13.85570
+chimesFF: 	0 2 0 1 0 1 -13.85570
+chimesFF: 	2 0 0 1 1 0 -13.85570
+chimesFF: 	0 0 2 0 1 2 2.98504
+chimesFF: 	0 2 0 1 0 2 2.98504
+chimesFF: 	0 0 2 0 2 1 2.98504
+chimesFF: 	0 2 0 2 0 1 2.98504
+chimesFF: 	2 0 0 1 2 0 2.98504
+chimesFF: 	2 0 0 2 1 0 2.98504
+chimesFF: 	0 0 2 0 2 2 247.01486
+chimesFF: 	0 2 0 2 0 2 247.01486
+chimesFF: 	2 0 0 2 2 0 247.01486
+chimesFF: 	0 0 2 1 0 0 -938.23525
+chimesFF: 	0 2 0 0 1 0 -938.23525
+chimesFF: 	2 0 0 0 0 1 -938.23525
+chimesFF: 	0 0 2 1 0 1 -1211.35844
+chimesFF: 	0 2 0 0 1 1 -1211.35844
+chimesFF: 	0 0 2 1 1 0 -1211.35844
+chimesFF: 	0 2 0 1 1 0 -1211.35844
+chimesFF: 	2 0 0 0 1 1 -1211.35844
+chimesFF: 	2 0 0 1 0 1 -1211.35844
+chimesFF: 	0 0 2 1 0 2 -223.67391
+chimesFF: 	0 2 0 0 1 2 -223.67391
+chimesFF: 	0 0 2 1 2 0 -223.67391
+chimesFF: 	0 2 0 2 1 0 -223.67391
+chimesFF: 	2 0 0 0 2 1 -223.67391
+chimesFF: 	2 0 0 2 0 1 -223.67391
+chimesFF: 	0 0 2 1 1 1 -1533.15576
+chimesFF: 	0 2 0 1 1 1 -1533.15576
+chimesFF: 	2 0 0 1 1 1 -1533.15576
+chimesFF: 	0 0 2 1 1 2 -293.46706
+chimesFF: 	0 2 0 1 1 2 -293.46706
+chimesFF: 	0 0 2 1 2 1 -293.46706
+chimesFF: 	0 2 0 2 1 1 -293.46706
+chimesFF: 	2 0 0 1 2 1 -293.46706
+chimesFF: 	2 0 0 2 1 1 -293.46706
+chimesFF: 	0 0 2 1 2 2 168.53837
+chimesFF: 	0 2 0 2 1 2 168.53837
+chimesFF: 	2 0 0 2 2 1 168.53837
+chimesFF: 	0 0 2 2 0 0 -94.34780
+chimesFF: 	0 2 0 0 2 0 -94.34780
+chimesFF: 	2 0 0 0 0 2 -94.34780
+chimesFF: 	0 0 2 2 0 1 3.92492
+chimesFF: 	0 2 0 0 2 1 3.92492
+chimesFF: 	0 0 2 2 1 0 3.92492
+chimesFF: 	0 2 0 1 2 0 3.92492
+chimesFF: 	2 0 0 0 1 2 3.92492
+chimesFF: 	2 0 0 1 0 2 3.92492
+chimesFF: 	0 0 2 2 0 2 -91.74513
+chimesFF: 	0 2 0 0 2 2 -91.74513
+chimesFF: 	0 0 2 2 2 0 -91.74513
+chimesFF: 	0 2 0 2 2 0 -91.74513
+chimesFF: 	2 0 0 0 2 2 -91.74513
+chimesFF: 	2 0 0 2 0 2 -91.74513
+chimesFF: 	0 0 2 2 1 1 -58.81615
+chimesFF: 	0 2 0 1 2 1 -58.81615
+chimesFF: 	2 0 0 1 1 2 -58.81615
+chimesFF: 	0 0 2 2 2 2 420.10362
+chimesFF: 	0 2 0 2 2 2 420.10362
+chimesFF: 	2 0 0 2 2 2 420.10362
+chimesFF: 	0 1 1 0 1 0 -1294.36268
+chimesFF: 	0 1 1 1 0 0 -1294.36268
+chimesFF: 	1 0 1 0 0 1 -1294.36268
+chimesFF: 	1 1 0 0 0 1 -1294.36268
+chimesFF: 	1 0 1 1 0 0 -1294.36268
+chimesFF: 	1 1 0 0 1 0 -1294.36268
+chimesFF: 	0 1 1 0 1 1 12.71882
+chimesFF: 	0 1 1 1 0 1 12.71882
+chimesFF: 	1 0 1 0 1 1 12.71882
+chimesFF: 	1 1 0 1 0 1 12.71882
+chimesFF: 	1 0 1 1 1 0 12.71882
+chimesFF: 	1 1 0 1 1 0 12.71882
+chimesFF: 	0 1 1 0 1 2 -2700.26400
+chimesFF: 	0 1 1 1 0 2 -2700.26400
+chimesFF: 	1 0 1 0 2 1 -2700.26400
+chimesFF: 	1 1 0 2 0 1 -2700.26400
+chimesFF: 	1 0 1 1 2 0 -2700.26400
+chimesFF: 	1 1 0 2 1 0 -2700.26400
+chimesFF: 	0 1 1 0 2 0 -146.17076
+chimesFF: 	0 1 1 2 0 0 -146.17076
+chimesFF: 	1 0 1 0 0 2 -146.17076
+chimesFF: 	1 1 0 0 0 2 -146.17076
+chimesFF: 	1 0 1 2 0 0 -146.17076
+chimesFF: 	1 1 0 0 2 0 -146.17076
+chimesFF: 	0 1 1 0 2 1 -669.21585
+chimesFF: 	0 1 1 2 0 1 -669.21585
+chimesFF: 	1 0 1 0 1 2 -669.21585
+chimesFF: 	1 1 0 1 0 2 -669.21585
+chimesFF: 	1 0 1 2 1 0 -669.21585
+chimesFF: 	1 1 0 1 2 0 -669.21585
+chimesFF: 	0 1 1 0 2 2 434.46569
+chimesFF: 	0 1 1 2 0 2 434.46569
+chimesFF: 	1 0 1 0 2 2 434.46569
+chimesFF: 	1 1 0 2 0 2 434.46569
+chimesFF: 	1 0 1 2 2 0 434.46569
+chimesFF: 	1 1 0 2 2 0 434.46569
+chimesFF: 	0 1 1 1 1 0 -1525.64885
+chimesFF: 	1 0 1 1 0 1 -1525.64885
+chimesFF: 	1 1 0 0 1 1 -1525.64885
+chimesFF: 	0 1 1 1 1 2 -4230.56745
+chimesFF: 	1 0 1 1 2 1 -4230.56745
+chimesFF: 	1 1 0 2 1 1 -4230.56745
+chimesFF: 	0 1 1 1 2 0 -2174.63060
+chimesFF: 	0 1 1 2 1 0 -2174.63060
+chimesFF: 	1 0 1 1 0 2 -2174.63060
+chimesFF: 	1 1 0 0 1 2 -2174.63060
+chimesFF: 	1 0 1 2 0 1 -2174.63060
+chimesFF: 	1 1 0 0 2 1 -2174.63060
+chimesFF: 	0 1 1 1 2 1 -1179.34963
+chimesFF: 	0 1 1 2 1 1 -1179.34963
+chimesFF: 	1 0 1 1 1 2 -1179.34963
+chimesFF: 	1 1 0 1 1 2 -1179.34963
+chimesFF: 	1 0 1 2 1 1 -1179.34963
+chimesFF: 	1 1 0 1 2 1 -1179.34963
+chimesFF: 	0 1 1 1 2 2 -2682.52466
+chimesFF: 	0 1 1 2 1 2 -2682.52466
+chimesFF: 	1 0 1 1 2 2 -2682.52466
+chimesFF: 	1 1 0 2 1 2 -2682.52466
+chimesFF: 	1 0 1 2 2 1 -2682.52466
+chimesFF: 	1 1 0 2 2 1 -2682.52466
+chimesFF: 	0 1 1 2 2 1 -908.55000
+chimesFF: 	1 0 1 2 1 2 -908.55000
+chimesFF: 	1 1 0 1 2 2 -908.55000
+chimesFF: 	0 1 1 2 2 2 1183.06620
+chimesFF: 	1 0 1 2 2 2 1183.06620
+chimesFF: 	1 1 0 2 2 2 1183.06620
+chimesFF: 	0 1 2 0 1 0 -163.40233
+chimesFF: 	0 2 1 1 0 0 -163.40233
+chimesFF: 	1 0 2 0 0 1 -163.40233
+chimesFF: 	1 2 0 0 0 1 -163.40233
+chimesFF: 	2 0 1 1 0 0 -163.40233
+chimesFF: 	2 1 0 0 1 0 -163.40233
+chimesFF: 	0 1 2 0 1 1 39.85650
+chimesFF: 	0 2 1 1 0 1 39.85650
+chimesFF: 	1 0 2 0 1 1 39.85650
+chimesFF: 	1 2 0 1 0 1 39.85650
+chimesFF: 	2 0 1 1 1 0 39.85650
+chimesFF: 	2 1 0 1 1 0 39.85650
+chimesFF: 	0 1 2 0 1 2 -678.36747
+chimesFF: 	0 2 1 1 0 2 -678.36747
+chimesFF: 	1 0 2 0 2 1 -678.36747
+chimesFF: 	1 2 0 2 0 1 -678.36747
+chimesFF: 	2 0 1 1 2 0 -678.36747
+chimesFF: 	2 1 0 2 1 0 -678.36747
+chimesFF: 	0 1 2 0 2 0 -396.63886
+chimesFF: 	0 2 1 2 0 0 -396.63886
+chimesFF: 	1 0 2 0 0 2 -396.63886
+chimesFF: 	1 2 0 0 0 2 -396.63886
+chimesFF: 	2 0 1 2 0 0 -396.63886
+chimesFF: 	2 1 0 0 2 0 -396.63886
+chimesFF: 	0 1 2 0 2 1 -389.39133
+chimesFF: 	0 2 1 2 0 1 -389.39133
+chimesFF: 	1 0 2 0 1 2 -389.39133
+chimesFF: 	1 2 0 1 0 2 -389.39133
+chimesFF: 	2 0 1 2 1 0 -389.39133
+chimesFF: 	2 1 0 1 2 0 -389.39133
+chimesFF: 	0 1 2 0 2 2 279.83312
+chimesFF: 	0 2 1 2 0 2 279.83312
+chimesFF: 	1 0 2 0 2 2 279.83312
+chimesFF: 	1 2 0 2 0 2 279.83312
+chimesFF: 	2 0 1 2 2 0 279.83312
+chimesFF: 	2 1 0 2 2 0 279.83312
+chimesFF: 	0 1 2 1 0 0 -1146.91121
+chimesFF: 	0 2 1 0 1 0 -1146.91121
+chimesFF: 	1 0 2 1 0 0 -1146.91121
+chimesFF: 	1 2 0 0 1 0 -1146.91121
+chimesFF: 	2 0 1 0 0 1 -1146.91121
+chimesFF: 	2 1 0 0 0 1 -1146.91121
+chimesFF: 	0 1 2 1 0 1 -1263.07033
+chimesFF: 	0 2 1 0 1 1 -1263.07033
+chimesFF: 	1 0 2 1 1 0 -1263.07033
+chimesFF: 	1 2 0 1 1 0 -1263.07033
+chimesFF: 	2 0 1 0 1 1 -1263.07033
+chimesFF: 	2 1 0 1 0 1 -1263.07033
+chimesFF: 	0 1 2 1 0 2 -437.01457
+chimesFF: 	0 2 1 0 1 2 -437.01457
+chimesFF: 	1 0 2 1 2 0 -437.01457
+chimesFF: 	1 2 0 2 1 0 -437.01457
+chimesFF: 	2 0 1 0 2 1 -437.01457
+chimesFF: 	2 1 0 2 0 1 -437.01457
+chimesFF: 	0 1 2 1 1 0 -1371.14236
+chimesFF: 	0 2 1 1 1 0 -1371.14236
+chimesFF: 	1 0 2 1 0 1 -1371.14236
+chimesFF: 	1 2 0 0 1 1 -1371.14236
+chimesFF: 	2 0 1 1 0 1 -1371.14236
+chimesFF: 	2 1 0 0 1 1 -1371.14236
+chimesFF: 	0 1 2 1 1 1 -1749.50467
+chimesFF: 	0 2 1 1 1 1 -1749.50467
+chimesFF: 	1 0 2 1 1 1 -1749.50467
+chimesFF: 	1 2 0 1 1 1 -1749.50467
+chimesFF: 	2 0 1 1 1 1 -1749.50467
+chimesFF: 	2 1 0 1 1 1 -1749.50467
+chimesFF: 	0 1 2 1 1 2 -800.16510
+chimesFF: 	0 2 1 1 1 2 -800.16510
+chimesFF: 	1 0 2 1 2 1 -800.16510
+chimesFF: 	1 2 0 2 1 1 -800.16510
+chimesFF: 	2 0 1 1 2 1 -800.16510
+chimesFF: 	2 1 0 2 1 1 -800.16510
+chimesFF: 	0 1 2 1 2 0 -778.56156
+chimesFF: 	0 2 1 2 1 0 -778.56156
+chimesFF: 	1 0 2 1 0 2 -778.56156
+chimesFF: 	1 2 0 0 1 2 -778.56156
+chimesFF: 	2 0 1 2 0 1 -778.56156
+chimesFF: 	2 1 0 0 2 1 -778.56156
+chimesFF: 	0 1 2 1 2 1 -667.22993
+chimesFF: 	0 2 1 2 1 1 -667.22993
+chimesFF: 	1 0 2 1 1 2 -667.22993
+chimesFF: 	1 2 0 1 1 2 -667.22993
+chimesFF: 	2 0 1 2 1 1 -667.22993
+chimesFF: 	2 1 0 1 2 1 -667.22993
+chimesFF: 	0 1 2 1 2 2 -131.16734
+chimesFF: 	0 2 1 2 1 2 -131.16734
+chimesFF: 	1 0 2 1 2 2 -131.16734
+chimesFF: 	1 2 0 2 1 2 -131.16734
+chimesFF: 	2 0 1 2 2 1 -131.16734
+chimesFF: 	2 1 0 2 2 1 -131.16734
+chimesFF: 	0 1 2 2 0 1 -76.03571
+chimesFF: 	0 2 1 0 2 1 -76.03571
+chimesFF: 	1 0 2 2 1 0 -76.03571
+chimesFF: 	1 2 0 1 2 0 -76.03571
+chimesFF: 	2 0 1 0 1 2 -76.03571
+chimesFF: 	2 1 0 1 0 2 -76.03571
+chimesFF: 	0 1 2 2 0 2 220.03419
+chimesFF: 	0 2 1 0 2 2 220.03419
+chimesFF: 	1 0 2 2 2 0 220.03419
+chimesFF: 	1 2 0 2 2 0 220.03419
+chimesFF: 	2 0 1 0 2 2 220.03419
+chimesFF: 	2 1 0 2 0 2 220.03419
+chimesFF: 	0 1 2 2 1 0 -502.18565
+chimesFF: 	0 2 1 1 2 0 -502.18565
+chimesFF: 	1 0 2 2 0 1 -502.18565
+chimesFF: 	1 2 0 0 2 1 -502.18565
+chimesFF: 	2 0 1 1 0 2 -502.18565
+chimesFF: 	2 1 0 0 1 2 -502.18565
+chimesFF: 	0 1 2 2 1 1 -493.36772
+chimesFF: 	0 2 1 1 2 1 -493.36772
+chimesFF: 	1 0 2 2 1 1 -493.36772
+chimesFF: 	1 2 0 1 2 1 -493.36772
+chimesFF: 	2 0 1 1 1 2 -493.36772
+chimesFF: 	2 1 0 1 1 2 -493.36772
+chimesFF: 	0 1 2 2 1 2 -787.59424
+chimesFF: 	0 2 1 1 2 2 -787.59424
+chimesFF: 	1 0 2 2 2 1 -787.59424
+chimesFF: 	1 2 0 2 2 1 -787.59424
+chimesFF: 	2 0 1 1 2 2 -787.59424
+chimesFF: 	2 1 0 2 1 2 -787.59424
+chimesFF: 	0 1 2 2 2 0 -129.15587
+chimesFF: 	0 2 1 2 2 0 -129.15587
+chimesFF: 	1 0 2 2 0 2 -129.15587
+chimesFF: 	1 2 0 0 2 2 -129.15587
+chimesFF: 	2 0 1 2 0 2 -129.15587
+chimesFF: 	2 1 0 0 2 2 -129.15587
+chimesFF: 	0 1 2 2 2 1 -99.10002
+chimesFF: 	0 2 1 2 2 1 -99.10002
+chimesFF: 	1 0 2 2 1 2 -99.10002
+chimesFF: 	1 2 0 1 2 2 -99.10002
+chimesFF: 	2 0 1 2 1 2 -99.10002
+chimesFF: 	2 1 0 1 2 2 -99.10002
+chimesFF: 	0 1 2 2 2 2 1044.45949
+chimesFF: 	0 2 1 2 2 2 1044.45949
+chimesFF: 	1 0 2 2 2 2 1044.45949
+chimesFF: 	1 2 0 2 2 2 1044.45949
+chimesFF: 	2 0 1 2 2 2 1044.45949
+chimesFF: 	2 1 0 2 2 2 1044.45949
+chimesFF: 	0 2 2 0 1 0 -535.45958
+chimesFF: 	0 2 2 1 0 0 -535.45958
+chimesFF: 	2 0 2 0 0 1 -535.45958
+chimesFF: 	2 2 0 0 0 1 -535.45958
+chimesFF: 	2 0 2 1 0 0 -535.45958
+chimesFF: 	2 2 0 0 1 0 -535.45958
+chimesFF: 	0 2 2 0 1 1 -879.76404
+chimesFF: 	0 2 2 1 0 1 -879.76404
+chimesFF: 	2 0 2 0 1 1 -879.76404
+chimesFF: 	2 2 0 1 0 1 -879.76404
+chimesFF: 	2 0 2 1 1 0 -879.76404
+chimesFF: 	2 2 0 1 1 0 -879.76404
+chimesFF: 	0 2 2 0 1 2 -42.57831
+chimesFF: 	0 2 2 1 0 2 -42.57831
+chimesFF: 	2 0 2 0 2 1 -42.57831
+chimesFF: 	2 2 0 2 0 1 -42.57831
+chimesFF: 	2 0 2 1 2 0 -42.57831
+chimesFF: 	2 2 0 2 1 0 -42.57831
+chimesFF: 	0 2 2 0 2 0 -37.57579
+chimesFF: 	0 2 2 2 0 0 -37.57579
+chimesFF: 	2 0 2 0 0 2 -37.57579
+chimesFF: 	2 2 0 0 0 2 -37.57579
+chimesFF: 	2 0 2 2 0 0 -37.57579
+chimesFF: 	2 2 0 0 2 0 -37.57579
+chimesFF: 	0 2 2 0 2 1 91.12839
+chimesFF: 	0 2 2 2 0 1 91.12839
+chimesFF: 	2 0 2 0 1 2 91.12839
+chimesFF: 	2 2 0 1 0 2 91.12839
+chimesFF: 	2 0 2 2 1 0 91.12839
+chimesFF: 	2 2 0 1 2 0 91.12839
+chimesFF: 	0 2 2 0 2 2 16.73734
+chimesFF: 	0 2 2 2 0 2 16.73734
+chimesFF: 	2 0 2 0 2 2 16.73734
+chimesFF: 	2 2 0 2 0 2 16.73734
+chimesFF: 	2 0 2 2 2 0 16.73734
+chimesFF: 	2 2 0 2 2 0 16.73734
+chimesFF: 	0 2 2 1 1 0 -1744.63441
+chimesFF: 	2 0 2 1 0 1 -1744.63441
+chimesFF: 	2 2 0 0 1 1 -1744.63441
+chimesFF: 	0 2 2 1 1 1 -2405.67884
+chimesFF: 	2 0 2 1 1 1 -2405.67884
+chimesFF: 	2 2 0 1 1 1 -2405.67884
+chimesFF: 	0 2 2 1 1 2 -567.65200
+chimesFF: 	2 0 2 1 2 1 -567.65200
+chimesFF: 	2 2 0 2 1 1 -567.65200
+chimesFF: 	0 2 2 1 2 2 215.24378
+chimesFF: 	0 2 2 2 1 2 215.24378
+chimesFF: 	2 0 2 1 2 2 215.24378
+chimesFF: 	2 2 0 2 1 2 215.24378
+chimesFF: 	2 0 2 2 2 1 215.24378
+chimesFF: 	2 2 0 2 2 1 215.24378
+chimesFF: 	0 2 2 2 2 0 -183.12560
+chimesFF: 	2 0 2 2 0 2 -183.12560
+chimesFF: 	2 2 0 0 2 2 -183.12560
+chimesFF: 	0 2 2 2 2 1 -54.11985
+chimesFF: 	2 0 2 2 1 2 -54.11985
+chimesFF: 	2 2 0 1 2 2 -54.11985
+chimesFF: 	0 2 2 2 2 2 366.34042
+chimesFF: 	2 0 2 2 2 2 366.34042
+chimesFF: 	2 2 0 2 2 2 366.34042
+chimesFF: 	1 1 1 0 0 0 -305.07003
+chimesFF: 	1 1 1 0 0 1 -2440.93362
+chimesFF: 	1 1 1 0 1 0 -2440.93362
+chimesFF: 	1 1 1 1 0 0 -2440.93362
+chimesFF: 	1 1 1 0 1 1 -2133.14746
+chimesFF: 	1 1 1 1 0 1 -2133.14746
+chimesFF: 	1 1 1 1 1 0 -2133.14746
+chimesFF: 	1 1 1 0 1 2 -3826.96615
+chimesFF: 	1 1 1 1 0 2 -3826.96615
+chimesFF: 	1 1 1 0 2 1 -3826.96615
+chimesFF: 	1 1 1 2 0 1 -3826.96615
+chimesFF: 	1 1 1 1 2 0 -3826.96615
+chimesFF: 	1 1 1 2 1 0 -3826.96615
+chimesFF: 	1 1 1 0 2 2 815.27057
+chimesFF: 	1 1 1 2 0 2 815.27057
+chimesFF: 	1 1 1 2 2 0 815.27057
+chimesFF: 	1 1 1 1 1 1 -1660.22993
+chimesFF: 	1 1 1 1 1 2 -4590.85151
+chimesFF: 	1 1 1 1 2 1 -4590.85151
+chimesFF: 	1 1 1 2 1 1 -4590.85151
+chimesFF: 	1 1 1 1 2 2 -4285.89541
+chimesFF: 	1 1 1 2 1 2 -4285.89541
+chimesFF: 	1 1 1 2 2 1 -4285.89541
+chimesFF: 	1 1 1 2 2 2 2290.93179
+chimesFF: 	1 1 2 0 0 0 -70.76802
+chimesFF: 	1 2 1 0 0 0 -70.76802
+chimesFF: 	2 1 1 0 0 0 -70.76802
+chimesFF: 	1 1 2 0 0 1 -705.60959
+chimesFF: 	1 2 1 0 0 1 -705.60959
+chimesFF: 	1 1 2 0 1 0 -705.60959
+chimesFF: 	1 2 1 1 0 0 -705.60959
+chimesFF: 	2 1 1 0 1 0 -705.60959
+chimesFF: 	2 1 1 1 0 0 -705.60959
+chimesFF: 	1 1 2 0 0 2 -643.70176
+chimesFF: 	1 2 1 0 0 2 -643.70176
+chimesFF: 	1 1 2 0 2 0 -643.70176
+chimesFF: 	1 2 1 2 0 0 -643.70176
+chimesFF: 	2 1 1 0 2 0 -643.70176
+chimesFF: 	2 1 1 2 0 0 -643.70176
+chimesFF: 	1 1 2 0 1 1 -800.61926
+chimesFF: 	1 2 1 1 0 1 -800.61926
+chimesFF: 	2 1 1 1 1 0 -800.61926
+chimesFF: 	1 1 2 0 1 2 -1598.98512
+chimesFF: 	1 2 1 1 0 2 -1598.98512
+chimesFF: 	1 1 2 0 2 1 -1598.98512
+chimesFF: 	1 2 1 2 0 1 -1598.98512
+chimesFF: 	2 1 1 1 2 0 -1598.98512
+chimesFF: 	2 1 1 2 1 0 -1598.98512
+chimesFF: 	1 1 2 0 2 2 -68.95715
+chimesFF: 	1 2 1 2 0 2 -68.95715
+chimesFF: 	2 1 1 2 2 0 -68.95715
+chimesFF: 	1 1 2 1 0 0 -1555.47566
+chimesFF: 	1 2 1 0 1 0 -1555.47566
+chimesFF: 	2 1 1 0 0 1 -1555.47566
+chimesFF: 	1 1 2 1 0 1 -1654.56714
+chimesFF: 	1 2 1 0 1 1 -1654.56714
+chimesFF: 	1 1 2 1 1 0 -1654.56714
+chimesFF: 	1 2 1 1 1 0 -1654.56714
+chimesFF: 	2 1 1 0 1 1 -1654.56714
+chimesFF: 	2 1 1 1 0 1 -1654.56714
+chimesFF: 	1 1 2 1 0 2 -1603.99862
+chimesFF: 	1 2 1 0 1 2 -1603.99862
+chimesFF: 	1 1 2 1 2 0 -1603.99862
+chimesFF: 	1 2 1 2 1 0 -1603.99862
+chimesFF: 	2 1 1 0 2 1 -1603.99862
+chimesFF: 	2 1 1 2 0 1 -1603.99862
+chimesFF: 	1 1 2 1 1 1 -2654.85244
+chimesFF: 	1 2 1 1 1 1 -2654.85244
+chimesFF: 	2 1 1 1 1 1 -2654.85244
+chimesFF: 	1 1 2 1 1 2 -1733.94168
+chimesFF: 	1 2 1 1 1 2 -1733.94168
+chimesFF: 	1 1 2 1 2 1 -1733.94168
+chimesFF: 	1 2 1 2 1 1 -1733.94168
+chimesFF: 	2 1 1 1 2 1 -1733.94168
+chimesFF: 	2 1 1 2 1 1 -1733.94168
+chimesFF: 	1 1 2 1 2 2 -1331.41859
+chimesFF: 	1 2 1 2 1 2 -1331.41859
+chimesFF: 	2 1 1 2 2 1 -1331.41859
+chimesFF: 	1 1 2 2 0 0 -253.11029
+chimesFF: 	1 2 1 0 2 0 -253.11029
+chimesFF: 	2 1 1 0 0 2 -253.11029
+chimesFF: 	1 1 2 2 0 1 -1664.08212
+chimesFF: 	1 2 1 0 2 1 -1664.08212
+chimesFF: 	1 1 2 2 1 0 -1664.08212
+chimesFF: 	1 2 1 1 2 0 -1664.08212
+chimesFF: 	2 1 1 0 1 2 -1664.08212
+chimesFF: 	2 1 1 1 0 2 -1664.08212
+chimesFF: 	1 1 2 2 0 2 -124.52047
+chimesFF: 	1 2 1 0 2 2 -124.52047
+chimesFF: 	1 1 2 2 2 0 -124.52047
+chimesFF: 	1 2 1 2 2 0 -124.52047
+chimesFF: 	2 1 1 0 2 2 -124.52047
+chimesFF: 	2 1 1 2 0 2 -124.52047
+chimesFF: 	1 1 2 2 1 1 -2622.52057
+chimesFF: 	1 2 1 1 2 1 -2622.52057
+chimesFF: 	2 1 1 1 1 2 -2622.52057
+chimesFF: 	1 1 2 2 1 2 -1772.41355
+chimesFF: 	1 2 1 1 2 2 -1772.41355
+chimesFF: 	1 1 2 2 2 1 -1772.41355
+chimesFF: 	1 2 1 2 2 1 -1772.41355
+chimesFF: 	2 1 1 1 2 2 -1772.41355
+chimesFF: 	2 1 1 2 1 2 -1772.41355
+chimesFF: 	1 1 2 2 2 2 1463.04689
+chimesFF: 	1 2 1 2 2 2 1463.04689
+chimesFF: 	2 1 1 2 2 2 1463.04689
+chimesFF: 	1 2 2 0 0 0 227.96781
+chimesFF: 	2 1 2 0 0 0 227.96781
+chimesFF: 	2 2 1 0 0 0 227.96781
+chimesFF: 	1 2 2 0 0 1 596.08493
+chimesFF: 	2 1 2 0 1 0 596.08493
+chimesFF: 	2 2 1 1 0 0 596.08493
+chimesFF: 	1 2 2 0 0 2 124.36763
+chimesFF: 	2 1 2 0 2 0 124.36763
+chimesFF: 	2 2 1 2 0 0 124.36763
+chimesFF: 	1 2 2 0 1 0 -728.39007
+chimesFF: 	1 2 2 1 0 0 -728.39007
+chimesFF: 	2 1 2 0 0 1 -728.39007
+chimesFF: 	2 2 1 0 0 1 -728.39007
+chimesFF: 	2 1 2 1 0 0 -728.39007
+chimesFF: 	2 2 1 0 1 0 -728.39007
+chimesFF: 	1 2 2 0 1 1 -441.44899
+chimesFF: 	1 2 2 1 0 1 -441.44899
+chimesFF: 	2 1 2 0 1 1 -441.44899
+chimesFF: 	2 2 1 1 0 1 -441.44899
+chimesFF: 	2 1 2 1 1 0 -441.44899
+chimesFF: 	2 2 1 1 1 0 -441.44899
+chimesFF: 	1 2 2 0 1 2 -235.49302
+chimesFF: 	1 2 2 1 0 2 -235.49302
+chimesFF: 	2 1 2 0 2 1 -235.49302
+chimesFF: 	2 2 1 2 0 1 -235.49302
+chimesFF: 	2 1 2 1 2 0 -235.49302
+chimesFF: 	2 2 1 2 1 0 -235.49302
+chimesFF: 	1 2 2 0 2 0 477.27993
+chimesFF: 	1 2 2 2 0 0 477.27993
+chimesFF: 	2 1 2 0 0 2 477.27993
+chimesFF: 	2 2 1 0 0 2 477.27993
+chimesFF: 	2 1 2 2 0 0 477.27993
+chimesFF: 	2 2 1 0 2 0 477.27993
+chimesFF: 	1 2 2 0 2 1 669.73551
+chimesFF: 	1 2 2 2 0 1 669.73551
+chimesFF: 	2 1 2 0 1 2 669.73551
+chimesFF: 	2 2 1 1 0 2 669.73551
+chimesFF: 	2 1 2 2 1 0 669.73551
+chimesFF: 	2 2 1 1 2 0 669.73551
+chimesFF: 	1 2 2 0 2 2 698.17824
+chimesFF: 	1 2 2 2 0 2 698.17824
+chimesFF: 	2 1 2 0 2 2 698.17824
+chimesFF: 	2 2 1 2 0 2 698.17824
+chimesFF: 	2 1 2 2 2 0 698.17824
+chimesFF: 	2 2 1 2 2 0 698.17824
+chimesFF: 	1 2 2 1 1 0 -2416.58434
+chimesFF: 	2 1 2 1 0 1 -2416.58434
+chimesFF: 	2 2 1 0 1 1 -2416.58434
+chimesFF: 	1 2 2 1 1 1 -2650.71015
+chimesFF: 	2 1 2 1 1 1 -2650.71015
+chimesFF: 	2 2 1 1 1 1 -2650.71015
+chimesFF: 	1 2 2 1 1 2 -943.55269
+chimesFF: 	2 1 2 1 2 1 -943.55269
+chimesFF: 	2 2 1 2 1 1 -943.55269
+chimesFF: 	1 2 2 1 2 0 109.27329
+chimesFF: 	1 2 2 2 1 0 109.27329
+chimesFF: 	2 1 2 1 0 2 109.27329
+chimesFF: 	2 2 1 0 1 2 109.27329
+chimesFF: 	2 1 2 2 0 1 109.27329
+chimesFF: 	2 2 1 0 2 1 109.27329
+chimesFF: 	1 2 2 1 2 1 475.50403
+chimesFF: 	1 2 2 2 1 1 475.50403
+chimesFF: 	2 1 2 1 1 2 475.50403
+chimesFF: 	2 2 1 1 1 2 475.50403
+chimesFF: 	2 1 2 2 1 1 475.50403
+chimesFF: 	2 2 1 1 2 1 475.50403
+chimesFF: 	1 2 2 1 2 2 506.59147
+chimesFF: 	1 2 2 2 1 2 506.59147
+chimesFF: 	2 1 2 1 2 2 506.59147
+chimesFF: 	2 2 1 2 1 2 506.59147
+chimesFF: 	2 1 2 2 2 1 506.59147
+chimesFF: 	2 2 1 2 2 1 506.59147
+chimesFF: 	1 2 2 2 2 0 613.49429
+chimesFF: 	2 1 2 2 0 2 613.49429
+chimesFF: 	2 2 1 0 2 2 613.49429
+chimesFF: 	1 2 2 2 2 1 490.16534
+chimesFF: 	2 1 2 2 1 2 490.16534
+chimesFF: 	2 2 1 1 2 2 490.16534
+chimesFF: 	1 2 2 2 2 2 1638.87266
+chimesFF: 	2 1 2 2 2 2 1638.87266
+chimesFF: 	2 2 1 2 2 2 1638.87266
+chimesFF: 	2 2 2 0 0 0 -200.10917
+chimesFF: 	2 2 2 0 0 1 -402.68427
+chimesFF: 	2 2 2 0 1 0 -402.68427
+chimesFF: 	2 2 2 1 0 0 -402.68427
+chimesFF: 	2 2 2 0 0 2 -262.25676
+chimesFF: 	2 2 2 0 2 0 -262.25676
+chimesFF: 	2 2 2 2 0 0 -262.25676
+chimesFF: 	2 2 2 0 1 1 -1273.72588
+chimesFF: 	2 2 2 1 0 1 -1273.72588
+chimesFF: 	2 2 2 1 1 0 -1273.72588
+chimesFF: 	2 2 2 0 1 2 -53.20549
+chimesFF: 	2 2 2 1 0 2 -53.20549
+chimesFF: 	2 2 2 0 2 1 -53.20549
+chimesFF: 	2 2 2 2 0 1 -53.20549
+chimesFF: 	2 2 2 1 2 0 -53.20549
+chimesFF: 	2 2 2 2 1 0 -53.20549
+chimesFF: 	2 2 2 0 2 2 -339.70221
+chimesFF: 	2 2 2 2 0 2 -339.70221
+chimesFF: 	2 2 2 2 2 0 -339.70221
+chimesFF: 	2 2 2 1 1 1 -2488.03070
+chimesFF: 	2 2 2 1 1 2 -178.83759
+chimesFF: 	2 2 2 1 2 1 -178.83759
+chimesFF: 	2 2 2 2 1 1 -178.83759
+chimesFF: Read 4B parameters for quadruplets: 2 H H N N
+chimesFF: 	0 0 1 0 1 1 -39.66481
+chimesFF: 	0 1 0 1 0 1 -39.66481
+chimesFF: 	0 0 1 0 1 2 -467.29776
+chimesFF: 	0 1 0 1 0 2 -467.29776
+chimesFF: 	0 0 1 0 2 1 9.91213
+chimesFF: 	0 1 0 2 0 1 9.91213
+chimesFF: 	0 0 2 0 1 1 9.91213
+chimesFF: 	0 2 0 1 0 1 9.91213
+chimesFF: 	0 0 1 0 2 2 4.17874
+chimesFF: 	0 1 0 2 0 2 4.17874
+chimesFF: 	0 0 2 0 1 2 4.17874
+chimesFF: 	0 2 0 1 0 2 4.17874
+chimesFF: 	0 0 1 1 0 0 -104.93065
+chimesFF: 	0 1 0 0 1 0 -104.93065
+chimesFF: 	0 0 1 1 0 1 -436.81108
+chimesFF: 	0 1 0 0 1 1 -436.81108
+chimesFF: 	0 0 1 1 0 2 165.85475
+chimesFF: 	0 1 0 0 1 2 165.85475
+chimesFF: 	0 0 1 1 1 0 -48.89338
+chimesFF: 	0 1 0 1 1 0 -48.89338
+chimesFF: 	0 1 1 0 1 0 -48.89338
+chimesFF: 	0 1 1 1 0 0 -48.89338
+chimesFF: 	0 0 1 1 1 1 -240.37246
+chimesFF: 	0 1 0 1 1 1 -240.37246
+chimesFF: 	0 1 1 0 1 1 -240.37246
+chimesFF: 	0 1 1 1 0 1 -240.37246
+chimesFF: 	0 0 1 1 1 2 -167.10809
+chimesFF: 	0 1 0 1 1 2 -167.10809
+chimesFF: 	0 1 1 0 1 2 -167.10809
+chimesFF: 	0 1 1 1 0 2 -167.10809
+chimesFF: 	0 0 1 1 2 0 13.16419
+chimesFF: 	0 1 0 2 1 0 13.16419
+chimesFF: 	0 1 2 0 1 0 13.16419
+chimesFF: 	0 2 1 1 0 0 13.16419
+chimesFF: 	0 0 1 1 2 1 -59.55401
+chimesFF: 	0 1 0 2 1 1 -59.55401
+chimesFF: 	0 1 2 0 1 1 -59.55401
+chimesFF: 	0 2 1 1 0 1 -59.55401
+chimesFF: 	0 0 1 1 2 2 105.07152
+chimesFF: 	0 1 0 2 1 2 105.07152
+chimesFF: 	0 1 2 0 1 2 105.07152
+chimesFF: 	0 2 1 1 0 2 105.07152
+chimesFF: 	0 0 1 2 0 0 -85.14808
+chimesFF: 	0 1 0 0 2 0 -85.14808
+chimesFF: 	0 2 0 0 1 0 -85.14808
+chimesFF: 	0 0 2 1 0 0 -85.14808
+chimesFF: 	0 0 1 2 0 1 -3.39845
+chimesFF: 	0 1 0 0 2 1 -3.39845
+chimesFF: 	0 2 0 0 1 1 -3.39845
+chimesFF: 	0 0 2 1 0 1 -3.39845
+chimesFF: 	0 0 1 2 0 2 -113.65397
+chimesFF: 	0 1 0 0 2 2 -113.65397
+chimesFF: 	0 2 0 0 1 2 -113.65397
+chimesFF: 	0 0 2 1 0 2 -113.65397
+chimesFF: 	0 0 1 2 1 0 -166.79208
+chimesFF: 	0 1 0 1 2 0 -166.79208
+chimesFF: 	0 2 1 0 1 0 -166.79208
+chimesFF: 	0 1 2 1 0 0 -166.79208
+chimesFF: 	0 0 1 2 1 1 -24.26132
+chimesFF: 	0 1 0 1 2 1 -24.26132
+chimesFF: 	0 2 1 0 1 1 -24.26132
+chimesFF: 	0 1 2 1 0 1 -24.26132
+chimesFF: 	0 0 1 2 1 2 -433.95531
+chimesFF: 	0 1 0 1 2 2 -433.95531
+chimesFF: 	0 2 1 0 1 2 -433.95531
+chimesFF: 	0 1 2 1 0 2 -433.95531
+chimesFF: 	0 0 1 2 2 0 69.55816
+chimesFF: 	0 1 0 2 2 0 69.55816
+chimesFF: 	0 2 2 0 1 0 69.55816
+chimesFF: 	0 2 2 1 0 0 69.55816
+chimesFF: 	0 0 1 2 2 1 44.61622
+chimesFF: 	0 1 0 2 2 1 44.61622
+chimesFF: 	0 2 2 0 1 1 44.61622
+chimesFF: 	0 2 2 1 0 1 44.61622
+chimesFF: 	0 0 1 2 2 2 180.82632
+chimesFF: 	0 1 0 2 2 2 180.82632
+chimesFF: 	0 2 2 0 1 2 180.82632
+chimesFF: 	0 2 2 1 0 2 180.82632
+chimesFF: 	0 0 2 0 2 1 -9.99312
+chimesFF: 	0 2 0 2 0 1 -9.99312
+chimesFF: 	0 0 2 0 2 2 27.88229
+chimesFF: 	0 2 0 2 0 2 27.88229
+chimesFF: 	0 0 2 1 1 0 -184.59361
+chimesFF: 	0 2 0 1 1 0 -184.59361
+chimesFF: 	0 1 1 0 2 0 -184.59361
+chimesFF: 	0 1 1 2 0 0 -184.59361
+chimesFF: 	0 0 2 1 1 2 -67.46465
+chimesFF: 	0 2 0 1 1 2 -67.46465
+chimesFF: 	0 1 1 0 2 2 -67.46465
+chimesFF: 	0 1 1 2 0 2 -67.46465
+chimesFF: 	0 0 2 1 2 0 131.06623
+chimesFF: 	0 2 0 2 1 0 131.06623
+chimesFF: 	0 1 2 0 2 0 131.06623
+chimesFF: 	0 2 1 2 0 0 131.06623
+chimesFF: 	0 0 2 1 2 1 20.88449
+chimesFF: 	0 2 0 2 1 1 20.88449
+chimesFF: 	0 1 2 0 2 1 20.88449
+chimesFF: 	0 2 1 2 0 1 20.88449
+chimesFF: 	0 0 2 1 2 2 99.67488
+chimesFF: 	0 2 0 2 1 2 99.67488
+chimesFF: 	0 1 2 0 2 2 99.67488
+chimesFF: 	0 2 1 2 0 2 99.67488
+chimesFF: 	0 0 2 2 0 0 -139.04075
+chimesFF: 	0 2 0 0 2 0 -139.04075
+chimesFF: 	0 0 2 2 0 1 -14.95843
+chimesFF: 	0 2 0 0 2 1 -14.95843
+chimesFF: 	0 0 2 2 0 2 -10.54103
+chimesFF: 	0 2 0 0 2 2 -10.54103
+chimesFF: 	0 0 2 2 1 0 -173.58060
+chimesFF: 	0 2 0 1 2 0 -173.58060
+chimesFF: 	0 2 1 0 2 0 -173.58060
+chimesFF: 	0 1 2 2 0 0 -173.58060
+chimesFF: 	0 0 2 2 1 1 -53.11803
+chimesFF: 	0 2 0 1 2 1 -53.11803
+chimesFF: 	0 2 1 0 2 1 -53.11803
+chimesFF: 	0 1 2 2 0 1 -53.11803
+chimesFF: 	0 0 2 2 1 2 -64.52043
+chimesFF: 	0 2 0 1 2 2 -64.52043
+chimesFF: 	0 2 1 0 2 2 -64.52043
+chimesFF: 	0 1 2 2 0 2 -64.52043
+chimesFF: 	0 0 2 2 2 0 13.82523
+chimesFF: 	0 2 0 2 2 0 13.82523
+chimesFF: 	0 2 2 0 2 0 13.82523
+chimesFF: 	0 2 2 2 0 0 13.82523
+chimesFF: 	0 0 2 2 2 1 9.34455
+chimesFF: 	0 2 0 2 2 1 9.34455
+chimesFF: 	0 2 2 0 2 1 9.34455
+chimesFF: 	0 2 2 2 0 1 9.34455
+chimesFF: 	0 0 2 2 2 2 -8.79553
+chimesFF: 	0 2 0 2 2 2 -8.79553
+chimesFF: 	0 2 2 0 2 2 -8.79553
+chimesFF: 	0 2 2 2 0 2 -8.79553
+chimesFF: 	0 1 1 1 1 0 -60.64931
+chimesFF: 	0 1 1 1 1 1 192.95069
+chimesFF: 	0 1 1 1 1 2 -10.17489
+chimesFF: 	0 1 1 1 2 0 -209.05925
+chimesFF: 	0 1 1 2 1 0 -209.05925
+chimesFF: 	0 1 2 1 1 0 -209.05925
+chimesFF: 	0 2 1 1 1 0 -209.05925
+chimesFF: 	0 1 1 1 2 1 100.41420
+chimesFF: 	0 1 1 2 1 1 100.41420
+chimesFF: 	0 1 2 1 1 1 100.41420
+chimesFF: 	0 2 1 1 1 1 100.41420
+chimesFF: 	0 1 1 1 2 2 -27.13454
+chimesFF: 	0 1 1 2 1 2 -27.13454
+chimesFF: 	0 1 2 1 1 2 -27.13454
+chimesFF: 	0 2 1 1 1 2 -27.13454
+chimesFF: 	0 1 1 2 2 0 -139.45057
+chimesFF: 	0 2 2 1 1 0 -139.45057
+chimesFF: 	0 1 1 2 2 1 -92.63094
+chimesFF: 	0 2 2 1 1 1 -92.63094
+chimesFF: 	0 1 1 2 2 2 379.66051
+chimesFF: 	0 2 2 1 1 2 379.66051
+chimesFF: 	0 1 2 1 2 0 108.43007
+chimesFF: 	0 2 1 2 1 0 108.43007
+chimesFF: 	0 1 2 1 2 1 -94.19561
+chimesFF: 	0 2 1 2 1 1 -94.19561
+chimesFF: 	0 1 2 1 2 2 -82.43030
+chimesFF: 	0 2 1 2 1 2 -82.43030
+chimesFF: 	0 1 2 2 1 0 47.62650
+chimesFF: 	0 2 1 1 2 0 47.62650
+chimesFF: 	0 1 2 2 1 1 71.64926
+chimesFF: 	0 2 1 1 2 1 71.64926
+chimesFF: 	0 1 2 2 1 2 -46.91312
+chimesFF: 	0 2 1 1 2 2 -46.91312
+chimesFF: 	0 1 2 2 2 0 166.36689
+chimesFF: 	0 2 1 2 2 0 166.36689
+chimesFF: 	0 2 2 1 2 0 166.36689
+chimesFF: 	0 2 2 2 1 0 166.36689
+chimesFF: 	0 1 2 2 2 2 185.65047
+chimesFF: 	0 2 1 2 2 2 185.65047
+chimesFF: 	0 2 2 1 2 2 185.65047
+chimesFF: 	0 2 2 2 1 2 185.65047
+chimesFF: 	0 2 2 2 2 0 253.64195
+chimesFF: 	0 2 2 2 2 1 110.71171
+chimesFF: 	0 2 2 2 2 2 -31.22729
+chimesFF: 	1 0 0 0 0 1 -96.77074
+chimesFF: 	1 0 0 0 0 2 -57.77597
+chimesFF: 	1 0 0 0 1 1 -76.72153
+chimesFF: 	1 0 0 1 0 1 -76.72153
+chimesFF: 	1 0 1 0 0 1 -76.72153
+chimesFF: 	1 1 0 0 0 1 -76.72153
+chimesFF: 	1 0 0 0 1 2 -142.36196
+chimesFF: 	1 0 0 1 0 2 -142.36196
+chimesFF: 	1 0 1 0 0 2 -142.36196
+chimesFF: 	1 1 0 0 0 2 -142.36196
+chimesFF: 	1 0 0 0 2 1 33.16287
+chimesFF: 	1 0 0 2 0 1 33.16287
+chimesFF: 	1 0 2 0 0 1 33.16287
+chimesFF: 	1 2 0 0 0 1 33.16287
+chimesFF: 	1 0 0 0 2 2 -81.28085
+chimesFF: 	1 0 0 2 0 2 -81.28085
+chimesFF: 	1 0 2 0 0 2 -81.28085
+chimesFF: 	1 2 0 0 0 2 -81.28085
+chimesFF: 	1 0 0 1 1 0 21.73145
+chimesFF: 	1 1 1 0 0 0 21.73145
+chimesFF: 	1 0 0 1 1 1 7.07992
+chimesFF: 	1 1 1 0 0 1 7.07992
+chimesFF: 	1 0 0 1 1 2 -201.62099
+chimesFF: 	1 1 1 0 0 2 -201.62099
+chimesFF: 	1 0 0 1 2 0 51.30368
+chimesFF: 	1 0 0 2 1 0 51.30368
+chimesFF: 	1 1 2 0 0 0 51.30368
+chimesFF: 	1 2 1 0 0 0 51.30368
+chimesFF: 	1 0 0 1 2 1 -33.18674
+chimesFF: 	1 0 0 2 1 1 -33.18674
+chimesFF: 	1 1 2 0 0 1 -33.18674
+chimesFF: 	1 2 1 0 0 1 -33.18674
+chimesFF: 	1 0 0 1 2 2 -54.25147
+chimesFF: 	1 0 0 2 1 2 -54.25147
+chimesFF: 	1 1 2 0 0 2 -54.25147
+chimesFF: 	1 2 1 0 0 2 -54.25147
+chimesFF: 	1 0 0 2 2 0 -54.45426
+chimesFF: 	1 2 2 0 0 0 -54.45426
+chimesFF: 	1 0 0 2 2 1 20.46017
+chimesFF: 	1 2 2 0 0 1 20.46017
+chimesFF: 	1 0 0 2 2 2 -109.27100
+chimesFF: 	1 2 2 0 0 2 -109.27100
+chimesFF: 	1 0 1 0 1 1 -183.01893
+chimesFF: 	1 1 0 1 0 1 -183.01893
+chimesFF: 	1 0 1 0 1 2 -751.19848
+chimesFF: 	1 1 0 1 0 2 -751.19848
+chimesFF: 	1 0 1 0 2 1 70.59167
+chimesFF: 	1 1 0 2 0 1 70.59167
+chimesFF: 	1 0 2 0 1 1 70.59167
+chimesFF: 	1 2 0 1 0 1 70.59167
+chimesFF: 	1 0 1 0 2 2 -240.49583
+chimesFF: 	1 1 0 2 0 2 -240.49583
+chimesFF: 	1 0 2 0 1 2 -240.49583
+chimesFF: 	1 2 0 1 0 2 -240.49583
+chimesFF: 	1 0 1 1 0 1 -433.17638
+chimesFF: 	1 1 0 0 1 1 -433.17638
+chimesFF: 	1 0 1 1 1 0 67.74409
+chimesFF: 	1 1 0 1 1 0 67.74409
+chimesFF: 	1 1 1 0 1 0 67.74409
+chimesFF: 	1 1 1 1 0 0 67.74409
+chimesFF: 	1 0 1 1 1 1 -283.38136
+chimesFF: 	1 1 0 1 1 1 -283.38136
+chimesFF: 	1 1 1 0 1 1 -283.38136
+chimesFF: 	1 1 1 1 0 1 -283.38136
+chimesFF: 	1 0 1 1 1 2 -339.81065
+chimesFF: 	1 1 0 1 1 2 -339.81065
+chimesFF: 	1 1 1 0 1 2 -339.81065
+chimesFF: 	1 1 1 1 0 2 -339.81065
+chimesFF: 	1 0 1 1 2 0 141.37068
+chimesFF: 	1 1 0 2 1 0 141.37068
+chimesFF: 	1 1 2 0 1 0 141.37068
+chimesFF: 	1 2 1 1 0 0 141.37068
+chimesFF: 	1 0 1 1 2 1 -30.74430
+chimesFF: 	1 1 0 2 1 1 -30.74430
+chimesFF: 	1 1 2 0 1 1 -30.74430
+chimesFF: 	1 2 1 1 0 1 -30.74430
+chimesFF: 	1 0 1 2 0 0 -213.66915
+chimesFF: 	1 1 0 0 2 0 -213.66915
+chimesFF: 	1 2 0 0 1 0 -213.66915
+chimesFF: 	1 0 2 1 0 0 -213.66915
+chimesFF: 	1 0 1 2 0 2 -390.00664
+chimesFF: 	1 1 0 0 2 2 -390.00664
+chimesFF: 	1 2 0 0 1 2 -390.00664
+chimesFF: 	1 0 2 1 0 2 -390.00664
+chimesFF: 	1 0 1 2 1 0 -195.93890
+chimesFF: 	1 1 0 1 2 0 -195.93890
+chimesFF: 	1 2 1 0 1 0 -195.93890
+chimesFF: 	1 1 2 1 0 0 -195.93890
+chimesFF: 	1 0 1 2 1 2 -701.16301
+chimesFF: 	1 1 0 1 2 2 -701.16301
+chimesFF: 	1 2 1 0 1 2 -701.16301
+chimesFF: 	1 1 2 1 0 2 -701.16301
+chimesFF: 	1 0 1 2 2 0 -41.29102
+chimesFF: 	1 1 0 2 2 0 -41.29102
+chimesFF: 	1 2 2 0 1 0 -41.29102
+chimesFF: 	1 2 2 1 0 0 -41.29102
+chimesFF: 	1 0 1 2 2 1 45.92262
+chimesFF: 	1 1 0 2 2 1 45.92262
+chimesFF: 	1 2 2 0 1 1 45.92262
+chimesFF: 	1 2 2 1 0 1 45.92262
+chimesFF: 	1 0 1 2 2 2 -100.30283
+chimesFF: 	1 1 0 2 2 2 -100.30283
+chimesFF: 	1 2 2 0 1 2 -100.30283
+chimesFF: 	1 2 2 1 0 2 -100.30283
+chimesFF: 	1 0 2 0 2 1 180.87767
+chimesFF: 	1 2 0 2 0 1 180.87767
+chimesFF: 	1 0 2 0 2 2 43.00811
+chimesFF: 	1 2 0 2 0 2 43.00811
+chimesFF: 	1 0 2 1 1 0 -284.94526
+chimesFF: 	1 2 0 1 1 0 -284.94526
+chimesFF: 	1 1 1 0 2 0 -284.94526
+chimesFF: 	1 1 1 2 0 0 -284.94526
+chimesFF: 	1 0 2 1 1 1 169.79996
+chimesFF: 	1 2 0 1 1 1 169.79996
+chimesFF: 	1 1 1 0 2 1 169.79996
+chimesFF: 	1 1 1 2 0 1 169.79996
+chimesFF: 	1 0 2 1 1 2 -386.20652
+chimesFF: 	1 2 0 1 1 2 -386.20652
+chimesFF: 	1 1 1 0 2 2 -386.20652
+chimesFF: 	1 1 1 2 0 2 -386.20652
+chimesFF: 	1 0 2 1 2 0 124.84422
+chimesFF: 	1 2 0 2 1 0 124.84422
+chimesFF: 	1 1 2 0 2 0 124.84422
+chimesFF: 	1 2 1 2 0 0 124.84422
+chimesFF: 	1 0 2 1 2 1 141.34880
+chimesFF: 	1 2 0 2 1 1 141.34880
+chimesFF: 	1 1 2 0 2 1 141.34880
+chimesFF: 	1 2 1 2 0 1 141.34880
+chimesFF: 	1 0 2 1 2 2 22.03478
+chimesFF: 	1 2 0 2 1 2 22.03478
+chimesFF: 	1 1 2 0 2 2 22.03478
+chimesFF: 	1 2 1 2 0 2 22.03478
+chimesFF: 	1 0 2 2 0 0 -140.98237
+chimesFF: 	1 2 0 0 2 0 -140.98237
+chimesFF: 	1 0 2 2 0 1 111.74111
+chimesFF: 	1 2 0 0 2 1 111.74111
+chimesFF: 	1 0 2 2 1 0 -238.52259
+chimesFF: 	1 2 0 1 2 0 -238.52259
+chimesFF: 	1 2 1 0 2 0 -238.52259
+chimesFF: 	1 1 2 2 0 0 -238.52259
+chimesFF: 	1 0 2 2 1 1 -32.23120
+chimesFF: 	1 2 0 1 2 1 -32.23120
+chimesFF: 	1 2 1 0 2 1 -32.23120
+chimesFF: 	1 1 2 2 0 1 -32.23120
+chimesFF: 	1 0 2 2 1 2 -237.09704
+chimesFF: 	1 2 0 1 2 2 -237.09704
+chimesFF: 	1 2 1 0 2 2 -237.09704
+chimesFF: 	1 1 2 2 0 2 -237.09704
+chimesFF: 	1 0 2 2 2 1 176.93462
+chimesFF: 	1 2 0 2 2 1 176.93462
+chimesFF: 	1 2 2 0 2 1 176.93462
+chimesFF: 	1 2 2 2 0 1 176.93462
+chimesFF: 	1 0 2 2 2 2 19.19661
+chimesFF: 	1 2 0 2 2 2 19.19661
+chimesFF: 	1 2 2 0 2 2 19.19661
+chimesFF: 	1 2 2 2 0 2 19.19661
+chimesFF: 	1 1 1 1 2 0 -28.27064
+chimesFF: 	1 1 1 2 1 0 -28.27064
+chimesFF: 	1 1 2 1 1 0 -28.27064
+chimesFF: 	1 2 1 1 1 0 -28.27064
+chimesFF: 	1 1 1 1 2 1 402.31131
+chimesFF: 	1 1 1 2 1 1 402.31131
+chimesFF: 	1 1 2 1 1 1 402.31131
+chimesFF: 	1 2 1 1 1 1 402.31131
+chimesFF: 	1 1 1 2 2 0 -268.06931
+chimesFF: 	1 2 2 1 1 0 -268.06931
+chimesFF: 	1 1 1 2 2 2 96.78849
+chimesFF: 	1 2 2 1 1 2 96.78849
+chimesFF: 	1 1 2 1 2 0 143.34843
+chimesFF: 	1 2 1 2 1 0 143.34843
+chimesFF: 	1 1 2 1 2 2 -180.45276
+chimesFF: 	1 2 1 2 1 2 -180.45276
+chimesFF: 	1 1 2 2 1 1 -3.71465
+chimesFF: 	1 2 1 1 2 1 -3.71465
+chimesFF: 	1 1 2 2 1 2 -395.10384
+chimesFF: 	1 2 1 1 2 2 -395.10384
+chimesFF: 	1 1 2 2 2 0 72.09711
+chimesFF: 	1 2 1 2 2 0 72.09711
+chimesFF: 	1 2 2 1 2 0 72.09711
+chimesFF: 	1 2 2 2 1 0 72.09711
+chimesFF: 	1 1 2 2 2 1 59.24914
+chimesFF: 	1 2 1 2 2 1 59.24914
+chimesFF: 	1 2 2 1 2 1 59.24914
+chimesFF: 	1 2 2 2 1 1 59.24914
+chimesFF: 	1 2 2 2 2 0 273.83946
+chimesFF: 	1 2 2 2 2 1 299.07632
+chimesFF: 	2 0 0 0 0 1 -45.88217
+chimesFF: 	2 0 0 0 0 2 -214.87875
+chimesFF: 	2 0 0 0 1 1 16.19867
+chimesFF: 	2 0 0 1 0 1 16.19867
+chimesFF: 	2 0 1 0 0 1 16.19867
+chimesFF: 	2 1 0 0 0 1 16.19867
+chimesFF: 	2 0 0 0 1 2 -95.73656
+chimesFF: 	2 0 0 1 0 2 -95.73656
+chimesFF: 	2 0 1 0 0 2 -95.73656
+chimesFF: 	2 1 0 0 0 2 -95.73656
+chimesFF: 	2 0 0 0 2 2 -217.21339
+chimesFF: 	2 0 0 2 0 2 -217.21339
+chimesFF: 	2 0 2 0 0 2 -217.21339
+chimesFF: 	2 2 0 0 0 2 -217.21339
+chimesFF: 	2 0 0 1 1 0 -101.20086
+chimesFF: 	2 1 1 0 0 0 -101.20086
+chimesFF: 	2 0 0 1 1 1 -54.55239
+chimesFF: 	2 1 1 0 0 1 -54.55239
+chimesFF: 	2 0 0 1 1 2 -175.77302
+chimesFF: 	2 1 1 0 0 2 -175.77302
+chimesFF: 	2 0 0 1 2 0 -32.49306
+chimesFF: 	2 0 0 2 1 0 -32.49306
+chimesFF: 	2 1 2 0 0 0 -32.49306
+chimesFF: 	2 2 1 0 0 0 -32.49306
+chimesFF: 	2 0 0 1 2 1 -44.63511
+chimesFF: 	2 0 0 2 1 1 -44.63511
+chimesFF: 	2 1 2 0 0 1 -44.63511
+chimesFF: 	2 2 1 0 0 1 -44.63511
+chimesFF: 	2 0 0 1 2 2 -79.03153
+chimesFF: 	2 0 0 2 1 2 -79.03153
+chimesFF: 	2 1 2 0 0 2 -79.03153
+chimesFF: 	2 2 1 0 0 2 -79.03153
+chimesFF: 	2 0 0 2 2 0 33.38000
+chimesFF: 	2 2 2 0 0 0 33.38000
+chimesFF: 	2 0 0 2 2 1 92.85569
+chimesFF: 	2 2 2 0 0 1 92.85569
+chimesFF: 	2 0 0 2 2 2 -212.16927
+chimesFF: 	2 2 2 0 0 2 -212.16927
+chimesFF: 	2 0 1 0 1 1 122.63978
+chimesFF: 	2 1 0 1 0 1 122.63978
+chimesFF: 	2 0 1 0 1 2 -236.37757
+chimesFF: 	2 1 0 1 0 2 -236.37757
+chimesFF: 	2 0 1 0 2 1 -2.85128
+chimesFF: 	2 1 0 2 0 1 -2.85128
+chimesFF: 	2 0 2 0 1 1 -2.85128
+chimesFF: 	2 2 0 1 0 1 -2.85128
+chimesFF: 	2 0 1 0 2 2 -124.83893
+chimesFF: 	2 1 0 2 0 2 -124.83893
+chimesFF: 	2 0 2 0 1 2 -124.83893
+chimesFF: 	2 2 0 1 0 2 -124.83893
+chimesFF: 	2 0 1 1 0 0 123.00811
+chimesFF: 	2 1 0 0 1 0 123.00811
+chimesFF: 	2 0 1 1 0 1 -93.62764
+chimesFF: 	2 1 0 0 1 1 -93.62764
+chimesFF: 	2 0 1 1 0 2 344.25701
+chimesFF: 	2 1 0 0 1 2 344.25701
+chimesFF: 	2 0 1 1 1 0 -18.00038
+chimesFF: 	2 1 0 1 1 0 -18.00038
+chimesFF: 	2 1 1 0 1 0 -18.00038
+chimesFF: 	2 1 1 1 0 0 -18.00038
+chimesFF: 	2 0 1 1 1 1 -43.53353
+chimesFF: 	2 1 0 1 1 1 -43.53353
+chimesFF: 	2 1 1 0 1 1 -43.53353
+chimesFF: 	2 1 1 1 0 1 -43.53353
+chimesFF: 	2 0 1 1 2 0 72.99318
+chimesFF: 	2 1 0 2 1 0 72.99318
+chimesFF: 	2 1 2 0 1 0 72.99318
+chimesFF: 	2 2 1 1 0 0 72.99318
+chimesFF: 	2 0 1 1 2 2 219.80554
+chimesFF: 	2 1 0 2 1 2 219.80554
+chimesFF: 	2 1 2 0 1 2 219.80554
+chimesFF: 	2 2 1 1 0 2 219.80554
+chimesFF: 	2 0 1 2 0 0 -9.82004
+chimesFF: 	2 1 0 0 2 0 -9.82004
+chimesFF: 	2 2 0 0 1 0 -9.82004
+chimesFF: 	2 0 2 1 0 0 -9.82004
+chimesFF: 	2 0 1 2 0 1 73.90465
+chimesFF: 	2 1 0 0 2 1 73.90465
+chimesFF: 	2 2 0 0 1 1 73.90465
+chimesFF: 	2 0 2 1 0 1 73.90465
+chimesFF: 	2 0 1 2 0 2 -198.38821
+chimesFF: 	2 1 0 0 2 2 -198.38821
+chimesFF: 	2 2 0 0 1 2 -198.38821
+chimesFF: 	2 0 2 1 0 2 -198.38821
+chimesFF: 	2 0 1 2 1 0 -56.78803
+chimesFF: 	2 1 0 1 2 0 -56.78803
+chimesFF: 	2 2 1 0 1 0 -56.78803
+chimesFF: 	2 1 2 1 0 0 -56.78803
+chimesFF: 	2 0 1 2 1 1 134.76695
+chimesFF: 	2 1 0 1 2 1 134.76695
+chimesFF: 	2 2 1 0 1 1 134.76695
+chimesFF: 	2 1 2 1 0 1 134.76695
+chimesFF: 	2 0 1 2 1 2 -233.19560
+chimesFF: 	2 1 0 1 2 2 -233.19560
+chimesFF: 	2 2 1 0 1 2 -233.19560
+chimesFF: 	2 1 2 1 0 2 -233.19560
+chimesFF: 	2 0 1 2 2 0 20.55062
+chimesFF: 	2 1 0 2 2 0 20.55062
+chimesFF: 	2 2 2 0 1 0 20.55062
+chimesFF: 	2 2 2 1 0 0 20.55062
+chimesFF: 	2 0 1 2 2 1 91.62600
+chimesFF: 	2 1 0 2 2 1 91.62600
+chimesFF: 	2 2 2 0 1 1 91.62600
+chimesFF: 	2 2 2 1 0 1 91.62600
+chimesFF: 	2 0 1 2 2 2 -94.96932
+chimesFF: 	2 1 0 2 2 2 -94.96932
+chimesFF: 	2 2 2 0 1 2 -94.96932
+chimesFF: 	2 2 2 1 0 2 -94.96932
+chimesFF: 	2 0 2 0 2 1 -82.13649
+chimesFF: 	2 2 0 2 0 1 -82.13649
+chimesFF: 	2 0 2 0 2 2 -254.82427
+chimesFF: 	2 2 0 2 0 2 -254.82427
+chimesFF: 	2 0 2 1 1 0 -165.27242
+chimesFF: 	2 2 0 1 1 0 -165.27242
+chimesFF: 	2 1 1 0 2 0 -165.27242
+chimesFF: 	2 1 1 2 0 0 -165.27242
+chimesFF: 	2 0 2 1 1 2 -188.24474
+chimesFF: 	2 2 0 1 1 2 -188.24474
+chimesFF: 	2 1 1 0 2 2 -188.24474
+chimesFF: 	2 1 1 2 0 2 -188.24474
+chimesFF: 	2 0 2 1 2 0 97.18111
+chimesFF: 	2 2 0 2 1 0 97.18111
+chimesFF: 	2 1 2 0 2 0 97.18111
+chimesFF: 	2 2 1 2 0 0 97.18111
+chimesFF: 	2 0 2 1 2 1 -75.08640
+chimesFF: 	2 2 0 2 1 1 -75.08640
+chimesFF: 	2 1 2 0 2 1 -75.08640
+chimesFF: 	2 2 1 2 0 1 -75.08640
+chimesFF: 	2 0 2 1 2 2 -84.02894
+chimesFF: 	2 2 0 2 1 2 -84.02894
+chimesFF: 	2 1 2 0 2 2 -84.02894
+chimesFF: 	2 2 1 2 0 2 -84.02894
+chimesFF: 	2 0 2 2 0 0 -59.35659
+chimesFF: 	2 2 0 0 2 0 -59.35659
+chimesFF: 	2 0 2 2 0 1 -36.15859
+chimesFF: 	2 2 0 0 2 1 -36.15859
+chimesFF: 	2 0 2 2 0 2 -198.69038
+chimesFF: 	2 2 0 0 2 2 -198.69038
+chimesFF: 	2 0 2 2 1 0 -123.45695
+chimesFF: 	2 2 0 1 2 0 -123.45695
+chimesFF: 	2 2 1 0 2 0 -123.45695
+chimesFF: 	2 1 2 2 0 0 -123.45695
+chimesFF: 	2 0 2 2 1 1 -87.14844
+chimesFF: 	2 2 0 1 2 1 -87.14844
+chimesFF: 	2 2 1 0 2 1 -87.14844
+chimesFF: 	2 1 2 2 0 1 -87.14844
+chimesFF: 	2 0 2 2 1 2 -115.26029
+chimesFF: 	2 2 0 1 2 2 -115.26029
+chimesFF: 	2 2 1 0 2 2 -115.26029
+chimesFF: 	2 1 2 2 0 2 -115.26029
+chimesFF: 	2 0 2 2 2 1 -14.92051
+chimesFF: 	2 2 0 2 2 1 -14.92051
+chimesFF: 	2 2 2 0 2 1 -14.92051
+chimesFF: 	2 2 2 2 0 1 -14.92051
+chimesFF: 	2 0 2 2 2 2 -289.40545
+chimesFF: 	2 2 0 2 2 2 -289.40545
+chimesFF: 	2 2 2 0 2 2 -289.40545
+chimesFF: 	2 2 2 2 0 2 -289.40545
+chimesFF: 	2 1 1 1 1 0 -87.84923
+chimesFF: 	2 1 1 1 1 1 122.31858
+chimesFF: 	2 1 1 1 1 2 -173.90976
+chimesFF: 	2 1 1 1 2 0 -56.18407
+chimesFF: 	2 1 1 2 1 0 -56.18407
+chimesFF: 	2 1 2 1 1 0 -56.18407
+chimesFF: 	2 2 1 1 1 0 -56.18407
+chimesFF: 	2 1 1 1 2 1 241.15403
+chimesFF: 	2 1 1 2 1 1 241.15403
+chimesFF: 	2 1 2 1 1 1 241.15403
+chimesFF: 	2 2 1 1 1 1 241.15403
+chimesFF: 	2 1 1 1 2 2 177.59574
+chimesFF: 	2 1 1 2 1 2 177.59574
+chimesFF: 	2 1 2 1 1 2 177.59574
+chimesFF: 	2 2 1 1 1 2 177.59574
+chimesFF: 	2 1 1 2 2 0 -183.02847
+chimesFF: 	2 2 2 1 1 0 -183.02847
+chimesFF: 	2 1 1 2 2 2 40.18256
+chimesFF: 	2 2 2 1 1 2 40.18256
+chimesFF: 	2 1 2 1 2 0 105.01231
+chimesFF: 	2 2 1 2 1 0 105.01231
+chimesFF: 	2 1 2 1 2 2 -82.55189
+chimesFF: 	2 2 1 2 1 2 -82.55189
+chimesFF: 	2 1 2 2 1 0 4.95326
+chimesFF: 	2 2 1 1 2 0 4.95326
+chimesFF: 	2 1 2 2 1 1 -113.99954
+chimesFF: 	2 2 1 1 2 1 -113.99954
+chimesFF: 	2 1 2 2 1 2 68.74336
+chimesFF: 	2 2 1 1 2 2 68.74336
+chimesFF: 	2 1 2 2 2 0 41.81830
+chimesFF: 	2 2 1 2 2 0 41.81830
+chimesFF: 	2 2 2 1 2 0 41.81830
+chimesFF: 	2 2 2 2 1 0 41.81830
+chimesFF: 	2 1 2 2 2 1 -98.43854
+chimesFF: 	2 2 1 2 2 1 -98.43854
+chimesFF: 	2 2 2 1 2 1 -98.43854
+chimesFF: 	2 2 2 2 1 1 -98.43854
+chimesFF: 	2 1 2 2 2 2 -116.70790
+chimesFF: 	2 2 1 2 2 2 -116.70790
+chimesFF: 	2 2 2 1 2 2 -116.70790
+chimesFF: 	2 2 2 2 1 2 -116.70790
+chimesFF: 	2 2 2 2 2 0 50.31303
+chimesFF: 	2 2 2 2 2 2 -457.18255
+chimesFF: Read 4B parameters for quadruplets: 3 H H H N
+chimesFF: 	0 0 1 0 1 1 -180.68829
+chimesFF: 	0 0 1 0 1 2 62.21501
+chimesFF: 	0 0 1 0 2 1 62.21501
+chimesFF: 	0 0 2 0 1 1 62.21501
+chimesFF: 	0 0 1 0 2 2 -61.85317
+chimesFF: 	0 0 2 0 1 2 -61.85317
+chimesFF: 	0 0 2 0 2 1 -61.85317
+chimesFF: 	0 0 1 1 0 0 52.56732
+chimesFF: 	0 1 0 0 1 0 52.56732
+chimesFF: 	1 0 0 0 0 1 52.56732
+chimesFF: 	0 0 1 1 0 1 11.45046
+chimesFF: 	0 0 1 1 1 0 11.45046
+chimesFF: 	0 1 0 0 1 1 11.45046
+chimesFF: 	1 0 0 0 1 1 11.45046
+chimesFF: 	0 1 1 0 1 0 11.45046
+chimesFF: 	1 0 1 0 0 1 11.45046
+chimesFF: 	0 0 1 1 0 2 21.48067
+chimesFF: 	0 0 1 1 2 0 21.48067
+chimesFF: 	0 1 0 0 1 2 21.48067
+chimesFF: 	1 0 0 0 2 1 21.48067
+chimesFF: 	0 1 2 0 1 0 21.48067
+chimesFF: 	1 0 2 0 0 1 21.48067
+chimesFF: 	0 0 1 1 1 1 -155.02351
+chimesFF: 	0 1 1 0 1 1 -155.02351
+chimesFF: 	1 0 1 0 1 1 -155.02351
+chimesFF: 	0 0 1 1 2 2 93.45452
+chimesFF: 	0 1 2 0 1 2 93.45452
+chimesFF: 	1 0 2 0 2 1 93.45452
+chimesFF: 	0 0 1 2 0 0 -218.56899
+chimesFF: 	0 2 0 0 1 0 -218.56899
+chimesFF: 	2 0 0 0 0 1 -218.56899
+chimesFF: 	0 0 1 2 0 1 -41.24214
+chimesFF: 	0 0 1 2 1 0 -41.24214
+chimesFF: 	0 2 0 0 1 1 -41.24214
+chimesFF: 	2 0 0 0 1 1 -41.24214
+chimesFF: 	0 2 1 0 1 0 -41.24214
+chimesFF: 	2 0 1 0 0 1 -41.24214
+chimesFF: 	0 0 1 2 0 2 -55.76808
+chimesFF: 	0 0 1 2 2 0 -55.76808
+chimesFF: 	0 2 0 0 1 2 -55.76808
+chimesFF: 	2 0 0 0 2 1 -55.76808
+chimesFF: 	0 2 2 0 1 0 -55.76808
+chimesFF: 	2 0 2 0 0 1 -55.76808
+chimesFF: 	0 0 1 2 1 1 252.36219
+chimesFF: 	0 2 1 0 1 1 252.36219
+chimesFF: 	2 0 1 0 1 1 252.36219
+chimesFF: 	0 0 1 2 1 2 149.06746
+chimesFF: 	0 0 1 2 2 1 149.06746
+chimesFF: 	0 2 1 0 1 2 149.06746
+chimesFF: 	2 0 1 0 2 1 149.06746
+chimesFF: 	0 2 2 0 1 1 149.06746
+chimesFF: 	2 0 2 0 1 1 149.06746
+chimesFF: 	0 0 1 2 2 2 -162.50833
+chimesFF: 	0 2 2 0 1 2 -162.50833
+chimesFF: 	2 0 2 0 2 1 -162.50833
+chimesFF: 	0 0 2 0 2 2 87.91758
+chimesFF: 	0 0 2 1 0 0 -1.97150
+chimesFF: 	0 1 0 0 2 0 -1.97150
+chimesFF: 	1 0 0 0 0 2 -1.97150
+chimesFF: 	0 0 2 1 0 1 -82.69849
+chimesFF: 	0 0 2 1 1 0 -82.69849
+chimesFF: 	0 1 0 0 2 1 -82.69849
+chimesFF: 	1 0 0 0 1 2 -82.69849
+chimesFF: 	0 1 1 0 2 0 -82.69849
+chimesFF: 	1 0 1 0 0 2 -82.69849
+chimesFF: 	0 0 2 1 0 2 58.85457
+chimesFF: 	0 0 2 1 2 0 58.85457
+chimesFF: 	0 1 0 0 2 2 58.85457
+chimesFF: 	1 0 0 0 2 2 58.85457
+chimesFF: 	0 1 2 0 2 0 58.85457
+chimesFF: 	1 0 2 0 0 2 58.85457
+chimesFF: 	0 0 2 1 1 1 261.78773
+chimesFF: 	0 1 1 0 2 1 261.78773
+chimesFF: 	1 0 1 0 1 2 261.78773
+chimesFF: 	0 0 2 1 1 2 -128.59210
+chimesFF: 	0 0 2 1 2 1 -128.59210
+chimesFF: 	0 1 1 0 2 2 -128.59210
+chimesFF: 	1 0 1 0 2 2 -128.59210
+chimesFF: 	0 1 2 0 2 1 -128.59210
+chimesFF: 	1 0 2 0 1 2 -128.59210
+chimesFF: 	0 0 2 1 2 2 132.64616
+chimesFF: 	0 1 2 0 2 2 132.64616
+chimesFF: 	1 0 2 0 2 2 132.64616
+chimesFF: 	0 0 2 2 0 1 72.96719
+chimesFF: 	0 0 2 2 1 0 72.96719
+chimesFF: 	0 2 0 0 2 1 72.96719
+chimesFF: 	2 0 0 0 1 2 72.96719
+chimesFF: 	0 2 1 0 2 0 72.96719
+chimesFF: 	2 0 1 0 0 2 72.96719
+chimesFF: 	0 0 2 2 0 2 -117.71784
+chimesFF: 	0 0 2 2 2 0 -117.71784
+chimesFF: 	0 2 0 0 2 2 -117.71784
+chimesFF: 	2 0 0 0 2 2 -117.71784
+chimesFF: 	0 2 2 0 2 0 -117.71784
+chimesFF: 	2 0 2 0 0 2 -117.71784
+chimesFF: 	0 0 2 2 1 1 168.04321
+chimesFF: 	0 2 1 0 2 1 168.04321
+chimesFF: 	2 0 1 0 1 2 168.04321
+chimesFF: 	0 0 2 2 1 2 -24.96488
+chimesFF: 	0 0 2 2 2 1 -24.96488
+chimesFF: 	0 2 1 0 2 2 -24.96488
+chimesFF: 	2 0 1 0 2 2 -24.96488
+chimesFF: 	0 2 2 0 2 1 -24.96488
+chimesFF: 	2 0 2 0 1 2 -24.96488
+chimesFF: 	0 0 2 2 2 2 -139.82700
+chimesFF: 	0 2 2 0 2 2 -139.82700
+chimesFF: 	2 0 2 0 2 2 -139.82700
+chimesFF: 	0 1 0 1 0 1 -43.47777
+chimesFF: 	1 0 0 1 1 0 -43.47777
+chimesFF: 	1 1 1 0 0 0 -43.47777
+chimesFF: 	0 1 0 1 0 2 -4.39571
+chimesFF: 	1 0 0 1 2 0 -4.39571
+chimesFF: 	1 1 2 0 0 0 -4.39571
+chimesFF: 	0 1 0 1 1 0 31.74635
+chimesFF: 	1 0 0 1 0 1 31.74635
+chimesFF: 	0 1 1 1 0 0 31.74635
+chimesFF: 	1 0 1 1 0 0 31.74635
+chimesFF: 	1 1 0 0 0 1 31.74635
+chimesFF: 	1 1 0 0 1 0 31.74635
+chimesFF: 	0 1 0 1 1 2 -61.77851
+chimesFF: 	1 0 0 1 2 1 -61.77851
+chimesFF: 	0 1 1 1 0 2 -61.77851
+chimesFF: 	1 0 1 1 2 0 -61.77851
+chimesFF: 	1 1 2 0 0 1 -61.77851
+chimesFF: 	1 1 2 0 1 0 -61.77851
+chimesFF: 	0 1 0 1 2 1 -163.31265
+chimesFF: 	1 0 0 1 1 2 -163.31265
+chimesFF: 	0 1 2 1 0 1 -163.31265
+chimesFF: 	1 0 2 1 1 0 -163.31265
+chimesFF: 	1 1 1 0 0 2 -163.31265
+chimesFF: 	1 1 1 0 2 0 -163.31265
+chimesFF: 	0 1 0 1 2 2 84.27807
+chimesFF: 	1 0 0 1 2 2 84.27807
+chimesFF: 	0 1 2 1 0 2 84.27807
+chimesFF: 	1 0 2 1 2 0 84.27807
+chimesFF: 	1 1 2 0 0 2 84.27807
+chimesFF: 	1 1 2 0 2 0 84.27807
+chimesFF: 	0 1 0 2 0 2 32.01854
+chimesFF: 	1 0 0 2 2 0 32.01854
+chimesFF: 	0 2 0 1 0 2 32.01854
+chimesFF: 	2 0 0 1 2 0 32.01854
+chimesFF: 	1 2 2 0 0 0 32.01854
+chimesFF: 	2 1 2 0 0 0 32.01854
+chimesFF: 	0 1 0 2 1 0 58.38841
+chimesFF: 	1 0 0 2 0 1 58.38841
+chimesFF: 	0 2 1 1 0 0 58.38841
+chimesFF: 	2 0 1 1 0 0 58.38841
+chimesFF: 	1 2 0 0 0 1 58.38841
+chimesFF: 	2 1 0 0 1 0 58.38841
+chimesFF: 	0 1 0 2 1 1 -1.57358
+chimesFF: 	1 0 0 2 1 1 -1.57358
+chimesFF: 	0 2 1 1 0 1 -1.57358
+chimesFF: 	2 0 1 1 1 0 -1.57358
+chimesFF: 	1 2 1 0 0 1 -1.57358
+chimesFF: 	2 1 1 0 1 0 -1.57358
+chimesFF: 	0 1 0 2 1 2 21.02944
+chimesFF: 	1 0 0 2 2 1 21.02944
+chimesFF: 	0 2 1 1 0 2 21.02944
+chimesFF: 	2 0 1 1 2 0 21.02944
+chimesFF: 	1 2 2 0 0 1 21.02944
+chimesFF: 	2 1 2 0 1 0 21.02944
+chimesFF: 	0 1 0 2 2 0 94.08405
+chimesFF: 	1 0 0 2 0 2 94.08405
+chimesFF: 	0 2 2 1 0 0 94.08405
+chimesFF: 	2 0 2 1 0 0 94.08405
+chimesFF: 	1 2 0 0 0 2 94.08405
+chimesFF: 	2 1 0 0 2 0 94.08405
+chimesFF: 	0 1 0 2 2 1 -98.05916
+chimesFF: 	1 0 0 2 1 2 -98.05916
+chimesFF: 	0 2 2 1 0 1 -98.05916
+chimesFF: 	2 0 2 1 1 0 -98.05916
+chimesFF: 	1 2 1 0 0 2 -98.05916
+chimesFF: 	2 1 1 0 2 0 -98.05916
+chimesFF: 	0 1 0 2 2 2 110.69881
+chimesFF: 	1 0 0 2 2 2 110.69881
+chimesFF: 	0 2 2 1 0 2 110.69881
+chimesFF: 	2 0 2 1 2 0 110.69881
+chimesFF: 	1 2 2 0 0 2 110.69881
+chimesFF: 	2 1 2 0 2 0 110.69881
+chimesFF: 	0 1 1 1 1 0 -64.11274
+chimesFF: 	1 0 1 1 0 1 -64.11274
+chimesFF: 	1 1 0 0 1 1 -64.11274
+chimesFF: 	0 1 1 1 1 1 -93.35530
+chimesFF: 	1 0 1 1 1 1 -93.35530
+chimesFF: 	1 1 1 0 1 1 -93.35530
+chimesFF: 	0 1 1 1 1 2 -314.62514
+chimesFF: 	1 0 1 1 2 1 -314.62514
+chimesFF: 	1 1 2 0 1 1 -314.62514
+chimesFF: 	0 1 1 1 2 0 -101.72559
+chimesFF: 	1 0 1 1 0 2 -101.72559
+chimesFF: 	0 1 2 1 1 0 -101.72559
+chimesFF: 	1 0 2 1 0 1 -101.72559
+chimesFF: 	1 1 0 0 1 2 -101.72559
+chimesFF: 	1 1 0 0 2 1 -101.72559
+chimesFF: 	0 1 1 1 2 1 275.50056
+chimesFF: 	1 0 1 1 1 2 275.50056
+chimesFF: 	0 1 2 1 1 1 275.50056
+chimesFF: 	1 0 2 1 1 1 275.50056
+chimesFF: 	1 1 1 0 1 2 275.50056
+chimesFF: 	1 1 1 0 2 1 275.50056
+chimesFF: 	0 1 1 2 0 0 -236.21491
+chimesFF: 	1 0 1 2 0 0 -236.21491
+chimesFF: 	0 2 0 1 1 0 -236.21491
+chimesFF: 	2 0 0 1 0 1 -236.21491
+chimesFF: 	1 2 0 0 1 0 -236.21491
+chimesFF: 	2 1 0 0 0 1 -236.21491
+chimesFF: 	0 1 1 2 0 1 -86.30045
+chimesFF: 	1 0 1 2 1 0 -86.30045
+chimesFF: 	0 2 0 1 1 1 -86.30045
+chimesFF: 	2 0 0 1 1 1 -86.30045
+chimesFF: 	1 2 1 0 1 0 -86.30045
+chimesFF: 	2 1 1 0 0 1 -86.30045
+chimesFF: 	0 1 1 2 0 2 -16.23027
+chimesFF: 	1 0 1 2 2 0 -16.23027
+chimesFF: 	0 2 0 1 1 2 -16.23027
+chimesFF: 	2 0 0 1 2 1 -16.23027
+chimesFF: 	1 2 2 0 1 0 -16.23027
+chimesFF: 	2 1 2 0 0 1 -16.23027
+chimesFF: 	0 1 1 2 1 0 29.50772
+chimesFF: 	1 0 1 2 0 1 29.50772
+chimesFF: 	0 2 1 1 1 0 29.50772
+chimesFF: 	2 0 1 1 0 1 29.50772
+chimesFF: 	1 2 0 0 1 1 29.50772
+chimesFF: 	2 1 0 0 1 1 29.50772
+chimesFF: 	0 1 1 2 1 1 316.02611
+chimesFF: 	1 0 1 2 1 1 316.02611
+chimesFF: 	0 2 1 1 1 1 316.02611
+chimesFF: 	2 0 1 1 1 1 316.02611
+chimesFF: 	1 2 1 0 1 1 316.02611
+chimesFF: 	2 1 1 0 1 1 316.02611
+chimesFF: 	0 1 1 2 1 2 212.42508
+chimesFF: 	1 0 1 2 2 1 212.42508
+chimesFF: 	0 2 1 1 1 2 212.42508
+chimesFF: 	2 0 1 1 2 1 212.42508
+chimesFF: 	1 2 2 0 1 1 212.42508
+chimesFF: 	2 1 2 0 1 1 212.42508
+chimesFF: 	0 1 1 2 2 0 -33.82538
+chimesFF: 	1 0 1 2 0 2 -33.82538
+chimesFF: 	0 2 2 1 1 0 -33.82538
+chimesFF: 	2 0 2 1 0 1 -33.82538
+chimesFF: 	1 2 0 0 1 2 -33.82538
+chimesFF: 	2 1 0 0 2 1 -33.82538
+chimesFF: 	0 1 1 2 2 1 215.67301
+chimesFF: 	1 0 1 2 1 2 215.67301
+chimesFF: 	0 2 2 1 1 1 215.67301
+chimesFF: 	2 0 2 1 1 1 215.67301
+chimesFF: 	1 2 1 0 1 2 215.67301
+chimesFF: 	2 1 1 0 2 1 215.67301
+chimesFF: 	0 1 1 2 2 2 -96.58047
+chimesFF: 	1 0 1 2 2 2 -96.58047
+chimesFF: 	0 2 2 1 1 2 -96.58047
+chimesFF: 	2 0 2 1 2 1 -96.58047
+chimesFF: 	1 2 2 0 1 2 -96.58047
+chimesFF: 	2 1 2 0 2 1 -96.58047
+chimesFF: 	0 1 2 1 2 0 107.42916
+chimesFF: 	1 0 2 1 0 2 107.42916
+chimesFF: 	1 1 0 0 2 2 107.42916
+chimesFF: 	0 1 2 1 2 1 -304.99947
+chimesFF: 	1 0 2 1 1 2 -304.99947
+chimesFF: 	1 1 1 0 2 2 -304.99947
+chimesFF: 	0 1 2 1 2 2 139.33738
+chimesFF: 	1 0 2 1 2 2 139.33738
+chimesFF: 	1 1 2 0 2 2 139.33738
+chimesFF: 	0 1 2 2 0 0 -3.52353
+chimesFF: 	1 0 2 2 0 0 -3.52353
+chimesFF: 	0 2 0 1 2 0 -3.52353
+chimesFF: 	2 0 0 1 0 2 -3.52353
+chimesFF: 	1 2 0 0 2 0 -3.52353
+chimesFF: 	2 1 0 0 0 2 -3.52353
+chimesFF: 	0 1 2 2 0 1 123.40171
+chimesFF: 	1 0 2 2 1 0 123.40171
+chimesFF: 	0 2 0 1 2 1 123.40171
+chimesFF: 	2 0 0 1 1 2 123.40171
+chimesFF: 	1 2 1 0 2 0 123.40171
+chimesFF: 	2 1 1 0 0 2 123.40171
+chimesFF: 	0 1 2 2 0 2 -90.33570
+chimesFF: 	1 0 2 2 2 0 -90.33570
+chimesFF: 	0 2 0 1 2 2 -90.33570
+chimesFF: 	2 0 0 1 2 2 -90.33570
+chimesFF: 	1 2 2 0 2 0 -90.33570
+chimesFF: 	2 1 2 0 0 2 -90.33570
+chimesFF: 	0 1 2 2 1 0 69.08041
+chimesFF: 	1 0 2 2 0 1 69.08041
+chimesFF: 	0 2 1 1 2 0 69.08041
+chimesFF: 	2 0 1 1 0 2 69.08041
+chimesFF: 	1 2 0 0 2 1 69.08041
+chimesFF: 	2 1 0 0 1 2 69.08041
+chimesFF: 	0 1 2 2 1 1 153.77016
+chimesFF: 	1 0 2 2 1 1 153.77016
+chimesFF: 	0 2 1 1 2 1 153.77016
+chimesFF: 	2 0 1 1 1 2 153.77016
+chimesFF: 	1 2 1 0 2 1 153.77016
+chimesFF: 	2 1 1 0 1 2 153.77016
+chimesFF: 	0 1 2 2 2 0 -60.56412
+chimesFF: 	1 0 2 2 0 2 -60.56412
+chimesFF: 	0 2 2 1 2 0 -60.56412
+chimesFF: 	2 0 2 1 0 2 -60.56412
+chimesFF: 	1 2 0 0 2 2 -60.56412
+chimesFF: 	2 1 0 0 2 2 -60.56412
+chimesFF: 	0 1 2 2 2 1 -99.20060
+chimesFF: 	1 0 2 2 1 2 -99.20060
+chimesFF: 	0 2 2 1 2 1 -99.20060
+chimesFF: 	2 0 2 1 1 2 -99.20060
+chimesFF: 	1 2 1 0 2 2 -99.20060
+chimesFF: 	2 1 1 0 2 2 -99.20060
+chimesFF: 	0 1 2 2 2 2 -94.89129
+chimesFF: 	1 0 2 2 2 2 -94.89129
+chimesFF: 	0 2 2 1 2 2 -94.89129
+chimesFF: 	2 0 2 1 2 2 -94.89129
+chimesFF: 	1 2 2 0 2 2 -94.89129
+chimesFF: 	2 1 2 0 2 2 -94.89129
+chimesFF: 	0 2 0 2 0 1 -50.43664
+chimesFF: 	2 0 0 2 1 0 -50.43664
+chimesFF: 	2 2 1 0 0 0 -50.43664
+chimesFF: 	0 2 0 2 0 2 171.96640
+chimesFF: 	2 0 0 2 2 0 171.96640
+chimesFF: 	2 2 2 0 0 0 171.96640
+chimesFF: 	0 2 0 2 1 0 -59.56499
+chimesFF: 	2 0 0 2 0 1 -59.56499
+chimesFF: 	0 2 1 2 0 0 -59.56499
+chimesFF: 	2 0 1 2 0 0 -59.56499
+chimesFF: 	2 2 0 0 0 1 -59.56499
+chimesFF: 	2 2 0 0 1 0 -59.56499
+chimesFF: 	0 2 0 2 1 1 -86.64856
+chimesFF: 	2 0 0 2 1 1 -86.64856
+chimesFF: 	0 2 1 2 0 1 -86.64856
+chimesFF: 	2 0 1 2 1 0 -86.64856
+chimesFF: 	2 2 1 0 0 1 -86.64856
+chimesFF: 	2 2 1 0 1 0 -86.64856
+chimesFF: 	0 2 0 2 1 2 -17.95966
+chimesFF: 	2 0 0 2 2 1 -17.95966
+chimesFF: 	0 2 1 2 0 2 -17.95966
+chimesFF: 	2 0 1 2 2 0 -17.95966
+chimesFF: 	2 2 2 0 0 1 -17.95966
+chimesFF: 	2 2 2 0 1 0 -17.95966
+chimesFF: 	0 2 0 2 2 1 -12.12033
+chimesFF: 	2 0 0 2 1 2 -12.12033
+chimesFF: 	0 2 2 2 0 1 -12.12033
+chimesFF: 	2 0 2 2 1 0 -12.12033
+chimesFF: 	2 2 1 0 0 2 -12.12033
+chimesFF: 	2 2 1 0 2 0 -12.12033
+chimesFF: 	0 2 0 2 2 2 44.01068
+chimesFF: 	2 0 0 2 2 2 44.01068
+chimesFF: 	0 2 2 2 0 2 44.01068
+chimesFF: 	2 0 2 2 2 0 44.01068
+chimesFF: 	2 2 2 0 0 2 44.01068
+chimesFF: 	2 2 2 0 2 0 44.01068
+chimesFF: 	0 2 1 2 1 0 59.38227
+chimesFF: 	2 0 1 2 0 1 59.38227
+chimesFF: 	2 2 0 0 1 1 59.38227
+chimesFF: 	0 2 1 2 1 1 200.01884
+chimesFF: 	2 0 1 2 1 1 200.01884
+chimesFF: 	2 2 1 0 1 1 200.01884
+chimesFF: 	0 2 1 2 2 0 109.44594
+chimesFF: 	2 0 1 2 0 2 109.44594
+chimesFF: 	0 2 2 2 1 0 109.44594
+chimesFF: 	2 0 2 2 0 1 109.44594
+chimesFF: 	2 2 0 0 1 2 109.44594
+chimesFF: 	2 2 0 0 2 1 109.44594
+chimesFF: 	0 2 1 2 2 1 124.91288
+chimesFF: 	2 0 1 2 1 2 124.91288
+chimesFF: 	0 2 2 2 1 1 124.91288
+chimesFF: 	2 0 2 2 1 1 124.91288
+chimesFF: 	2 2 1 0 1 2 124.91288
+chimesFF: 	2 2 1 0 2 1 124.91288
+chimesFF: 	0 2 1 2 2 2 24.19728
+chimesFF: 	2 0 1 2 2 2 24.19728
+chimesFF: 	0 2 2 2 1 2 24.19728
+chimesFF: 	2 0 2 2 2 1 24.19728
+chimesFF: 	2 2 2 0 1 2 24.19728
+chimesFF: 	2 2 2 0 2 1 24.19728
+chimesFF: 	0 2 2 2 2 0 -203.92437
+chimesFF: 	2 0 2 2 0 2 -203.92437
+chimesFF: 	2 2 0 0 2 2 -203.92437
+chimesFF: 	0 2 2 2 2 1 -5.43363
+chimesFF: 	2 0 2 2 1 2 -5.43363
+chimesFF: 	2 2 1 0 2 2 -5.43363
+chimesFF: 	0 2 2 2 2 2 -189.36141
+chimesFF: 	2 0 2 2 2 2 -189.36141
+chimesFF: 	2 2 2 0 2 2 -189.36141
+chimesFF: 	1 1 0 1 0 1 -63.61757
+chimesFF: 	1 1 0 1 1 0 -63.61757
+chimesFF: 	1 1 1 1 0 0 -63.61757
+chimesFF: 	1 1 0 1 0 2 -16.85999
+chimesFF: 	1 1 0 1 2 0 -16.85999
+chimesFF: 	1 1 2 1 0 0 -16.85999
+chimesFF: 	1 1 0 1 1 1 -141.93654
+chimesFF: 	1 1 1 1 0 1 -141.93654
+chimesFF: 	1 1 1 1 1 0 -141.93654
+chimesFF: 	1 1 0 1 1 2 -294.92630
+chimesFF: 	1 1 0 1 2 1 -294.92630
+chimesFF: 	1 1 1 1 0 2 -294.92630
+chimesFF: 	1 1 1 1 2 0 -294.92630
+chimesFF: 	1 1 2 1 0 1 -294.92630
+chimesFF: 	1 1 2 1 1 0 -294.92630
+chimesFF: 	1 1 0 1 2 2 130.92632
+chimesFF: 	1 1 2 1 0 2 130.92632
+chimesFF: 	1 1 2 1 2 0 130.92632
+chimesFF: 	1 1 0 2 0 1 54.94708
+chimesFF: 	1 1 0 2 1 0 54.94708
+chimesFF: 	1 2 0 1 0 1 54.94708
+chimesFF: 	2 1 0 1 1 0 54.94708
+chimesFF: 	1 2 1 1 0 0 54.94708
+chimesFF: 	2 1 1 1 0 0 54.94708
+chimesFF: 	1 1 0 2 0 2 166.54621
+chimesFF: 	1 1 0 2 2 0 166.54621
+chimesFF: 	1 2 0 1 0 2 166.54621
+chimesFF: 	2 1 0 1 2 0 166.54621
+chimesFF: 	1 2 2 1 0 0 166.54621
+chimesFF: 	2 1 2 1 0 0 166.54621
+chimesFF: 	1 1 0 2 1 1 -38.17805
+chimesFF: 	1 2 1 1 0 1 -38.17805
+chimesFF: 	2 1 1 1 1 0 -38.17805
+chimesFF: 	1 1 0 2 1 2 -111.81646
+chimesFF: 	1 1 0 2 2 1 -111.81646
+chimesFF: 	1 2 1 1 0 2 -111.81646
+chimesFF: 	2 1 1 1 2 0 -111.81646
+chimesFF: 	1 2 2 1 0 1 -111.81646
+chimesFF: 	2 1 2 1 1 0 -111.81646
+chimesFF: 	1 1 0 2 2 2 250.41716
+chimesFF: 	1 2 2 1 0 2 250.41716
+chimesFF: 	2 1 2 1 2 0 250.41716
+chimesFF: 	1 1 1 1 2 2 -268.32177
+chimesFF: 	1 1 2 1 1 2 -268.32177
+chimesFF: 	1 1 2 1 2 1 -268.32177
+chimesFF: 	1 1 1 2 0 0 -289.98069
+chimesFF: 	1 2 0 1 1 0 -289.98069
+chimesFF: 	2 1 0 1 0 1 -289.98069
+chimesFF: 	1 1 1 2 0 1 -25.13788
+chimesFF: 	1 1 1 2 1 0 -25.13788
+chimesFF: 	1 2 0 1 1 1 -25.13788
+chimesFF: 	2 1 0 1 1 1 -25.13788
+chimesFF: 	1 2 1 1 1 0 -25.13788
+chimesFF: 	2 1 1 1 0 1 -25.13788
+chimesFF: 	1 1 1 2 0 2 18.60303
+chimesFF: 	1 1 1 2 2 0 18.60303
+chimesFF: 	1 2 0 1 1 2 18.60303
+chimesFF: 	2 1 0 1 2 1 18.60303
+chimesFF: 	1 2 2 1 1 0 18.60303
+chimesFF: 	2 1 2 1 0 1 18.60303
+chimesFF: 	1 1 1 2 1 1 408.31486
+chimesFF: 	1 2 1 1 1 1 408.31486
+chimesFF: 	2 1 1 1 1 1 408.31486
+chimesFF: 	1 1 1 2 1 2 344.98125
+chimesFF: 	1 1 1 2 2 1 344.98125
+chimesFF: 	1 2 1 1 1 2 344.98125
+chimesFF: 	2 1 1 1 2 1 344.98125
+chimesFF: 	1 2 2 1 1 1 344.98125
+chimesFF: 	2 1 2 1 1 1 344.98125
+chimesFF: 	1 1 2 2 0 0 -17.33171
+chimesFF: 	1 2 0 1 2 0 -17.33171
+chimesFF: 	2 1 0 1 0 2 -17.33171
+chimesFF: 	1 1 2 2 0 1 93.38254
+chimesFF: 	1 1 2 2 1 0 93.38254
+chimesFF: 	1 2 0 1 2 1 93.38254
+chimesFF: 	2 1 0 1 1 2 93.38254
+chimesFF: 	1 2 1 1 2 0 93.38254
+chimesFF: 	2 1 1 1 0 2 93.38254
+chimesFF: 	1 1 2 2 1 2 -132.37072
+chimesFF: 	1 1 2 2 2 1 -132.37072
+chimesFF: 	1 2 1 1 2 2 -132.37072
+chimesFF: 	2 1 1 1 2 2 -132.37072
+chimesFF: 	1 2 2 1 2 1 -132.37072
+chimesFF: 	2 1 2 1 1 2 -132.37072
+chimesFF: 	1 1 2 2 2 2 -66.38776
+chimesFF: 	1 2 2 1 2 2 -66.38776
+chimesFF: 	2 1 2 1 2 2 -66.38776
+chimesFF: 	1 2 0 2 0 2 359.32281
+chimesFF: 	2 1 0 2 2 0 359.32281
+chimesFF: 	2 2 2 1 0 0 359.32281
+chimesFF: 	1 2 0 2 1 0 -61.35629
+chimesFF: 	2 1 0 2 0 1 -61.35629
+chimesFF: 	1 2 1 2 0 0 -61.35629
+chimesFF: 	2 1 1 2 0 0 -61.35629
+chimesFF: 	2 2 0 1 0 1 -61.35629
+chimesFF: 	2 2 0 1 1 0 -61.35629
+chimesFF: 	1 2 0 2 1 1 -80.89562
+chimesFF: 	2 1 0 2 1 1 -80.89562
+chimesFF: 	1 2 1 2 0 1 -80.89562
+chimesFF: 	2 1 1 2 1 0 -80.89562
+chimesFF: 	2 2 1 1 0 1 -80.89562
+chimesFF: 	2 2 1 1 1 0 -80.89562
+chimesFF: 	1 2 0 2 1 2 -1.34964
+chimesFF: 	2 1 0 2 2 1 -1.34964
+chimesFF: 	1 2 1 2 0 2 -1.34964
+chimesFF: 	2 1 1 2 2 0 -1.34964
+chimesFF: 	2 2 2 1 0 1 -1.34964
+chimesFF: 	2 2 2 1 1 0 -1.34964
+chimesFF: 	1 2 0 2 2 0 20.85359
+chimesFF: 	2 1 0 2 0 2 20.85359
+chimesFF: 	1 2 2 2 0 0 20.85359
+chimesFF: 	2 1 2 2 0 0 20.85359
+chimesFF: 	2 2 0 1 0 2 20.85359
+chimesFF: 	2 2 0 1 2 0 20.85359
+chimesFF: 	1 2 0 2 2 1 -23.36837
+chimesFF: 	2 1 0 2 1 2 -23.36837
+chimesFF: 	1 2 2 2 0 1 -23.36837
+chimesFF: 	2 1 2 2 1 0 -23.36837
+chimesFF: 	2 2 1 1 0 2 -23.36837
+chimesFF: 	2 2 1 1 2 0 -23.36837
+chimesFF: 	1 2 0 2 2 2 190.44046
+chimesFF: 	2 1 0 2 2 2 190.44046
+chimesFF: 	1 2 2 2 0 2 190.44046
+chimesFF: 	2 1 2 2 2 0 190.44046
+chimesFF: 	2 2 2 1 0 2 190.44046
+chimesFF: 	2 2 2 1 2 0 190.44046
+chimesFF: 	1 2 1 2 1 1 167.68300
+chimesFF: 	2 1 1 2 1 1 167.68300
+chimesFF: 	2 2 1 1 1 1 167.68300
+chimesFF: 	1 2 1 2 1 2 -18.51163
+chimesFF: 	2 1 1 2 2 1 -18.51163
+chimesFF: 	2 2 2 1 1 1 -18.51163
+chimesFF: 	1 2 1 2 2 0 200.07227
+chimesFF: 	2 1 1 2 0 2 200.07227
+chimesFF: 	1 2 2 2 1 0 200.07227
+chimesFF: 	2 1 2 2 0 1 200.07227
+chimesFF: 	2 2 0 1 1 2 200.07227
+chimesFF: 	2 2 0 1 2 1 200.07227
+chimesFF: 	1 2 1 2 2 1 166.61065
+chimesFF: 	2 1 1 2 1 2 166.61065
+chimesFF: 	1 2 2 2 1 1 166.61065
+chimesFF: 	2 1 2 2 1 1 166.61065
+chimesFF: 	2 2 1 1 1 2 166.61065
+chimesFF: 	2 2 1 1 2 1 166.61065
+chimesFF: 	1 2 1 2 2 2 118.76542
+chimesFF: 	2 1 1 2 2 2 118.76542
+chimesFF: 	1 2 2 2 1 2 118.76542
+chimesFF: 	2 1 2 2 2 1 118.76542
+chimesFF: 	2 2 2 1 1 2 118.76542
+chimesFF: 	2 2 2 1 2 1 118.76542
+chimesFF: 	1 2 2 2 2 0 -183.42043
+chimesFF: 	2 1 2 2 0 2 -183.42043
+chimesFF: 	2 2 0 1 2 2 -183.42043
+chimesFF: 	1 2 2 2 2 1 1.99898
+chimesFF: 	2 1 2 2 1 2 1.99898
+chimesFF: 	2 2 1 1 2 2 1.99898
+chimesFF: 	1 2 2 2 2 2 -135.72024
+chimesFF: 	2 1 2 2 2 2 -135.72024
+chimesFF: 	2 2 2 1 2 2 -135.72024
+chimesFF: 	2 2 0 2 0 1 10.12762
+chimesFF: 	2 2 0 2 1 0 10.12762
+chimesFF: 	2 2 1 2 0 0 10.12762
+chimesFF: 	2 2 0 2 0 2 60.48267
+chimesFF: 	2 2 0 2 2 0 60.48267
+chimesFF: 	2 2 2 2 0 0 60.48267
+chimesFF: 	2 2 0 2 1 1 -25.10161
+chimesFF: 	2 2 1 2 0 1 -25.10161
+chimesFF: 	2 2 1 2 1 0 -25.10161
+chimesFF: 	2 2 0 2 1 2 57.75686
+chimesFF: 	2 2 0 2 2 1 57.75686
+chimesFF: 	2 2 1 2 0 2 57.75686
+chimesFF: 	2 2 1 2 2 0 57.75686
+chimesFF: 	2 2 2 2 0 1 57.75686
+chimesFF: 	2 2 2 2 1 0 57.75686
+chimesFF: 	2 2 0 2 2 2 -36.96573
+chimesFF: 	2 2 2 2 0 2 -36.96573
+chimesFF: 	2 2 2 2 2 0 -36.96573
+chimesFF: 	2 2 1 2 1 2 -34.78319
+chimesFF: 	2 2 1 2 2 1 -34.78319
+chimesFF: 	2 2 2 2 1 1 -34.78319
+chimesFF: 	2 2 1 2 2 2 141.08022
+chimesFF: 	2 2 2 2 1 2 141.08022
+chimesFF: 	2 2 2 2 2 1 141.08022
+chimesFF: 	2 2 2 2 2 2 -219.45005
+chimesFF: Read 4B parameters for quadruplets: 4 H H H H
+chimesFF: 	0 0 1 0 1 1 -14.53965
+chimesFF: 	0 1 0 1 0 1 -14.53965
+chimesFF: 	1 0 0 1 1 0 -14.53965
+chimesFF: 	1 1 1 0 0 0 -14.53965
+chimesFF: 	0 0 1 0 1 2 -68.05755
+chimesFF: 	0 1 0 1 0 2 -68.05755
+chimesFF: 	0 0 1 0 2 1 -68.05755
+chimesFF: 	0 1 0 2 0 1 -68.05755
+chimesFF: 	1 0 0 1 2 0 -68.05755
+chimesFF: 	1 0 0 2 1 0 -68.05755
+chimesFF: 	0 0 2 0 1 1 -68.05755
+chimesFF: 	0 2 0 1 0 1 -68.05755
+chimesFF: 	2 0 0 1 1 0 -68.05755
+chimesFF: 	1 1 2 0 0 0 -68.05755
+chimesFF: 	1 2 1 0 0 0 -68.05755
+chimesFF: 	2 1 1 0 0 0 -68.05755
+chimesFF: 	0 0 1 0 2 2 -61.29166
+chimesFF: 	0 1 0 2 0 2 -61.29166
+chimesFF: 	1 0 0 2 2 0 -61.29166
+chimesFF: 	0 0 2 0 1 2 -61.29166
+chimesFF: 	0 2 0 1 0 2 -61.29166
+chimesFF: 	0 0 2 0 2 1 -61.29166
+chimesFF: 	0 2 0 2 0 1 -61.29166
+chimesFF: 	2 0 0 1 2 0 -61.29166
+chimesFF: 	2 0 0 2 1 0 -61.29166
+chimesFF: 	1 2 2 0 0 0 -61.29166
+chimesFF: 	2 1 2 0 0 0 -61.29166
+chimesFF: 	2 2 1 0 0 0 -61.29166
+chimesFF: 	0 0 1 1 0 0 171.07352
+chimesFF: 	0 1 0 0 1 0 171.07352
+chimesFF: 	1 0 0 0 0 1 171.07352
+chimesFF: 	0 0 1 1 0 1 128.92396
+chimesFF: 	0 1 0 0 1 1 128.92396
+chimesFF: 	0 0 1 1 1 0 128.92396
+chimesFF: 	0 1 0 1 1 0 128.92396
+chimesFF: 	1 0 0 0 1 1 128.92396
+chimesFF: 	1 0 0 1 0 1 128.92396
+chimesFF: 	0 1 1 0 1 0 128.92396
+chimesFF: 	0 1 1 1 0 0 128.92396
+chimesFF: 	1 0 1 0 0 1 128.92396
+chimesFF: 	1 1 0 0 0 1 128.92396
+chimesFF: 	1 0 1 1 0 0 128.92396
+chimesFF: 	1 1 0 0 1 0 128.92396
+chimesFF: 	0 0 1 1 0 2 80.28486
+chimesFF: 	0 1 0 0 1 2 80.28486
+chimesFF: 	0 0 1 1 2 0 80.28486
+chimesFF: 	0 1 0 2 1 0 80.28486
+chimesFF: 	1 0 0 0 2 1 80.28486
+chimesFF: 	1 0 0 2 0 1 80.28486
+chimesFF: 	0 1 2 0 1 0 80.28486
+chimesFF: 	0 2 1 1 0 0 80.28486
+chimesFF: 	1 0 2 0 0 1 80.28486
+chimesFF: 	1 2 0 0 0 1 80.28486
+chimesFF: 	2 0 1 1 0 0 80.28486
+chimesFF: 	2 1 0 0 1 0 80.28486
+chimesFF: 	0 0 1 1 1 1 117.26297
+chimesFF: 	0 1 0 1 1 1 117.26297
+chimesFF: 	1 0 0 1 1 1 117.26297
+chimesFF: 	0 1 1 0 1 1 117.26297
+chimesFF: 	0 1 1 1 0 1 117.26297
+chimesFF: 	1 0 1 0 1 1 117.26297
+chimesFF: 	1 1 0 1 0 1 117.26297
+chimesFF: 	1 0 1 1 1 0 117.26297
+chimesFF: 	1 1 0 1 1 0 117.26297
+chimesFF: 	1 1 1 0 0 1 117.26297
+chimesFF: 	1 1 1 0 1 0 117.26297
+chimesFF: 	1 1 1 1 0 0 117.26297
+chimesFF: 	0 0 1 1 1 2 -103.21707
+chimesFF: 	0 1 0 1 1 2 -103.21707
+chimesFF: 	0 0 1 1 2 1 -103.21707
+chimesFF: 	0 1 0 2 1 1 -103.21707
+chimesFF: 	1 0 0 1 2 1 -103.21707
+chimesFF: 	1 0 0 2 1 1 -103.21707
+chimesFF: 	0 1 1 0 1 2 -103.21707
+chimesFF: 	0 1 1 1 0 2 -103.21707
+chimesFF: 	1 0 1 0 2 1 -103.21707
+chimesFF: 	1 1 0 2 0 1 -103.21707
+chimesFF: 	1 0 1 1 2 0 -103.21707
+chimesFF: 	1 1 0 2 1 0 -103.21707
+chimesFF: 	0 1 2 0 1 1 -103.21707
+chimesFF: 	0 2 1 1 0 1 -103.21707
+chimesFF: 	1 0 2 0 1 1 -103.21707
+chimesFF: 	1 2 0 1 0 1 -103.21707
+chimesFF: 	2 0 1 1 1 0 -103.21707
+chimesFF: 	2 1 0 1 1 0 -103.21707
+chimesFF: 	1 1 2 0 0 1 -103.21707
+chimesFF: 	1 2 1 0 0 1 -103.21707
+chimesFF: 	1 1 2 0 1 0 -103.21707
+chimesFF: 	1 2 1 1 0 0 -103.21707
+chimesFF: 	2 1 1 0 1 0 -103.21707
+chimesFF: 	2 1 1 1 0 0 -103.21707
+chimesFF: 	0 0 1 1 2 2 52.27313
+chimesFF: 	0 1 0 2 1 2 52.27313
+chimesFF: 	1 0 0 2 2 1 52.27313
+chimesFF: 	0 1 2 0 1 2 52.27313
+chimesFF: 	0 2 1 1 0 2 52.27313
+chimesFF: 	1 0 2 0 2 1 52.27313
+chimesFF: 	1 2 0 2 0 1 52.27313
+chimesFF: 	2 0 1 1 2 0 52.27313
+chimesFF: 	2 1 0 2 1 0 52.27313
+chimesFF: 	1 2 2 0 0 1 52.27313
+chimesFF: 	2 1 2 0 1 0 52.27313
+chimesFF: 	2 2 1 1 0 0 52.27313
+chimesFF: 	0 0 1 2 0 0 -36.49857
+chimesFF: 	0 1 0 0 2 0 -36.49857
+chimesFF: 	1 0 0 0 0 2 -36.49857
+chimesFF: 	0 2 0 0 1 0 -36.49857
+chimesFF: 	0 0 2 1 0 0 -36.49857
+chimesFF: 	2 0 0 0 0 1 -36.49857
+chimesFF: 	0 0 1 2 0 1 -53.93817
+chimesFF: 	0 1 0 0 2 1 -53.93817
+chimesFF: 	0 0 1 2 1 0 -53.93817
+chimesFF: 	0 1 0 1 2 0 -53.93817
+chimesFF: 	1 0 0 0 1 2 -53.93817
+chimesFF: 	1 0 0 1 0 2 -53.93817
+chimesFF: 	0 2 0 0 1 1 -53.93817
+chimesFF: 	0 0 2 1 0 1 -53.93817
+chimesFF: 	2 0 0 0 1 1 -53.93817
+chimesFF: 	2 0 0 1 0 1 -53.93817
+chimesFF: 	0 0 2 1 1 0 -53.93817
+chimesFF: 	0 2 0 1 1 0 -53.93817
+chimesFF: 	0 2 1 0 1 0 -53.93817
+chimesFF: 	0 1 2 1 0 0 -53.93817
+chimesFF: 	2 0 1 0 0 1 -53.93817
+chimesFF: 	2 1 0 0 0 1 -53.93817
+chimesFF: 	1 0 2 1 0 0 -53.93817
+chimesFF: 	1 2 0 0 1 0 -53.93817
+chimesFF: 	1 0 1 0 0 2 -53.93817
+chimesFF: 	1 1 0 0 0 2 -53.93817
+chimesFF: 	0 1 1 0 2 0 -53.93817
+chimesFF: 	0 1 1 2 0 0 -53.93817
+chimesFF: 	1 1 0 0 2 0 -53.93817
+chimesFF: 	1 0 1 2 0 0 -53.93817
+chimesFF: 	0 0 1 2 0 2 15.04789
+chimesFF: 	0 1 0 0 2 2 15.04789
+chimesFF: 	0 0 1 2 2 0 15.04789
+chimesFF: 	0 1 0 2 2 0 15.04789
+chimesFF: 	1 0 0 0 2 2 15.04789
+chimesFF: 	1 0 0 2 0 2 15.04789
+chimesFF: 	0 2 0 0 1 2 15.04789
+chimesFF: 	0 0 2 1 0 2 15.04789
+chimesFF: 	2 0 0 0 2 1 15.04789
+chimesFF: 	2 0 0 2 0 1 15.04789
+chimesFF: 	0 0 2 1 2 0 15.04789
+chimesFF: 	0 2 0 2 1 0 15.04789
+chimesFF: 	0 2 2 0 1 0 15.04789
+chimesFF: 	0 2 2 1 0 0 15.04789
+chimesFF: 	2 0 2 0 0 1 15.04789
+chimesFF: 	2 2 0 0 0 1 15.04789
+chimesFF: 	2 0 2 1 0 0 15.04789
+chimesFF: 	2 2 0 0 1 0 15.04789
+chimesFF: 	1 0 2 0 0 2 15.04789
+chimesFF: 	1 2 0 0 0 2 15.04789
+chimesFF: 	0 1 2 0 2 0 15.04789
+chimesFF: 	0 2 1 2 0 0 15.04789
+chimesFF: 	2 1 0 0 2 0 15.04789
+chimesFF: 	2 0 1 2 0 0 15.04789
+chimesFF: 	0 0 1 2 1 1 -43.39301
+chimesFF: 	0 1 0 1 2 1 -43.39301
+chimesFF: 	1 0 0 1 1 2 -43.39301
+chimesFF: 	0 2 1 0 1 1 -43.39301
+chimesFF: 	0 1 2 1 0 1 -43.39301
+chimesFF: 	2 0 1 0 1 1 -43.39301
+chimesFF: 	2 1 0 1 0 1 -43.39301
+chimesFF: 	1 0 2 1 1 0 -43.39301
+chimesFF: 	1 2 0 1 1 0 -43.39301
+chimesFF: 	1 1 1 0 0 2 -43.39301
+chimesFF: 	1 1 1 0 2 0 -43.39301
+chimesFF: 	1 1 1 2 0 0 -43.39301
+chimesFF: 	0 0 1 2 1 2 -54.84546
+chimesFF: 	0 1 0 1 2 2 -54.84546
+chimesFF: 	0 0 1 2 2 1 -54.84546
+chimesFF: 	0 1 0 2 2 1 -54.84546
+chimesFF: 	1 0 0 1 2 2 -54.84546
+chimesFF: 	1 0 0 2 1 2 -54.84546
+chimesFF: 	0 2 1 0 1 2 -54.84546
+chimesFF: 	0 1 2 1 0 2 -54.84546
+chimesFF: 	2 0 1 0 2 1 -54.84546
+chimesFF: 	2 1 0 2 0 1 -54.84546
+chimesFF: 	1 0 2 1 2 0 -54.84546
+chimesFF: 	1 2 0 2 1 0 -54.84546
+chimesFF: 	0 2 2 0 1 1 -54.84546
+chimesFF: 	0 2 2 1 0 1 -54.84546
+chimesFF: 	2 0 2 0 1 1 -54.84546
+chimesFF: 	2 2 0 1 0 1 -54.84546
+chimesFF: 	2 0 2 1 1 0 -54.84546
+chimesFF: 	2 2 0 1 1 0 -54.84546
+chimesFF: 	1 1 2 0 0 2 -54.84546
+chimesFF: 	1 2 1 0 0 2 -54.84546
+chimesFF: 	1 1 2 0 2 0 -54.84546
+chimesFF: 	1 2 1 2 0 0 -54.84546
+chimesFF: 	2 1 1 0 2 0 -54.84546
+chimesFF: 	2 1 1 2 0 0 -54.84546
+chimesFF: 	0 0 1 2 2 2 -0.76152
+chimesFF: 	0 1 0 2 2 2 -0.76152
+chimesFF: 	1 0 0 2 2 2 -0.76152
+chimesFF: 	0 2 2 0 1 2 -0.76152
+chimesFF: 	0 2 2 1 0 2 -0.76152
+chimesFF: 	2 0 2 0 2 1 -0.76152
+chimesFF: 	2 2 0 2 0 1 -0.76152
+chimesFF: 	2 0 2 1 2 0 -0.76152
+chimesFF: 	2 2 0 2 1 0 -0.76152
+chimesFF: 	1 2 2 0 0 2 -0.76152
+chimesFF: 	2 1 2 0 2 0 -0.76152
+chimesFF: 	2 2 1 2 0 0 -0.76152
+chimesFF: 	0 0 2 0 2 2 44.80933
+chimesFF: 	0 2 0 2 0 2 44.80933
+chimesFF: 	2 0 0 2 2 0 44.80933
+chimesFF: 	2 2 2 0 0 0 44.80933
+chimesFF: 	0 0 2 1 1 1 161.13481
+chimesFF: 	0 2 0 1 1 1 161.13481
+chimesFF: 	2 0 0 1 1 1 161.13481
+chimesFF: 	0 1 1 0 2 1 161.13481
+chimesFF: 	0 1 1 2 0 1 161.13481
+chimesFF: 	1 0 1 0 1 2 161.13481
+chimesFF: 	1 1 0 1 0 2 161.13481
+chimesFF: 	1 0 1 2 1 0 161.13481
+chimesFF: 	1 1 0 1 2 0 161.13481
+chimesFF: 	2 1 1 0 0 1 161.13481
+chimesFF: 	1 2 1 0 1 0 161.13481
+chimesFF: 	1 1 2 1 0 0 161.13481
+chimesFF: 	0 0 2 1 1 2 -2.36206
+chimesFF: 	0 2 0 1 1 2 -2.36206
+chimesFF: 	0 0 2 1 2 1 -2.36206
+chimesFF: 	0 2 0 2 1 1 -2.36206
+chimesFF: 	2 0 0 1 2 1 -2.36206
+chimesFF: 	2 0 0 2 1 1 -2.36206
+chimesFF: 	0 1 1 0 2 2 -2.36206
+chimesFF: 	0 1 1 2 0 2 -2.36206
+chimesFF: 	1 0 1 0 2 2 -2.36206
+chimesFF: 	1 1 0 2 0 2 -2.36206
+chimesFF: 	1 0 1 2 2 0 -2.36206
+chimesFF: 	1 1 0 2 2 0 -2.36206
+chimesFF: 	0 1 2 0 2 1 -2.36206
+chimesFF: 	0 2 1 2 0 1 -2.36206
+chimesFF: 	1 0 2 0 1 2 -2.36206
+chimesFF: 	1 2 0 1 0 2 -2.36206
+chimesFF: 	2 0 1 2 1 0 -2.36206
+chimesFF: 	2 1 0 1 2 0 -2.36206
+chimesFF: 	2 1 2 0 0 1 -2.36206
+chimesFF: 	2 2 1 0 0 1 -2.36206
+chimesFF: 	1 2 2 0 1 0 -2.36206
+chimesFF: 	1 2 2 1 0 0 -2.36206
+chimesFF: 	2 2 1 0 1 0 -2.36206
+chimesFF: 	2 1 2 1 0 0 -2.36206
+chimesFF: 	0 0 2 1 2 2 35.67569
+chimesFF: 	0 2 0 2 1 2 35.67569
+chimesFF: 	2 0 0 2 2 1 35.67569
+chimesFF: 	0 1 2 0 2 2 35.67569
+chimesFF: 	0 2 1 2 0 2 35.67569
+chimesFF: 	1 0 2 0 2 2 35.67569
+chimesFF: 	1 2 0 2 0 2 35.67569
+chimesFF: 	2 0 1 2 2 0 35.67569
+chimesFF: 	2 1 0 2 2 0 35.67569
+chimesFF: 	2 2 2 0 0 1 35.67569
+chimesFF: 	2 2 2 0 1 0 35.67569
+chimesFF: 	2 2 2 1 0 0 35.67569
+chimesFF: 	0 0 2 2 0 0 -16.73260
+chimesFF: 	0 2 0 0 2 0 -16.73260
+chimesFF: 	2 0 0 0 0 2 -16.73260
+chimesFF: 	0 0 2 2 0 1 -13.72969
+chimesFF: 	0 2 0 0 2 1 -13.72969
+chimesFF: 	0 0 2 2 1 0 -13.72969
+chimesFF: 	0 2 0 1 2 0 -13.72969
+chimesFF: 	2 0 0 0 1 2 -13.72969
+chimesFF: 	2 0 0 1 0 2 -13.72969
+chimesFF: 	0 2 1 0 2 0 -13.72969
+chimesFF: 	0 1 2 2 0 0 -13.72969
+chimesFF: 	2 0 1 0 0 2 -13.72969
+chimesFF: 	2 1 0 0 0 2 -13.72969
+chimesFF: 	1 0 2 2 0 0 -13.72969
+chimesFF: 	1 2 0 0 2 0 -13.72969
+chimesFF: 	0 0 2 2 0 2 2.28024
+chimesFF: 	0 2 0 0 2 2 2.28024
+chimesFF: 	0 0 2 2 2 0 2.28024
+chimesFF: 	0 2 0 2 2 0 2.28024
+chimesFF: 	2 0 0 0 2 2 2.28024
+chimesFF: 	2 0 0 2 0 2 2.28024
+chimesFF: 	0 2 2 0 2 0 2.28024
+chimesFF: 	0 2 2 2 0 0 2.28024
+chimesFF: 	2 0 2 0 0 2 2.28024
+chimesFF: 	2 2 0 0 0 2 2.28024
+chimesFF: 	2 0 2 2 0 0 2.28024
+chimesFF: 	2 2 0 0 2 0 2.28024
+chimesFF: 	0 0 2 2 1 1 -129.66868
+chimesFF: 	0 2 0 1 2 1 -129.66868
+chimesFF: 	2 0 0 1 1 2 -129.66868
+chimesFF: 	0 2 1 0 2 1 -129.66868
+chimesFF: 	0 1 2 2 0 1 -129.66868
+chimesFF: 	2 0 1 0 1 2 -129.66868
+chimesFF: 	2 1 0 1 0 2 -129.66868
+chimesFF: 	1 0 2 2 1 0 -129.66868
+chimesFF: 	1 2 0 1 2 0 -129.66868
+chimesFF: 	2 1 1 0 0 2 -129.66868
+chimesFF: 	1 2 1 0 2 0 -129.66868
+chimesFF: 	1 1 2 2 0 0 -129.66868
+chimesFF: 	0 0 2 2 1 2 -96.09419
+chimesFF: 	0 2 0 1 2 2 -96.09419
+chimesFF: 	0 0 2 2 2 1 -96.09419
+chimesFF: 	0 2 0 2 2 1 -96.09419
+chimesFF: 	2 0 0 1 2 2 -96.09419
+chimesFF: 	2 0 0 2 1 2 -96.09419
+chimesFF: 	0 2 1 0 2 2 -96.09419
+chimesFF: 	0 1 2 2 0 2 -96.09419
+chimesFF: 	2 0 1 0 2 2 -96.09419
+chimesFF: 	2 1 0 2 0 2 -96.09419
+chimesFF: 	1 0 2 2 2 0 -96.09419
+chimesFF: 	1 2 0 2 2 0 -96.09419
+chimesFF: 	0 2 2 0 2 1 -96.09419
+chimesFF: 	0 2 2 2 0 1 -96.09419
+chimesFF: 	2 0 2 0 1 2 -96.09419
+chimesFF: 	2 2 0 1 0 2 -96.09419
+chimesFF: 	2 0 2 2 1 0 -96.09419
+chimesFF: 	2 2 0 1 2 0 -96.09419
+chimesFF: 	2 1 2 0 0 2 -96.09419
+chimesFF: 	2 2 1 0 0 2 -96.09419
+chimesFF: 	1 2 2 0 2 0 -96.09419
+chimesFF: 	1 2 2 2 0 0 -96.09419
+chimesFF: 	2 2 1 0 2 0 -96.09419
+chimesFF: 	2 1 2 2 0 0 -96.09419
+chimesFF: 	0 0 2 2 2 2 54.59250
+chimesFF: 	0 2 0 2 2 2 54.59250
+chimesFF: 	2 0 0 2 2 2 54.59250
+chimesFF: 	0 2 2 0 2 2 54.59250
+chimesFF: 	0 2 2 2 0 2 54.59250
+chimesFF: 	2 0 2 0 2 2 54.59250
+chimesFF: 	2 2 0 2 0 2 54.59250
+chimesFF: 	2 0 2 2 2 0 54.59250
+chimesFF: 	2 2 0 2 2 0 54.59250
+chimesFF: 	2 2 2 0 0 2 54.59250
+chimesFF: 	2 2 2 0 2 0 54.59250
+chimesFF: 	2 2 2 2 0 0 54.59250
+chimesFF: 	0 1 1 1 1 0 155.50149
+chimesFF: 	1 0 1 1 0 1 155.50149
+chimesFF: 	1 1 0 0 1 1 155.50149
+chimesFF: 	0 1 1 1 1 1 96.28969
+chimesFF: 	1 0 1 1 1 1 96.28969
+chimesFF: 	1 1 0 1 1 1 96.28969
+chimesFF: 	1 1 1 0 1 1 96.28969
+chimesFF: 	1 1 1 1 0 1 96.28969
+chimesFF: 	1 1 1 1 1 0 96.28969
+chimesFF: 	0 1 1 1 1 2 -579.72534
+chimesFF: 	1 0 1 1 2 1 -579.72534
+chimesFF: 	1 1 0 2 1 1 -579.72534
+chimesFF: 	1 1 2 0 1 1 -579.72534
+chimesFF: 	1 2 1 1 0 1 -579.72534
+chimesFF: 	2 1 1 1 1 0 -579.72534
+chimesFF: 	0 1 1 1 2 0 63.77699
+chimesFF: 	0 1 1 2 1 0 63.77699
+chimesFF: 	1 0 1 1 0 2 63.77699
+chimesFF: 	1 1 0 0 1 2 63.77699
+chimesFF: 	1 0 1 2 0 1 63.77699
+chimesFF: 	1 1 0 0 2 1 63.77699
+chimesFF: 	0 1 2 1 1 0 63.77699
+chimesFF: 	0 2 1 1 1 0 63.77699
+chimesFF: 	1 0 2 1 0 1 63.77699
+chimesFF: 	1 2 0 0 1 1 63.77699
+chimesFF: 	2 0 1 1 0 1 63.77699
+chimesFF: 	2 1 0 0 1 1 63.77699
+chimesFF: 	0 1 1 1 2 1 346.66799
+chimesFF: 	0 1 1 2 1 1 346.66799
+chimesFF: 	1 0 1 1 1 2 346.66799
+chimesFF: 	1 1 0 1 1 2 346.66799
+chimesFF: 	1 0 1 2 1 1 346.66799
+chimesFF: 	1 1 0 1 2 1 346.66799
+chimesFF: 	0 1 2 1 1 1 346.66799
+chimesFF: 	0 2 1 1 1 1 346.66799
+chimesFF: 	1 0 2 1 1 1 346.66799
+chimesFF: 	1 2 0 1 1 1 346.66799
+chimesFF: 	2 0 1 1 1 1 346.66799
+chimesFF: 	2 1 0 1 1 1 346.66799
+chimesFF: 	1 1 1 0 1 2 346.66799
+chimesFF: 	1 1 1 1 0 2 346.66799
+chimesFF: 	1 1 1 0 2 1 346.66799
+chimesFF: 	1 1 1 2 0 1 346.66799
+chimesFF: 	1 1 1 1 2 0 346.66799
+chimesFF: 	1 1 1 2 1 0 346.66799
+chimesFF: 	1 2 1 0 1 1 346.66799
+chimesFF: 	1 1 2 1 0 1 346.66799
+chimesFF: 	2 1 1 0 1 1 346.66799
+chimesFF: 	2 1 1 1 0 1 346.66799
+chimesFF: 	1 1 2 1 1 0 346.66799
+chimesFF: 	1 2 1 1 1 0 346.66799
+chimesFF: 	0 1 1 1 2 2 77.20770
+chimesFF: 	0 1 1 2 1 2 77.20770
+chimesFF: 	1 0 1 1 2 2 77.20770
+chimesFF: 	1 1 0 2 1 2 77.20770
+chimesFF: 	1 0 1 2 2 1 77.20770
+chimesFF: 	1 1 0 2 2 1 77.20770
+chimesFF: 	0 1 2 1 1 2 77.20770
+chimesFF: 	0 2 1 1 1 2 77.20770
+chimesFF: 	1 0 2 1 2 1 77.20770
+chimesFF: 	1 2 0 2 1 1 77.20770
+chimesFF: 	2 0 1 1 2 1 77.20770
+chimesFF: 	2 1 0 2 1 1 77.20770
+chimesFF: 	1 1 2 0 1 2 77.20770
+chimesFF: 	1 2 1 1 0 2 77.20770
+chimesFF: 	1 1 2 0 2 1 77.20770
+chimesFF: 	1 2 1 2 0 1 77.20770
+chimesFF: 	2 1 1 1 2 0 77.20770
+chimesFF: 	2 1 1 2 1 0 77.20770
+chimesFF: 	1 2 2 0 1 1 77.20770
+chimesFF: 	1 2 2 1 0 1 77.20770
+chimesFF: 	2 1 2 0 1 1 77.20770
+chimesFF: 	2 2 1 1 0 1 77.20770
+chimesFF: 	2 1 2 1 1 0 77.20770
+chimesFF: 	2 2 1 1 1 0 77.20770
+chimesFF: 	0 1 1 2 2 0 -67.23932
+chimesFF: 	1 0 1 2 0 2 -67.23932
+chimesFF: 	1 1 0 0 2 2 -67.23932
+chimesFF: 	0 2 2 1 1 0 -67.23932
+chimesFF: 	2 0 2 1 0 1 -67.23932
+chimesFF: 	2 2 0 0 1 1 -67.23932
+chimesFF: 	1 2 0 0 1 2 -67.23932
+chimesFF: 	1 0 2 1 0 2 -67.23932
+chimesFF: 	2 1 0 0 2 1 -67.23932
+chimesFF: 	2 0 1 2 0 1 -67.23932
+chimesFF: 	0 1 2 1 2 0 -67.23932
+chimesFF: 	0 2 1 2 1 0 -67.23932
+chimesFF: 	0 1 1 2 2 1 131.66417
+chimesFF: 	1 0 1 2 1 2 131.66417
+chimesFF: 	1 1 0 1 2 2 131.66417
+chimesFF: 	0 2 2 1 1 1 131.66417
+chimesFF: 	2 0 2 1 1 1 131.66417
+chimesFF: 	2 2 0 1 1 1 131.66417
+chimesFF: 	1 2 1 0 1 2 131.66417
+chimesFF: 	1 1 2 1 0 2 131.66417
+chimesFF: 	2 1 1 0 2 1 131.66417
+chimesFF: 	2 1 1 2 0 1 131.66417
+chimesFF: 	1 1 2 1 2 0 131.66417
+chimesFF: 	1 2 1 2 1 0 131.66417
+chimesFF: 	0 1 2 1 2 1 -22.36445
+chimesFF: 	0 2 1 2 1 1 -22.36445
+chimesFF: 	1 0 2 1 1 2 -22.36445
+chimesFF: 	1 2 0 1 1 2 -22.36445
+chimesFF: 	2 0 1 2 1 1 -22.36445
+chimesFF: 	2 1 0 1 2 1 -22.36445
+chimesFF: 	1 1 1 0 2 2 -22.36445
+chimesFF: 	1 1 1 2 0 2 -22.36445
+chimesFF: 	1 1 1 2 2 0 -22.36445
+chimesFF: 	2 2 1 0 1 1 -22.36445
+chimesFF: 	2 1 2 1 0 1 -22.36445
+chimesFF: 	1 2 2 1 1 0 -22.36445
+chimesFF: 	0 1 2 1 2 2 -70.95614
+chimesFF: 	0 2 1 2 1 2 -70.95614
+chimesFF: 	1 0 2 1 2 2 -70.95614
+chimesFF: 	1 2 0 2 1 2 -70.95614
+chimesFF: 	2 0 1 2 2 1 -70.95614
+chimesFF: 	2 1 0 2 2 1 -70.95614
+chimesFF: 	1 1 2 0 2 2 -70.95614
+chimesFF: 	1 2 1 2 0 2 -70.95614
+chimesFF: 	2 1 1 2 2 0 -70.95614
+chimesFF: 	2 2 2 0 1 1 -70.95614
+chimesFF: 	2 2 2 1 0 1 -70.95614
+chimesFF: 	2 2 2 1 1 0 -70.95614
+chimesFF: 	0 1 2 2 1 0 154.22217
+chimesFF: 	0 2 1 1 2 0 154.22217
+chimesFF: 	1 0 2 2 0 1 154.22217
+chimesFF: 	1 2 0 0 2 1 154.22217
+chimesFF: 	2 0 1 1 0 2 154.22217
+chimesFF: 	2 1 0 0 1 2 154.22217
+chimesFF: 	0 1 2 2 1 1 -193.46022
+chimesFF: 	0 2 1 1 2 1 -193.46022
+chimesFF: 	1 0 2 2 1 1 -193.46022
+chimesFF: 	1 2 0 1 2 1 -193.46022
+chimesFF: 	2 0 1 1 1 2 -193.46022
+chimesFF: 	2 1 0 1 1 2 -193.46022
+chimesFF: 	1 2 1 0 2 1 -193.46022
+chimesFF: 	1 1 2 2 0 1 -193.46022
+chimesFF: 	2 1 1 0 1 2 -193.46022
+chimesFF: 	2 1 1 1 0 2 -193.46022
+chimesFF: 	1 1 2 2 1 0 -193.46022
+chimesFF: 	1 2 1 1 2 0 -193.46022
+chimesFF: 	0 1 2 2 2 0 190.40157
+chimesFF: 	0 2 1 2 2 0 190.40157
+chimesFF: 	1 0 2 2 0 2 190.40157
+chimesFF: 	1 2 0 0 2 2 190.40157
+chimesFF: 	2 0 1 2 0 2 190.40157
+chimesFF: 	2 1 0 0 2 2 190.40157
+chimesFF: 	0 2 2 1 2 0 190.40157
+chimesFF: 	0 2 2 2 1 0 190.40157
+chimesFF: 	2 0 2 1 0 2 190.40157
+chimesFF: 	2 2 0 0 1 2 190.40157
+chimesFF: 	2 0 2 2 0 1 190.40157
+chimesFF: 	2 2 0 0 2 1 190.40157
+chimesFF: 	0 1 2 2 2 1 19.48564
+chimesFF: 	0 2 1 2 2 1 19.48564
+chimesFF: 	1 0 2 2 1 2 19.48564
+chimesFF: 	1 2 0 1 2 2 19.48564
+chimesFF: 	2 0 1 2 1 2 19.48564
+chimesFF: 	2 1 0 1 2 2 19.48564
+chimesFF: 	0 2 2 1 2 1 19.48564
+chimesFF: 	0 2 2 2 1 1 19.48564
+chimesFF: 	2 0 2 1 1 2 19.48564
+chimesFF: 	2 2 0 1 1 2 19.48564
+chimesFF: 	2 0 2 2 1 1 19.48564
+chimesFF: 	2 2 0 1 2 1 19.48564
+chimesFF: 	1 2 1 0 2 2 19.48564
+chimesFF: 	1 1 2 2 0 2 19.48564
+chimesFF: 	2 1 1 0 2 2 19.48564
+chimesFF: 	2 1 1 2 0 2 19.48564
+chimesFF: 	1 1 2 2 2 0 19.48564
+chimesFF: 	1 2 1 2 2 0 19.48564
+chimesFF: 	2 2 1 0 1 2 19.48564
+chimesFF: 	2 1 2 1 0 2 19.48564
+chimesFF: 	2 2 1 0 2 1 19.48564
+chimesFF: 	2 1 2 2 0 1 19.48564
+chimesFF: 	1 2 2 1 2 0 19.48564
+chimesFF: 	1 2 2 2 1 0 19.48564
+chimesFF: 	0 1 2 2 2 2 48.60555
+chimesFF: 	0 2 1 2 2 2 48.60555
+chimesFF: 	1 0 2 2 2 2 48.60555
+chimesFF: 	1 2 0 2 2 2 48.60555
+chimesFF: 	2 0 1 2 2 2 48.60555
+chimesFF: 	2 1 0 2 2 2 48.60555
+chimesFF: 	0 2 2 1 2 2 48.60555
+chimesFF: 	0 2 2 2 1 2 48.60555
+chimesFF: 	2 0 2 1 2 2 48.60555
+chimesFF: 	2 2 0 2 1 2 48.60555
+chimesFF: 	2 0 2 2 2 1 48.60555
+chimesFF: 	2 2 0 2 2 1 48.60555
+chimesFF: 	1 2 2 0 2 2 48.60555
+chimesFF: 	1 2 2 2 0 2 48.60555
+chimesFF: 	2 1 2 0 2 2 48.60555
+chimesFF: 	2 2 1 2 0 2 48.60555
+chimesFF: 	2 1 2 2 2 0 48.60555
+chimesFF: 	2 2 1 2 2 0 48.60555
+chimesFF: 	2 2 2 0 1 2 48.60555
+chimesFF: 	2 2 2 1 0 2 48.60555
+chimesFF: 	2 2 2 0 2 1 48.60555
+chimesFF: 	2 2 2 2 0 1 48.60555
+chimesFF: 	2 2 2 1 2 0 48.60555
+chimesFF: 	2 2 2 2 1 0 48.60555
+chimesFF: 	0 2 2 2 2 0 87.41700
+chimesFF: 	2 0 2 2 0 2 87.41700
+chimesFF: 	2 2 0 0 2 2 87.41700
+chimesFF: 	0 2 2 2 2 1 -266.33754
+chimesFF: 	2 0 2 2 1 2 -266.33754
+chimesFF: 	2 2 0 1 2 2 -266.33754
+chimesFF: 	2 2 1 0 2 2 -266.33754
+chimesFF: 	2 1 2 2 0 2 -266.33754
+chimesFF: 	1 2 2 2 2 0 -266.33754
+chimesFF: 	0 2 2 2 2 2 113.67924
+chimesFF: 	2 0 2 2 2 2 113.67924
+chimesFF: 	2 2 0 2 2 2 113.67924
+chimesFF: 	2 2 2 0 2 2 113.67924
+chimesFF: 	2 2 2 2 0 2 113.67924
+chimesFF: 	2 2 2 2 2 0 113.67924
+chimesFF: 	1 1 1 1 1 2 794.85467
+chimesFF: 	1 1 1 1 2 1 794.85467
+chimesFF: 	1 1 1 2 1 1 794.85467
+chimesFF: 	1 1 2 1 1 1 794.85467
+chimesFF: 	1 2 1 1 1 1 794.85467
+chimesFF: 	2 1 1 1 1 1 794.85467
+chimesFF: 	1 1 1 1 2 2 600.13724
+chimesFF: 	1 1 1 2 1 2 600.13724
+chimesFF: 	1 1 1 2 2 1 600.13724
+chimesFF: 	1 1 2 1 1 2 600.13724
+chimesFF: 	1 2 1 1 1 2 600.13724
+chimesFF: 	1 1 2 1 2 1 600.13724
+chimesFF: 	1 2 1 2 1 1 600.13724
+chimesFF: 	2 1 1 1 2 1 600.13724
+chimesFF: 	2 1 1 2 1 1 600.13724
+chimesFF: 	1 2 2 1 1 1 600.13724
+chimesFF: 	2 1 2 1 1 1 600.13724
+chimesFF: 	2 2 1 1 1 1 600.13724
+chimesFF: 	1 1 2 1 2 2 -18.04884
+chimesFF: 	1 2 1 2 1 2 -18.04884
+chimesFF: 	2 1 1 2 2 1 -18.04884
+chimesFF: 	2 2 2 1 1 1 -18.04884
+chimesFF: 	1 1 2 2 1 1 -703.92293
+chimesFF: 	1 2 1 1 2 1 -703.92293
+chimesFF: 	2 1 1 1 1 2 -703.92293
+chimesFF: 	1 1 2 2 1 2 72.58400
+chimesFF: 	1 2 1 1 2 2 72.58400
+chimesFF: 	1 1 2 2 2 1 72.58400
+chimesFF: 	1 2 1 2 2 1 72.58400
+chimesFF: 	2 1 1 1 2 2 72.58400
+chimesFF: 	2 1 1 2 1 2 72.58400
+chimesFF: 	1 2 2 1 2 1 72.58400
+chimesFF: 	1 2 2 2 1 1 72.58400
+chimesFF: 	2 1 2 1 1 2 72.58400
+chimesFF: 	2 2 1 1 1 2 72.58400
+chimesFF: 	2 1 2 2 1 1 72.58400
+chimesFF: 	2 2 1 1 2 1 72.58400
+chimesFF: 	1 1 2 2 2 2 -82.28028
+chimesFF: 	1 2 1 2 2 2 -82.28028
+chimesFF: 	2 1 1 2 2 2 -82.28028
+chimesFF: 	1 2 2 1 2 2 -82.28028
+chimesFF: 	1 2 2 2 1 2 -82.28028
+chimesFF: 	2 1 2 1 2 2 -82.28028
+chimesFF: 	2 2 1 2 1 2 -82.28028
+chimesFF: 	2 1 2 2 2 1 -82.28028
+chimesFF: 	2 2 1 2 2 1 -82.28028
+chimesFF: 	2 2 2 1 1 2 -82.28028
+chimesFF: 	2 2 2 1 2 1 -82.28028
+chimesFF: 	2 2 2 2 1 1 -82.28028
+chimesFF: 	1 2 2 2 2 1 -419.12491
+chimesFF: 	2 1 2 2 1 2 -419.12491
+chimesFF: 	2 2 1 1 2 2 -419.12491
+chimesFF: 	1 2 2 2 2 2 -105.62089
+chimesFF: 	2 1 2 2 2 2 -105.62089
+chimesFF: 	2 2 1 2 2 2 -105.62089
+chimesFF: 	2 2 2 1 2 2 -105.62089
+chimesFF: 	2 2 2 2 1 2 -105.62089
+chimesFF: 	2 2 2 2 2 1 -105.62089
+chimesFF: Built the following 4-body pair "slow" map:
+chimesFF: 	4 HHHHHHHHHHHH
+chimesFF: 	3 HHHHNHHHNHNH
+chimesFF: 	3 HHNHHHNHHHNH
+chimesFF: 	2 HHNHNHNHNHNN
+chimesFF: 	3 NHHHHHNHNHHH
+chimesFF: 	2 NHHHNHNHNNNH
+chimesFF: 	2 NHNHHHNNNHNH
+chimesFF: 	3 NHNHNHHHHHHH
+chimesFF: 	1 NHNHNHNNNNNN
+chimesFF: 	2 NHNHNNHHNHNH
+chimesFF: 	2 NHNNNHNHHHNH
+chimesFF: 	1 NHNNNNNHNHNN
+chimesFF: 	2 NNNHNHNHNHHH
+chimesFF: 	1 NNNHNNNHNNNH
+chimesFF: 	1 NNNNNHNNNHNH
+chimesFF: 	0 NNNNNNNNNNNN
+chimesFF: Built the following 4-body pair "fast" map:
+chimesFF: 	0 0
+chimesFF: 	1 1
+chimesFF: 	2 1
+chimesFF: 	3 2
+chimesFF: 	4 1
+chimesFF: 	5 2
+chimesFF: 	6 2
+chimesFF: 	7 3
+chimesFF: 	8 1
+chimesFF: 	9 2
+chimesFF: 	10 2
+chimesFF: 	11 3
+chimesFF: 	12 2
+chimesFF: 	13 3
+chimesFF: 	14 3
+chimesFF: 	15 4
+chimesFF: 	Setting 3-body max cutoff to: 3.50000
+chimesFF: 	Setting 4-body max cutoff to: 3.50000
+chimesFF: Reading parameters from file: 1.params.txt.reduced
+chimesFF: Using respective 2, 3, and 4-body orders of: 4 0 0
+chimesFF: Note: Ignoring polynomial domain; assuming [-1,1]
+chimesFF: Will consider 2 atom types:
+chimesFF: 	0 N
+chimesFF: 	1 H
+chimesFF: Will consider 3 atom pair types
+chimesFF: Detected version 2 pair specification (no S_DELTA)
+chimesFF: 	0 N N
+chimesFF: 	1 H H
+chimesFF: 	2 N H
+chimesFF: Read the following pair type information:
+chimesFF: 	N N r_cut_in: 0.79300 r_cut_out: 7.00000 MORSE 1.15000
+chimesFF: 	H H r_cut_in: 0.45100 r_cut_out: 7.00000 MORSE 0.80000
+chimesFF: 	N H r_cut_in: 0.66600 r_cut_out: 7.00000 MORSE 1.00000
+chimesFF: Will use cutoff style TERSOFF
+ 0.75000
+chimesFF: Will use single atom energy offsets: 
+chimesFF: 	1 N 0.00000
+chimesFF: 	2 H 0.00000
+chimesFF: Will use penalty distance: 0.02000
+chimesFF: Will use penalty scaling: 1000000.00000
+chimesFF: Read 2B parameters for pair: 0 N N
+chimesFF: 	0 -172.38368
+chimesFF: 	1 -370.68014
+chimesFF: 	2 -267.87085
+chimesFF: 	3 -72.07891
+chimesFF: Read 2B parameters for pair: 1 H H
+chimesFF: 	0 120.74230
+chimesFF: 	1 -41.32775
+chimesFF: 	2 -350.60761
+chimesFF: 	3 -192.18008
+chimesFF: Read 2B parameters for pair: 2 N H
+chimesFF: 	0 -91.88665
+chimesFF: 	1 -191.91618
+chimesFF: 	2 -131.22382
+chimesFF: 	3 -32.16072
+chimesFF: Built the following 2-body pair "slow" map:
+chimesFF: 	1 HH(i: 0)
+chimesFF: 	2 HN(i: 1)
+chimesFF: 	2 NH(i: 2)
+chimesFF: 	0 NN(i: 3)
+chimesFF: Built the following 2-body pair "fast" map:
+chimesFF: 	NN: 0 0
+chimesFF: 	NH: 1 2
+chimesFF: 	HN: 2 2
+chimesFF: 	HH: 3 1
+
+CITE-CITE-CITE-CITE-CITE-CITE-CITE-CITE-CITE-CITE-CITE-CITE-CITE
+
+Your simulation uses code contributions which should be cited:
+- Type Label Framework: https://doi.org/10.1021/acs.jpcb.3c08419
+The log file lists these citations in BibTeX format.
+
+CITE-CITE-CITE-CITE-CITE-CITE-CITE-CITE-CITE-CITE-CITE-CITE-CITE
+
+Generated 0 of 1 mixed pair_coeff terms from geometric mixing rule
+Neighbor list info ...
+  update: every = 1 steps, delay = 0 steps, check = yes
+  max neighbors/atom: 2000, page size: 100000
+  master list distance cutoff = 9
+  ghost atom cutoff = 9
+  binsize = 4.5, bins = 4 4 4
+  2 neighbor lists, perpetual/occasional/extra = 2 0 0
+  (1) pair chimesFF, perpetual, trim from (2)
+      attributes: full, newton on, ghost, cut 5.5
+      pair build: trim
+      stencil: none
+      bin: none
+  (2) pair chimesFF, perpetual
+      attributes: full, newton on, ghost
+      pair build: full/bin/ghost
+      stencil: full/ghost/bin/3d
+      bin: standard
+Setting up Verlet run ...
+  Unit style    : real
+  Current step  : 0
+  Time step     : 0.05
+Updating chimesFF neighbor lists...
+	Rank 0 3-body list size: 549
+	Rank 0 4-body list size: 1277
+	...update complete
+Updating chimesFF neighbor lists...
+	Rank 0 3-body list size: 0
+	Rank 0 4-body list size: 0
+	...update complete
+Per MPI rank memory allocation (min/avg/max) = 3.622 | 3.622 | 3.622 Mbytes
+   Step          Time          KinEng         PotEng         TotEng          Temp          Press           Pxx            Pyy            Pzz            Pxy            Pxz            Pyz           Volume     c_ke_tensor[1] c_ke_tensor[2] c_ke_tensor[3] c_ke_tensor[4] c_ke_tensor[5] c_ke_tensor[6]   Econserve   
+         0               0.00000            242.33986         -40759.19487         -40516.85501            300.00000          41344.80404          36950.61626          40672.19115          46411.60472           4545.93422          -6825.41609         -13616.48453           4492.12500            160.07647            147.31436            177.28888             -8.76570             -9.87408              8.07556         -40516.85501
+         4               0.20000            249.04968         -40765.90730         -40516.85762            308.30630          41119.77823          36575.54914          40217.08561          46566.69995           4960.51447          -6810.12552         -13709.62135           4492.12500            168.85705            152.29130            176.95102             -8.30930             -9.68315             11.24259         -40516.85660
+         8               0.40000            275.45639         -40792.35153         -40516.89514            340.99598          40261.43212          35533.23200          39150.29409          46100.77026           5380.82875          -6708.93938         -13814.18117           4492.12500            191.50922            168.74658            190.65699             -8.08445            -11.29403             14.32707         -40516.86351
+        12               0.60000            319.69174         -40836.77084         -40517.07910            395.75628          38797.34910          33855.18259          37506.89871          45029.96601           5797.80878          -6530.20503         -13934.60592           4492.12500            226.42953            195.50220            217.45175             -7.81362            -14.35704             17.26688         -40516.87471
+        16               0.80000            378.63589         -40896.29900         -40517.66311            468.72507          36776.23436          31599.18095          35341.61668          43387.90545           6208.46924          -6285.82809         -14070.74664           4492.12500            271.10571            230.60013            255.56593             -7.15868            -18.49382             19.98961         -40516.88853
+        20               1.00000            448.22499         -40967.33776         -40519.11277            554.87157          34278.49170          28857.82207          32738.78834          41238.86469           6595.62911          -5989.42267         -14215.15507           4492.12500            322.38240            271.51183            302.55575             -5.82700            -23.32311             22.41449         -40516.90335
+        24               1.20000            523.80953         -41045.96382         -40522.15428            648.44001          31392.92451          25737.02566          29779.71490          38662.03299           6950.32998          -5654.22963         -14362.32112           4492.12500            376.75054            315.38806            355.48047             -3.65903            -28.46765             24.46001         -40516.91771
+        28               1.40000            600.53896         -41128.28929         -40527.75033            743.42574          28208.48282          22342.99081          26553.94168          35728.51597           7267.38466          -5284.15631         -14514.90655           4492.12500            430.65511            359.31583            411.10699             -0.67663            -33.56877             26.05867         -40516.93035
+        32               1.60000            673.81630         -41210.73935         -40536.92305            834.13802          24822.81125          18792.78707          23148.97417          32526.67251           7541.90245          -4893.31883         -14663.88404           4492.12500            480.82635            400.60665            466.19959              2.92595            -38.31185             27.18060         -40516.93998
+        36               1.80000            739.90808         -41290.24584         -40550.33776            915.95509          21341.21687          15207.77505          19659.74622          29156.12934           7773.11629          -4492.87016         -14800.79838           4492.12500            524.70668            437.15347            517.95602              6.83246            -42.46075             27.85192         -40516.94573
+        40               2.00000            796.63283         -41364.36402         -40567.73119            986.17640          17872.58011          11708.30011          16185.05909          25724.38113           7963.34377          -4094.34973         -14915.00526           4492.12500            560.91487            467.81233            564.53846             10.68108            -45.89863             28.16150         -40516.94796
+        44               2.20000            843.58381         -41431.31034         -40587.72653           1044.29847          14523.37473           8413.51376          12809.01411          22347.59631           8112.98701          -3713.56611         -15000.01207           4492.12500            589.36056            492.49594            605.31112             14.13933            -48.64116             28.24597         -40516.94605
+        48               2.40000            881.27340         -41489.92713         -40608.65373           1090.95558          11398.26282           5450.24549           9612.50803          19132.03495           8237.29447          -3359.96576         -15047.82632           4492.12500            610.60901            511.62633            640.31146             16.93857            -50.78868             28.24294         -40516.94470
+        52               2.60000            909.76362         -41539.53289         -40629.76927           1126.22451           8544.63596           2861.96746           6643.08997          16128.85045           8330.23491          -3033.67165         -15047.93095           4492.12500            624.91225            525.34752            669.26748             18.86894            -52.41315             28.23393         -40516.95011
+        56               2.80000            928.32494         -41579.80407         -40651.47913           1149.20214           5997.32384            674.59028           3932.62407          13384.75716           8394.02890          -2738.86014         -14995.02465           4492.12500            631.96447            533.34139            691.34402             19.77735            -53.54018             28.23819         -40516.95258
+        60               3.00000            936.14872         -41610.72629         -40674.57757           1158.88744           3774.20117          -1098.18075           1495.92239          10924.86187           8432.82320          -2478.48968         -14885.81623           4492.12500            631.42061            535.23163            705.64520             19.58086            -54.17729             28.23597         -40516.94781
+        64               3.20000            933.06214         -41632.57460         -40699.51246           1155.06647           1882.45370          -2456.79655           -661.73662           8765.89426           8446.30721          -2256.35357         -14717.21453           4492.12500            623.38370            530.99313            711.74746             18.28946            -54.34023             28.19021         -40516.93996
+        68               3.40000            919.78265         -41645.89681         -40726.11416           1138.62737            333.42937          -3408.55762          -2529.31080           6938.15654           8435.37605          -2068.12381         -14489.73267           4492.12500            608.56016            521.08981            709.91532             16.01519            -54.05482             28.05840         -40516.93225
+        72               3.60000            897.75477         -41651.47558         -40753.72081           1111.35838           -889.23777          -3975.59815          -4116.75070           5424.63554           8394.73396          -1921.63381         -14205.83496           4492.12500            588.13211            506.37414            701.00329             12.96042            -53.34566             27.79575         -40516.92636
+        76               3.80000            868.77558         -41650.27972         -40781.50414           1075.48415          -1808.72505          -4188.47483          -5444.65583           4206.95551           8317.68084          -1818.13258         -13861.57249           4492.12500            563.49107            487.88151            686.17858              9.39282            -52.21970             27.34981         -40516.92254
+        80               4.00000            834.64918         -41643.40750         -40808.75831           1033.23802          -2455.18861          -4089.37043          -6534.67198           3258.47658           8196.41281          -1758.21891         -13461.10180           4492.12500            536.00279            466.63502            666.66055              5.62065            -50.65460             26.66233         -40516.91999
+        84               4.20000            797.01872         -41632.02945         -40835.01073            986.65411          -2863.56593          -3726.21385          -7412.70250           2548.21857           8025.25450          -1739.17946         -13007.28267           4492.12500            506.89408            443.55682            643.58653              1.96738            -48.61033             25.67327         -40516.91792
+        88               4.40000            757.34314         -41617.33211         -40859.98897            937.53848          -3075.00350          -3154.53384          -8108.16157           2037.68491           7799.71316          -1756.01813         -12503.63636           4492.12500            477.23466            419.46256            617.98906             -1.25501            -46.05342             24.32762         -40516.91613
+        92               4.60000            716.91604         -41600.46454         -40883.54850            887.49253          -3135.82776          -2434.56095          -8655.05020           1682.12788           7514.22083          -1804.14619         -11955.78191           4492.12500            447.94516            395.07765            590.80928             -3.77552            -42.98491             22.58241         -40516.91484
+        96               4.80000            676.86805         -41582.49032         -40905.62227            837.91589          -3090.90782          -1623.53114          -9085.65188           1436.45956           7166.94631          -1877.75159         -11369.26667           4492.12500            419.79564            371.04268            562.89779             -5.39400            -39.46303             20.41334         -40516.91425
+       100               5.00000            638.15372         -41564.35132         -40926.19760            789.99021          -2981.47702           -773.65557          -9429.95520           1259.17972           6760.74574          -1968.73705         -10750.98268           4492.12500            393.39932            347.90763            535.00049             -6.00481            -35.61463             17.82046         -40516.91442
+Loop time of 0.272415 on 36 procs for 100 steps with 272 atoms
+
+Performance: 1.586 ns/day, 15.134 hours/ns, 367.087 timesteps/s, 99.848 katom-step/s
+99.0% CPU use with 36 MPI tasks x no OpenMP threads
+
+MPI task timing breakdown:
+Section |  min time  |  avg time  |  max time  |%varavg| %total
+---------------------------------------------------------------
+Pair    | 0.025777   | 0.11545    | 0.25336    |  20.9 | 42.38
+Neigh   | 0          | 0          | 0          |   0.0 |  0.00
+Comm    | 0.0083685  | 0.14617    | 0.23582    |  18.6 | 53.66
+Output  | 0.0046518  | 0.0068028  | 0.0095378  |   1.8 |  2.50
+Modify  | 0.00063842 | 0.00081661 | 0.00093443 |   0.0 |  0.30
+Other   |            | 0.003179   |            |       |  1.17
+
+Nlocal:        7.55556 ave          12 max           2 min
+Histogram: 1 0 2 4 5 3 9 6 2 4
+Nghost:        731.944 ave         758 max         713 min
+Histogram: 6 7 6 2 3 0 2 0 5 5
+Neighs:              0 ave           0 max           0 min
+Histogram: 36 0 0 0 0 0 0 0 0 0
+FullNghs:      315.444 ave         490 max          98 min
+Histogram: 1 2 3 5 3 7 6 3 2 4
+
+Total # of neighbors = 11356
+Ave neighs/atom = 41.75
+Neighbor list builds = 0
+Dangerous builds = 0
+Total wall time: 0:00:00

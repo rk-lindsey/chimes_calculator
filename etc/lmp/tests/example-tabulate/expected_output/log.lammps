@@ -1,0 +1,137 @@
+LAMMPS (29 Aug 2024 - Update 1)
+########################################
+########################################
+# NVT MD simulation using ***tabulated*** ChIMES (2017 carbon model)
+########################################
+########################################
+
+########################################
+# GENERAL CONTROLS
+########################################
+
+units           real                          # Required for CHIMES pair style
+newton          on                            # Required for CHIMES pair style
+atom_style      atomic                        # Required for CHIMES pair style
+atom_modify     sort 0 0.0                    # Required for CHIMES pair style
+atom_modify     map array                     # Required for CHIMES pair style
+
+neighbor        2.0 bin
+neigh_modify    delay 0 every 1 check yes     # Required for CHIMES pair style
+
+
+########################################
+# INITIALIZATION CONTROLS
+########################################
+
+read_data    ./data.in
+Reading data file ...
+  triclinic box = (0 0 0) to (11.68 11.68 11.68) with tilt (0 0 0)
+  3 by 3 by 4 MPI processor grid
+  reading atoms ...
+  200 atoms
+  read_data CPU = 0.011 seconds
+
+########################################
+# FORCE FIELD CONTROLS
+########################################
+
+pair_style chimesFF
+pair_coeff  * * params.txt
+
+
+########################################
+# RUN, DUMP, AND THERMO CONTROLS
+########################################
+
+##### Set the ensemble
+
+fix             1 all nvt temp 6000.0 6000.0 50
+
+##### Define thermo output
+
+thermo_style    custom step pe pxx pyy pzz pxy pxz pyz press
+thermo          10
+
+##### Print dump file
+
+#dump            dump_1 all custom ${io_freq} traj.lammpstrj id type element xu yu zu
+#dump_modify     dump_1 sort id element C
+
+##### Run the simulation
+
+timestep        0.5
+run 100
+
+CITE-CITE-CITE-CITE-CITE-CITE-CITE-CITE-CITE-CITE-CITE-CITE-CITE
+
+Your simulation uses code contributions which should be cited:
+
+- Type Label Framework: https://doi.org/10.1021/acs.jpcb.3c08419
+
+@Article{Gissinger24,
+ author = {Jacob R. Gissinger, Ilia Nikiforov, Yaser Afshar, Brendon Waters, Moon-ki Choi, Daniel S. Karls, Alexander Stukowski, Wonpil Im, Hendrik Heinz, Axel Kohlmeyer, and Ellad B. Tadmor},
+ title = {Type Label Framework for Bonded Force Fields in LAMMPS},
+ journal = {J. Phys. Chem. B},
+ year =    2024,
+ volume =  128,
+ number =  13,
+ pages =   {3282–-3297}
+}
+
+CITE-CITE-CITE-CITE-CITE-CITE-CITE-CITE-CITE-CITE-CITE-CITE-CITE
+
+Generated 0 of 0 mixed pair_coeff terms from geometric mixing rule
+Neighbor list info ...
+  update: every = 1 steps, delay = 0 steps, check = yes
+  max neighbors/atom: 2000, page size: 100000
+  master list distance cutoff = 5.15
+  ghost atom cutoff = 5.15
+  binsize = 2.575, bins = 5 5 5
+  1 neighbor lists, perpetual/occasional/extra = 1 0 0
+  (1) pair chimesFF, perpetual
+      attributes: full, newton on, ghost
+      pair build: full/bin/ghost
+      stencil: full/ghost/bin/3d
+      bin: standard
+Per MPI rank memory allocation (min/avg/max) = 2.964 | 2.964 | 2.964 Mbytes
+   Step         PotEng          Pxx            Pyy            Pzz            Pxy            Pxz            Pyz           Press     
+         0  -7701.3061      94611.219      86594.67       88985.285     -30381.731      32539.754     -19721.689      90063.725    
+        10  -8810.7904      31130.575      29974.327      18479.576     -16956.195      37488.992     -27170.41       26528.159    
+        20  -9646.9785      70600.328      65615.906      57282.081     -9936.5894      37179.607     -31161.406      64499.439    
+        30  -9838.0844      137422.86      172469.65      174897.87     -2842.0134      33772.228     -18008.478      161596.79    
+        40  -9949.0825      167533.74      218646.03      225650.66     -12661.883      21400.207      13597.156      203943.47    
+        50  -9914.3465      179764.13      208668.23      193061.04     -8603.9995      19055.408      14250.923      193831.13    
+        60  -9695.1002      185977.58      184358.05      149368.82      19536.913      21299.059     -15419.129      173234.81    
+        70  -9476.7451      204800.74      179252.79      157685.56      23957.476      3672.3369     -17244.548      180579.7     
+        80  -9626.1652      178051.34      168798.61      179632.99      3980.0794      6978.8633     -967.80996      175494.31    
+        90  -9575.8664      156965.84      174295.94      217235.31     -2553.0412      18394.867      1415.9808      182832.37    
+       100  -9691.7337      149971.33      152771.49      216560.66      7283.4875      25242.983     -11211.57       173101.16    
+Loop time of 0.0678777 on 36 procs for 100 steps with 200 atoms
+
+Performance: 63.644 ns/day, 0.377 hours/ns, 1473.237 timesteps/s, 294.647 katom-step/s
+98.3% CPU use with 36 MPI tasks x no OpenMP threads
+
+MPI task timing breakdown:
+Section |  min time  |  avg time  |  max time  |%varavg| %total
+---------------------------------------------------------------
+Pair    | 0.0075554  | 0.028961   | 0.052853   |   6.9 | 42.67
+Neigh   | 0.0013064  | 0.0013946  | 0.0014736  |   0.1 |  2.05
+Comm    | 0.011466   | 0.035329   | 0.056745   |   6.3 | 52.05
+Output  | 0.00032612 | 0.00050911 | 0.0005872  |   0.0 |  0.75
+Modify  | 0.00067822 | 0.0010727  | 0.0013295  |   0.4 |  1.58
+Other   |            | 0.0006105  |            |       |  0.90
+
+Nlocal:        5.55556 ave           9 max           3 min
+Histogram: 1 8 0 8 0 11 6 0 1 1
+Nghost:        335.528 ave         351 max         324 min
+Histogram: 4 2 7 2 9 3 3 4 1 1
+Neighs:              0 ave           0 max           0 min
+Histogram: 36 0 0 0 0 0 0 0 0 0
+FullNghs:          397 ave         637 max         222 min
+Histogram: 1 8 1 7 4 8 5 0 1 1
+
+Total # of neighbors = 14292
+Ave neighs/atom = 71.46
+Neighbor list builds = 2
+Dangerous builds = 0
+Total wall time: 0:00:00
