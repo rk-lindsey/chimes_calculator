@@ -92,7 +92,13 @@ This command will produce a file named like ``chimes_scan_2+3b.type_0.dat.gnuplo
 Tabulation
 *****************
 
-ChIMES interactions can be precomputed and stored in look-up tables compatible with the ChIMES_Calculator as implemented in LAMMPS. These tables can substantially speed up your ChIMES calculations by replacing on-the-fly Chebyshev expansions. Due to memory requirements, tabulation is recommended for 2- and 3-body interactions, only.
+ChIMES interactions can be precomputed and stored in look-up tables compatible with the ChIMES_Calculator as implemented in LAMMPS. These tables can substantially speed up your ChIMES calculations by replacing on-the-fly Chebyshev expansions. Due to memory requirements, tabulation is recommended for 2- and 3-body interactions, only. A speed comparison between a normal 20-12-0 ChIMES model and the same model running with tabulation is provided in Figure 1 below.
+
+.. figure:: tabulation_speed.png
+   :align: center
+   :width: 60%
+
+   Speed comparison between a 20-12-0 model to the same model running tabulated, both models have a cutoff of 6 angstroms for both 2 and 3 body interactions. This test was performed on cubic diamond crystaline silicon at 800 K and 2.33 gcc. The simulation was performed using 1, 9480 Xeon Max cpu.
 
 To use this capability, one must generate the tabulation files and update the parameter file to point to these tabulation files. Instructions for doing so are given below:
 
