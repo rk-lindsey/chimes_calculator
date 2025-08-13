@@ -95,7 +95,7 @@ ChIMES interactions can be precomputed and stored in look-up tables compatible w
    :align: center
    :width: 60%
 
-   Speed comparison between a 20-12-0 model to the same model running tabulated, both models have a cutoff of 6 angstroms for both 2 and 3 body interactions. This test was performed on cubic diamond crystaline silicon at 800 K and 2.33 gcc. The simulation was performed using 1, 9480 Xeon Max cpu.
+   Speed comparison between a 20-12-0 model to the same model running tabulated, both models have a cutoff of 6 Angstroms for both 2 and 3 body interactions. This test was performed on 216 atoms of cubic diamond crystaline silicon at 800 K and 2.33 gcc. The simulation was performed using 1, 9480 Xeon Max cpu.
 
 To use this capability, one must generate the tabulation files and update the parameter file to point to these tabulation files. Instructions for doing so are given below:
 
