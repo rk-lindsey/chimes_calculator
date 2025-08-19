@@ -1,0 +1,87 @@
+# mpi = MPI with its default compiler
+
+SHELL = /bin/sh
+
+# ---------------------------------------------------------------------
+# compiler/linker settings
+# CRAY_CPU_TARGET ?= spr
+
+CC         = CC
+CCFLAGS    = -O3 -std=gnu++11 -fPIC -DLAMMPS_MEMALIGN=64
+SHFLAGS    = -fPIC
+DEPFLAGS   = -M
+
+LINK       = CC
+LINKFLAGS  = -O3 -std=gnu++11
+LIB        = -L$(CHIMES_BUILD) -lchimes
+SIZE       = size
+
+ARCHIVE    = ar
+ARFLAGS    = -rc
+SHLIBFLAGS = -shared
+
+# ---------------------------------------------------------------------
+# LAMMPS-specific settings
+
+LMP_INC = -DLAMMPS_GZIP -DLAMMPS_MEMALIGN=64
+
+# MPI: use Cray MPICH from CC wrapper, don’t hardcode Intel paths
+MPI_INC  = -DMPICH_SKIP_MPICXX -DOMPI_SKIP_MPICXX=1
+MPI_PATH =
+MPI_LIB  =
+
+# FFT: leave blank unless you want FFTW
+FFT_INC  =
+FFT_PATH =
+FFT_LIB  =
+
+# JPEG/PNG: leave blank unless enabled
+JPG_INC  =
+JPG_PATH =
+JPG_LIB  =
+
+# ---------------------------------------------------------------------
+# build rules and dependencies
+
+include Makefile.package.settings
+include Makefile.package
+
+EXTRA_INC         = $(LMP_INC) $(PKG_INC) $(MPI_INC) $(FFT_INC) $(JPG_INC) $(PKG_SYSINC)
+EXTRA_PATH        = $(PKG_PATH) $(MPI_PATH) $(FFT_PATH) $(JPG_PATH) $(PKG_SYSPATH)
+EXTRA_LIB         = $(PKG_LIB) $(MPI_LIB) $(FFT_LIB) $(JPG_LIB) $(PKG_SYSLIB)
+EXTRA_CPP_DEPENDS = $(PKG_CPP_DEPENDS)
+EXTRA_LINK_DEPENDS= $(PKG_LINK_DEPENDS)
+
+vpath %.cpp ..
+vpath %.h   ..
+
+# Link target
+$(EXE): main.o $(LMPLIB) $(EXTRA_LINK_DEPENDS)
+	$(LINK) $(LINKFLAGS) main.o $(EXTRA_PATH) $(LMPLINK) $(EXTRA_LIB) $(LIB) -o $@
+	$(SIZE) $@
+
+# Library targets
+$(ARLIB): $(OBJ) $(EXTRA_LINK_DEPENDS)
+	@rm -f ../$(ARLIB)
+	$(ARCHIVE) $(ARFLAGS) ../$(ARLIB) $(OBJ)
+	@rm -f $(ARLIB)
+	@ln -s ../$(ARLIB) $(ARLIB)
+
+$(SHLIB): $(OBJ) $(EXTRA_LINK_DEPENDS)
+	$(CC) $(CCFLAGS) $(SHFLAGS) $(SHLIBFLAGS) $(EXTRA_PATH) -o ../$(SHLIB) \
+        $(OBJ) $(EXTRA_LIB) $(LIB)
+	@rm -f $(SHLIB)
+	@ln -s ../$(SHLIB) $(SHLIB)
+
+# Compilation rules
+%.o: %.cpp
+	$(CC) $(CCFLAGS) $(EXTRA_INC) -c $<
+
+# Dependencies
+depend : fastdep.exe $(SRC)
+	@./fastdep.exe $(EXTRA_INC) -- $^ > .depend || exit 1
+
+fastdep.exe: ../DEPEND/fastdep.c
+	cc -O -o $@ $<
+
+sinclude .depend
