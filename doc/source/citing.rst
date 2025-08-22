@@ -30,6 +30,9 @@ ChIMES+DFTB                    #. PuH-DFTB
 Iterative Refinement           #. CO-1
 Carbon Condensation            #. CO-1
 2+3+4-body ChIMES              #. CO-2
+                               #. Carbon-2.0.Small
+                               #. Carbon-2.0.Large
+                               #. CN-hierarch
 Distributed LASSO              #. CO-2
 Active Learning                #. CO-2                 
 ChIMES+MSST                    #. HN-1
@@ -49,22 +52,25 @@ Reference Key for Parameter Sets
 
 Parameter set and key name are interchangeable. Key definitions are given :ref:`below <sec-defs>`.
 
-=============  ====================================  ==========   ============================================   =========
-KEY            Material                              Bodiedness   `T` (K)/ :math:`\rho` (gcc) Range              Comments
-=============  ====================================  ==========   ============================================   =========
-Carbon-1       Molten Carbon                         2            5000/2.43                                      N/A      
-Carbon-1       Molten Carbon                         2            5000/2.43                                      N/A      
-Carbon-1       Molten Carbon                         2+3          5000/2.43                                      N/A      
-Carbon-1       Molten Carbon                         2+3          6000/2.25-3.00                                 N/A      
-Water-1        Water                                 2+3          298/1.00                                       N/A
-PuH-DFTB       Pu/H                                  2+3          0-300/N/A                                      DFTB :math:`E_{\mathrm{rep}}` 
-CO-1           Carbon Monoxide (1:1)                 2+3          6500-9350/2.5                                  N/A
-CO-2           Carbon Monoxide (1:1)                 2+3+4        2400/1.79                                      N/A
-HN-1           Hydrazoic Acid H/N                    2+3+4        300-4500/1-2                                   N/A
-DNTF-DFTB      3,4-bis(4-nitrofurazan-3-yl)furoxan   2+3          300-9000/1.86-3.4                              DFTB correction, Not applicable to other atom type ratios
-TiH-DFTB       Ti/H                                  2+3          N/A/5.5                                      	 DFTB :math:`E_{\mathrm{rep}}` 
-QMD-DFTB       C/N/O/H (based on QM database)        2+3          0/ambient                                      DFTB correction
-=============  ====================================  ==========   ============================================   =========
+=============        ====================================  ==========   ============================================   =========
+KEY                  Material                              Bodiedness   `T` (K)/ :math:`\rho` (gcc) Range              Comments
+=============        ====================================  ==========   ============================================   =========
+Carbon-1             Molten Carbon                         2            5000/2.43                                      N/A      
+Carbon-1             Molten Carbon                         2            5000/2.43                                      N/A      
+Carbon-1             Molten Carbon                         2+3          5000/2.43                                      N/A      
+Carbon-1             Molten Carbon                         2+3          6000/2.25-3.00                                 N/A      
+Water-1              Water                                 2+3          298/1.00                                       N/A
+PuH-DFTB             Pu/H                                  2+3          0-300/N/A                                      DFTB :math:`E_{\mathrm{rep}}` 
+CO-1                 Carbon Monoxide (1:1)                 2+3          6500-9350/2.5                                  N/A
+CO-2                 Carbon Monoxide (1:1)                 2+3+4        2400/1.79                                      N/A
+HN-1                 Hydrazoic Acid H/N                    2+3+4        300-4500/1-2                                   N/A
+DNTF-DFTB            3,4-bis(4-nitrofurazan-3-yl)furoxan   2+3          300-9000/1.86-3.4                              DFTB correction, Not applicable to other atom type ratios
+TiH-DFTB             Ti/H                                  2+3          N/A/5.5                                        DFTB :math:`E_{\mathrm{rep}}` 
+QMD-DFTB             C/N/O/H (based on QM database)        2+3          0/ambient                                      DFTB correction
+Carbon-2.0.Small     Carbon                                2+3+4        ambient-8000/0.5-3.0                           Polynomial order is 20-5-3
+Carbon-2.0.Large     Carbon                                2+3+4        ambient-8000/0.5-3.0                           Polynomial order is 20-10-4
+CN-hierarch          C/N                                   2+3+4        300-9000/1.0-4.0                               N/A
+=============        ====================================  ==========   ============================================   =========
 
 .. DNTF-1 DNTF    3,4-bis(4-nitrofurazan-3-yl)furoxan   2+3+4        300-?/?-?                                      N/A 
 
@@ -91,6 +97,8 @@ HN-1             (`link <https://doi.org/10.1063/5.0029011>`_)                H.
 DNTF-DFTB        (`link <https://doi.org/10.26434/chemrxiv.14043839.v1>`_)    R.K. Lindsey*, S. Bastea*, N. Goldman, L. Fried, `J. Chem. Phys.` **154** 164115 (2021).
 TiH-DFTB         (`link <https://doi.org/10.1021/acs.jctc.1c00172>`_)         N. Goldman*, K. Kweon, R.K. Lindsey, L.E. Fried, T.W. Heo, B. Sadigh, P. Soderlind, A. Landa, A. Perron, J. Jeffries, B. Wood, `J. Chem. Theory Comput.` **17** 4435 (2021).
 QMD-DFTB         (`link <https://doi.org/10.1021/acs.jpclett.2c00453>`_)      C.H. Pham*, R.K. Lindsey, L.E. Fried, N. Goldman, `J. Phys. Chem. Lett.` **13** 2934 (2022).
+Carbon-2.0       (`link <https://doi.org/10.1038/s41524-024-01497-y>`_)       R.K. Lindsey* S. Bastea, S. Hamel, Y. Lyu, N. Goldman, V. Lordi, `npj Comput. Mater.` **11** 26 (2025).
+CN-hierarch      (`link <10.26434/chemrxiv-2024-523v8-v2>`_)                  R.K. Lindsey*, A.D. Oladipupo, S. Bastea, B.A. Steele, F.W. Kuo, N. Goldman, `Under Review: npj Comput. Mater.` (2025).
 ==============   ==========================================================   ==============
 
 .. .. DNTF-1 DNTF      (`link <https://doi.org/?????????????????>`_)                R.K. Lindsey*, S. Bastea*, N. Goldman, L. Fried, ???.

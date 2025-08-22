@@ -1,0 +1,90 @@
+#######################################################################
+#######################################################################
+# MD assembly simulation of OS-CG particles with alpha=4 using ChIMES model at 300 K.
+#######################################################################
+#######################################################################
+
+##########################################
+# USER-SPECIFIED VARIABLES
+##########################################
+
+variable dt         equal 5.0 
+variable Tstart     equal 300.0 
+variable Tstop      equal 300.0 
+variable Tdamp      equal 500.0
+variable atmmass    equal 67256 # Must match value(s) specified in parameter file
+variable uc         equal 120
+variable nrepl      equal 4
+variable params     string A4_params.txt
+variable timesteps  equal 10000
+variable iofrq      equal 1000
+
+
+########################################
+# GENERAL CONTROLS
+######################################## 
+
+units           real                          # Required for CHIMES pair style
+newton          on                            # Required for CHIMES pair style
+atom_style      atomic                        # Required for CHIMES pair style
+atom_modify     sort 0 0.0                    # Required for CHIMES pair style
+atom_modify     map array                     # Required for CHIMES pair style
+ 
+neighbor        2.0 bin
+neigh_modify    delay 0 every 1 check yes     # Required for CHIMES pair style
+
+
+########################################
+# INITIALIZATION CONTROLS - CREATE THE SYSTEM (FCC LATTICE)
+######################################################
+
+lattice             fcc ${uc}
+region              box block 0 1 0 1 0 1 units lattice
+create_box          1 box                                # use that empty cell to define simulation cell
+create_atoms        1 box                                # place atoms on lattice points 
+replicate           ${nrepl} ${nrepl} ${nrepl}
+
+mass                1 ${atmmass} 
+velocity            all create ${Tstart} 4834834 rot yes mom yes dist gaussian
+
+
+########################################
+# FORCE FIELD CONTROLS 
+########################################
+
+pair_style          chimesFF     
+pair_coeff          * * ${params}   
+
+
+########################################
+# RESTART CONTROLS 
+########################################
+
+# restart             10 nvt.a.restart nvt.b.restart 
+
+
+########################################
+# RUN, DUMP, AND THERMO CONTROLS 
+########################################
+
+##### Set the ensemble
+
+variable Tdamp  equal  dt*100.0	# Temperature damping coefficient
+
+fix                 1 all nvt temp ${Tstart} ${Tstop} ${Tdamp}
+
+##### Define thermo output
+
+thermo_style        custom step time ke pe temp press etotal econserve lx ly lz 
+thermo              ${iofrq}                   
+thermo_modify       norm yes
+
+##### Print dump files
+
+#dump                1 all custom ${iofrq} chimes_A4.lammpstrj id type element xu yu zu fx fy fz     
+#dump_modify         1 element A sort id    #give element names 
+
+##### Run the simulation 
+
+timestep            ${dt}
+run	                ${timesteps}

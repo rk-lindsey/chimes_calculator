@@ -1,0 +1,157 @@
+LAMMPS (29 Aug 2024 - Update 1)
+########################################
+########################################
+# Si at 8000.0 K, using ***tabulated*** ChIMES
+########################################
+########################################
+
+########################################
+# GENERAL CONTROLS
+########################################
+
+units           real                          # Required for CHIMES pair style
+newton          on                            # Required for CHIMES pair style
+atom_style      atomic                        # Required for CHIMES pair style
+atom_modify     sort 0 0.0                    # Required for CHIMES pair style
+atom_modify     map array                     # Required for CHIMES pair style
+
+neighbor        2.0 bin
+neigh_modify    delay 0 every 1 check yes     # Required for CHIMES pair style
+
+
+########################################
+# INITIALIZATION CONTROLS
+########################################
+
+read_data    ./data.lammps
+Reading data file ...
+  triclinic box = (0 0 0) to (13.4 13.4 13.4) with tilt (0 0 0)
+  3 by 3 by 4 MPI processor grid
+  reading atoms ...
+  216 atoms
+  read_data CPU = 0.009 seconds
+velocity     all create 8000.0 2217 mom yes rot yes dist gaussian loop all
+
+########################################
+# FORCE FIELD CONTROLS
+########################################
+
+# Note: This model uses Tabulated ChIMES with D2 via MOMB
+#       Tabulation is requested inside of the ChIMES parameter file!
+
+pair_style   hybrid/overlay chimesFF momb 12.0 0.75 20.0
+pair_coeff  * *  chimesFF params.txt
+pair_coeff  1 1  momb 0.0 1.0 1.0 2206.022943 3.432
+
+
+########################################
+# RUN, DUMP, AND THERMO CONTROLS
+########################################
+
+##### Set the ensemble
+
+timestep 0.5
+fix             1 all nvt temp 8000.0 8000.0 50
+
+
+##### Define thermo output
+
+thermo_style    custom step lx ly lz pxx pyy pzz pe ke etotal econserve vol press temp  # econserve replaces fix_modify
+thermo          10
+
+
+##### Print dump files
+
+#dump            1 all custom 1 traj.lammpstrj id element xu yu zu
+#dump_modify 1 element Si sort id
+
+# Run
+
+run 20
+
+CITE-CITE-CITE-CITE-CITE-CITE-CITE-CITE-CITE-CITE-CITE-CITE-CITE
+
+Your simulation uses code contributions which should be cited:
+
+- Type Label Framework: https://doi.org/10.1021/acs.jpcb.3c08419
+
+@Article{Gissinger24,
+ author = {Jacob R. Gissinger, Ilia Nikiforov, Yaser Afshar, Brendon Waters, Moon-ki Choi, Daniel S. Karls, Alexander Stukowski, Wonpil Im, Hendrik Heinz, Axel Kohlmeyer, and Ellad B. Tadmor},
+ title = {Type Label Framework for Bonded Force Fields in LAMMPS},
+ journal = {J. Phys. Chem. B},
+ year =    2024,
+ volume =  128,
+ number =  13,
+ pages =   {3282–-3297}
+}
+
+- Pair style momb: doi:10.1021/jp412098n
+
+@Article{pair_momb_2015,
+title = {A Force Field for Describing the Polyvinylpyrrolidone-Mediated
+    Solution-Phase Synthesis of Shape-Selective {Ag} Nanoparticles},
+volume = {118},
+number = {6},
+url = {https://doi.org/10.1021/jp412098n},
+doi = {10.1021/jp412098n},
+journal = {J.~Phys.\ Chem.~C},
+author = {Zhou, Ya and Wissam A. Saidi and Kristen A. Fichthorn},
+year = {2014},
+pages = {3366--3374}
+}
+
+CITE-CITE-CITE-CITE-CITE-CITE-CITE-CITE-CITE-CITE-CITE-CITE-CITE
+
+Generated 0 of 0 mixed pair_coeff terms from geometric mixing rule
+Neighbor list info ...
+  update: every = 1 steps, delay = 0 steps, check = yes
+  max neighbors/atom: 2000, page size: 100000
+  master list distance cutoff = 14
+  ghost atom cutoff = 14
+  binsize = 7, bins = 2 2 2
+  2 neighbor lists, perpetual/occasional/extra = 2 0 0
+  (1) pair chimesFF, perpetual
+      attributes: full, newton on, ghost, cut 8
+      pair build: full/bin/ghost
+      stencil: full/ghost/bin/3d
+      bin: standard
+  (2) pair momb, perpetual
+      attributes: half, newton on
+      pair build: half/bin/atomonly/newton/tri
+      stencil: half/bin/3d/tri
+      bin: standard
+Per MPI rank memory allocation (min/avg/max) = 9.078 | 9.084 | 9.086 Mbytes
+   Step           Lx             Ly             Lz            Pxx            Pyy            Pzz           PotEng         KinEng         TotEng       Econserve        Volume         Press           Temp     
+         0   13.4           13.4           13.4           1253153        1268301.2      1262466.7     -39109.314      5126.9933     -33982.321     -33982.321      2406.104       1261307        8000         
+        10   13.4           13.4           13.4           1478481.8      1469894.6      1467163.2     -37431.877      3455.8978     -33975.979     -33978.39       2406.104       1471846.5      5392.4749    
+        20   13.4           13.4           13.4           1500626.7      1484205.8      1470491.2     -36746.998      2789.3326     -33957.665     -33978.432      2406.104       1485107.9      4352.3873    
+Loop time of 20.5056 on 36 procs for 20 steps with 216 atoms
+
+Performance: 0.042 ns/day, 569.600 hours/ns, 0.975 timesteps/s, 210.674 atom-step/s
+99.7% CPU use with 36 MPI tasks x no OpenMP threads
+
+MPI task timing breakdown:
+Section |  min time  |  avg time  |  max time  |%varavg| %total
+---------------------------------------------------------------
+Pair    | 0.063424   | 5.959      | 20.501     | 213.8 | 29.06
+Neigh   | 0          | 0          | 0          |   0.0 |  0.00
+Comm    | 0.0036411  | 14.546     | 20.441     | 136.8 | 70.94
+Output  | 0.00030474 | 0.00030816 | 0.00032726 |   0.0 |  0.00
+Modify  | 0.00023929 | 0.00045779 | 0.00061401 |   0.0 |  0.00
+Other   |            | 0.0001848  |            |       |  0.00
+
+Nlocal:              6 ave          13 max           3 min
+Histogram: 6 4 7 6 5 4 0 2 1 1
+Nghost:           2941 ave        2944 max        2934 min
+Histogram: 1 0 1 2 0 4 5 6 7 10
+Neighs:           3186 ave        6859 max        1588 min
+Histogram: 7 4 7 5 7 2 1 2 0 1
+FullNghs:         1140 ave        2470 max         570 min
+Histogram: 6 4 7 6 5 4 0 2 1 1
+
+Total # of neighbors = 114696
+Ave neighs/atom = 531
+Neighbor list builds = 0
+Dangerous builds = 0
+#write_data      Thermalization_1.data
+Total wall time: 0:00:21

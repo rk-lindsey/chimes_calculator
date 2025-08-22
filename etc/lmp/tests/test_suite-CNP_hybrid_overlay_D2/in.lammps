@@ -1,0 +1,108 @@
+########################################
+########################################
+# NPT-MD (thermalization) for a ~3000 C atom system with ~140000 Ar atoms (4 nm CNP)
+# DO NOT RUN THIS SCRIPT WITH MORE THAN 224 PROCS!!! There will be domain decomposition errors
+# With a 0.5 fs timestep, can get .75 ns/day on 224 procs
+########################################
+########################################
+ 
+ 
+##########################################
+# USER-SPECIFIED VARIABLES
+##########################################
+
+variable tstep               equal  0.5                                        # timestep in fs
+variable run_steps           equal  100                                        # Number of steps to run
+variable temperature         equal  2500                                       # Temperature (K)
+variable pressure            equal  78953.8                                    # Target pressure (atm)  
+ 
+variable io_freq             equal  1                                          # Frequency of dumping trajectory (steps)
+ 
+variable data_file           string CNP_40Ang_2500K_8GPa.data.in			   # Data file for initial structure
+variable restart_file        string npt.restart                                # Restart file
+variable param_file          string ../../../../serial_interface/tests/force_fields/published_params.Carbon-2.0.Small.2+3+4b.Tersoff.txt
+
+ 
+########################################
+# GENERAL CONTROLS
+######################################## 
+
+units           real                          # Required for CHIMES pair style
+newton          on                            # Required for CHIMES pair style
+atom_style      atomic                        # Required for CHIMES pair style
+atom_modify     sort 0 0.0                    # Prevent sorting (to maintain 3b parent/neighbor relationships)
+atom_modify     map array                     # May improve efficiency
+ 
+neighbor        1.5 bin
+neigh_modify    delay 0 every 1 check yes
+ 
+ 
+########################################
+# INITIALIZATION CONTROLS
+########################################
+
+read_data       ${data_file}                                                           
+
+velocity        all create ${temperature} 1234 dist gaussian mom yes rot yes loop all  # Assign initial velocity (comment this line out when reading from a restart file)
+ 
+group carbon type 1    # group carbon atoms (for better load balance)
+group argon  type 2    # group argon  atoms
+ 
+ 
+########################################
+# FORCE FIELD CONTROLS 
+########################################
+
+pair_style      hybrid/overlay chimesFF momb 9.0 0.75 20.0 lj/cut 10.0            # Use ChIMES, momb and LJ potentials (removed "for_fitting" after chimesFF copied from the parameter file)
+pair_coeff      * * chimesFF ${param_file}                                        # Use ChIMES for C-C
+pair_coeff      1 1 momb 0.0 1.0 1.0 418.26 2.904                                 # Use momb for dispersion correction (only for the small carbon model, copied from the parameter file)
+pair_coeff      1 2 lj/cut 0.25   3.5                                             # Use LJ for C-Ar  (epsilon: Kcal/mol, sigma: Angstrom) calculated with L-B combining rules
+pair_coeff      2 2 lj/cut 0.25   3.5                                             # Use LJ for Ar-Ar (epsilon: Kcal/mol, sigma: Angstrom)
+ 
+# LJ params for Ar:    0.25 3.5             (epsilon: Kcal/mol, sigma: Angstrom, treated as general LJ particles instead of actual Ar atoms) 
+# LJ params for Ar-C:  Manually s�et to make the elements immiscibles
+ 
+ 
+########################################
+# RESTART CONTROLS 
+########################################
+
+#restart         100 npt.a.restart npt.b.restart	# Write restart files
+ 
+ 
+########################################
+# RUN, DUMP, AND THERMO CONTROLS 
+########################################
+
+##### Set the ensemble
+
+variable temp_damp  equal  v_tstep*100.0	# Temperature damping coefficient
+variable press_damp equal  v_tstep*1000.0	# Pressure damping coefficient
+ 
+fix             1 all npt temp ${temperature} ${temperature} ${temp_damp} iso ${pressure} ${pressure} ${press_damp}  # Couple pressure with "iso" for liquid system
+
+##### Enable load balancing since LJ Ar-Ar and C-Ar interactions are WAY cheaper than C-C interactions
+ 
+comm_style 	tiled 			
+fix 		2 all balance 10 0.25 rcb weight time 0.75 # This should generally work well for any system that requires load balancing
+
+##### Define thermo output
+ 
+variable e_ensemble           equal f_1
+variable e_conserve           equal ke+pe+v_e_ensemble
+thermo_style    custom step time temp press density ke pe etotal v_e_ensemble v_e_conserve econserve
+thermo_modify   line one format float %20.5f flush yes
+thermo          ${io_freq}
+
+##### Print separate dump files for the whole system and just the particle
+
+#dump            dump_1 all custom ${io_freq} traj.lammpstrj id type element xu yu zu vx vy vz
+#dump_modify     dump_1 sort id element C Ar
+
+#dump            dump_2 carbon custom ${io_freq} traj.C.lammpstrj id type element xu yu zu vx vy vz
+#dump_modify     dump_2 sort id element C Ar
+ 
+##### Run the simulation 
+ 
+timestep        ${tstep} 
+run             ${run_steps}
