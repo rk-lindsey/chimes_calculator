@@ -1,0 +1,107 @@
+LAMMPS (29 Oct 2020)
+Reading data file ...
+  triclinic box = (0.0000000 0.0000000 0.0000000) to (11.680000 11.680000 11.680000) with tilt (0.0000000 0.0000000 0.0000000)
+  1 by 1 by 1 MPI processor grid
+  reading atoms ...
+  200 atoms
+  read_data CPU = 0.001 seconds
+chimesFF: 
+chimesFF: 01000011011010001001001010011010100010101010011 0100010101101110110011101101001011011101100101  
+chimesFF: 
+chimesFF:       _____  _      _____  __  __  ______   _____   ______                _                      
+chimesFF:      / ____|| |    |_   _||  \/  ||  ____| / ____| |  ____|              (_)                    
+chimesFF:     | |     | |__    | |  | \  / || |__   | (___   | |__    _ __    __ _  _  _ __    ___        
+chimesFF:     | |     | '_ \   | |  | |\/| ||  __|   \___ \  |  __|  | '_ \  / _` || || '_ \  / _ \ 
+chimesFF:     | |____ | | | | _| |_ | |  | || |____  ____) | | |____ | | | || (_| || || | | ||  __/        
+chimesFF:      \_____||_| |_||_____||_|  |_||______||_____/  |______||_| |_| \__, ||_||_| |_| \___|     
+chimesFF:                                                                     __/ |                        
+chimesFF:                                                                    |___/                         
+chimesFF: 
+chimesFF:                      Copyright (C) 2020 R.K. Lindsey, L.E. Fried, N. Goldman                     
+chimesFF: 
+chimesFF: 01000011011010001001001010011010100010101010011 0100010101101110110011101101001011011101100101   
+chimesFF: 
+
+************************* WARNING (pair_style chimesFF) ************************
+Assuming n-body interactions have longer cutoffs than all (n+1)-body interactions
+************************* WARNING (pair_style chimesFF) ************************
+
+chimesFF: Reading parameters from file: ./params.txt
+chimesFF: Using respective 2, 3, and 4-body orders of: 12 5 0
+chimesFF: Note: Ignoring polynomial domain; assuming [-1,1]
+chimesFF: Will consider 1 atom types:
+chimesFF: 	0 C
+chimesFF: Will consider 1 atom pair types
+chimesFF: Detected version 1 pair specification (with S_DELTA)
+chimesFF: 	0 C C
+chimesFF: Read the following pair type information:
+chimesFF: 	C C r_cut_in: 1.00000 r_cut_out: 3.15000 MORSE 1.25000
+chimesFF: Will use cutoff style CUBIC
+chimesFF: Will use penalty distance: 0.10000
+chimesFF: Will use penalty scaling: 10000.00000
+chimesFF: Read 2B parameters for pair: -18320 C C These are tabulated in ./chimes_scan_2b.type_0.dat*
+chimesFF: Note: Expects penalty function to be included in tabulation
+chimesFF: Built the following 2-body pair "slow" map:
+chimesFF: 	0 CC(i: 0)
+chimesFF: Built the following 2-body pair "fast" map:
+chimesFF: 	CC: 0 0
+chimesFF: Read 3B parameters for pair: 0 C C C These are tabulated in ./chimes_scan_3b.type_0.dat*
+chimesFF: Note: Expects penalty function to be included in tabulation
+chimesFF: Read 3B parameters for triplet: 0 C C C
+chimesFF: Built the following 3-body pair "slow" map:
+chimesFF: 	0 CCCCCC
+chimesFF: Built the following 3-body pair "fast" map:
+chimesFF: 	0 0
+chimesFF: 	Setting 3-body max cutoff to: 3.15000
+WARNING: No fixes defined, atoms won't move (../verlet.cpp:54)
+Neighbor list info ...
+  update every 1 steps, delay 0 steps, check yes
+  max neighbors/atom: 2000, page size: 100000
+  master list distance cutoff = 5.15
+  ghost atom cutoff = 5.15
+  binsize = 2.575, bins = 5 5 5
+  1 neighbor lists, perpetual/occasional/extra = 1 0 0
+  (1) pair chimesFF, perpetual
+      attributes: full, newton on, ghost
+      pair build: full/bin/ghost
+      stencil: full/ghost/bin/3d
+      bin: standard
+Setting up Verlet run ...
+  Unit style    : real
+  Current step  : 0
+  Time step     : 1.0
+Updating chimesFF neighbor lists...
+	Rank 0 3-body list size: 75470
+	Rank 0 4-body list size: 0
+	...update complete
+Per MPI rank memory allocation (min/avg/max) = 4.245 | 4.245 | 4.245 Mbytes
+PotEng Pxx Pyy Pzz Pxy Pxz Pyz Press 
+  -7701.3061    94611.219     86594.67    88985.285   -30381.731    32539.754   -19721.689    90063.725 
+Loop time of 2.14577e-06 on 1 procs for 0 steps with 200 atoms
+
+139.8% CPU use with 1 MPI tasks x no OpenMP threads
+
+MPI task timing breakdown:
+Section |  min time  |  avg time  |  max time  |%varavg| %total
+---------------------------------------------------------------
+Pair    | 0          | 0          | 0          |   0.0 |  0.00
+Neigh   | 0          | 0          | 0          |   0.0 |  0.00
+Comm    | 0          | 0          | 0          |   0.0 |  0.00
+Output  | 0          | 0          | 0          |   0.0 |  0.00
+Modify  | 0          | 0          | 0          |   0.0 |  0.00
+Other   |            | 2.146e-06  |            |       |100.00
+
+Nlocal:        200.000 ave         200 max         200 min
+Histogram: 1 0 0 0 0 0 0 0 0 0
+Nghost:        1128.00 ave        1128 max        1128 min
+Histogram: 1 0 0 0 0 0 0 0 0 0
+Neighs:        0.00000 ave           0 max           0 min
+Histogram: 1 0 0 0 0 0 0 0 0 0
+FullNghs:      14240.0 ave       14240 max       14240 min
+Histogram: 1 0 0 0 0 0 0 0 0 0
+
+Total # of neighbors = 14240
+Ave neighs/atom = 71.200000
+Neighbor list builds = 0
+Dangerous builds = 0
+Total wall time: 0:00:00

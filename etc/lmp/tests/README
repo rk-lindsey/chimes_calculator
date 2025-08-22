@@ -1,0 +1,20 @@
+The files herein serve two main purposes:
+
+1. To provide a test suite for developers
+2. To provide examples for how to use ChIMES and associated features in LAMMPS.
+
+
+DEVELOPERS:
+
+When you first clone the repository, you should run the run_tests.sh script to identify if there are any significant changes in the code output arising from running on a new system. The test suite will report errors if numerical differences greater than 1E-5 are found. 
+
+There is a create.sh script - this will completely overwrite the contents of "expected output" and should not be run under 99.9% of circumstances.
+
+
+USERS:
+
+Each example/test folder contains all the input you need to run the test in question. A brief description of the test is provided at the top of each in.lammps file. In general, these tests can be run via something like the following, assuming you have run the install.sh script with the appropriate flags*:
+
+srun -n 36 ../exe/lmp_mpi_chimes -i in.lammps | tee out.lammps
+
+* To run the tabulation test, you need to install using "./install.sh TABULATION". To run the fingerprint test, you need to install using "./install.sh FINGERPRINT" and run the example via something like ./run_jobs.sh 36". See the scripts in question and documentation for additional details.

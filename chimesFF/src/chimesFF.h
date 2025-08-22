@@ -154,13 +154,25 @@ public:
 	// 2+B compute functions overloaded with force_scalar_in var for compatibility with LAMMPS
 
 	void compute_2B(const double dx, const vector<double> & dr, const vector<int> typ_idxs, vector<double> & force, vector<double> & stress, double & energy, chimes2BTmp &tmp);
-	void compute_2B(const double dx, const vector<double> & dr, const vector<int> typ_idxs, vector<double> & force, vector<double> & stress, double & energy, chimes2BTmp &tmp, double & force_scalar_in); 
+	void compute_2B(const double dx, const vector<double> & dr, const vector<int> typ_idxs, vector<double> & force, vector<double> & stress, double & energy, chimes2BTmp &tmp, double & force_scalar_in
+                    #ifdef FINGERPRINT
+                        , vector<vector<double>> & clusters_2b, bool fingerprint
+                    #endif
+                    ); 
 
 	void compute_3B(const vector<double> & dx, const vector<double> & dr, const vector<int> & typ_idxs, vector<double> & force,vector<double> & stress, double & energy, chimes3BTmp &tmp);
-	void compute_3B(const vector<double> & dx, const vector<double> & dr, const vector<int> & typ_idxs, vector<double> & force,vector<double> & stress, double & energy, chimes3BTmp &tmp, vector<double> & force_scalar_in); 
+	void compute_3B(const vector<double> & dx, const vector<double> & dr, const vector<int> & typ_idxs, vector<double> & force,vector<double> & stress, double & energy, chimes3BTmp &tmp, vector<double> & force_scalar_in
+                    #ifdef FINGERPRINT
+                        , vector<vector<double >> & clusters_3b, bool fingerprint
+                    #endif
+                    ); 
 
 	void compute_4B(const vector<double> & dx, const vector<double> & dr, const vector<int> & typ_idxs, vector<double> & force, vector<double> & stress, double & energy, chimes4BTmp &tmp);
-	void compute_4B(const vector<double> & dx, const vector<double> & dr, const vector<int> & typ_idxs, vector<double> & force, vector<double> & stress, double & energy, chimes4BTmp &tmp, vector<double> & force_scalar_in);
+	void compute_4B(const vector<double> & dx, const vector<double> & dr, const vector<int> & typ_idxs, vector<double> & force, vector<double> & stress, double & energy, chimes4BTmp &tmp, vector<double> & force_scalar_in
+                    #ifdef FINGERPRINT
+                        , vector<vector<double>> & clusters_4b, bool fingerprint
+                    #endif
+                    );
 
     void get_cutoff_2B(vector<vector<double> >  & cutoff_2b);   // Populates the 2b cutoffs
     
@@ -178,6 +190,41 @@ public:
     
     inline int  get_badness();
     inline void reset_badness();
+    
+    
+    // New for tabulation -- 2b
+#ifdef TABULATION
+    bool                    tabulate_2B;          
+    vector<string>          tab_param_files;    // tab_param_files[pair type index]
+    vector<vector<double> > tab_r;              // tab_r[pair type index][rij]
+    vector<vector<double> > tab_e;              // tab_e[pair type index][energy]
+    vector<vector<double> > tab_f;              // tab_f[pair type index][force]
+    
+    void   read_2B_tab(string tab_file, bool energy=true);
+    void   compute_2B_tab(const double dx, const vector<double> & dr, const vector<int> typ_idxs, vector<double> & force, vector<double> & stress, double & energy, chimes2BTmp &tmp);   
+    void   compute_2B_tab(const double dx, const vector<double> & dr, const vector<int> typ_idxs, vector<double> & force, vector<double> & stress, double & energy, chimes2BTmp &tmp, double & force_scalar_in);     
+    double get_tab_2B(int pair_idx, double rij, bool for_energy);
+    
+    
+    // New for tabulation -- 3b
+    
+    bool                    tabulate_3B;        
+    vector<string>          tab_param_files_3B;     // tab_param_files[trip type index]
+    vector<int> tab_index_3B;             // tab_rij_3B[pair type index][rij]
+    vector<vector<double> > tab_rij_3B;             // tab_rij_3B[pair type index][rij]
+    vector<vector<double> > tab_rik_3B;             // tab_rik_3B[pair type index][rik]
+    vector<vector<double> > tab_rjk_3B;             // tab_rjk_3B[pair type index][rjk]
+    vector<vector<double> > tab_e_3B;               // tab_e_3B[pair type index][energy]
+    vector<vector<double> > tab_f_ij_3B;             // tab_f_ij_3B[pair type index][force ij]
+    vector<vector<double> > tab_f_ik_3B;             // tab_f_ik_3B[pair type index][force ik]
+    vector<vector<double> > tab_f_jk_3B;             // tab_f_jk_3B[pair type index][force jk]
+    
+    vector<double> interpolateTricubic(int tripidx, double rij, double rik, double rjk, const vector<double>& y, const vector<double>& y1, const vector<double>& y2, const vector<double>& y3);
+    void   read_3B_tab(string tab_file, bool energy=true);
+    void   compute_3B_tab(const vector<double> & dx, const vector<double> & dr, const vector<int> & typ_idxs, vector<double> & force, vector<double> & stress, double & energy, chimes3BTmp &tmp); 
+    void   compute_3B_tab(const vector<double> & dx, const vector<double> & dr, const vector<int> & typ_idxs, vector<double> & force, vector<double> & stress, double & energy, chimes3BTmp &tmp, vector<double> & force_scalar_in);     
+    double get_tab_3B(int tripidx, const std::string& pairtyp_ij, const std::string& pairtyp_ik, const std::string& pairtyp_jk,  double rij, double rik, double rjk, double (&force_scalar)[3]);
+    #endif
     
 private:
         
@@ -260,8 +307,8 @@ private:
 
     // Tools for compute functions
         
-    inline void set_cheby_polys(vector<double> &Tn, vector<double> &Tnd, double dx, const int pair_idx,
-                                const double inner_cutoff, const double outer_cutoff, const int bodiedness_idx) ;
+	inline void set_cheby_polys(vector<double> &Tn, vector<double> &Tnd, double dx, const double morse,
+                                const double inner_cutoff, const double outer_cutoff, const int order) ;
 
 	void set_polys_out_of_range(vector<double> &Tn, vector<double> &Tnd, double dx, double x,
 								int poly_order, double inner_cutoff, double exprlen, double dx_dr) ;
@@ -492,8 +539,8 @@ inline void chimesFF::build_atom_and_pair_mappers(const int natoms, const int np
 }
 
 
-inline void chimesFF::set_cheby_polys(vector<double> &Tn, vector<double> &Tnd, double dx, const int pair_idx,
-									  const double inner_cutoff, const double outer_cutoff, const int bodiedness_idx) 
+inline void chimesFF::set_cheby_polys(vector<double> &Tn, vector<double> &Tnd, double dx, const double morse,
+									  const double inner_cutoff, const double outer_cutoff, const int order) 
 {
     // Currently assumes a Morse-style transformation has been requested
     
@@ -501,18 +548,19 @@ inline void chimesFF::set_cheby_polys(vector<double> &Tn, vector<double> &Tnd, d
     // with respect to the interatomic distance, not the transformed distance (x).
     
     // Do the Morse transformation
+
+
+     double x_min = exp(-1*inner_cutoff/morse);
+     double x_max = exp(-1*outer_cutoff/morse);
     
-    double x_min = exp(-1*inner_cutoff/morse_var[pair_idx]);
-    double x_max = exp(-1*outer_cutoff/morse_var[pair_idx]);
-    
-    double x_avg   = 0.5 * (x_max + x_min);
-    double x_diff  = 0.5 * (x_max - x_min);
+     double x_avg   = 0.5 * (x_max + x_min);
+     double x_diff  = 0.5 * (x_max - x_min);
 	
     x_diff *= -1.0; // Special for Morse style
 
 
-    bool out_of_range ;
-    double dx_orig = dx ;
+     bool out_of_range ;
+     double dx_orig = dx ;
 
 	//  The case dx > outer_cutoff is not treated, because it is assumed that the outer smoothing
     //  function will be zero for dx > outer_cutoff.
@@ -524,9 +572,9 @@ inline void chimesFF::set_cheby_polys(vector<double> &Tn, vector<double> &Tnd, d
     else
         out_of_range = false ;
     
-	double exprlen = exp(-1*dx/morse_var[pair_idx]);
-	double x  = (exprlen - x_avg)/x_diff;
-	double dx_dr = (-exprlen/morse_var[pair_idx])/x_diff;		
+	 double exprlen = exp(-1*dx/morse);
+	 double x  = (exprlen - x_avg)/x_diff;
+	 double dx_dr = (-exprlen/morse)/x_diff;		
 
     if ( ! out_of_range )
     {
@@ -553,7 +601,7 @@ inline void chimesFF::set_cheby_polys(vector<double> &Tn, vector<double> &Tnd, d
     
         // Use recursion to set up the higher n-value Tn and Tnd's
 
-        for ( int i = 2; i <= poly_orders[bodiedness_idx]; i++ ) 
+        for ( int i = 2; i <= order; i++ ) 
         {
             Tn[i]  = 2.0 * x *  Tn[i-1] -  Tn[i-2];
             Tnd[i] = 2.0 * x * Tnd[i-1] - Tnd[i-2];
@@ -564,7 +612,7 @@ inline void chimesFF::set_cheby_polys(vector<double> &Tn, vector<double> &Tnd, d
         // The following dx_dr compuation assumes a Morse transformation
         // DERIV_CONST is no longer used. (old way: dx_dr = DERIV_CONST*cheby_var_deriv(x_diff, rlen, ff_2body.LAMBDA, ff_2body.CHEBY_TYPE, exprlen);)
 
-        for ( int i = poly_orders[bodiedness_idx]; i >= 1; i-- ) 
+        for ( int i = order; i >= 1; i-- ) 
             Tnd[i] = i * dx_dr * Tnd[i-1];
 
         Tnd[0] = 0.0;
@@ -574,7 +622,7 @@ inline void chimesFF::set_cheby_polys(vector<double> &Tn, vector<double> &Tnd, d
 		cout << "Warning: An intermolecular distance less than the inner cutoff = " << inner_cutoff << " was found\n " ;
 		cout << "         Distance = " << dx_orig << endl ;
 
-		set_polys_out_of_range(Tn, Tnd, dx_orig, x, poly_orders[bodiedness_idx], inner_cutoff, exprlen, dx_dr) ;
+		set_polys_out_of_range(Tn, Tnd, dx_orig, x, order, inner_cutoff, exprlen, dx_dr) ;
     }        
 
 }

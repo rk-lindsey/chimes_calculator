@@ -1,0 +1,56 @@
+########################################
+########################################
+# NVT MD simulation using ***tabulated*** ChIMES (2017 carbon model)
+########################################
+########################################
+
+########################################
+# GENERAL CONTROLS
+######################################## 
+
+units           real                          # Required for CHIMES pair style
+newton          on                            # Required for CHIMES pair style
+atom_style      atomic                        # Required for CHIMES pair style
+atom_modify     sort 0 0.0                    # Required for CHIMES pair style
+atom_modify     map array                     # Required for CHIMES pair style
+ 
+neighbor        2.0 bin
+neigh_modify    delay 0 every 1 check yes     # Required for CHIMES pair style
+ 
+ 
+########################################
+# INITIALIZATION CONTROLS
+########################################
+
+read_data    ./data.in
+
+########################################
+# FORCE FIELD CONTROLS 
+########################################
+
+pair_style chimesFF 
+pair_coeff  * * params.txt
+
+
+########################################
+# RUN, DUMP, AND THERMO CONTROLS 
+########################################
+
+##### Set the ensemble
+
+fix             1 all nvt temp 6000.0 6000.0 50 
+
+##### Define thermo output
+
+thermo_style    custom step pe pxx pyy pzz pxy pxz pyz press
+thermo          10 
+
+##### Print dump file 
+
+#dump            dump_1 all custom ${io_freq} traj.lammpstrj id type element xu yu zu
+#dump_modify     dump_1 sort id element C
+
+##### Run the simulation 
+ 
+timestep        0.5
+run 100
